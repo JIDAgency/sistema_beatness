@@ -1,0 +1,7 @@
+{
+    "require": {
+        "facebook/graph-sdk": "^5.6",
+        "phpoffice/phpspreadsheet": "^1.4",
+        "openpay/sdk": "dev-master"
+    }
+}

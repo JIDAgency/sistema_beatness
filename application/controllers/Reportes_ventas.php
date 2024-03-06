@@ -1,0 +1,140 @@
+<?php
+defined('BASEPATH') or exit('No direct script access allowed');
+
+class Reportes_ventas extends MY_Controller
+{
+    public function __construct()
+    {
+        parent::__construct();
+        $this->load->model('ventas_model');
+        $this->load->model('planes_model');
+        $this->load->model('usuarios_model');
+        $this->load->model('metodos_model');
+        $this->load->model('asignaciones_model');
+        $this->load->model('disciplinas_model');
+    }
+
+    public function index()
+    {
+        $data['menu_reportes_ventas_activo'] = true;
+        $data['pagina_titulo'] = 'Reportes de ventas ';
+        $data['mensaje_exito'] = $this->session->flashdata('MENSAJE_EXITO');
+        $data['mensaje_info'] = $this->session->flashdata('MENSAJE_INFO');
+        $data['mensaje_error'] = $this->session->flashdata('MENSAJE_ERROR');
+
+        // Cargar estilos y scripts
+        $data['styles'] = array(
+            array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/tables/datatable/datatables.min.css'),
+            array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/tables/extensions/responsive.dataTables.min.css'),
+        );
+        $data['scripts'] = array(
+            array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/tables/datatable/datatables.min.js'),
+            array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js'),
+            array('es_rel' => true, 'src' => 'reportes_ventas/index.js'),
+        );
+
+        //Variables
+        $total_de_ventas = 0;
+        $meses_b3 = array();
+        $total_meses_b3 = array();
+
+        //Obtener los meses del inicio 2019-01-14 en adelante
+        $fecha_inicio = (new DateTime('2019-1-14'))->modify('first day of this month');
+        $fecha_actual = (new DateTime(date('Y-m-d')))->modify('first day of next month');
+        $intervalo = DateInterval::createFromDateString('1 month');
+        $periodo = new DatePeriod($fecha_inicio, $intervalo, $fecha_actual);
+        
+        foreach ($periodo as $meses_del_periodo) {
+            array_push($meses_b3,$meses_del_periodo->format("Y-m"));
+        }
+
+        $todas_las_ventas_registradas = $this->ventas_model->obtener_todas();
+
+        $data['todas_las_ventas_registradas'] = $todas_las_ventas_registradas;
+
+        //Recorrido de todas las ventas
+        foreach($todas_las_ventas_registradas->result() as $ventas_row){
+
+            //El total de historico de todas las ventas
+            $total_de_ventas = $total_de_ventas + $ventas_row->total;
+
+            
+        }
+
+        $data['total_de_ventas'] = $total_de_ventas;
+
+        $this->construir_private_site_ui('reportes_ventas/index', $data);
+    }
+
+    public function cancelar($id = null)
+    {
+
+        $venta_a_cancelar = $this->ventas_model->venta_a_cancelar_por_id($id)->row();
+
+        if (!$venta_a_cancelar) {
+            $this->session->set_flashdata('MENSAJE_ERROR', 'No se pudo encontrar la venta que desea cancelar o ya ha sido cancelada, verifique de nuevo.');
+            redirect('reportes_ventas/index');
+        }
+        /*if ($venta_a_cancelar) {
+            $this->session->set_flashdata('MENSAJE_INFO', 'Si se pudo encontrar la venta que desea cancelar.');
+            redirect('reportes_ventas/index');
+        }*/
+
+        $asignacion_a_cancelar = $this->asignaciones_model->obtener_por_id($venta_a_cancelar->asignacion_id)->row();
+
+        if (!$asignacion_a_cancelar) {
+            $this->session->set_flashdata('MENSAJE_ERROR', 'No se pudo encontrar la asignacion que desea cancelar o ya ha sido cancelada, verifique de nuevo.');
+            redirect('reportes_ventas/index');
+        }
+        /*if ($asignacion_a_cancelar) {
+            $this->session->set_flashdata('MENSAJE_INFO', 'Si se pudo encontrar la asignacion que desea cancelar.');
+            redirect('reportes_ventas/index');
+        }*/
+
+        if ($asignacion_a_cancelar->clases_usadas > 0) {
+            $this->session->set_flashdata('MENSAJE_ERROR', 'El usuario ya ha realizado reservaciones con este plan, por favor primero cancele las reservaciones si es que estas no han caducado.');
+            redirect('reportes_ventas/index');
+        }
+        /*if ($asignacion_a_cancelar->clases_usadas == 0) {
+            $this->session->set_flashdata('MENSAJE_INFO', 'No hay reservaciones con este plan');
+            redirect('reportes_ventas/index');
+        }*/
+
+        $data_asignacion = array(
+            'clases_incluidas' => '0',
+            'esta_activo' => '0',
+            'vigencia_en_dias' => 'vigencia_en_dias',
+            'estatus' => 'Cancelado',
+        );
+
+        if (!$this->asignaciones_model->editar($asignacion_a_cancelar->id, $data_asignacion)) {
+            $this->session->set_flashdata('MENSAJE_ERROR', 'La asignación no se ha editado correctamente');
+            redirect('reportes_ventas/index');
+        }
+
+        $data_venta = array(
+            'total' => '0',
+            'estatus' => 'Cancelada',
+        );
+
+        if ($this->ventas_model->editar($venta_a_cancelar->id, $data_venta)) {
+            $this->session->set_flashdata('MENSAJE_EXITO', 'La CANCELACIÓN venta #'.$venta_a_cancelar->id.' se ha hecho correctamente.');
+            redirect('reportes_ventas/index');
+        }
+
+        $this->construir_private_site_ui('reportes_ventas/crear_personalizada', $data);
+    }
+
+
+    function debug_to_console($data = null) {
+
+        $output = $data;
+
+        if ( is_array( $output ) )
+        {
+            $output = implode( ',', $output);
+        }
+
+        echo "<script>console.log( 'Que vas a probar: " . $output . "' );</script>";
+    }
+}

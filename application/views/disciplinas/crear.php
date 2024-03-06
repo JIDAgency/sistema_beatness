@@ -1,0 +1,121 @@
+<div class="app-content container center-layout mt-2">
+	<div class="content-header-left col-md-6 col-12 mb-2">
+		<div class="row breadcrumbs-top">
+			<div class="breadcrumb-wrapper col-12">
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item"><a href="<?php echo site_url('inicio/index') ?>">Inicio</a>
+					</li>
+					<li class="breadcrumb-item"><a href="<?php echo site_url('disciplinas/index') ?>">Disciplinas</a>
+					</li>
+					<li class="breadcrumb-item active">Crear nueva disciplina
+					</li>
+				</ol>
+			</div>
+		</div>
+	</div>
+	<div class="content-wrapper">
+		<div class="content-body">
+			<section>
+				<div class="row">
+					<div class="col-12">
+						<div class="card">
+							<div class="card-header">
+								<h4 class="card-title">Nueva disciplina</h4>
+							</div>
+							<div class="card-content">
+								<div class="card-body">
+									<?php echo form_open('disciplinas/crear', array('class' => 'form form-horizontal', 'id' => 'forma-crear-disciplina')); ?>
+									<div class="form-body">
+										<?php if (validation_errors()): ?>
+										<div class="alert bg-danger alert-icon-left alert-dismissible mb-2 font-small-3" role="alert">
+											<span class="alert-icon"><i class="fa fa-thumbs-o-down"></i></span>
+											<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+												<span aria-hidden="true">×</span>
+											</button>
+											<?php echo validation_errors(); ?>
+										</div>
+										<?php endif?>
+										<h4 class="form-section">Datos de la disciplina</h4>
+										<div class="row">
+											<div class="col-md-6 mb-3">
+												
+												<div class="form-group">
+													<label for="nombre" class="label-control">Nombre <span class="red">*</span></label>
+													<input type="text" class="form-control" name="nombre" id="nombre" placeholder="Nombre" value="<?php echo set_value('nombre'); ?>">
+												</div>
+
+											</div>
+										</div>
+
+										<div class="row">
+											<div class="col-md-6 mb-3">
+												<div class="form-group">
+													<label for="url_banner" class="label-control">Url del Banner <span class="red">*</span></label>
+													<input type="text" class="form-control" id="url_banner" name="url_banner" placeholder="Banner" value="<?php echo set_value('url_banner'); ?>">
+												</div>
+											</div>
+										</div>
+
+										<div class="row">
+											<div class="col-md-6 mb-3">
+												<div class="form-group">
+													<label for="url_titulo" class="label-control">Url Titulo <span class="red">*</span></label>		
+													<input type="text" class="form-control" id="url_titulo" name="url_titulo" placeholder="Titulo" value="<?php echo set_value('url_titulo'); ?>">
+												</div>
+											</div>
+										</div>
+
+										<div class="row">
+											<div class="col-md-6 mb-3">
+												<div class="form-group">
+													<label for="url_logo" class="label-control">Url del Logotipo <span class="red">*</span></label>
+													<input type="text" class="form-control" id="url_logo" name="url_logo" placeholder="Logotipo" value="<?php echo set_value('url_logo'); ?>">
+												</div>
+											</div>
+										</div>
+
+										<div class="row">
+                                            <div class="col-md-6 mb-3">
+												<div class="form-group">
+													<label for="sucursal_id">Sucursal <span class="red">*</span></label>
+													<select name="sucursal_id" id="sucursal_id" class="form-control">
+														<option value="" <?php echo set_select('sucursal_id', '' ); ?>>Seleccione una sucursal</option>
+														<option value="5" <?php echo set_select('sucursal_id', '5' ); ?>>Sucursal 5</option>
+														<option value="4" <?php echo set_select('sucursal_id', '4' ); ?>>Sucursal 4</option>
+														<option value="3" <?php echo set_select('sucursal_id', '3' ); ?>>Sucursal 3</option>
+														<option value="2" <?php echo set_select('sucursal_id', '2' ); ?>>Sucursal 2</option>
+													</select>
+												</div>	
+                                            </div>
+                                        </div>
+
+										<div class="row">
+                                            <div class="col-md-6 mb-3">
+												<div class="form-group">
+													<label for="estatus">Estatus de la sucursal <span class="red">*</span></label>
+													<select name="estatus" id="estatus" class="form-control">
+														<option value="" <?php echo set_select('estatus', '' ); ?>>Seleccione un estatus…</option>
+														<option value="activo" <?php echo set_select('estatus', 'activo' ); ?>>Activo</option>
+														<option value="inactivo" <?php echo set_select('estatus', 'inactivo' ); ?>>Inactivo</option>
+													</select>
+												</div>
+                                            </div>
+                                        </div>
+
+										<div class="form-actions right">
+											<a href="<?php echo site_url('disciplinas/index'); ?>" class="btn btn-secondary btn-sm">Cancelar</a>
+											<button type="submit" class="btn btn-secondary btn-sm">Guardar</button>
+										</div>
+
+									</div>
+
+									<?php echo form_close(); ?>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html class="loading" lang="es" data-textdirection="ltr">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+	<meta name="description" content="<?php echo description();?>">
+	<meta name="keywords" content="<?php echo keywords();?>">
+	<meta name="author" content="<?php echo author();?>">
+	<title>Registrarse | <?php echo titulo(); ?></title>
+	<link rel="apple-touch-icon" href="<?php echo base_url(); ?>app-assets/images/ico/apple-icon-120.png">
+	<link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url(); ?>app-assets/images/ico/favicon.ico">
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Muli:300,400,500,700"
+	 rel="stylesheet">
+	<!-- INICIA VENDOR CSS-->
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>app-assets/css/vendors.css">
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>app-assets/vendors/css/forms/icheck/icheck.css">
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>app-assets/vendors/css/forms/icheck/custom.css">
+	<!-- TERMINA VENDOR CSS-->
+	<!-- INICIA ROBUST CSS-->
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>app-assets/css/app.css">
+	<!-- TERMINA ROBUST CSS-->
+	<!-- INICIA Page Level CSS-->
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>app-assets/css/core/menu/menu-types/horizontal-menu.css">
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>app-assets/css/core/colors/palette-gradient.css">
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>app-assets/css/pages/login-register.css">
+	<!-- TERMINA Page Level CSS-->
+	<!-- INICIA Custom CSS-->
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/style.css">
+	<!-- TERMINA Custom CSS-->
+	<?php if($this->config->item('recaptcha_activar','b3studio')): ?>
+	<!-- INICIA reCAPTCJA -->
+	<script src='https://www.google.com/recaptcha/api.js'></script>
+	<!-- TERMINA reCAPTCJA -->
+	<?php endif ?>
+</head>
+
+<body class="horizontal-layout horizontal-menu horizontal-menu-padding 1-column  bg-full-screen-image menu-expanded blank-page blank-page"
+ data-open="hover" data-menu="horizontal-menu" data-col="1-column">
+
+	<div class="app-content container center-layout mt-2">
+		<div class="content-wrapper">
+			<div class="content-header row">
+			</div>
+			<div class="content-body">
+				<section class="flexbox-container">
+					<div class="col-12 d-flex align-items-center justify-content-center">
+
+						<div class="row">
+							<div class="col-sm-4 col-12">
+								<!--iframe class="gallery-thumbnail d-block d-sm-none" src="https://player.vimeo.com/video/450211386?title=0&byline=0&autoplay=1" frameborder="0" allow="autoplay; fullscreen" width="520" height="293"></iframe>
+								<iframe class="gallery-thumbnail d-none d-sm-block" src="https://player.vimeo.com/video/449411482?title=0&byline=0&autoplay=1" frameborder="0" allow="autoplay; fullscreen" width="450" height="726"></iframe-->
+									
+							</div>
+								
+								<div class="card-deck-wrapper">
+									<div class="card-content">
+										<div class="card card border-grey border-lighten-3 px-5 py-1 m-0 flex-column">
+											<?php echo form_open('cuenta/registrar', array('id' =>'forma-registrar','class' => 'form-horizontal')); ?>
+											
+												<div class="row card-body">
+
+													<div class="col-md-12 col-sm-6 col-12">
+														
+														<?php $this->load->view('_comun/mensajes_alerta');?>
+											
+														<?php if (validation_errors()): ?>
+															<div class="alert bg-danger alert-icon-left alert-dismissible mb-2 font-small-3" role="alert">
+																<span class="alert-icon"><i class="fa fa-thumbs-o-down"></i></span>
+																<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+																	<span aria-hidden="true">×</span>
+																</button>
+																<?php echo validation_errors(); ?>
+															</div>
+														<?php endif?>
+
+														<div class="card-title text-center d-none d-sm-block">
+															<img src="<?php echo base_url(); ?>almacenamiento/logos/logo-dark.png" alt="branding logo">
+														</div>
+
+														<h6 class="card-subtitle line-on-side text-muted text-center font-small-3 mb-3">
+															<span>Regístrase fácilmente</span>
+														</h6>
+
+														<div class="row">
+															<fieldset class="form-group position-relative has-icon-left col-md-6">
+																<input autocomplete="email" id="r_correo" name="correo" type="email" class="form-control" value="<?php echo set_value('correo'); ?>"
+																placeholder="E-mail" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toLowerCase()">
+																<div class="form-control-position">
+																	<i class="ft-mail"></i>
+																</div>
+															</fieldset>
+															<fieldset class="form-group position-relative has-icon-left col-md-6">
+																<input autocomplete="new-password" id="r_contrasena" name="contrasena" type="password" class="form-control"
+																placeholder="Contraseña">
+																<div class="form-control-position">
+																	<i class="fa fa-key"></i>
+																</div>
+															</fieldset>
+														</div>
+														<div class="row">
+															<fieldset class="form-group position-relative has-icon-left col-md-6">
+																<input autocomplete="nombre_completo" id="r_nombre_completo" name="nombre_completo" type="text" class="form-control"
+																value="<?php echo set_value('nombre_completo'); ?>" placeholder="Nombre">
+																<div class="form-control-position">
+																	<i class="ft-user"></i>
+																</div>
+															</fieldset>
+															<fieldset class="form-group position-relative has-icon-left col-md-6">
+																<input autocomplete="apellido_paterno" id="r_apellido_paterno" name="apellido_paterno" type="text" class="form-control"
+																value="<?php echo set_value('apellido_paterno'); ?>" placeholder="Apellido paterno">
+																<div class="form-control-position">
+																	<i class="ft-user"></i>
+																</div>
+															</fieldset>
+														</div>
+														<div class="row">
+															<fieldset class="form-group position-relative has-icon-left col-md-6">
+																<input autocomplete="apellido_materno" id="r_apellido_materno" name="apellido_materno" type="text" class="form-control"
+																value="<?php echo set_value('apellido_materno'); ?>" placeholder="Apellido materno">
+																<div class="form-control-position">
+																	<i class="ft-user"></i>
+																</div>
+															</fieldset>
+															<fieldset class="form-group position-relative has-icon-left col-md-6">
+																<input autocomplete="fecha_nacimiento" id="r_fecha_nacimiento" name="fecha_nacimiento" type="date" class="form-control"
+																value="<?php echo set_value('fecha_nacimiento'); ?>" placeholder="Fecha de nacimiento">
+																<div class="form-control-position">
+																	<i class="fa fa-birthday-cake"></i>
+																</div>
+															</fieldset>
+														</div>
+														<div class="row">
+															<fieldset class="form-group position-relative has-icon-left col-md-6">
+																<input autocomplete="pais" id="r_pais" name="pais" type="text" class="form-control"
+																value="<?php echo set_value('pais') == false ? "méxico" : set_value('pais'); ?>" placeholder="País de residencia" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toLowerCase()">
+																<div class="form-control-position">
+																	<i class="fa fa-map"></i>
+																</div>
+															</fieldset>
+															<fieldset class="form-group position-relative has-icon-left col-md-6">
+																<input autocomplete="estado" id="r_estado" name="estado" type="text" class="form-control"
+																value="<?php echo set_value('estado'); ?>" placeholder="Estado de residencia" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toLowerCase()">
+																<div class="form-control-position">
+																	<i class="fa fa-map-signs"></i>
+																</div>
+															</fieldset>
+														</div>
+														<div class="row">
+															<fieldset class="form-group position-relative has-icon-left col-md-6">
+																<input autocomplete="ciudad" id="r_ciudad" name="ciudad" type="text" class="form-control"
+																value="<?php echo set_value('ciudad'); ?>" placeholder="Ciudad de residencia" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toLowerCase()">
+																<div class="form-control-position">
+																	<i class="fa fa-map-marker"></i>
+																</div>
+															</fieldset>
+														</div>
+														<?php if($this->config->item('recaptcha_activar','b3studio')): ?>
+														<div class="row justify-content-center mb-1">
+															<div class="g-recaptcha" data-sitekey="6LdhKWokAAAAAD1R8HF1yEt5wBOFU48pj3BVlUEP" data-callback="captchaExitoso"
+															data-expired-callback="captchaExpirado" data-error-callback="captchaFallido"></div>
+														</div>
+														<?php endif ?>
+														<div class="form-group row">
+															<div class="col-md-12 col-12 text-center font-small-3">
+																<a href="<?php echo site_url('cuenta/olvido_contrasena') ?>" class="card-link">¿Olvidó su contraseña?</a>
+															</div>
+														</div>
+														<button id="btn-registrar" <?php echo $this->config->item('recaptcha_activar','b3studio')? 'disabled': ''; ?> type="submit" class="btn btn-cyan btn-accent-2 border-cyan border-accent-2 black square btn-min-width btn-block btn-glow text-center text-uppercase"><strong><em><i class="ft-unlock"></i> Registrarme</em></strong></button>
+														<!--button type="submit" class="btn btn-outline-info btn-block"><i class="ft-unlock"></i> Registrarse</button-->
+														<p class="card-subtitle line-on-side text-muted text-center font-small-3 mx-2 my-1">
+															<span>¿Ya eres parte?</span>
+														</p>
+														
+														<a href="<?php echo site_url('cuenta/iniciar_sesion') ?>" class="btn btn-secondary border-secondary square btn-min-width btn-block btn-glow text-center text-uppercase"><strong><em><i class="ft-user"></i> Inicia sesión</em></strong></a>
+													</div>
+
+												</div>
+
+											<?php echo form_close(); ?>
+
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+			</div>
+		</div>
+	</div>
+
+	<!-- INICIA VENDOR JS-->
+	<script src="<?php echo base_url(); ?>app-assets/vendors/js/vendors.min.js" type="text/javascript"></script>
+	<!-- TERMINA VENDOR JS-->
+	<!-- INICIA PAGE VENDOR JS-->
+	<script type="text/javascript" src="<?php echo base_url(); ?>app-assets/vendors/js/ui/jquery.sticky.js"></script>
+	<script src="<?php echo base_url(); ?>app-assets/vendors/js/forms/validation/jqBootstrapValidation.js" type="text/javascript"></script>
+	<script src="<?php echo base_url(); ?>app-assets/vendors/js/forms/icheck/icheck.min.js" type="text/javascript"></script>
+	<!-- TERMINA PAGE VENDOR JS-->
+	<!-- INICIA ROBUST JS-->
+	<script src="<?php echo base_url(); ?>app-assets/js/core/app-menu.js" type="text/javascript"></script>
+	<script src="<?php echo base_url(); ?>app-assets/js/core/app.js" type="text/javascript"></script>
+	<!-- TERMINA ROBUST JS-->
+	<!-- INICIA PAGE LEVEL JS-->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/additional-methods.js"></script>
+	<script src="<?php echo base_url(); ?>assets/js/cuenta/registrar.js" type="text/javascript"></script>
+	<!-- TERMINA PAGE LEVEL JS-->
+</body>
+
+</html>
