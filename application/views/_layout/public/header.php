@@ -8,7 +8,8 @@
         <meta name="facebook-domain-verification" content="hmo3j2doq28l4psfujdxqkw4g3b0uc" />
 
 		<link rel="apple-touch-icon" href="<?php echo base_url(); ?>app-assets/images/ico/apple-icon-120.png">
-        <link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url(); ?>app-assets/images/ico/favicon.ico">
+	<link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url(); ?>almacenamiento/logos/logo.jpg">
+        <!-- <link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url(); ?>app-assets/images/ico/favicon.ico"> -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans: 300,300i,400,400i,600,600i,700,700i|Muli:300,400,500,700">
         <!-- BEGIN VENDOR CSS-->
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>app-assets/css/vendors.css">
@@ -24,7 +25,7 @@
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/style.css">
         <!-- END Custom CSS-->
 		
-        <meta property="og:url"                content="https://pentha.mx/"/>
+        <meta property="og:url"                content="https://beatness.mx/"/>
         <meta property="og:type"               content="Website" />
         <meta name="description"                content="<?php echo description(); ?>">
         <meta name="keywords"                   content="<?php echo keywords(); ?>">
@@ -66,7 +67,7 @@
                 </div-->
 
                 <div class="col-xs-12">
-                    <a href="https://pentha.mx/descarga" target="_blank"><img src="<?php echo base_url(); ?>almacenamiento/img/header-01.jpg" alt="" class="img-fluid"></a>
+                    <a href="https://beatness.mx/descarga" target="_blank"><img src="<?php echo base_url(); ?>almacenamiento/img/header-01.jpg" alt="" class="img-fluid"></a>
                 </div>
 
             </div>

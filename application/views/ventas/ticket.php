@@ -68,7 +68,7 @@
                     }
                 }
             </style>
-            <img src="<?php echo base_url(); ?>almacenamiento/logos/logo.png" alt="Logotipo">
+            <img src="<?php echo base_url(); ?>almacenamiento/logos/logo.jpg" alt="Logotipo">
             <p class="centrado">
                 <b><?php echo mb_strtoupper($empresa).', S.A. DE C.V.'; ?></b>
                 <br>

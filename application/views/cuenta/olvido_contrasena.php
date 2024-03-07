@@ -10,7 +10,8 @@
 	<meta name="author" content="<?php echo author();?>">
 	<title>¿Olvidó su contraseña? | <?php echo titulo(); ?></title>
 	<link rel="apple-touch-icon" href="<?php echo base_url(); ?>app-assets/images/ico/apple-icon-120.png">
-	<link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url(); ?>app-assets/images/ico/favicon.ico">
+	<link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url(); ?>almacenamiento/logos/logo.jpg">
+	<!-- <link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url(); ?>app-assets/images/ico/favicon.ico"> -->
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Muli:300,400,500,700"
 	 rel="stylesheet">
 	<!-- INICIA VENDOR CSS-->
@@ -52,7 +53,7 @@
 									</div>
 									<?php endif?>
 									<div class="card-title text-center">
-										<img src="<?php echo base_url(); ?>almacenamiento/logos/logo.png" class="img-fluid" alt="branding logo">
+										<img src="<?php echo base_url(); ?>almacenamiento/logos/logo.jpg" class="img-fluid" alt="branding logo">
 									</div>
 									<h6 class="card-subtitle text-muted line-on-side text-center font-small-3 pt-2">
 										<span>Le enviaremos un correo</span>

@@ -27,8 +27,8 @@ $config['recaptcha_secret'] = '6LdhKWokAAAAAEztJ_68lPoIso2UdE6NxjcbQQrf';
 |--------------------------------------------------------------------------
 |
 */
-$config['email_sitio_identificador'] = 'Pentha';
-$config['email_admin'] = 'ventas@pentha.mx';
+$config['email_sitio_identificador'] = 'Beatness';
+$config['email_admin'] = 'ventas@beatness.mx';
 $config['email_config'] = array(
 'mailtype' => 'html',
 );
@@ -71,18 +71,18 @@ $config['id_rol_cliente'] = 1;
 $config['id_rol_corporativo'] = 6;
 
 
-$config['branding'] = 'Pentha';
-$config['titulo'] = 'Pentha';
+$config['branding'] = 'Beatness';
+$config['titulo'] = 'Beatness';
 $config['lema'] = 'Indoor cycling, Bootcamp Box, Jump, Calistenia, Funcional, Taller (Gym)';
-$config['pagina'] = 'pentha.mx';
+$config['pagina'] = 'beatness.mx';
 $config['contacto_soporte_numero'] = '2223059985';
 
 
-$config['terminos_del_servicio'] = 'pentha.mx';
-$config['terminos_y_condiciones'] = 'pentha.mx';
+$config['terminos_del_servicio'] = 'beatness.mx';
+$config['terminos_y_condiciones'] = 'beatness.mx';
 
 
-$config['description'] = 'Todos somos Pentha ¡todas tus clases en un mismo lugar! Indoor cycling, Bootcamp Box, Jump, Calistenia, Funcional, Taller (Gym).';
-$config['keywords'] = 'Pentha, club fitness, Indoor cycling, Bootcamp Box, Jump, Calistenia, Funcional, Taller (Gym)';
+$config['description'] = 'Todos somos Beatness ¡todas tus clases en un mismo lugar! Indoor cycling, Bootcamp Box, Jump, Calistenia, Funcional, Taller (Gym).';
+$config['keywords'] = 'Beatness, club fitness, Indoor cycling, Bootcamp Box, Jump, Calistenia, Funcional, Taller (Gym)';
 $config['author'] = 'JID Agency';
 

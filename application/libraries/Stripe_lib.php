@@ -10,7 +10,7 @@ class Stripe_lib {
 		//set api key
 		$stripe_keys = array(
 
-			/** Produccion Pentha by JID */
+			/** Produccion Beatness by JID */
 			"secret_key"      => "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",
 			"publishable_key" => "pk_live_51MEydpCIMQXIudu9sjWlCJP7TgOiSq3Kbwkpd3DDzkU9Luglz4seajt8Zbs3WJvupj6c5alVJUPVcr8MlRBbPlam0084RYwwAi"
 

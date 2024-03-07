@@ -12,9 +12,9 @@ class Descarga extends MY_Controller {
     
     public function index() {
 		if ($this->agent->is_mobile('iphone') OR $this->agent->is_mobile('ipad')) {
-			header('Location: https://apps.apple.com/mx/app/pentha/id1659682019');
+			header('Location: https://apps.apple.com/mx/app/beatness/id1659682019');
 		} elseif ($this->agent->is_mobile()) {
-			header('Location: https://play.google.com/store/apps/details?id=mx.pentha');
+			header('Location: https://play.google.com/store/apps/details?id=mx.beatness');
 		}
 
 		$data['pagina_titulo'] = 'Descarga';

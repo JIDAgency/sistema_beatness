@@ -186,7 +186,7 @@ class Clases extends MY_Controller
             $data = array(
                 'identificador' => $this->input->post('identificador'),
                 'disciplina_id' => $this->input->post('disciplina_id'),
-                //Cambio del 22 de Feb de 2022 en pentha no usan clases godin por lo que no hay una subdisciplina... NO CLASES Godin
+                //Cambio del 22 de Feb de 2022 en Beatness no usan clases godin por lo que no hay una subdisciplina... NO CLASES Godin
                 //'disciplina_id' => $disciplina_id,
                 //'subdisciplina_id' => $subdisciplina_id,
                 'instructor_id' => $this->input->post('instructor_id'),

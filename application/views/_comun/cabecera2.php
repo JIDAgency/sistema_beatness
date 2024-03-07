@@ -10,7 +10,8 @@
 	<meta name="author" content="<?php echo author();?>">
 	<title><?php echo isset($pagina_titulo) ? $pagina_titulo : ''; ?> | <?php echo titulo(); ?></title>
 	<link rel="apple-touch-icon" href="<?php echo base_url(); ?>app-assets/images/ico/apple-icon-120.png">
-	<link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url(); ?>app-assets/images/ico/favicon.ico">
+	<link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url(); ?>almacenamiento/logos/logo.jpg">
+	<!-- <link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url(); ?>app-assets/images/ico/favicon.ico"> -->
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Muli:300,400,500,700"
 	 rel="stylesheet">
 	<!-- INICIA VENDOR CSS-->
@@ -44,7 +45,7 @@
 
 	<div class="container menu-principal d-none d-xl-block d-xl-block d-lg-none d-md-none d-lg-block d-sm-none d-md-block">
 		<div class="row">
-			<div class="col-2"><img src="<?php echo base_url(); ?>almacenamiento/logos/logo.png" width="100"></div>
+			<div class="col-2"><img src="<?php echo base_url(); ?>almacenamiento/logos/logo.jpg" width="100"></div>
 				<div class="col-10">
 					<ul class="list-inline pull-right d-none d-sm-none d-md-block d-lg-block">
 						<li class="nav-item"><a class="nav-link <?php echo isset($menu_usuario_inicio_activo) ? 'nav-active' : ''; ?>" href="<?php echo site_url('usuario/inicio'); ?>">Inicio</a></li>
@@ -62,7 +63,7 @@
 			<div class="row">
 
 				<div class="col-6">
-					<a href="<?php echo site_url("inicio"); ?>"><img src="<?php echo base_url(); ?>almacenamiento/logos/logo.png" width="100"></a>
+					<a href="<?php echo site_url("inicio"); ?>"><img src="<?php echo base_url(); ?>almacenamiento/logos/logo.jpg" width="100"></a>
 				</div>
 
 				<div class="col-6 m-t-20">
@@ -83,7 +84,7 @@
 					<div class="col">
 						<ul class="navbar-light menu-movil mt-5">
 
-						<img src="<?php echo base_url(); ?>almacenamiento/logos/logo.png" class="mb-5" width="100">
+						<img src="<?php echo base_url(); ?>almacenamiento/logos/logo.jpg" class="mb-5" width="100">
 
 							<li class="nav-item">
 								<a class="nav-link <?php echo isset($menu_usuario_inicio_activo) ? 'nav-active' : ''; ?>" href="<?php echo site_url('usuario/inicio'); ?>">Inicio</a>

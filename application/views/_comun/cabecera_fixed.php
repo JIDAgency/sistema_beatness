@@ -12,7 +12,8 @@
         <title><?php echo isset($pagina_titulo) ? $pagina_titulo : ''; ?> | <?php echo titulo();?></title>
 
         <link rel="apple-touch-icon" href="<?php echo base_url(); ?>app-assets/images/ico/apple-icon-120.png">
-        <link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url(); ?>app-assets/images/ico/favicon.ico">
+        <!-- <link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url(); ?>app-assets/images/ico/favicon.ico"> -->
+        <link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url(); ?>almacenamiento/logos/logo.jpg">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Muli:300,400,500,700">
         <!-- BEGIN VENDOR CSS-->
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>app-assets/css/vendors.css">
@@ -46,7 +47,7 @@
 
                         <li class="nav-item">
                             <a class="navbar-brand" href="<?php base_url(); ?>">
-                                <img class="img-responsive" width="50" alt="Logo" src="<?php echo base_url(); ?>almacenamiento/logos/logo.png">
+                                <img class="img-responsive" width="80" alt="Logo" src="<?php echo base_url(); ?>almacenamiento/logos/logo.jpg">
                             </a>
                         </li>
 

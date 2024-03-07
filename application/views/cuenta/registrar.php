@@ -9,7 +9,8 @@
 	<meta name="author" content="<?php echo author();?>">
 	<title>Registrarse | <?php echo titulo(); ?></title>
 	<link rel="apple-touch-icon" href="<?php echo base_url(); ?>app-assets/images/ico/apple-icon-120.png">
-	<link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url(); ?>app-assets/images/ico/favicon.ico">
+	<link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url(); ?>almacenamiento/logos/logo.jpg">
+	<!-- <link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url(); ?>app-assets/images/ico/favicon.ico"> -->
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Muli:300,400,500,700"
 	 rel="stylesheet">
 	<!-- INICIA VENDOR CSS-->
@@ -64,7 +65,7 @@
 								<?php echo form_open('cuenta/registrar', array('id' =>'forma-registrar','class' => 'form-horizontal')); ?>
 
 									<div class="card-title text-center">
-									<img class="img-fluid" src="<?php echo base_url(); ?>almacenamiento/logos/logo.png" width="200" alt="branding logo">
+									<img class="img-fluid" src="<?php echo base_url(); ?>almacenamiento/logos/logo.jpg" width="200" alt="branding logo">
 									</div>
 
 									<p class="card-subtitle line-on-side text-muted text-center font-small-3 mt-2 mx-2 my-1"><span>Registrate ahora</span></p>
