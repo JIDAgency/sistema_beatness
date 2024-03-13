@@ -5,7 +5,7 @@
             <div class="row">
 
                 <div class="col-sm-12 p-0">
-                    <img src="<?php echo base_url(); ?>almacenamiento/img/footer.jpg" class="img-fluid">
+                    <!-- <img src="<?php echo base_url(); ?>almacenamiento/img/footer.jpg" class="img-fluid"> -->
                 </div>
 
             </div>

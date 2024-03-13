@@ -7,7 +7,7 @@
             <section id="inicio_view" class="">
                 <div class="row mt-2">
                     <div class="col-lg-12 col-md-12 col-12 mt-1 text-center">
-                        <a href="<?php echo base_url(); ?>descarga" target="_blank"><img src="<?php echo base_url(); ?>almacenamiento/img/header-01.jpg" alt="" class="img-fluid"></a>
+                        <a href="<?php echo base_url(); ?>descarga" target="_blank"><img src="<?php echo base_url(); ?>almacenamiento/logos/logo.jpg" alt="" class="img-fluid"></a>
                     </div>
 
                     <div class="col-lg-12 col-md-12 col-12 mt-1 text-center">

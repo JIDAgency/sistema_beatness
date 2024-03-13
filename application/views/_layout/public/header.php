@@ -79,7 +79,8 @@
                 </div-->
 
                 <div class="col-xs-12">
-                    <a href="https://beatness.mx/descarga" target="_blank"><img src="<?php echo base_url(); ?>almacenamiento/img/header-01.jpg" alt="" class="img-fluid"></a>
+                    <!-- <a href="https://beatness.mx/descarga" target="_blank"><img src="<?php echo base_url(); ?>almacenamiento/logos/logo.jpg" alt="" class="img-fluid"></a> -->
+                    <a href="#"><img src="<?php echo base_url(); ?>almacenamiento/logos/logo.jpg" alt="" class="img-fluid"></a>
                 </div>
 
             </div>
