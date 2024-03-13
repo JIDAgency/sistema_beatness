@@ -16,7 +16,7 @@
 	<meta property="og:description"        content="Panel de administración para Insan3; un nuevo club de clases de Box, Calisthenics y Funcional"/>
 	<meta property="og:image"              content="<?php echo base_url(); ?>almacenamiento\insan3\pre_registro\insan3-og.jpg"/>
 
-    <link rel="apple-touch-icon" href="<?php echo base_url(); ?>app-assets/images/ico/apple-icon-120.png">
+    <link rel="apple-touch-icon" href="<?php echo base_url(); ?>almacenamiento/logos/open-graph.jpg">
 	<link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url(); ?>almacenamiento/logos/logo.jpg">
     <!-- <link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url(); ?>app-assets/images/ico/favicon.ico"> -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i%7CMuli:300,400,500,700" rel="stylesheet">
