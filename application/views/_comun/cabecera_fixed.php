@@ -47,7 +47,7 @@
 
                         <li class="nav-item">
                             <a class="navbar-brand" href="<?php base_url(); ?>">
-                                <img class="img-responsive" width="80" alt="Logo" src="<?php echo base_url(); ?>almacenamiento/logos/logo.jpg">
+                                <img class="img-responsive" width="50" alt="Logo" src="<?php echo base_url(); ?>almacenamiento/logos/logo.png">
                             </a>
                         </li>
 

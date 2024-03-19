@@ -56,7 +56,7 @@
 									</div>
 									<?php endif?>
 									<div class="card-title text-center">
-										<img class="img-fluid" src="<?php echo base_url(); ?>almacenamiento/logos/logo.jpg" width="200" alt="branding logo">
+										<img class="img-fluid" src="<?php echo base_url(); ?>almacenamiento/logos/logo.png" width="200" alt="branding logo">
 									</div>
 									<h6 class="card-subtitle line-on-side text-muted text-center font-small-3 pt-2">
 										<span>Ingresar</span>

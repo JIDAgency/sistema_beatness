@@ -78,9 +78,9 @@
                     <a href="<?php echo site_url(); ?>"><img src="<?php echo base_url(); ?>almacenamiento/img/logo-sensoria-horizontal.png" class="img-fluid"></a>
                 </div-->
 
-                <div class="col-xs-12">
+                <div class="col-xs-12 text-center">
                     <!-- <a href="https://beatness.mx/descarga" target="_blank"><img src="<?php echo base_url(); ?>almacenamiento/logos/logo.jpg" alt="" class="img-fluid"></a> -->
-                    <a href="#"><img src="<?php echo base_url(); ?>almacenamiento/logos/logo.jpg" alt="" class="img-fluid"></a>
+                    <a href="#"><img src="<?php echo base_url(); ?>almacenamiento/logos/logo-blan.png" alt="" class="img-fluid" width="50%"></a>
                 </div>
 
             </div>
