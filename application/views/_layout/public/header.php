@@ -80,7 +80,7 @@
 
                 <div class="col-xs-12 text-center">
                     <!-- <a href="https://beatness.mx/descarga" target="_blank"><img src="<?php echo base_url(); ?>almacenamiento/logos/logo.jpg" alt="" class="img-fluid"></a> -->
-                    <a href="#"><img src="<?php echo base_url(); ?>almacenamiento/logos/logo-blan.png" alt="" class="img-fluid" width="50%"></a>
+                    <a href="https://pentha.mx/descarga" target="_blank"><img src="<?php echo base_url(); ?>almacenamiento/img/header-01.jpg" alt="" class="img-fluid"></a>
                 </div>
 
             </div>
