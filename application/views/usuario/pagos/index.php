@@ -4,9 +4,7 @@
 <script>
 
 	//set your publishable key
-	//Stripe.setPublishableKey('pk_test_51Lb84RHdipZkXjohT3Mbi0ipxStkRMJHsJ57xM7cLuAKHWC4B8CPSMR9BfYw3YvOwhOs49OfrAmiWVs3IBHndbPr00OAn4E5yK');
-	//Stripe.setPublishableKey('pk_live_51JKo3yH5U3FI9F8zuOG5JIn077Ka5ksOXIceG0moRtmXyGQPOWqNeQSkpTLfaPchYqFguAUPpKU0vTgYGWht5ys1007Sv9TTLC');
-	Stripe.setPublishableKey('pk_live_51Lb84RHdipZkXjohRnJSgIVjuwUeo7qAif2lESbMf6lLfTEiqM50UwwcQ8Z1La0mXvgYe0VbU5ILtP1snf09YGWv00yHmFKruD');
+	Stripe.setPublishableKey('pk_live_51OtxwKHKnadmFYpOGzncEgc7m6VjjxoigX0g0CROID5tbnE6p2oWMbz6AKn5IVO7YAVAejJVUqnwEBkfGwSI9K8p00Ijdh5Mcw');
 	
 	//callback to handle the response from stripe
 	function stripeResponseHandler(status, response) {

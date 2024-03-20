@@ -11,12 +11,8 @@ class Stripe_lib {
 		$stripe_keys = array(
 
 			/** Produccion Beatness by JID */
-			"secret_key"      => "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",
-			"publishable_key" => "pk_live_51MEydpCIMQXIudu9sjWlCJP7TgOiSq3Kbwkpd3DDzkU9Luglz4seajt8Zbs3WJvupj6c5alVJUPVcr8MlRBbPlam0084RYwwAi"
-
-			/** SandBox Sensoria by JID */
-			//"secret_key"      => "sk_test_51Lb84RHdipZkXjohCE21ppE9T44QVzV8FanMVBHTVgQDXESMl7hTgJDtId0cxu0syyu03iPFi2NSfZLrZL7yiTpB00ixzfQqpT",
-			//"publishable_key" => "pk_test_51Lb84RHdipZkXjohT3Mbi0ipxStkRMJHsJ57xM7cLuAKHWC4B8CPSMR9BfYw3YvOwhOs49OfrAmiWVs3IBHndbPr00OAn4E5yK"
+			"secret_key"      => "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",
+			"publishable_key" => "pk_live_51OtxwKHKnadmFYpOGzncEgc7m6VjjxoigX0g0CROID5tbnE6p2oWMbz6AKn5IVO7YAVAejJVUqnwEBkfGwSI9K8p00Ijdh5Mcw"
 		);
 
 		$this->stripe = new \Stripe\StripeClient($stripe_keys['secret_key']);
