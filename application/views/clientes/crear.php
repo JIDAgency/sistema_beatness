@@ -104,7 +104,7 @@
 													<div class="form-group row">
 														<label for="no_telefono" class="col-md-3 label-control">Télefono</label>
 														<div class="col-md-5">
-															<input autocomplete="off" type="text" class="form-control tel-inputmask" name="no_telefono" placeholder="No. de Teléfono"
+															<input autocomplete="off" type="text" class="form-control" name="no_telefono" placeholder="No. de Teléfono"
 															value="<?php echo set_value('no_telefono'); ?>">
 														</div>
 													</div>
