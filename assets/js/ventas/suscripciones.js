@@ -17,7 +17,9 @@ $(function () {
         "lengthMenu": [[25, 50, 100, 250, 500, -1],[25, 50, 100, 250, 500, "Todos"]],
         "deferRender": true,
         "order": [[0, "desc"]],
-        "responsive": true,
+        "scrollX": true,
+        "autoWidth": false,
+        "deferRender": true,
         'processing': true,
         "ajax": {
             "url" : method_call+"listar_las_ventas_de_suscripciones",

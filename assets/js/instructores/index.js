@@ -1,6 +1,6 @@
 $(document).ready( function(){
     table = $('#tabla-instructores').DataTable({ 
-        "responsive": true,
+        "scrollX": true,
         "autoWidth": false,
         "deferRender": true,
         'processing': true,

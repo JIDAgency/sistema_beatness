@@ -1,10 +1,12 @@
 $(function () {
 	$("#tabla-reservaciones").DataTable({
+		"scrollX": true,
+        "deferRender": true,
+        'processing': true,
 		"lengthMenu": [[100, 250, 500, -1],[100, 250, 500, "Todos"]],
         "dom": 'Bfrtip',
         "buttons": ['pageLength','excel','copy'],    // adds the excel button
         order: [[ 0, 'desc' ]],
-		responsive: true,
 		/*columnDefs: [
             { responsivePriority: 1, targets: 7 },
             { responsivePriority: 2, targets: -1 },
@@ -13,7 +15,6 @@ $(function () {
 		order: [[ 0, 'desc' ]],
 		"language": {
 			"search": "Buscar",
-			"scrollX": false,
 			"infoEmpty": "No hay registros que mostrar",
 			"infoFiltered": " - ( filtrado de _MAX_ registros )",
 			"zeroRecords": "No hay registros que mostrar",

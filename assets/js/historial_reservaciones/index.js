@@ -10,8 +10,10 @@ $(document).ready(function(){
             "url" : 'get_reporte_de_reservaciones_del_mes_dinamico',
             "type" : 'POST',
         },
-        "responsive": true,
+        "scrollX": true,
+        "autoWidth": false,
         "deferRender": true,
+        'processing': true,
         "lengthMenu": [[25, 50, 100, 250, 500, -1],[25, 50, 100, 250, 500, "Todos"]],
         "order": [[0, "desc"]],
         "columns": [

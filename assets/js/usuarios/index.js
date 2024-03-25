@@ -14,7 +14,7 @@ if(actual_url.indexOf("index") < 0){
 
 $(function () {
     table = $('#tabla-clientes').dataTable({
-        "responsive": true,
+        "scrollX": true,
         "autoWidth": false,
         "deferRender": true,
         'processing': true,

@@ -11,7 +11,7 @@ $(document).ready(function(){
             "url" : method_call+"get_datos_tabla_suscripciones",
             "type" : 'POST'
         },
-        "responsive": true,
+        "scrollX": true,
         "deferRender": true,
         'processing': true,
         "order": [[0, "desc"]],

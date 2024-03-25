@@ -14,12 +14,10 @@ if(actual_url.indexOf("index") < 0){
 
 $(function () {
     table = $('#tabla').DataTable({
-        //"lengthMenu": [[25, 50, 100, 250, 500, -1],[25, 50, 100, 250, 500, "Todos"]],
+        "scrollX": true,
         "lengthMenu": [[25, 50, 100, 250, 500],[25, 50, 100, 250, 500]],
-        "autoWidth": false,
         "deferRender": true,
         "order": [[0, "desc"]],
-        "responsive": true,
         'processing': true,
         "ajax": {
             "url" : method_call+"get_lista_de_clientes",

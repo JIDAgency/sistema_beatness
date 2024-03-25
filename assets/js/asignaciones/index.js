@@ -17,8 +17,7 @@ $.fn.dataTable.ext.errMode = 'throw';
 
 $(document).ready(function(){
     table = $('#table').DataTable({ 
-        "responsive": true,
-        "autoWidth": false,
+        "scrollX": true,
         "deferRender": true,
         'processing': true,
         "order": [[0, "asc"]],
@@ -69,8 +68,7 @@ $(document).ready(function(){
     });
 
     table2 = $('#table2').DataTable({ 
-        "responsive": true,
-        "autoWidth": false,
+        "scrollX": true,
         "deferRender": true,
         'processing': true,
         "order": [[0, "asc"]],
@@ -121,8 +119,7 @@ $(document).ready(function(){
     });
 
     table3 = $('#table3').DataTable({ 
-        "responsive": true,
-        "autoWidth": false,
+        "scrollX": true,
         "deferRender": true,
         'processing': true,
         "order": [[0, "asc"]],

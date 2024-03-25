@@ -38,7 +38,7 @@
 
                                     <div class="row">
 
-                                        <div class="col-4">
+                                        <div class="col-lg-4 col-md-4 col-sm-12">
                                             <label for="table"><b>Planes vigentes</b></label>
                                             <table class="table table-striped table-bordered" name="table" id="table">
                                                 <thead>
@@ -55,7 +55,7 @@
                                             </table>
                                         </div>
 
-                                        <div class="col-4">
+                                        <div class="col-lg-4 col-md-4 col-sm-12">
                                             <label for="table2"><b>Planes por vencer</b></label>
                                             <table class="table table-striped table-bordered" name="table2" id="table2">
                                                 <thead>
@@ -72,7 +72,7 @@
                                             </table>
                                         </div>
 
-                                        <div class="col-4">
+                                        <div class="col-lg-4 col-md-4 col-sm-12">
                                             <label for="table3"><b>Planes vencidos</b></label>
                                             <table class="table table-striped table-bordered" name="table3" id="table3">
                                                 <thead>

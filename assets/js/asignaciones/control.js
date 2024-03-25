@@ -14,8 +14,7 @@ if(actual_url.indexOf('index') < 0){
 
 $(function () {
     table = $('#tabla').DataTable({
-        "responsive": true,
-        "autoWidth": false,
+        "scrollX": true,
         "deferRender": true,
         'processing': true,
         "order": [[0, "desc"]],

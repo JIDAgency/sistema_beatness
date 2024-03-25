@@ -36,7 +36,7 @@ $.fn.dataTable.ext.errMode = 'throw';
 
 $(document).ready( function(){
     table = $('#table').DataTable({ 
-        "responsive": true,
+        "scrollX": true,
         "autoWidth": false,
         "deferRender": true,
         'processing': true,
@@ -83,7 +83,7 @@ $(document).ready( function(){
     });
 
     table_primera_quincena = $('#table_primera_quincena').DataTable({ 
-        "responsive": true,
+        "scrollX": true,
         "autoWidth": false,
         "deferRender": true,
         'processing': true,
@@ -130,7 +130,7 @@ $(document).ready( function(){
     });
 
     table_segunda_quincena = $('#table_segunda_quincena').DataTable({ 
-        "responsive": true,
+        "scrollX": true,
         "autoWidth": false,
         "deferRender": true,
         'processing': true,

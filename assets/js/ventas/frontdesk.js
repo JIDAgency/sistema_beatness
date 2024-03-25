@@ -18,7 +18,8 @@ $(document).ready(function(){
             "url" : method_call+"get_lista_de_ventas_del_dia_para_fd_con_permisos",
             "type" : 'POST'
         },
-        "responsive": true,
+        "scrollX": true,
+        "autoWidth": false,
         "deferRender": true,
         'processing': true,
         "order": [[0, "desc"]],
