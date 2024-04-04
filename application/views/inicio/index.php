@@ -1,6 +1,6 @@
 <img class="card-img-top img-fluid" src="<?php echo base_url(); ?>assets/img/banners/banner-sistema-front.jpg" alt="Bienvenida">
 
-<div class="app-content container center-layout mt-2">
+<div class="app-content content center-layout mt-2">
 	<div class="content-wrapper">
 
 		<div class="content-header row">

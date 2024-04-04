@@ -1,31 +1,34 @@
-<div class="app-content container center-layout mt-2">
-	<div class="content-header-left col-md-6 col-12 mb-2">
-		<div class="row breadcrumbs-top">
-			<div class="breadcrumb-wrapper col-12">
-				<ol class="breadcrumb">
-					<li class="breadcrumb-item"><a href="<?php echo site_url('inicio/index') ?>">Inicio</a>
-					</li>
-					<li class="breadcrumb-item active">Configuraciones
-				</ol>
-			</div>
-		</div>
-	</div>
-	<div class="content-wrapper">
-		<div class="content-body">
-			<section>
-				<div class="row">
-					<div class="col-12">
-						<div class="card">
-							<div class="card-header">
-								<h4 class="card-title">Configuraciones de sistema</h4>
-								<div class="heading-elements">
-								</div>
-							</div>
-							<div class="card-content">
-								<div class="card-body">
-                                    <?php echo form_open($controlador, array('class' => 'needs-validation p-2 bg-white card', 'id' => 'form-configuraciones', 'novalidate' => '')); ?>
+<div class="app-content content center-layout mt-2">
+    <div class="content-wrapper">
+        <div class="content-header row">
+            <div class="content-header-left col-md-6 col-12 mb-2">
+                <div class="row breadcrumbs-top">
+                    <div class="breadcrumb-wrapper col-12">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="<?php echo site_url('inicio/index') ?>">Inicio</a>
+                            </li>
+                            <li class="breadcrumb-item active">Configuraciones
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="content-wrapper">
+            <div class="content-body">
+                <section>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title">Configuraciones de sistema</h4>
+                                    <div class="heading-elements">
+                                    </div>
+                                </div>
+                                <div class="card-content">
+                                    <div class="card-body">
+                                        <?php echo form_open($controlador, array('class' => 'needs-validation p-2 bg-white card', 'id' => 'form-configuraciones', 'novalidate' => '')); ?>
 
-                                        <?php if (validation_errors()): ?>
+                                        <?php if (validation_errors()) : ?>
                                             <div class="alert bg-danger alert-icon-left alert-dismissible mb-2 font-small-3" role="alert">
                                                 <span class="alert-icon"><i class="fa fa-thumbs-o-down"></i></span>
                                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -33,20 +36,22 @@
                                                 </button>
                                                 <?php echo validation_errors(); ?>
                                             </div>
-                                        <?php endif?>
+                                        <?php endif ?>
 
-                                        <?php $this->load->view('_comun/mensajes_alerta');?>
+                                        <?php $this->load->view('_comun/mensajes_alerta'); ?>
 
                                         <style>
                                             input::-webkit-outer-spin-button,
                                             input::-webkit-inner-spin-button {
                                                 /* display: none; <- Crashes Chrome on hover */
                                                 -webkit-appearance: none;
-                                                margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+                                                margin: 0;
+                                                /* <-- Apparently some margin are still there even though it's hidden */
                                             }
 
                                             input[type=number] {
-                                                -moz-appearance:textfield; /* Firefox */
+                                                -moz-appearance: textfield;
+                                                /* Firefox */
                                             }
                                         </style>
 
@@ -108,15 +113,16 @@
                                             <a href="<?php echo site_url('clases/index'); ?>" class="btn btn-secondary btn-sm">Cancelar</a>
                                             <button type="submit" class="btn btn-secondary btn-sm">Guardar</button>
                                         </div>
-                                        
-                                    <?php echo form_close(); ?>
 
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</section>
-		</div>
-	</div>
+                                        <?php echo form_close(); ?>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
 </div>

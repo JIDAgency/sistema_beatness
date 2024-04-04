@@ -1,4 +1,4 @@
-<div class="app-content container center-layout mt-2">
+<div class="app-content content center-layout mt-2">
     <div class="content-wrapper">
         <div class="content-header row">
         
