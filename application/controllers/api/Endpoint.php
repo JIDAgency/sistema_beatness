@@ -1,4 +1,5 @@
 <?php
+
 use Restserver\Libraries\REST_Controller;
 
 defined('BASEPATH') or exit('No direct script access allowed');
@@ -30,114 +31,117 @@ class Endpoint extends REST_Controller
     }
 
     /** ============ Módulo de compras (INICIO) ============ */
-        public function registrar_usuario_en_openpay_post() {
+    public function registrar_usuario_en_openpay_post()
+    {
 
-            /** Recibir mensaje del api */
-            $datos_post = $this->post();
+        /** Recibir mensaje del api */
+        $datos_post = $this->post();
 
-            /** Validar que el usuario esté autenticado en la aplicación */
-            $validar_usuario = $this->_autenticar_usuario($datos_post['token'], $datos_post['usuario_id']);
+        /** Validar que el usuario esté autenticado en la aplicación */
+        $validar_usuario = $this->_autenticar_usuario($datos_post['token'], $datos_post['usuario_id']);
 
-            if (!$validar_usuario) {
-                $this->response(array(
-                    'error' => true,
-                    'mostrar_mensaje' => true,
-                    'titulo' => 'Ocurrió un error',
-                    'mensaje' => 'No fue posible procesar su solicitud, por favor intentelo más tarde. (1)',
-                ), REST_Controller::HTTP_BAD_REQUEST);
-            } else {
+        if (!$validar_usuario) {
+            $this->response(array(
+                'error' => true,
+                'mostrar_mensaje' => true,
+                'titulo' => 'Ocurrió un error',
+                'mensaje' => 'No fue posible procesar su solicitud, por favor intentelo más tarde. (1)',
+            ), REST_Controller::HTTP_BAD_REQUEST);
+        } else {
 
-                if (!$validar_usuario->openpay_cliente_id) {
+            if (!$validar_usuario->openpay_cliente_id) {
 
-                    $this->load->library('openpagos');
+                $this->load->library('openpagos');
 
-                    $registrar_usuario_en_openpay = $this->openpagos->crear_un_nuevo_cliente_en_openpay($validar_usuario->id, $validar_usuario->nombre_completo, $validar_usuario->apellido_paterno, $validar_usuario->correo, $validar_usuario->no_telefono);
+                $registrar_usuario_en_openpay = $this->openpagos->crear_un_nuevo_cliente_en_openpay($validar_usuario->id, $validar_usuario->nombre_completo, $validar_usuario->apellido_paterno, $validar_usuario->correo, $validar_usuario->no_telefono);
 
-                    if (!$registrar_usuario_en_openpay) {
+                if (!$registrar_usuario_en_openpay) {
+                    $this->response(array(
+                        'error' => true,
+                        'mostrar_mensaje' => true,
+                        'titulo' => 'Ocurrió un error',
+                        'mensaje' => 'No fue posible procesar su solicitud, por favor intentelo más tarde. (2)',
+                    ), REST_Controller::HTTP_BAD_REQUEST);
+                }
+
+                if (preg_match('/ERROR/i', $registrar_usuario_en_openpay)) {
+                    $this->response(array(
+                        'error' => true,
+                        'mostrar_mensaje' => true,
+                        'titulo' => 'Ocurrió un error',
+                        'mensaje' => 'No fue posible procesar su solicitud, por favor intentelo más tarde. (3)',
+                    ), REST_Controller::HTTP_BAD_REQUEST);
+                } else {
+                    if ($this->usuarios_model->editar($validar_usuario->id, array('openpay_cliente_id' => $registrar_usuario_en_openpay->id))) {
                         $this->response(array(
-                            'error' => true,
-                            'mostrar_mensaje' => true,
-                            'titulo' => 'Ocurrió un error',
-                            'mensaje' => 'No fue posible procesar su solicitud, por favor intentelo más tarde. (2)',
-                        ), REST_Controller::HTTP_BAD_REQUEST);
-                    }
-            
-                    if (preg_match('/ERROR/i', $registrar_usuario_en_openpay)) {
-                        $this->response(array(
-                            'error' => true,
-                            'mostrar_mensaje' => true,
-                            'titulo' => 'Ocurrió un error',
-                            'mensaje' => 'No fue posible procesar su solicitud, por favor intentelo más tarde. (3)',
-                        ), REST_Controller::HTTP_BAD_REQUEST);
+                            'mensaje' => 'Bienvenido, administra tus métodos de pago.',
+                        ), REST_Controller::HTTP_OK);
                     } else {
-                        if ($this->usuarios_model->editar($validar_usuario->id, array('openpay_cliente_id' => $registrar_usuario_en_openpay->id))) {
-                            $this->response(array(
-                                'mensaje' => 'Bienvenido, administra tus métodos de pago.',
-                            ), REST_Controller::HTTP_OK);
-                        } else {
-                            $this->response(array(
+                        $this->response(array(
                             'error' => true,
                             'mostrar_mensaje' => true,
                             'titulo' => 'Ocurrió un error',
                             'mensaje' => 'No fue posible procesar su solicitud, por favor intentelo más tarde. (3)',
                         ), REST_Controller::HTTP_BAD_REQUEST);
-                        }
                     }
                 }
             }
         }
+    }
 
-        public function obtener_metodos_pago_por_usuario_get() {
-            
-            /** Recibir mensaje del api */
-            $datos_get = $this->get();
+    public function obtener_metodos_pago_por_usuario_get()
+    {
 
-            /** Validar que el usuario esté autenticado en la aplicación */
-            $validar_usuario = $this->_autenticar_usuario($datos_get['token'], $datos_get['usuario_id']);
+        /** Recibir mensaje del api */
+        $datos_get = $this->get();
 
-            if (!$validar_usuario) {
-                $this->response(array(
-                    'error' => true,
-                    'mostrar_mensaje' => true,
-                    'titulo' => 'Ocurrió un error',
-                    'mensaje' => 'No fue posible procesar su solicitud, por favor intentelo más tarde. (1)',
-                ), REST_Controller::HTTP_BAD_REQUEST);
-            }
+        /** Validar que el usuario esté autenticado en la aplicación */
+        $validar_usuario = $this->_autenticar_usuario($datos_get['token'], $datos_get['usuario_id']);
 
-            $tarjetas_list = $this->tarjetas_model->get_tarjetas_por_usuario_id($validar_usuario->id)->result();
-
-            if (!$tarjetas_list) {
-                $this->response(array(
-                    'error' => true,
-                    'mostrar_mensaje' => true,
-                    'titulo' => '',
-                    'mensaje' => 'Bienvenido, agrega un método de pago.',
-                ), REST_Controller::HTTP_BAD_REQUEST);
-            }
-
-            $this->response($tarjetas_list);
+        if (!$validar_usuario) {
+            $this->response(array(
+                'error' => true,
+                'mostrar_mensaje' => true,
+                'titulo' => 'Ocurrió un error',
+                'mensaje' => 'No fue posible procesar su solicitud, por favor intentelo más tarde. (1)',
+            ), REST_Controller::HTTP_BAD_REQUEST);
         }
 
-        public function agregar_metodos_pago_por_usuario_post() {
-            
-            /** Recibir mensaje del api */
-            $datos_get = $this->post();
-            $this->load->library('openpagos');
+        $tarjetas_list = $this->tarjetas_model->get_tarjetas_por_usuario_id($validar_usuario->id)->result();
 
-            /** Validar que el usuario esté autenticado en la aplicación */
-            $validar_usuario = $this->_autenticar_usuario($datos_get['token'], $datos_get['usuario_id']);
+        if (!$tarjetas_list) {
+            $this->response(array(
+                'error' => true,
+                'mostrar_mensaje' => true,
+                'titulo' => '',
+                'mensaje' => 'Bienvenido, agrega un método de pago.',
+            ), REST_Controller::HTTP_BAD_REQUEST);
+        }
 
-            if (!$validar_usuario) {
-                $this->response(array(
-                    'error' => true,
-                    'mostrar_mensaje' => true,
-                    'titulo' => 'Ocurrió un error',
-                    'mensaje' => 'No fue posible procesar su solicitud, por favor intentelo más tarde. (1)',
-                ), REST_Controller::HTTP_BAD_REQUEST);
-            }
+        $this->response($tarjetas_list);
+    }
 
-            /** ============ Se elimino esta parte del codigo por que hay que rehacerla bien ============ */
-            /*
+    public function agregar_metodos_pago_por_usuario_post()
+    {
+
+        /** Recibir mensaje del api */
+        $datos_get = $this->post();
+        $this->load->library('openpagos');
+
+        /** Validar que el usuario esté autenticado en la aplicación */
+        $validar_usuario = $this->_autenticar_usuario($datos_get['token'], $datos_get['usuario_id']);
+
+        if (!$validar_usuario) {
+            $this->response(array(
+                'error' => true,
+                'mostrar_mensaje' => true,
+                'titulo' => 'Ocurrió un error',
+                'mensaje' => 'No fue posible procesar su solicitud, por favor intentelo más tarde. (1)',
+            ), REST_Controller::HTTP_BAD_REQUEST);
+        }
+
+        /** ============ Se elimino esta parte del codigo por que hay que rehacerla bien ============ */
+        /*
             $tarjetas_list = $this->tarjetas_model->get_tarjetas_por_usuario_id($validar_usuario->id)->result();
 
             if ($tarjetas_list) {
@@ -185,453 +189,448 @@ class Endpoint extends REST_Controller
             }
             */
 
-            $respuesta_openpay = $this->openpagos->crear_una_tarjeta_con_token_de_cliente_en_openpay($validar_usuario->openpay_cliente_id, $datos_get['fuente_id'], $datos_get['dispositivo_id']);
+        $respuesta_openpay = $this->openpagos->crear_una_tarjeta_con_token_de_cliente_en_openpay($validar_usuario->openpay_cliente_id, $datos_get['fuente_id'], $datos_get['dispositivo_id']);
 
-            if (!$respuesta_openpay) {
-                $this->response(array(
-                    'error' => true,
-                    'mostrar_mensaje' => true,
-                    'titulo' => 'Ocurrió un error',
-                    'mensaje' => 'No fue posible procesar su solicitud, por favor intentelo más tarde. (2)',
-                ), REST_Controller::HTTP_BAD_REQUEST);
-            }
-            
-            if (preg_match('/ERROR/i', $respuesta_openpay)) {
-                $this->response(array(
-                    'error' => true,
-                    'mostrar_mensaje' => true,
-                    'titulo' => 'Ocurrió un error',
-                    'mensaje' => 'No fue posible procesar su solicitud, por favor intentelo más tarde. (3)<br><br>'.$respuesta_openpay,
-                ), REST_Controller::HTTP_BAD_REQUEST);
-            }
-
-            $openpay_tarjeta_id = $respuesta_openpay->id;
-
-            $data_tarjeta = array(
-                'usuario_id' => $validar_usuario->id,
-                'openpay_cliente_id' => $validar_usuario->openpay_cliente_id,
-                'openpay_tarjeta_id' => $openpay_tarjeta_id,
-                'openpay_holder_name' => $respuesta_openpay->holder_name,
-                'terminacion_card_number' => substr(str_replace(' ', '', $respuesta_openpay->card_number), -4),
-                'openpay_expiration_month' => substr(str_replace(' ', '', $respuesta_openpay->expiration_month), 0, 2),
-                'openpay_expiration_year' => substr(str_replace(' ', '', $respuesta_openpay->expiration_year), -2),
-                'fecha_registro' => date('Y-m-d H:i:s'),
-                'brand' => $respuesta_openpay->brand,
-                'banco' => $respuesta_openpay->bank_name,
-                'banco_code' => $respuesta_openpay->bank_code,
-                'allows_charges' => $respuesta_openpay->allows_charges,
-                'allows_payouts' => $respuesta_openpay->allows_payouts
-            );
-
-            if($this->tarjetas_model->insert_tarjeta($data_tarjeta)){
-                $this->response(array(
-                    'mensaje' => 'Método de pago guardado',
-                ), REST_Controller::HTTP_OK);
-            } else {
-                $this->response(array(
-                    'error' => true,
-                    'mostrar_mensaje' => true,
-                    'titulo' => 'Ocurrió un error',
-                    'mensaje' => 'No fue posible procesar su solicitud, por favor intentelo más tarde. (4)',
-                ), REST_Controller::HTTP_BAD_REQUEST);
-            }
+        if (!$respuesta_openpay) {
+            $this->response(array(
+                'error' => true,
+                'mostrar_mensaje' => true,
+                'titulo' => 'Ocurrió un error',
+                'mensaje' => 'No fue posible procesar su solicitud, por favor intentelo más tarde. (2)',
+            ), REST_Controller::HTTP_BAD_REQUEST);
         }
 
-        public function eliminar_metodo_pago_por_usuario_post() {
-            
-            /** Recibir mensaje del api */
-            $datos_get = $this->post();
-            $this->load->library('openpagos');
+        if (preg_match('/ERROR/i', $respuesta_openpay)) {
+            $this->response(array(
+                'error' => true,
+                'mostrar_mensaje' => true,
+                'titulo' => 'Ocurrió un error',
+                'mensaje' => 'No fue posible procesar su solicitud, por favor intentelo más tarde. (3)<br><br>' . $respuesta_openpay,
+            ), REST_Controller::HTTP_BAD_REQUEST);
+        }
 
-            /** Validar que el usuario esté autenticado en la aplicación */
-            $validar_usuario = $this->_autenticar_usuario($datos_get['token'], $datos_get['usuario_id']);
+        $openpay_tarjeta_id = $respuesta_openpay->id;
 
-            if (!$validar_usuario) {
-                $this->response(array(
-                    'error' => true,
-                    'mostrar_mensaje' => true,
-                    'titulo' => 'Ocurrió un error',
-                    'mensaje' => 'No fue posible procesar su solicitud, por favor intentelo más tarde. (1)',
-                ), REST_Controller::HTTP_BAD_REQUEST);
-            }
+        $data_tarjeta = array(
+            'usuario_id' => $validar_usuario->id,
+            'openpay_cliente_id' => $validar_usuario->openpay_cliente_id,
+            'openpay_tarjeta_id' => $openpay_tarjeta_id,
+            'openpay_holder_name' => $respuesta_openpay->holder_name,
+            'terminacion_card_number' => substr(str_replace(' ', '', $respuesta_openpay->card_number), -4),
+            'openpay_expiration_month' => substr(str_replace(' ', '', $respuesta_openpay->expiration_month), 0, 2),
+            'openpay_expiration_year' => substr(str_replace(' ', '', $respuesta_openpay->expiration_year), -2),
+            'fecha_registro' => date('Y-m-d H:i:s'),
+            'brand' => $respuesta_openpay->brand,
+            'banco' => $respuesta_openpay->bank_name,
+            'banco_code' => $respuesta_openpay->bank_code,
+            'allows_charges' => $respuesta_openpay->allows_charges,
+            'allows_payouts' => $respuesta_openpay->allows_payouts
+        );
 
-            $tarjeta_row = $this->tarjetas_model->get_tarjeta_por_openpay_id_por_usuario_id($datos_get['openpay_tarjeta_id'], $validar_usuario->id)->row();
+        if ($this->tarjetas_model->insert_tarjeta($data_tarjeta)) {
+            $this->response(array(
+                'mensaje' => 'Método de pago guardado',
+            ), REST_Controller::HTTP_OK);
+        } else {
+            $this->response(array(
+                'error' => true,
+                'mostrar_mensaje' => true,
+                'titulo' => 'Ocurrió un error',
+                'mensaje' => 'No fue posible procesar su solicitud, por favor intentelo más tarde. (4)',
+            ), REST_Controller::HTTP_BAD_REQUEST);
+        }
+    }
 
-            if ($tarjeta_row) {
+    public function eliminar_metodo_pago_por_usuario_post()
+    {
 
-                $validar_si_la_tarjeta_esta_en_uso = $this->asignaciones_model->get_asignacion_por_usuario_id_y_openpay_tarjeta_id($tarjeta_row->openpay_tarjeta_id, $validar_usuario->id)->row();
-                        
-                if (!$validar_si_la_tarjeta_esta_en_uso) {
-                    
-                    $data_tarjeta = array(
-                        'estatus' => 'eliminado',
-                    );
-            
-                    if ($this->tarjetas_model->update_tarjeta($tarjeta_row->id, $data_tarjeta)) {
+        /** Recibir mensaje del api */
+        $datos_get = $this->post();
+        $this->load->library('openpagos');
 
-                        $respuesta_openpay = $this->openpagos->eliminar_una_tarjeta_en_openpay($validar_usuario->openpay_cliente_id, $tarjeta_row->openpay_tarjeta_id);
-                        
-                        if ($respuesta_openpay){
+        /** Validar que el usuario esté autenticado en la aplicación */
+        $validar_usuario = $this->_autenticar_usuario($datos_get['token'], $datos_get['usuario_id']);
 
-                            if (preg_match('/ERROR/i', $respuesta_openpay)) {
-                                $this->response(array(
-                                    'error' => true,
-                                    'mostrar_mensaje' => true,
-                                    'titulo' => 'Ocurrió un error',
-                                    'mensaje' => 'No fue posible procesar su solicitud, por favor intentelo más tarde. (5)',
-                                ), REST_Controller::HTTP_BAD_REQUEST);
-                            }
+        if (!$validar_usuario) {
+            $this->response(array(
+                'error' => true,
+                'mostrar_mensaje' => true,
+                'titulo' => 'Ocurrió un error',
+                'mensaje' => 'No fue posible procesar su solicitud, por favor intentelo más tarde. (1)',
+            ), REST_Controller::HTTP_BAD_REQUEST);
+        }
 
-                            $this->response($respuesta_openpay);
+        $tarjeta_row = $this->tarjetas_model->get_tarjeta_por_openpay_id_por_usuario_id($datos_get['openpay_tarjeta_id'], $validar_usuario->id)->row();
 
-                        } else {
+        if ($tarjeta_row) {
+
+            $validar_si_la_tarjeta_esta_en_uso = $this->asignaciones_model->get_asignacion_por_usuario_id_y_openpay_tarjeta_id($tarjeta_row->openpay_tarjeta_id, $validar_usuario->id)->row();
+
+            if (!$validar_si_la_tarjeta_esta_en_uso) {
+
+                $data_tarjeta = array(
+                    'estatus' => 'eliminado',
+                );
+
+                if ($this->tarjetas_model->update_tarjeta($tarjeta_row->id, $data_tarjeta)) {
+
+                    $respuesta_openpay = $this->openpagos->eliminar_una_tarjeta_en_openpay($validar_usuario->openpay_cliente_id, $tarjeta_row->openpay_tarjeta_id);
+
+                    if ($respuesta_openpay) {
+
+                        if (preg_match('/ERROR/i', $respuesta_openpay)) {
                             $this->response(array(
                                 'error' => true,
                                 'mostrar_mensaje' => true,
                                 'titulo' => 'Ocurrió un error',
-                                'mensaje' => 'No fue posible procesar su solicitud, por favor intentelo más tarde. (4)',
+                                'mensaje' => 'No fue posible procesar su solicitud, por favor intentelo más tarde. (5)',
                             ), REST_Controller::HTTP_BAD_REQUEST);
                         }
-                    }
-                } else {
-                    $this->response(array(
-                        'error' => true,
-                        'mostrar_mensaje' => true,
-                        'titulo' => 'Método de pago en uso',
-                        'mensaje' => 'No fue posible eliminar este método de pago. Se encuentra vinculado a una suscripción.',
-                    ), REST_Controller::HTTP_BAD_REQUEST);
-                }
 
+                        $this->response($respuesta_openpay);
+                    } else {
+                        $this->response(array(
+                            'error' => true,
+                            'mostrar_mensaje' => true,
+                            'titulo' => 'Ocurrió un error',
+                            'mensaje' => 'No fue posible procesar su solicitud, por favor intentelo más tarde. (4)',
+                        ), REST_Controller::HTTP_BAD_REQUEST);
+                    }
+                }
             } else {
                 $this->response(array(
                     'error' => true,
                     'mostrar_mensaje' => true,
-                    'titulo' => 'Ocurrió un error',
-                    'mensaje' => 'No fue posible procesar su solicitud, por favor intentelo más tarde. (2)',
+                    'titulo' => 'Método de pago en uso',
+                    'mensaje' => 'No fue posible eliminar este método de pago. Se encuentra vinculado a una suscripción.',
                 ), REST_Controller::HTTP_BAD_REQUEST);
             }
+        } else {
+            $this->response(array(
+                'error' => true,
+                'mostrar_mensaje' => true,
+                'titulo' => 'Ocurrió un error',
+                'mensaje' => 'No fue posible procesar su solicitud, por favor intentelo más tarde. (2)',
+            ), REST_Controller::HTTP_BAD_REQUEST);
+        }
+    }
 
+    public function compra_con_stripe_post()
+    {
+
+        $datos_post = $this->post();
+        $asignaciones_id = null;
+
+        $usuario_valido = $this->_autenticar_usuario($datos_post['token'], $datos_post['usuario_id']);
+
+        // Es necesario el id del plan y el id del usuario al cual se le va a asignar dicho plan, además del
+        // source id y del id del dispositivo
+        if (!$datos_post['plan_id'] || !$datos_post['usuario_id'] || !$datos_post['card_token']) {
+            $this->response(array(
+                'error' => true,
+                'mostrar_mensaje' => true,
+                'titulo' => 'No se realizó el cargo',
+                'mensaje' => 'envío de datos inválidos'
+            ), REST_Controller::HTTP_BAD_REQUEST);
         }
 
-		public function compra_con_stripe_post() {
+        // Obtener plan_row del plan a agregar
+        $plan_row = $this->planes_model->obtener_por_id($datos_post['plan_id'])->row();
 
-			$datos_post = $this->post();
-			$asignaciones_id = null;
+        if (!$plan_row) {
+            $this->response(array(
+                'error' => true,
+                'mostrar_mensaje' => true,
+                'titulo' => 'No se realizó el cargo',
+                'mensaje' => 'El plan que intenta agregar ya no existe'
+            ), REST_Controller::HTTP_NOT_FOUND);
+        }
 
-			$usuario_valido = $this->_autenticar_usuario($datos_post['token'], $datos_post['usuario_id']);
+        $disciplinas = $this->planes_model->obtener_disciplinas_por_plan_id($plan_row->id)->result();
 
-            // Es necesario el id del plan y el id del usuario al cual se le va a asignar dicho plan, además del
-            // source id y del id del dispositivo
-            if (!$datos_post['plan_id'] || !$datos_post['usuario_id'] || !$datos_post['card_token']) {
-                $this->response(array(
-                    'error' => true,
-                    'mostrar_mensaje' => true,
-                    'titulo' => 'No se realizó el cargo',
-                    'mensaje' => 'envío de datos inválidos'
-                ),REST_Controller::HTTP_BAD_REQUEST);
+        $disciplinas_array = array();
+
+        foreach ($disciplinas as $key => $value) {
+            array_push($disciplinas_array, $value->disciplina_id);
+        }
+
+        $this->load->library('stripe_lib');
+
+        $resultado_cargo = $this->stripe_lib->cargo(
+            bcmul($plan_row->costo, 100),
+            $plan_row->nombre,
+            null,
+            $plan_row->sku,
+            $usuario_valido->correo,
+            $datos_post['card_token']
+        );
+
+        if (!$resultado_cargo['error']) {
+
+            if (!in_array($plan_row->id, array(20))) {
+
+                if (!$this->asignaciones_model->crear(array(
+                    'usuario_id' => $usuario_valido->id,
+                    'plan_id' => $plan_row->id,
+                    'nombre' => $plan_row->nombre,
+                    'clases_incluidas' => $plan_row->clases_incluidas,
+                    'disciplinas' => implode('|', $disciplinas_array),
+                    'vigencia_en_dias' => $plan_row->vigencia_en_dias,
+                    'fecha_activacion' => date('Y-m-d H:i:s'),
+                    'esta_activo' => 1
+                ))) {
+                    //$this->mensaje_del_sistema('MENSAJE_ERROR', 'Ha ocurrido un error, por favor intentelo mas tarde. (2)', 'usuario/shop');
+                    $this->response(array(
+                        'error' => true,
+                        'mostrar_mensaje' => true,
+                        'titulo' => 'No se realizó el cargo',
+                        'mensaje' => 'Ha ocurrido un error, por favor intentelo mas tarde. (2)'
+                    ), REST_Controller::HTTP_BAD_REQUEST);
+                }
+
+                $asignacion_row = $this->asignaciones_model->obtener_por_id($this->db->insert_id())->row();
+            } else {
+
+                switch ($plan_row->id) {
+                    case 20:
+                        if (!$this->asignaciones_model->crear(array(
+                            'usuario_id' => $usuario_valido->id,
+                            'plan_id' => $plan_row->id,
+                            'nombre' => $plan_row->nombre,
+                            'clases_incluidas' => 10,
+                            'disciplinas' => implode('|', array(2)),
+                            'vigencia_en_dias' => $plan_row->vigencia_en_dias,
+                            'fecha_activacion' => date('Y-m-d H:i:s'),
+                            'esta_activo' => 1
+                        ))) {
+                            //$this->mensaje_del_sistema('MENSAJE_ERROR', 'Ha ocurrido un error, por favor intentelo mas tarde. (2)', 'usuario/shop');
+                            $this->response(array(
+                                'error' => true,
+                                'mostrar_mensaje' => true,
+                                'titulo' => 'No se realizó el cargo',
+                                'mensaje' => 'Ha ocurrido un error, por favor intentelo mas tarde. (2.1)'
+                            ), REST_Controller::HTTP_BAD_REQUEST);
+                        }
+
+                        $asignacion_row_1 = $this->asignaciones_model->obtener_por_id($this->db->insert_id())->row();
+
+                        if (!$this->asignaciones_model->crear(array(
+                            'usuario_id' => $usuario_valido->id,
+                            'plan_id' => $plan_row->id,
+                            'nombre' => $plan_row->nombre,
+                            'clases_incluidas' => 10,
+                            'disciplinas' => implode('|', array(17)),
+                            'vigencia_en_dias' => $plan_row->vigencia_en_dias,
+                            'fecha_activacion' => date('Y-m-d H:i:s'),
+                            'esta_activo' => 1
+                        ))) {
+                            //$this->mensaje_del_sistema('MENSAJE_ERROR', 'Ha ocurrido un error, por favor intentelo mas tarde. (2)', 'usuario/shop');
+                            $this->response(array(
+                                'error' => true,
+                                'mostrar_mensaje' => true,
+                                'titulo' => 'No se realizó el cargo',
+                                'mensaje' => 'Ha ocurrido un error, por favor intentelo mas tarde. (2.1)'
+                            ), REST_Controller::HTTP_BAD_REQUEST);
+                        }
+
+                        $asignacion_row_2 = $this->asignaciones_model->obtener_por_id($this->db->insert_id())->row();
+
+                        if (!$this->asignaciones_model->crear(array(
+                            'usuario_id' => $usuario_valido->id,
+                            'plan_id' => $plan_row->id,
+                            'nombre' => $plan_row->nombre,
+                            'clases_incluidas' => 10,
+                            'disciplinas' => implode('|', array(18)),
+                            'vigencia_en_dias' => $plan_row->vigencia_en_dias,
+                            'fecha_activacion' => date('Y-m-d H:i:s'),
+                            'esta_activo' => 1
+                        ))) {
+                            //$this->mensaje_del_sistema('MENSAJE_ERROR', 'Ha ocurrido un error, por favor intentelo mas tarde. (2)', 'usuario/shop');
+                            $this->response(array(
+                                'error' => true,
+                                'mostrar_mensaje' => true,
+                                'titulo' => 'No se realizó el cargo',
+                                'mensaje' => 'Ha ocurrido un error, por favor intentelo mas tarde. (2.1)'
+                            ), REST_Controller::HTTP_BAD_REQUEST);
+                        }
+
+                        $asignacion_row_3 = $this->asignaciones_model->obtener_por_id($this->db->insert_id())->row();
+
+                        if (!$this->asignaciones_model->crear(array(
+                            'usuario_id' => $usuario_valido->id,
+                            'plan_id' => $plan_row->id,
+                            'nombre' => $plan_row->nombre,
+                            'clases_incluidas' => 10,
+                            'disciplinas' => implode('|', array(19)),
+                            'vigencia_en_dias' => $plan_row->vigencia_en_dias,
+                            'fecha_activacion' => date('Y-m-d H:i:s'),
+                            'esta_activo' => 1
+                        ))) {
+                            //$this->mensaje_del_sistema('MENSAJE_ERROR', 'Ha ocurrido un error, por favor intentelo mas tarde. (2)', 'usuario/shop');
+                            $this->response(array(
+                                'error' => true,
+                                'mostrar_mensaje' => true,
+                                'titulo' => 'No se realizó el cargo',
+                                'mensaje' => 'Ha ocurrido un error, por favor intentelo mas tarde. (2.1)'
+                            ), REST_Controller::HTTP_BAD_REQUEST);
+                        }
+
+                        $asignacion_row_4 = $this->asignaciones_model->obtener_por_id($this->db->insert_id())->row();
+
+                        if (!$this->asignaciones_model->crear(array(
+                            'usuario_id' => $usuario_valido->id,
+                            'plan_id' => $plan_row->id,
+                            'nombre' => $plan_row->nombre,
+                            'clases_incluidas' => 10,
+                            'disciplinas' => implode('|', array(20)),
+                            'vigencia_en_dias' => $plan_row->vigencia_en_dias,
+                            'fecha_activacion' => date('Y-m-d H:i:s'),
+                            'esta_activo' => 1
+                        ))) {
+                            //$this->mensaje_del_sistema('MENSAJE_ERROR', 'Ha ocurrido un error, por favor intentelo mas tarde. (2)', 'usuario/shop');
+                            $this->response(array(
+                                'error' => true,
+                                'mostrar_mensaje' => true,
+                                'titulo' => 'No se realizó el cargo',
+                                'mensaje' => 'Ha ocurrido un error, por favor intentelo mas tarde. (2.1)'
+                            ), REST_Controller::HTTP_BAD_REQUEST);
+                        }
+
+                        $asignacion_row_5 = $this->asignaciones_model->obtener_por_id($this->db->insert_id())->row();
+
+                        $asignaciones_id = json_encode(array($asignacion_row_1->id, $asignacion_row_2->id, $asignacion_row_3->id, $asignacion_row_4->id, $asignacion_row_5->id));
+                        break;
+                }
             }
 
-			// Obtener plan_row del plan a agregar
-			$plan_row = $this->planes_model->obtener_por_id($datos_post['plan_id'])->row();
-
-			if (!$plan_row) {
-				$this->response(array(
-					'error' => true,
-                    'mostrar_mensaje' => true,
-                    'titulo' => 'No se realizó el cargo',
-					'mensaje' => 'El plan que intenta agregar ya no existe'
-				), REST_Controller::HTTP_NOT_FOUND);
-			}
-
-			$disciplinas = $this->planes_model->obtener_disciplinas_por_plan_id($plan_row->id)->result();
-
-			$disciplinas_array = array();
-
-			foreach ($disciplinas as $key => $value) {
-				array_push($disciplinas_array, $value->disciplina_id);
-			}
-
-			$this->load->library('stripe_lib');
-
-			$resultado_cargo = $this->stripe_lib->cargo(
-				bcmul($plan_row->costo, 100),
-				$plan_row->nombre,
-				null,
-				$plan_row->sku,
-				$usuario_valido->correo,
-				$datos_post['card_token']
-			);
-			
-			if (!$resultado_cargo['error']) {
-
-				if (!in_array($plan_row->id, array(20))) {
-					
-					if (!$this->asignaciones_model->crear(array(
-						'usuario_id' => $usuario_valido->id,
-						'plan_id' => $plan_row->id,
-						'nombre' => $plan_row->nombre,
-						'clases_incluidas' => $plan_row->clases_incluidas,
-						'disciplinas' => implode('|', $disciplinas_array),
-						'vigencia_en_dias' => $plan_row->vigencia_en_dias,
-						'fecha_activacion' => date('Y-m-d H:i:s'),
-						'esta_activo' => 1
-					)))	{
-						//$this->mensaje_del_sistema('MENSAJE_ERROR', 'Ha ocurrido un error, por favor intentelo mas tarde. (2)', 'usuario/shop');
-						$this->response(array(
-							'error' => true,
-							'mostrar_mensaje' => true,
-							'titulo' => 'No se realizó el cargo',
-							'mensaje' => 'Ha ocurrido un error, por favor intentelo mas tarde. (2)'
-						), REST_Controller::HTTP_BAD_REQUEST);
-					}
-	
-					$asignacion_row = $this->asignaciones_model->obtener_por_id($this->db->insert_id())->row();
-
-				} else {
-					
-					switch ($plan_row->id) {
-						case 20:
-							if (!$this->asignaciones_model->crear(array(
-								'usuario_id' => $usuario_valido->id,
-								'plan_id' => $plan_row->id,
-								'nombre' => $plan_row->nombre,
-								'clases_incluidas' => 10,
-								'disciplinas' => implode('|', array(2)),
-								'vigencia_en_dias' => $plan_row->vigencia_en_dias,
-								'fecha_activacion' => date('Y-m-d H:i:s'),
-								'esta_activo' => 1
-							)))	{
-								//$this->mensaje_del_sistema('MENSAJE_ERROR', 'Ha ocurrido un error, por favor intentelo mas tarde. (2)', 'usuario/shop');
-								$this->response(array(
-									'error' => true,
-									'mostrar_mensaje' => true,
-									'titulo' => 'No se realizó el cargo',
-									'mensaje' => 'Ha ocurrido un error, por favor intentelo mas tarde. (2.1)'
-								), REST_Controller::HTTP_BAD_REQUEST);
-							}
-
-							$asignacion_row_1 = $this->asignaciones_model->obtener_por_id($this->db->insert_id())->row();
-
-							if (!$this->asignaciones_model->crear(array(
-								'usuario_id' => $usuario_valido->id,
-								'plan_id' => $plan_row->id,
-								'nombre' => $plan_row->nombre,
-								'clases_incluidas' => 10,
-								'disciplinas' => implode('|', array(17)),
-								'vigencia_en_dias' => $plan_row->vigencia_en_dias,
-								'fecha_activacion' => date('Y-m-d H:i:s'),
-								'esta_activo' => 1
-							)))	{
-								//$this->mensaje_del_sistema('MENSAJE_ERROR', 'Ha ocurrido un error, por favor intentelo mas tarde. (2)', 'usuario/shop');
-								$this->response(array(
-									'error' => true,
-									'mostrar_mensaje' => true,
-									'titulo' => 'No se realizó el cargo',
-									'mensaje' => 'Ha ocurrido un error, por favor intentelo mas tarde. (2.1)'
-								), REST_Controller::HTTP_BAD_REQUEST);
-							}
-
-							$asignacion_row_2 = $this->asignaciones_model->obtener_por_id($this->db->insert_id())->row();
-							
-							if (!$this->asignaciones_model->crear(array(
-								'usuario_id' => $usuario_valido->id,
-								'plan_id' => $plan_row->id,
-								'nombre' => $plan_row->nombre,
-								'clases_incluidas' => 10,
-								'disciplinas' => implode('|', array(18)),
-								'vigencia_en_dias' => $plan_row->vigencia_en_dias,
-								'fecha_activacion' => date('Y-m-d H:i:s'),
-								'esta_activo' => 1
-							)))	{
-								//$this->mensaje_del_sistema('MENSAJE_ERROR', 'Ha ocurrido un error, por favor intentelo mas tarde. (2)', 'usuario/shop');
-								$this->response(array(
-									'error' => true,
-									'mostrar_mensaje' => true,
-									'titulo' => 'No se realizó el cargo',
-									'mensaje' => 'Ha ocurrido un error, por favor intentelo mas tarde. (2.1)'
-								), REST_Controller::HTTP_BAD_REQUEST);
-							}
-
-							$asignacion_row_3 = $this->asignaciones_model->obtener_por_id($this->db->insert_id())->row();
-
-							if (!$this->asignaciones_model->crear(array(
-								'usuario_id' => $usuario_valido->id,
-								'plan_id' => $plan_row->id,
-								'nombre' => $plan_row->nombre,
-								'clases_incluidas' => 10,
-								'disciplinas' => implode('|', array(19)),
-								'vigencia_en_dias' => $plan_row->vigencia_en_dias,
-								'fecha_activacion' => date('Y-m-d H:i:s'),
-								'esta_activo' => 1
-							)))	{
-								//$this->mensaje_del_sistema('MENSAJE_ERROR', 'Ha ocurrido un error, por favor intentelo mas tarde. (2)', 'usuario/shop');
-								$this->response(array(
-									'error' => true,
-									'mostrar_mensaje' => true,
-									'titulo' => 'No se realizó el cargo',
-									'mensaje' => 'Ha ocurrido un error, por favor intentelo mas tarde. (2.1)'
-								), REST_Controller::HTTP_BAD_REQUEST);
-							}
-
-							$asignacion_row_4 = $this->asignaciones_model->obtener_por_id($this->db->insert_id())->row();
-
-							if (!$this->asignaciones_model->crear(array(
-								'usuario_id' => $usuario_valido->id,
-								'plan_id' => $plan_row->id,
-								'nombre' => $plan_row->nombre,
-								'clases_incluidas' => 10,
-								'disciplinas' => implode('|', array(20)),
-								'vigencia_en_dias' => $plan_row->vigencia_en_dias,
-								'fecha_activacion' => date('Y-m-d H:i:s'),
-								'esta_activo' => 1
-							)))	{
-								//$this->mensaje_del_sistema('MENSAJE_ERROR', 'Ha ocurrido un error, por favor intentelo mas tarde. (2)', 'usuario/shop');
-								$this->response(array(
-									'error' => true,
-									'mostrar_mensaje' => true,
-									'titulo' => 'No se realizó el cargo',
-									'mensaje' => 'Ha ocurrido un error, por favor intentelo mas tarde. (2.1)'
-								), REST_Controller::HTTP_BAD_REQUEST);
-							}
-
-							$asignacion_row_5 = $this->asignaciones_model->obtener_por_id($this->db->insert_id())->row();
-
-							$asignaciones_id = json_encode(array($asignacion_row_1->id, $asignacion_row_2->id, $asignacion_row_3->id, $asignacion_row_4->id, $asignacion_row_5->id));
-						break;
-					}
-
-				}
-				
-				if (!$this->ventas_model->crear(array(
-					'concepto' => $plan_row->nombre,
-					'usuario_id' => $usuario_valido->id,
-					'asignacion_id' => $asignacion_row->id,
-					'asignaciones_id' => $asignaciones_id,
-					'metodo_id' => 10,
-					'costo' => $plan_row->costo,
-					'cantidad' => 1,
-					'total' => $plan_row->costo,
-					'vendedor' => 'Compra desde la aplicación'
-				))) {
-					//$this->mensaje_del_sistema('MENSAJE_ERROR', 'Ha ocurrido un error, por favor intentelo mas tarde. (3)', 'usuario/shop');
-					$this->response(array(
-						'error' => true,
-						'mostrar_mensaje' => true,
-						'titulo' => 'No se realizó el cargo',
-						'mensaje' => 'Ha ocurrido un error, por favor intentelo mas tarde. (3)'
-					), REST_Controller::HTTP_BAD_REQUEST);
-				}
-
-				$this->response(array(
-					'mensaje' => 'El plan se agregó correctamente al cliente'
-				), REST_Controller::HTTP_CREATED);
-			} else {
-				//$this->mensaje_del_sistema('MENSAJE_ERROR', 'Compra error', 'usuario/inicio');
-                $this->response(array(
-                    'error' => true,
-                    'mostrar_mensaje' => true,
-                    'titulo' => 'No se realizó el cargo',
-                    'mensaje' => $resultado_cargo['mensaje']
-                ), REST_Controller::HTTP_BAD_REQUEST);
-			}
-
-		}
-
-        /** PROCESO DE COMPRA CON TARJETA GUARDADA (METODO DE PAGO) */
-
-        /**
-         * Permite a un cliente adquirir/asignarse/comprar un plan
-         */
-
-        public function comprar_con_metodo_de_pago_y_cliente_guardado_en_openpay_post() {
-            
-            // Validar que el cliente que realiza la petición esté autenticado
-            $datos_post = $this->post();
-
-            $usuario_valido = $this->_autenticar_usuario($datos_post['token'], $datos_post['usuario_id']);
-
-            // Es necesario el id del plan y el id del usuario al cual se le va a asignar dicho plan, además del
-            // source id y del id del dispositivo
-            if (!$datos_post['plan_id'] || !$datos_post['usuario_id'] || !$datos_post['fuente_id'] || !$datos_post['dispositivo_id']) {
-                $this->response(array(
-                    'error' => true,
-                    'titulo' => 'No fue posible realizar el cargo',
-                    'mensaje' => 'envío de datos inválidos',
-                ),REST_Controller::HTTP_BAD_REQUEST);
-            }
-
-            // Obtener datos del plan a agregar
-            $plan_a_agregar = $this->planes_model->obtener_por_id($datos_post['plan_id'])->row();
-
-            if (!$plan_a_agregar) {
-                $this->response(array(
-                    'error' => true,
-                    'mensaje' => 'El plan que intenta agregar ya no existe',
-                ), REST_Controller::HTTP_NOT_FOUND);
-            }
-
-            $disciplinas = $this->planes_model->obtener_disciplinas_por_plan_id($plan_a_agregar->id)->result();
-
-            $disciplinasIds = array();
-
-            foreach ($disciplinas as $key => $value) {
-                array_push($disciplinasIds, $value->disciplina_id);
-            }
-
-            // Realizar el cargo
-            $this->load->library('openpagos');
-            $this->openpagos->cargar_datos_comprador($usuario_valido->nombre_completo, $usuario_valido->correo, $usuario_valido->apellido_paterno, $usuario_valido->no_telefono);
-
-            $resultado_openpay = $this->openpagos->aplicar_cargo_con_tarjeta_guardada($usuario_valido->openpay_cliente_id, $datos_post['fuente_id'], $plan_a_agregar->costo, $plan_a_agregar->nombre, $datos_post['dispositivo_id']);
-
-            if ($resultado_openpay['error']) {
-
-                // Ocurrió un error al intentar realizar el cargo
-                $this->response(array(
-                    'error' => true,
-                    'mensaje' => $resultado_openpay['mensaje'],
-                ), REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
-
-            }
-
-            // Agregar plan al usuario
-            if (!$this->asignaciones_model->crear(array(
-                'usuario_id' => $datos_post['usuario_id'],
-                'plan_id' => $plan_a_agregar->id,
-                'nombre' => $plan_a_agregar->nombre,
-                'clases_incluidas' => $plan_a_agregar->clases_incluidas,
-                'disciplinas' => implode('|', $disciplinasIds),
-                'vigencia_en_dias' => $plan_a_agregar->vigencia_en_dias,
-                'fecha_activacion' => date('Y-m-d H:i:s'),
-                'esta_activo' => 1,
-            ))) {
-
-                $this->response(array(
-                    'error' => true,
-                    'mensaje' => 'Ha ocurrido un error al intentar agregar el plan al cliente',
-                ), REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
-
-            }
-
-            $obetener_id_asignacion = $this->asignaciones_model->obtener_por_id($this->db->insert_id())->row();
-
-
-            // Registrar la venta
-            $this->ventas_model->crear(array(
-                'concepto' => $plan_a_agregar->nombre,
-                'usuario_id' => $datos_post['usuario_id'],
-                'asignacion_id' => $obetener_id_asignacion->id,
-                'metodo_id' => 3,
-                'costo' => $plan_a_agregar->costo,
+            if (!$this->ventas_model->crear(array(
+                'concepto' => $plan_row->nombre,
+                'usuario_id' => $usuario_valido->id,
+                'asignacion_id' => $asignacion_row->id,
+                'asignaciones_id' => $asignaciones_id,
+                'metodo_id' => 10,
+                'costo' => $plan_row->costo,
                 'cantidad' => 1,
-                'total' => $plan_a_agregar->costo,
-                'vendedor' => 'Compra desde la aplicación',
-            ));
+                'total' => $plan_row->costo,
+                'vendedor' => 'Compra desde la aplicación'
+            ))) {
+                //$this->mensaje_del_sistema('MENSAJE_ERROR', 'Ha ocurrido un error, por favor intentelo mas tarde. (3)', 'usuario/shop');
+                $this->response(array(
+                    'error' => true,
+                    'mostrar_mensaje' => true,
+                    'titulo' => 'No se realizó el cargo',
+                    'mensaje' => 'Ha ocurrido un error, por favor intentelo mas tarde. (3)'
+                ), REST_Controller::HTTP_BAD_REQUEST);
+            }
 
             $this->response(array(
-                'mensaje' => 'el plan se agregó correctamente al cliente',
+                'mensaje' => 'El plan se agregó correctamente al cliente'
             ), REST_Controller::HTTP_CREATED);
+        } else {
+            //$this->mensaje_del_sistema('MENSAJE_ERROR', 'Compra error', 'usuario/inicio');
+            $this->response(array(
+                'error' => true,
+                'mostrar_mensaje' => true,
+                'titulo' => 'No se realizó el cargo',
+                'mensaje' => $resultado_cargo['mensaje']
+            ), REST_Controller::HTTP_BAD_REQUEST);
         }
+    }
+
+    /** PROCESO DE COMPRA CON TARJETA GUARDADA (METODO DE PAGO) */
+
+    /**
+     * Permite a un cliente adquirir/asignarse/comprar un plan
+     */
+
+    public function comprar_con_metodo_de_pago_y_cliente_guardado_en_openpay_post()
+    {
+
+        // Validar que el cliente que realiza la petición esté autenticado
+        $datos_post = $this->post();
+
+        $usuario_valido = $this->_autenticar_usuario($datos_post['token'], $datos_post['usuario_id']);
+
+        // Es necesario el id del plan y el id del usuario al cual se le va a asignar dicho plan, además del
+        // source id y del id del dispositivo
+        if (!$datos_post['plan_id'] || !$datos_post['usuario_id'] || !$datos_post['fuente_id'] || !$datos_post['dispositivo_id']) {
+            $this->response(array(
+                'error' => true,
+                'titulo' => 'No fue posible realizar el cargo',
+                'mensaje' => 'envío de datos inválidos',
+            ), REST_Controller::HTTP_BAD_REQUEST);
+        }
+
+        // Obtener datos del plan a agregar
+        $plan_a_agregar = $this->planes_model->obtener_por_id($datos_post['plan_id'])->row();
+
+        if (!$plan_a_agregar) {
+            $this->response(array(
+                'error' => true,
+                'mensaje' => 'El plan que intenta agregar ya no existe',
+            ), REST_Controller::HTTP_NOT_FOUND);
+        }
+
+        $disciplinas = $this->planes_model->obtener_disciplinas_por_plan_id($plan_a_agregar->id)->result();
+
+        $disciplinasIds = array();
+
+        foreach ($disciplinas as $key => $value) {
+            array_push($disciplinasIds, $value->disciplina_id);
+        }
+
+        // Realizar el cargo
+        $this->load->library('openpagos');
+        $this->openpagos->cargar_datos_comprador($usuario_valido->nombre_completo, $usuario_valido->correo, $usuario_valido->apellido_paterno, $usuario_valido->no_telefono);
+
+        $resultado_openpay = $this->openpagos->aplicar_cargo_con_tarjeta_guardada($usuario_valido->openpay_cliente_id, $datos_post['fuente_id'], $plan_a_agregar->costo, $plan_a_agregar->nombre, $datos_post['dispositivo_id']);
+
+        if ($resultado_openpay['error']) {
+
+            // Ocurrió un error al intentar realizar el cargo
+            $this->response(array(
+                'error' => true,
+                'mensaje' => $resultado_openpay['mensaje'],
+            ), REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
+        }
+
+        // Agregar plan al usuario
+        if (!$this->asignaciones_model->crear(array(
+            'usuario_id' => $datos_post['usuario_id'],
+            'plan_id' => $plan_a_agregar->id,
+            'nombre' => $plan_a_agregar->nombre,
+            'clases_incluidas' => $plan_a_agregar->clases_incluidas,
+            'disciplinas' => implode('|', $disciplinasIds),
+            'vigencia_en_dias' => $plan_a_agregar->vigencia_en_dias,
+            'fecha_activacion' => date('Y-m-d H:i:s'),
+            'esta_activo' => 1,
+        ))) {
+
+            $this->response(array(
+                'error' => true,
+                'mensaje' => 'Ha ocurrido un error al intentar agregar el plan al cliente',
+            ), REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
+        }
+
+        $obetener_id_asignacion = $this->asignaciones_model->obtener_por_id($this->db->insert_id())->row();
+
+
+        // Registrar la venta
+        $this->ventas_model->crear(array(
+            'concepto' => $plan_a_agregar->nombre,
+            'usuario_id' => $datos_post['usuario_id'],
+            'asignacion_id' => $obetener_id_asignacion->id,
+            'metodo_id' => 3,
+            'costo' => $plan_a_agregar->costo,
+            'cantidad' => 1,
+            'total' => $plan_a_agregar->costo,
+            'vendedor' => 'Compra desde la aplicación',
+        ));
+
+        $this->response(array(
+            'mensaje' => 'el plan se agregó correctamente al cliente',
+        ), REST_Controller::HTTP_CREATED);
+    }
 
     /** ============ Módulo de compras (FINAL) ============ */
 
@@ -644,10 +643,9 @@ class Endpoint extends REST_Controller
 
         $usuario_valido = $this->_autenticar_usuario($datos_get['token'], $datos_get['usuario_id']);
 
-		$descubre_row = $this->app_secciones_model->get_app_seccion_por_seccion("publicidad")->row();
+        $descubre_row = $this->app_secciones_model->get_app_seccion_por_seccion("publicidad")->row();
 
         $this->response($descubre_row);
-
     }
 
     /**
@@ -665,8 +663,8 @@ class Endpoint extends REST_Controller
         $datos_get = $this->get();
 
         $usuario_valido = $this->_autenticar_usuario($datos_get['token'], $datos_get['usuario_id']);
-		
-		$reservaciones_list = $this->reservaciones_model->obtener_reservacion_para_cliente($usuario_valido->id)->result();
+
+        $reservaciones_list = $this->reservaciones_model->obtener_reservacion_para_cliente($usuario_valido->id)->result();
 
         $validar_canje_list = $this->codigos_canjeados_model->obtener_codigo_canjeado_por_usuario_id($datos_get['usuario_id'])->result();
 
@@ -682,9 +680,9 @@ class Endpoint extends REST_Controller
         $planes_con_disciplinas = array();
 
         foreach ($planes as $plan) {
-            if (in_array($plan->codigo, $codigos_canjeados_array) OR !$plan->codigo) {
-                if ($reservaciones_list AND !in_array($plan->id, array(1))) {
-				
+            if (in_array($plan->codigo, $codigos_canjeados_array) or !$plan->codigo) {
+                if ($reservaciones_list and !in_array($plan->id, array(1))) {
+
                     $plan_con_disciplinas = new stdClass();
                     $plan_con_disciplinas->id = $plan->id;
                     $plan_con_disciplinas->dominio_id = $plan->dominio_id;
@@ -697,23 +695,23 @@ class Endpoint extends REST_Controller
                     $plan_con_disciplinas->subscripcion = $plan->subscripcion;
                     $plan_con_disciplinas->terminos_condiciones = $plan->terminos_condiciones;
                     $plan_con_disciplinas->url_infoventa = $plan->url_infoventa;
-        
+
                     $disciplinas = $this->planes_model->obtener_disciplinas_con_detalle_por_plan_id($plan->id)->result();
-        
+
                     $disciplinas_por_plan = array();
-        
+
                     foreach ($disciplinas as $disciplina) {
                         $disciplina_por_plan = new stdClass();
                         $disciplina_por_plan->id = $disciplina->id;
                         $disciplina_por_plan->nombre = $disciplina->nombre;
                         array_push($disciplinas_por_plan, $disciplina_por_plan);
                     }
-        
+
                     $plan_con_disciplinas->disciplinas = $disciplinas_por_plan;
-        
+
                     array_push($planes_con_disciplinas, $plan_con_disciplinas);
-                } elseif(!$reservaciones_list) {
-    
+                } elseif (!$reservaciones_list) {
+
                     $plan_con_disciplinas = new stdClass();
                     $plan_con_disciplinas->id = $plan->id;
                     $plan_con_disciplinas->dominio_id = $plan->dominio_id;
@@ -726,28 +724,26 @@ class Endpoint extends REST_Controller
                     $plan_con_disciplinas->subscripcion = $plan->subscripcion;
                     $plan_con_disciplinas->terminos_condiciones = $plan->terminos_condiciones;
                     $plan_con_disciplinas->url_infoventa = $plan->url_infoventa;
-        
+
                     $disciplinas = $this->planes_model->obtener_disciplinas_con_detalle_por_plan_id($plan->id)->result();
-        
+
                     $disciplinas_por_plan = array();
-        
+
                     foreach ($disciplinas as $disciplina) {
                         $disciplina_por_plan = new stdClass();
                         $disciplina_por_plan->id = $disciplina->id;
                         $disciplina_por_plan->nombre = $disciplina->nombre;
                         array_push($disciplinas_por_plan, $disciplina_por_plan);
                     }
-        
+
                     $plan_con_disciplinas->disciplinas = $disciplinas_por_plan;
-        
+
                     array_push($planes_con_disciplinas, $plan_con_disciplinas);
-    
                 }
             }
         }
 
         $this->response($planes_con_disciplinas);
-
     }
 
     public function plan_row_disponible_get()
@@ -787,7 +783,6 @@ class Endpoint extends REST_Controller
         $plan_con_disciplinas->disciplinas = $disciplinas_por_plan;
 
         $this->response($plan_con_disciplinas);
-
     }
 
     /**
@@ -802,7 +797,7 @@ class Endpoint extends REST_Controller
         $asignaciones_por_cliente = $this->asignaciones_model->obtener_por_usuario_id($usuario_valido->id)->result();
 
         $resultado = array();
-        
+
         foreach ($asignaciones_por_cliente as $asignacion_por_cliente_key => $asignacion_por_cliente_row) {;
             $resultado[] = array(
                 "id" => $asignacion_por_cliente_row->id,
@@ -816,14 +811,13 @@ class Endpoint extends REST_Controller
                 "disciplinas" => $asignacion_por_cliente_row->disciplinas,
                 "categoria" => $asignacion_por_cliente_row->categoria,
                 "fecha_activacion" => date("d/m/Y", strtotime($asignacion_por_cliente_row->fecha_activacion)),
-                "fecha_finalizacion" => date("d/m/Y", strtotime($asignacion_por_cliente_row->fecha_activacion.'+'.$asignacion_por_cliente_row->vigencia_en_dias.' days')),
+                "fecha_finalizacion" => date("d/m/Y", strtotime($asignacion_por_cliente_row->fecha_activacion . '+' . $asignacion_por_cliente_row->vigencia_en_dias . ' days')),
                 "esta_activo" => $asignacion_por_cliente_row->esta_activo,
                 "estatus" => $asignacion_por_cliente_row->estatus,
             );
         }
 
         $this->response($resultado);
-
     }
 
     /**
@@ -876,7 +870,6 @@ class Endpoint extends REST_Controller
                 'error' => true,
                 'mensaje' => $resultado_openpay['mensaje'],
             ), REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
-
         }
 
         // Agregar plan al usuario
@@ -895,7 +888,6 @@ class Endpoint extends REST_Controller
                 'error' => true,
                 'mensaje' => 'Ha ocurrido un error al intentar agregar el plan al cliente',
             ), REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
-
         }
 
         $obetener_id_asignacion = $this->asignaciones_model->obtener_por_id($this->db->insert_id())->row();
@@ -1052,7 +1044,7 @@ class Endpoint extends REST_Controller
             ), REST_Controller::HTTP_BAD_REQUEST);
         }
 
-        if (!in_array($clase_a_reservar->disciplina_id, $disciplinas_ids_asignacion) AND !in_array($clase_a_reservar->subdisciplina_id, $disciplinas_ids_asignacion)) {
+        if (!in_array($clase_a_reservar->disciplina_id, $disciplinas_ids_asignacion) and !in_array($clase_a_reservar->subdisciplina_id, $disciplinas_ids_asignacion)) {
             $this->response(array(
                 'error' => true,
                 'mensaje' => 'El plan seleccionado no puede ser usado para la disciplina a la que pertenece la clase a reservar',
@@ -1074,7 +1066,6 @@ class Endpoint extends REST_Controller
                     'mensaje' => 'El plan ha expirado, por favor utilice otro',
                 ), REST_Controller::HTTP_BAD_REQUEST);
             }
-
         } else { // Si no está activo entonces activarlo
             $this->asignaciones_model->activar_plan($plan_cliente->id);
         }
@@ -1102,8 +1093,10 @@ class Endpoint extends REST_Controller
         $reservado = $clase_a_reservar->reservado + 1;
 
         // Actualizar el plan del cliente y la clase para que se establezca que una clase ha sido usada
-        if (!$this->asignaciones_model->editar($plan_cliente->id, array('clases_usadas' => $clases_usadas)) ||
-            !$this->clases_model->editar($clase_a_reservar->id, array('reservado' => $reservado, 'cupo_lugares' => $cupo_lugares_json))) {
+        if (
+            !$this->asignaciones_model->editar($plan_cliente->id, array('clases_usadas' => $clases_usadas)) ||
+            !$this->clases_model->editar($clase_a_reservar->id, array('reservado' => $reservado, 'cupo_lugares' => $cupo_lugares_json))
+        ) {
             $this->response(array(
                 'error' => true,
                 'mensaje' => 'La reservación no pudo ser creada',
@@ -1129,7 +1122,6 @@ class Endpoint extends REST_Controller
         $reservacion_creada = $this->reservaciones_model->obtener_por_id($this->db->insert_id())->row();
 
         $this->response($reservacion_creada);
-
     }
 
     /**
@@ -1173,7 +1165,7 @@ class Endpoint extends REST_Controller
         }
 
         $plan_cliente = $this->asignaciones_model->obtener_por_id($reservacion_a_cancelar->asignaciones_id)->row();
-        
+
         if (!$plan_cliente) {
             $this->response(array(
                 'error' => true,
@@ -1198,24 +1190,24 @@ class Endpoint extends REST_Controller
         }
 
         $app_cancelar_reservacion_hrs = $this->configuraciones_model->get_configuracion_por_configuracion("app_cancelar_reservacion_hrs")->row();
-        
+
         $fecha_clase = $clase_a_modificar->inicia;
-        $fecha_limite_clase = strtotime('-'.$app_cancelar_reservacion_hrs->valor_1.' hours', strtotime($fecha_clase));
+        $fecha_limite_clase = strtotime('-' . $app_cancelar_reservacion_hrs->valor_1 . ' hours', strtotime($fecha_clase));
 
         if (strtotime('now') > $fecha_limite_clase) {
             $this->response(array(
                 'error' => true,
-                'mensaje' => 'Las reservaciones solo se pueden cancelar '.$app_cancelar_reservacion_hrs->valor_1.' horas antes de la clase.',
+                'mensaje' => 'Las reservaciones solo se pueden cancelar ' . $app_cancelar_reservacion_hrs->valor_1 . ' horas antes de la clase.',
             ), REST_Controller::HTTP_BAD_REQUEST);
         }
 
         $app_prevenir_cancelacion_hrs = $this->configuraciones_model->get_configuracion_por_configuracion("app_prevenir_cancelacion_hrs")->row();
 
         if ($app_prevenir_cancelacion_hrs->estatus_1 == "activo") {
-            if (date('H:i', strtotime('now')) >= $app_prevenir_cancelacion_hrs->valor_1 OR date('H:i', strtotime('now')) <= $app_prevenir_cancelacion_hrs->valor_2) {
+            if (date('H:i', strtotime('now')) >= $app_prevenir_cancelacion_hrs->valor_1 or date('H:i', strtotime('now')) <= $app_prevenir_cancelacion_hrs->valor_2) {
                 $this->response(array(
                     'error' => true,
-                    'mensaje' => 'Las reservaciones no se podrán cancelar de '.date("g:i A", strtotime("$app_prevenir_cancelacion_hrs->valor_1:00")).' a '.date("g:i A", strtotime("$app_prevenir_cancelacion_hrs->valor_2:00")).'.',
+                    'mensaje' => 'Las reservaciones no se podrán cancelar de ' . date("g:i A", strtotime("$app_prevenir_cancelacion_hrs->valor_1:00")) . ' a ' . date("g:i A", strtotime("$app_prevenir_cancelacion_hrs->valor_2:00")) . '.',
                 ), REST_Controller::HTTP_BAD_REQUEST);
             }
         }
@@ -1238,14 +1230,13 @@ class Endpoint extends REST_Controller
                 $this->session->set_flashdata('MENSAJE_INFO', 'El plan sigue activo y caduca el. '.$fecha_vigencia);
                 redirect('reservaciones/index');
             }*/
-
         } else { // Si no está activo
             $this->response(array(
                 'error' => true,
                 'mensaje' => 'El plan no se encuentra activado.',
             ), REST_Controller::HTTP_BAD_REQUEST);
         }
-        
+
         // Establecer como desocupado
         $cupo_lugares = $clase_a_modificar->cupo_lugares;
         $cupo_lugares = json_decode($cupo_lugares);
@@ -1263,8 +1254,10 @@ class Endpoint extends REST_Controller
         $reservado = $clase_a_modificar->reservado - 1;
 
         // Actualizar el plan del cliente y la clase para que se establezca que una clase ha sido usada
-        if (!$this->asignaciones_model->editar($plan_cliente->id, array('clases_usadas' => $clases_usadas)) ||
-            !$this->clases_model->editar($clase_a_modificar->id, array('reservado' => $reservado, 'cupo_lugares' => $cupo_lugares_json))) {
+        if (
+            !$this->asignaciones_model->editar($plan_cliente->id, array('clases_usadas' => $clases_usadas)) ||
+            !$this->clases_model->editar($clase_a_modificar->id, array('reservado' => $reservado, 'cupo_lugares' => $cupo_lugares_json))
+        ) {
             $this->response(array(
                 'error' => true,
                 'mensaje' => 'La reservación no pudo ser cancelada.',
@@ -1283,7 +1276,6 @@ class Endpoint extends REST_Controller
                 'mensaje' => 'La reservación no pudo ser cancelada.',
             ), REST_Controller::HTTP_BAD_REQUEST);
         }
-
     }
 
     /**
@@ -1298,7 +1290,6 @@ class Endpoint extends REST_Controller
         $disciplinas = $this->sucursales_model->get_sucursales_disponibles()->result();
 
         $this->response($disciplinas);
-
     }
 
     /**
@@ -1313,7 +1304,6 @@ class Endpoint extends REST_Controller
         $disciplinas = $this->disciplinas_model->obtener_disponibles_por_sucursal($datos_get['sucursal_id'])->result();
 
         $this->response($disciplinas);
-
     }
 
     /**
@@ -1329,7 +1319,6 @@ class Endpoint extends REST_Controller
         $disciplinas = $this->disciplinas_model->obtener_disciplinas_para_app()->result();
 
         $this->response($disciplinas);
-
     }
 
     /**
@@ -1355,15 +1344,14 @@ class Endpoint extends REST_Controller
         log_message('debug', $this->db->last_query());
 
         $this->response($clases_por_disciplina);
-
     }
-    
+
     /**
      * Retornar las clases disponibles por disciplinas
      *
      * @return void
      */
-    
+
     public function clases_por_disciplina_y_semana_get()
     {
         setlocale(LC_ALL, "es_ES", "Spanish_Spain");
@@ -1396,7 +1384,7 @@ class Endpoint extends REST_Controller
                 "intervalo_horas" => $clases_row->intervalo_horas,
                 "img_acceso" => $clases_row->img_acceso,
                 "inicia" => $clases_row->inicia,
-                "hora"=> date('h:i a', strtotime($clases_row->inicia)),
+                "hora" => date('h:i a', strtotime($clases_row->inicia)),
                 "fecha" => date('Y-m-d', strtotime($clases_row->inicia)),
                 "dia_espanhol" =>  iconv('ISO-8859-2', 'UTF-8', strftime("%A", strtotime($clases_row->inicia))),
                 "fecha_espanhol" =>  iconv('ISO-8859-2', 'UTF-8', strftime("%d de %B de %Y", strtotime($clases_row->inicia))),
@@ -1415,9 +1403,8 @@ class Endpoint extends REST_Controller
         log_message('debug', $this->db->last_query());
 
         $this->response($result);
-
     }
-    
+
 
     /**
      * Obtiene los datos de una clase en específico con base en el id de la clase
@@ -1515,7 +1502,7 @@ class Endpoint extends REST_Controller
         $this->response($usuario_valido);
     }
 
-    
+
     /**
      * Obtiene los datos del usuario autenticado
      *
@@ -1526,7 +1513,7 @@ class Endpoint extends REST_Controller
         $datos_get = $this->get();
 
         $usuario_valido = $this->_autenticar_usuario($datos_get['token'], $datos_get['usuario_id']);
-        
+
         $anuncios_list = $this->anuncios_model->get_anuncio_por_tipo("aviso_clases")->row();
 
         $this->response($anuncios_list);
@@ -1543,12 +1530,14 @@ class Endpoint extends REST_Controller
 
         $usuario_valido = $this->_autenticar_usuario($datos_post['token'], $datos_post['usuario_id']);
 
-        if (!$this->usuarios_model->editar($usuario_valido->id,
+        if (!$this->usuarios_model->editar(
+            $usuario_valido->id,
             array(
                 'nombre_completo' => $datos_post['nombre_completo'],
                 'apellido_paterno' => $datos_post['apellido_paterno'],
                 'apellido_materno' => $datos_post['apellido_materno'],
-            ))) {
+            )
+        )) {
             $this->response(array(
                 'error' => true,
                 'mensaje' => 'El nombre no pudo ser cambiado; por favor inténtelo más tarde',
@@ -1571,10 +1560,12 @@ class Endpoint extends REST_Controller
 
         $usuario_valido = $this->_autenticar_usuario($datos_post['token'], $datos_post['usuario_id']);
 
-        if (!$this->usuarios_model->editar($usuario_valido->id,
+        if (!$this->usuarios_model->editar(
+            $usuario_valido->id,
             array(
                 'no_telefono' => $datos_post['no_telefono'],
-            ))) {
+            )
+        )) {
             $this->response(array(
                 'error' => true,
                 'mensaje' => 'El número de teléfono no pudo ser cambiado; por favor inténtelo más tarde',
@@ -1635,15 +1626,17 @@ class Endpoint extends REST_Controller
         ), REST_Controller::HTTP_OK);
     }
 
-    function eliminar_cuenta_post() {
+    function eliminar_cuenta_post()
+    {
 
         $datos_post = $this->post();
 
         $usuario_valido = $this->_autenticar_usuario($datos_post['token'], $datos_post['usuario_id']);
 
-        if (!$this->usuarios_model->editar($usuario_valido->id,
+        if (!$this->usuarios_model->editar(
+            $usuario_valido->id,
             array(
-                'correo' => $usuario_valido->id."@user.deleted",
+                'correo' => $usuario_valido->id . "@user.deleted",
                 'contrasena_hash' => null,
                 'rol_id' => 1,
                 'nombre_completo' => null,
@@ -1662,7 +1655,8 @@ class Endpoint extends REST_Controller
                 'token_web' => null,
                 'codigo_recuperar_contrasena' => null,
                 'estatus' => "suspendido",
-            ))) {
+            )
+        )) {
             $this->response(array(
                 'error' => true,
                 'mensaje' => 'Error al eliminar cuenta, por favor inténtelo más tarde',
@@ -1672,14 +1666,14 @@ class Endpoint extends REST_Controller
         $this->response(array(
             'mensaje' => 'Cuenta eliminada con éxito.',
         ), REST_Controller::HTTP_OK);
-
     }
-    
-    public function aplicar_cupon_post() {
+
+    public function aplicar_cupon_post()
+    {
         $datos_post = $this->post();
 
         $usuario_valido = $this->_autenticar_usuario($datos_post['token'], $datos_post['usuario_id']);
-        
+
         if (!$usuario_valido) {
             $this->response(array(
                 'error' => true,
@@ -1720,7 +1714,7 @@ class Endpoint extends REST_Controller
         }
 
         $fecha_registro = date("Y-m-d H:i:s");
-        $key = "clientes-".date("Y-m-d-H-i-s", strtotime($fecha_registro));
+        $key = "clientes-" . date("Y-m-d-H-i-s", strtotime($fecha_registro));
         $identificador = hash("crc32b", $key);
 
         $data = array(
@@ -1737,7 +1731,7 @@ class Endpoint extends REST_Controller
                 'mensaje' => 'Ha ocurrido un error, por favor intentelo mas tarde. (2)',
             ), REST_Controller::HTTP_NOT_FOUND);
         }
-        
+
         if (!$this->codigos_canjeados_model->insert_codigo_canjeado($data)) {
             $this->response(array(
                 'error' => true,
@@ -1785,5 +1779,4 @@ class Endpoint extends REST_Controller
 
         return $usuario_valido;
     }
-
 }

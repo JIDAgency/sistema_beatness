@@ -1,4 +1,5 @@
 <?php
+
 use Restserver\Libraries\REST_Controller;
 
 defined('BASEPATH') or exit('No direct script access allowed');
@@ -10,12 +11,88 @@ class Cuenta extends REST_Controller
 {
     public function __construct()
     {
-
         parent::__construct();
         $this->config->load('b3studio', true);
         $this->load->database();
         $this->load->model('usuarios_model');
     }
+
+    /* ====== Registro de usuario ====== */
+
+    /**
+     * Función que registra a un usuario; esta función deberá recibir obligatoriamente el nombre
+     * completo, el apellido paterno, el correo y una
+     * contraseña; guarda al usuario nuevo, genera un token y lo envía de vuelta para futuras
+     * peticiones
+     *
+     * @return mixed
+     */
+    public function registrar_usuario_post()
+    {
+
+        $datos_post = $this->post();
+
+        if (!$datos_post['nombre_completo'] || !$datos_post['correo'] || !$datos_post['contrasena']) {
+            $this->response(array(
+                'error' => true,
+                'mensaje' => 'Por favor complete todos los campos obligatorios para registrar su cuenta. Asegúrese de proporcionar su nombre completo, apellido paterno, dirección de correo electrónico y una contraseña.'
+            ), REST_Controller::HTTP_BAD_REQUEST);
+        }
+
+        // Verificar si el usuario existe
+        $verificar_si_usuario_existe = $this->usuarios_model->obtener_usuario_por_correo($datos_post['correo'])->row();
+
+        if (!$verificar_si_usuario_existe) {
+            $this->response(array(
+                'error' => true,
+                'mensaje' => 'Ya existe una cuenta registrada con esta dirección de correo electrónico. Si olvidaste tu contraseña, puedes restablecerla a través de la opción "Olvidé mi contraseña". Si necesitas ayuda, por favor contáctanos.'
+            ), REST_Controller::HTTP_BAD_REQUEST);
+        }
+
+        // Crear usuario
+        if (!$this->usuarios_model->crear(array(
+            'correo' => $datos_post['correo'],
+            'contrasena_hash' => password_hash($datos_post['contrasena'], PASSWORD_DEFAULT),
+            'nombre_completo' => $datos_post['nombre_completo'],
+            'apellido_paterno' => $datos_post['apellido_paterno'],
+            'apellido_materno' => $datos_post['apellido_materno'],
+            'no_telefono' => $datos_post['no_telefono'],
+            'codigo_postal' => $datos_post['codigo_postal'],
+            'talla_calzado' => $datos_post['talla_calzado'],
+            'rol_id' => 1, // Pertenece al rol de cliente por defecto
+        ))) {
+            $this->response(array(
+                'error' => true,
+                'mensaje' => 'Ha ocurrido un error al intentar completar el registro, por favor inténtalo más tarde',
+            ), REST_Controller::HTTP_BAD_REQUEST);
+        }
+
+        $usuario_registrado = $this->usuarios_model->obtener_usuario_por_correo($datos_post['correo'])->row();
+
+        if (!$usuario_registrado) {
+            $this->response(array(
+                'error' => true,
+                'mensaje' => 'Ha ocurrido un error al intentar completar el registro, por favor inténtalo más tarde',
+            ), REST_Controller::HTTP_BAD_REQUEST);
+        }
+
+        // Generar token
+        $token = bin2hex(openssl_random_pseudo_bytes(20));
+
+        if (!$this->usuarios_model->editar($usuario_registrado->id, array('token' => $token))) {
+            $this->response(array(
+                'error' => true,
+                'mensaje' => 'Ha ocurrido un error al intentar completar el registro, por favor intentelo mas tarde',
+            ), REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
+        }
+
+        $this->response(array(
+            'error' => false,
+            'token' => $token,
+            'usuario_id' => $usuario_registrado->id,
+        ));
+    }
+
 
     /**
      * Función que auntentica a un usuario; esta función deberá recibir un correo y una
@@ -79,71 +156,6 @@ class Cuenta extends REST_Controller
     }
 
     /**
-     * Función que registra a un usuario; esta función deberá recibir obligatoriamente el nombre
-     * completo, el apellido paterno, el correo y una
-     * contraseña; guarda al usuario nuevo, genera un token y lo envía de vuelta para futuras
-     * peticiones
-     *
-     * @return mixed
-     */
-    public function registrar_usuario_post()
-    {
-
-        $datos_post = $this->post();
-
-        if (!$datos_post['nombre_completo'] || !$datos_post['correo'] || !$datos_post['contrasena']) {
-            $this->response(array(
-                'error' => true,
-                'mensaje' => 'Faltan datos para poder completar el registro; por favor verifique que haya escrito su nombre completo, su apellido paterno, un correo y una contraseña',
-            ), REST_Controller::HTTP_BAD_REQUEST);
-        }
-
-        // Crear usuario
-        if (!$this->usuarios_model->crear(array(
-            'correo' => $datos_post['correo'],
-            'contrasena_hash' => password_hash($datos_post['contrasena'], PASSWORD_DEFAULT),
-            'nombre_completo' => $datos_post['nombre_completo'],
-            'apellido_paterno' => $datos_post['apellido_paterno'],
-            'apellido_materno' => $datos_post['apellido_materno'],
-            'no_telefono' => $datos_post['no_telefono'],
-            'codigo_postal' => $datos_post['codigo_postal'],
-            'talla_calzado' => $datos_post['talla_calzado'],
-            'rol_id' => 1, // Pertenece al rol de cliente por defecto
-        ))) {
-            $this->response(array(
-                'error' => true,
-                'mensaje' => 'Ha ocurrido un error al intentar completar el registro, por favor inténtalo más tarde',
-            ), REST_Controller::HTTP_BAD_REQUEST);
-        }
-
-        $usuario_registrado = $this->usuarios_model->obtener_usuario_por_correo($datos_post['correo'])->row();
-
-        if (!$usuario_registrado) {
-            $this->response(array(
-                'error' => true,
-                'mensaje' => 'Ha ocurrido un error al intentar completar el registro, por favor inténtalo más tarde',
-            ), REST_Controller::HTTP_BAD_REQUEST);
-        }
-
-        // Generar token
-        $token = bin2hex(openssl_random_pseudo_bytes(20));
-
-        if (!$this->usuarios_model->editar($usuario_registrado->id, array('token' => $token))) {
-            $this->response(array(
-                'error' => true,
-                'mensaje' => 'Ha ocurrido un error al intentar completar el registro, por favor inténtalo más tarde',
-            ), REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
-        }
-
-        $this->response(array(
-            'error' => false,
-            'token' => $token,
-            'usuario_id' => $usuario_registrado->id,
-        ));
-
-    }
-
-    /**
      * Función que registra/loggea a un usuario usando el servicio de Facebook. Si el usuario
      * que utiliza esta función es nuevo (con base el userID recibido); entonces lo registra
      * y le permite el acceso; sino, entonces sólo actualiza sus datos y le permite el acceso.
@@ -179,7 +191,6 @@ class Cuenta extends REST_Controller
                     'mensaje' => 'Ha ocurrido un error al intentar entrar a la aplicación usando Facebook, por favor inténtalo más tarde',
                 ), REST_Controller::HTTP_BAD_REQUEST);
             }
-
         } else { // si no, entoces registrar al usuario
             if (!$this->usuarios_model->crear(array(
                 'nombre_completo' => $datos_post['nombre_completo'],
@@ -215,7 +226,5 @@ class Cuenta extends REST_Controller
             'usuario_id' => $usuario_facebook->id,
             'facebook_id' => $usuario_facebook->facebook_id,
         ));
-
     }
-
 }
