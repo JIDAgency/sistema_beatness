@@ -4,6 +4,20 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class Usuarios_model extends CI_Model
 {
 
+    /* ====== Registro de usuario en la App ====== */
+
+    public function verificar_no_telefono_existente($no_telefono)
+    {
+        $query = $this->db->get_where('usuarios', array('no_telefono' => $no_telefono));
+        return $query->num_rows() > 0; // Devuelve true si el no_telefono existe, de lo contrario, devuelve false
+    }
+
+    public function verificar_correo_existente($correo)
+    {
+        $query = $this->db->get_where('usuarios', array('correo' => $correo));
+        return $query->num_rows() > 0; // Devuelve true si el correo existe, de lo contrario, devuelve false
+    }
+
     /** Clientes - Funciones de modelo (INICIO) */
 
     /** Obtener la lista de clientes para la lista de clientes “clientes/index” con limitaciones de información. */
@@ -324,7 +338,8 @@ class Usuarios_model extends CI_Model
         return $query;
     }
 
-    public function obtener_usuarios_seleccionados($usuarios_seleccionados_list) {
+    public function obtener_usuarios_seleccionados($usuarios_seleccionados_list)
+    {
         $query = $this->db
             ->where_in('t1.id', $usuarios_seleccionados_list)
             ->select("

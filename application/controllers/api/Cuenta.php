@@ -17,13 +17,11 @@ class Cuenta extends REST_Controller
         $this->load->model('usuarios_model');
     }
 
-    /* ====== Registro de usuario ====== */
+    /* ====== Registro de usuario en la App ====== */
 
     /**
-     * Función que registra a un usuario; esta función deberá recibir obligatoriamente el nombre
-     * completo, el apellido paterno, el correo y una
-     * contraseña; guarda al usuario nuevo, genera un token y lo envía de vuelta para futuras
-     * peticiones
+     * Función que registra a un usuario. Recibe el nombre completo, el apellido paterno, el correo y una
+     * contraseña. Guarda al usuario nuevo, genera un token y lo envía de vuelta para futuras peticiones.
      *
      * @return mixed
      */
@@ -32,67 +30,88 @@ class Cuenta extends REST_Controller
 
         $datos_post = $this->post();
 
-        if (!$datos_post['nombre_completo'] || !$datos_post['correo'] || !$datos_post['contrasena']) {
+        // Verificar si los datos requeridos están presentes
+        if (!$datos_post['nombre_completo'] || !$datos_post['no_telefono'] || !$datos_post['correo'] || !$datos_post['contrasena']) {
             $this->response(array(
                 'error' => true,
-                'mensaje' => 'Por favor complete todos los campos obligatorios para registrar su cuenta. Asegúrese de proporcionar su nombre completo, apellido paterno, dirección de correo electrónico y una contraseña.'
+                'mensaje' => 'Por favor complete todos los campos obligatorios para registrar su cuenta.'
             ), REST_Controller::HTTP_BAD_REQUEST);
         }
 
-        // Verificar si el usuario existe
-        $verificar_si_usuario_existe = $this->usuarios_model->obtener_usuario_por_correo($datos_post['correo'])->row();
+        // Iniciar la transacción
+        $this->db->trans_begin();
 
-        if (!$verificar_si_usuario_existe) {
+        try {
+            // Verificar si el usuario existe con el número de teléfono
+            $verificar_no_telefono_existente = $this->usuarios_model->verificar_no_telefono_existente($datos_post['no_telefono']);
+
+            if ($verificar_no_telefono_existente) {
+                // Si el número de teléfono ya está registrado, lanzar una excepción
+                throw new Exception('Ya existe una cuenta registrada con este <b>número de teléfono</b>. Si olvidaste tu contraseña, puedes restablecerla a través de la opción "Olvidé mi contraseña". Si necesitas ayuda, por favor contáctanos.', REST_Controller::HTTP_BAD_REQUEST);
+            }
+
+            // Verificar si el usuario existe con el correo electrónico
+            $verificar_correo_existente = $this->usuarios_model->verificar_correo_existente($datos_post['correo']);
+
+            if ($verificar_correo_existente) {
+                // Si el correo electrónico ya está registrado, lanzar una excepción
+                throw new Exception('Ya existe una cuenta registrada con esta dirección de <b>correo electrónico</b>. Si olvidaste tu contraseña, puedes restablecerla a través de la opción "Olvidé mi contraseña". Si necesitas ayuda, por favor contáctanos.', REST_Controller::HTTP_BAD_REQUEST);
+            }
+
+            // Crear usuario
+            $data_1 = array(
+                'correo' => $datos_post['correo'],
+                'contrasena_hash' => password_hash($datos_post['contrasena'], PASSWORD_DEFAULT),
+                'nombre_completo' => $datos_post['nombre_completo'],
+                'apellido_paterno' => $datos_post['apellido_paterno'],
+                'apellido_materno' => $datos_post['apellido_materno'],
+                'no_telefono' => $datos_post['no_telefono'],
+                'codigo_postal' => $datos_post['codigo_postal'],
+                'talla_calzado' => $datos_post['talla_calzado'],
+                'rol_id' => 1, // Pertenece al rol de cliente por defecto
+            );
+
+            if (!$data_1) {
+                // Si no se pudo crear el usuario, lanzar una excepción
+                throw new Exception('Ha ocurrido un error al procesar el registro, por favor inténtenlo más tarde.', REST_Controller::HTTP_BAD_REQUEST);
+            }
+
+            if ($this->usuarios_model->crear($data_1)) {
+                // Si no se pudo crear el usuario, lanzar una excepción
+                throw new Exception('Ha ocurrido un error al procesar el registro, por favor inténtenlo más tarde.', REST_Controller::HTTP_BAD_REQUEST);
+            }
+
+            $usuario_id = $this->db->insert_id();
+
+            // Generar token
+            $token = bin2hex(openssl_random_pseudo_bytes(20));
+
+            // Actualizar el token del usuario recién creado
+            if (!$this->usuarios_model->editar($usuario_id, array('token' => $token))) {
+                // Si no se pudo actualizar el token, lanzar una excepción
+                throw new Exception('Ha ocurrido un error al generar la sesión, por favor inténtenlo más tarde', REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
+            }
+
+            // Confirmar la transacción
+            $this->db->trans_commit();
+
+            // Responder con éxito y devolver el token y el ID del usuario
+            $this->response(array(
+                'error' => false,
+                'token' => $token,
+                'usuario_id' => $usuario_id,
+            ));
+        } catch (Exception $e) {
+            // Deshacer la transacción en caso de error
+            $this->db->trans_rollback();
+
+            // Responder con el mensaje de error y el código de estado HTTP correspondiente
             $this->response(array(
                 'error' => true,
-                'mensaje' => 'Ya existe una cuenta registrada con esta dirección de correo electrónico. Si olvidaste tu contraseña, puedes restablecerla a través de la opción "Olvidé mi contraseña". Si necesitas ayuda, por favor contáctanos.'
-            ), REST_Controller::HTTP_BAD_REQUEST);
+                'mensaje' => $e->getMessage(),
+            ), $e->getCode());
         }
-
-        // Crear usuario
-        if (!$this->usuarios_model->crear(array(
-            'correo' => $datos_post['correo'],
-            'contrasena_hash' => password_hash($datos_post['contrasena'], PASSWORD_DEFAULT),
-            'nombre_completo' => $datos_post['nombre_completo'],
-            'apellido_paterno' => $datos_post['apellido_paterno'],
-            'apellido_materno' => $datos_post['apellido_materno'],
-            'no_telefono' => $datos_post['no_telefono'],
-            'codigo_postal' => $datos_post['codigo_postal'],
-            'talla_calzado' => $datos_post['talla_calzado'],
-            'rol_id' => 1, // Pertenece al rol de cliente por defecto
-        ))) {
-            $this->response(array(
-                'error' => true,
-                'mensaje' => 'Ha ocurrido un error al intentar completar el registro, por favor inténtalo más tarde',
-            ), REST_Controller::HTTP_BAD_REQUEST);
-        }
-
-        $usuario_registrado = $this->usuarios_model->obtener_usuario_por_correo($datos_post['correo'])->row();
-
-        if (!$usuario_registrado) {
-            $this->response(array(
-                'error' => true,
-                'mensaje' => 'Ha ocurrido un error al intentar completar el registro, por favor inténtalo más tarde',
-            ), REST_Controller::HTTP_BAD_REQUEST);
-        }
-
-        // Generar token
-        $token = bin2hex(openssl_random_pseudo_bytes(20));
-
-        if (!$this->usuarios_model->editar($usuario_registrado->id, array('token' => $token))) {
-            $this->response(array(
-                'error' => true,
-                'mensaje' => 'Ha ocurrido un error al intentar completar el registro, por favor intentelo mas tarde',
-            ), REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
-        }
-
-        $this->response(array(
-            'error' => false,
-            'token' => $token,
-            'usuario_id' => $usuario_registrado->id,
-        ));
     }
-
 
     /**
      * Función que auntentica a un usuario; esta función deberá recibir un correo y una
