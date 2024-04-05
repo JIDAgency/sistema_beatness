@@ -196,7 +196,7 @@
                                 </div>
 
                                 <br>
-                                <table name="tabla" id="tabla" class="table table-striped table-bordered zero-configuration compact" cellspacing="0">
+                                <table name="tabla" id="tabla" class="table display nowrap table-striped table-bordered scroll-horizontal table-hover" cellspacing="0">
                                     <thead>
                                         <tr>
                                             <th scope="col">ID</th>

@@ -16,7 +16,7 @@
 							<div class="card-content">
 								<div class="card-body">
 									<?php $this->load->view('_comun/mensajes_alerta'); $i = 1; ?>
-									<table id="tabla-membresias" class="table table-striped table-bordered zero-configuration">
+									<table id="tabla-membresias" class="table display nowrap table-striped table-bordered scroll-horizontal table-hover">
 										<thead>
 											<tr>
 												<th>#</th>

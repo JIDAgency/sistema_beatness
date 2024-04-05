@@ -74,7 +74,7 @@
 
                             <div class="card-content collapse show">
                                 <div class="card-body card-dashboard">
-                                    <table class="table table-striped table-bordered" name="table" id="table">
+                                    <table class="table display nowrap table-striped table-bordered scroll-horizontal table-hover" name="table" id="table">
                                         <thead>
                                             <tr>
                                                 <th>ID</th>

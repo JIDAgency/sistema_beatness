@@ -47,7 +47,7 @@
 
                                     <div class="table-responsive">
 
-                                        <table id="tabla-clases-streaming" class="table table-striped table-responsive table-bordered zero-configuration">
+                                        <table id="tabla-clases-streaming" class="table display nowrap table-striped table-bordered scroll-horizontal table-hover">
                                             <thead>
                                                 <tr>
                                                     <th>ID</th>

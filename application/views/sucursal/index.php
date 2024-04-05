@@ -60,7 +60,7 @@
 					<h4 class="card-title">Sucursales</h4>
 					<h6 class="card-subtitle">Sucursales registradas en el sistema</h6>
 
-					<table class="table mb-0">
+					<table class="table display nowrap table-striped table-bordered scroll-horizontal table-hover">
 						<thead>
 						<tr>
 							<th>#</th>

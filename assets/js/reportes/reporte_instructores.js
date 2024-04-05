@@ -37,11 +37,10 @@ $.fn.dataTable.ext.errMode = 'throw';
 $(document).ready( function(){
     table = $('#table').DataTable({ 
         "scrollX": true,
-        "autoWidth": false,
         "deferRender": true,
         'processing': true,
-        "order": [[0, "asc"]],
-        "lengthMenu": [[25, 50, 100, 250, 500, -1],[25, 50, 100, 250, 500, "Todos"]],
+        "order": [[0, "desc"]],
+        "lengthMenu": [[25, 50, 100, 250, 500, -1], [25, 50, 100, 250, 500, "Todos"]],
         "ajax": {
             "url" : method_call+"obtener_tabla_reporte_instructores_por_mes/"+fechaYm,
             "type" : 'POST'
@@ -84,11 +83,10 @@ $(document).ready( function(){
 
     table_primera_quincena = $('#table_primera_quincena').DataTable({ 
         "scrollX": true,
-        "autoWidth": false,
         "deferRender": true,
         'processing': true,
-        "order": [[0, "asc"]],
-        "lengthMenu": [[25, 50, 100, 250, 500, -1],[25, 50, 100, 250, 500, "Todos"]],
+        "order": [[0, "desc"]],
+        "lengthMenu": [[25, 50, 100, 250, 500, -1], [25, 50, 100, 250, 500, "Todos"]],
         "ajax": {
             "url" : method_call+"obtener_tabla_reporte_instructores_entre_fechas/"+fechaYm+"-01/"+fechaYm+"-15",
             "type" : 'POST'
@@ -131,11 +129,10 @@ $(document).ready( function(){
 
     table_segunda_quincena = $('#table_segunda_quincena').DataTable({ 
         "scrollX": true,
-        "autoWidth": false,
         "deferRender": true,
         'processing': true,
-        "order": [[0, "asc"]],
-        "lengthMenu": [[25, 50, 100, 250, 500, -1],[25, 50, 100, 250, 500, "Todos"]],
+        "order": [[0, "desc"]],
+        "lengthMenu": [[25, 50, 100, 250, 500, -1], [25, 50, 100, 250, 500, "Todos"]],
         "ajax": {
             "url" : method_call+"obtener_tabla_reporte_instructores_entre_fechas/"+fechaYm+"-16/"+fechaYm+"-31",
             "type" : 'POST'

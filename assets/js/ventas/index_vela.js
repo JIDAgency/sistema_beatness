@@ -14,11 +14,11 @@ $.fn.dataTable.ext.errMode = 'throw';
 
 $(function () {
     table = $('#tabla-ventas').dataTable({
-        "lengthMenu": [[25, 50, 100, 250, 500, -1],[25, 50, 100, 250, 500, "Todos"]],
+        "scrollX": true,
         "deferRender": true,
-        "order": [[0, "desc"]],
-        "responsive": true,
         'processing': true,
+        "order": [[0, "desc"]],
+        "lengthMenu": [[25, 50, 100, 250, 500, -1], [25, 50, 100, 250, 500, "Todos"]],
         "ajax": {
             "url" : method_call+"listar_las_ventas_de_VELA_front",
             "type" : 'POST'

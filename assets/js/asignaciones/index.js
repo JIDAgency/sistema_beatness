@@ -21,7 +21,7 @@ $(document).ready(function(){
         "deferRender": true,
         'processing': true,
         "order": [[0, "asc"]],
-        "lengthMenu": [[25, 50, 100, 250, 500, -1],[25, 50, 100, 250, 500, "Todos"]],
+        "lengthMenu": [[25, 50, 100, 250, 500, -1], [25, 50, 100, 250, 500, "Todos"]],
         "ajax": {
             "url" : method_call+"obtener_tabla_index_planes_activos_por_cliente",
             "type" : 'POST'
@@ -72,7 +72,7 @@ $(document).ready(function(){
         "deferRender": true,
         'processing': true,
         "order": [[0, "asc"]],
-        "lengthMenu": [[25, 50, 100, 250, 500, -1],[25, 50, 100, 250, 500, "Todos"]],
+        "lengthMenu": [[25, 50, 100, 250, 500, -1], [25, 50, 100, 250, 500, "Todos"]],
         "ajax": {
             "url" : method_call+"obtener_tabla_index_planes_por_caducar_por_cliente",
             "type" : 'POST'
@@ -123,7 +123,7 @@ $(document).ready(function(){
         "deferRender": true,
         'processing': true,
         "order": [[0, "asc"]],
-        "lengthMenu": [[25, 50, 100, 250, 500, -1],[25, 50, 100, 250, 500, "Todos"]],
+        "lengthMenu": [[25, 50, 100, 250, 500, -1], [25, 50, 100, 250, 500, "Todos"]],
         "ajax": {
             "url" : method_call+"obtener_tabla_index_planes_caducados_por_cliente",
             "type" : 'POST'

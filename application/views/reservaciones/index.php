@@ -28,7 +28,7 @@
 								<div class="card-content p_dt">
 									<div class="card-body">
 										<?php $this->load->view('_comun/mensajes_alerta'); ?>
-										<table id="tabla-reservaciones" class="table table-striped table-bordered">
+										<table id="tabla-reservaciones" class="table display nowrap table-striped table-bordered scroll-horizontal table-hover">
 											<thead>
 												<tr>
 													<th>ID</th>

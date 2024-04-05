@@ -38,7 +38,7 @@
                             <h3>Ventas por busqueda: <span id = "ttl" name = "ttl">$0.00</span></h3>
 							<br>
 							<br>
-							<table id="tabla-ventas" class="table table-striped table-bordered">
+							<table id="tabla-ventas" class="table display nowrap table-striped table-bordered scroll-horizontal table-hover">
 								<thead>
 									<tr>
 										<th>ID</th>

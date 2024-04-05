@@ -3,10 +3,10 @@ $(function () {
         "scrollX": true,
         "deferRender": true,
         'processing': true,
-		"lengthMenu": [[100, 250, 500, -1],[100, 250, 500, "Todos"]],
+        "order": [[0, "desc"]],
+        "lengthMenu": [[25, 50, 100, 250, 500, -1], [25, 50, 100, 250, 500, "Todos"]],
         "dom": 'Bfrtip',
         "buttons": ['pageLength','excel','copy'],    // adds the excel button
-        order: [[ 0, 'desc' ]],
 		/*columnDefs: [
             { responsivePriority: 1, targets: 13 },
             { responsivePriority: 3, targets: -1 },

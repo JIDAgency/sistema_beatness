@@ -6,11 +6,11 @@ $(function () {
     });
 
 	var table = $("#tabla-ventas").DataTable({
-        "lengthMenu": [[100, 250, 500, -1],[100, 250, 500, "Todos"]],
-        "dom": 'Bfrtip',
-        "buttons": ['pageLength','excel','copy'],    // adds the excel button
-        order: [[ 0, 'desc' ]],
-        responsive: true,
+        "scrollX": true,
+        "deferRender": true,
+        'processing': true,
+        "order": [[0, "desc"]],
+        "lengthMenu": [[25, 50, 100, 250, 500, -1], [25, 50, 100, 250, 500, "Todos"]],
         "language": {
             "search": "Buscar",
             "scrollX": false,

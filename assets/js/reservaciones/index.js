@@ -3,16 +3,8 @@ $(function () {
 		"scrollX": true,
         "deferRender": true,
         'processing': true,
-		"lengthMenu": [[100, 250, 500, -1],[100, 250, 500, "Todos"]],
-        "dom": 'Bfrtip',
-        "buttons": ['pageLength','excel','copy'],    // adds the excel button
-        order: [[ 0, 'desc' ]],
-		/*columnDefs: [
-            { responsivePriority: 1, targets: 7 },
-            { responsivePriority: 2, targets: -1 },
-            { orderable: true, targets: 7 }
-		],*/
-		order: [[ 0, 'desc' ]],
+        "order": [[0, "desc"]],
+        "lengthMenu": [[25, 50, 100, 250, 500, -1], [25, 50, 100, 250, 500, "Todos"]],
 		"language": {
 			"search": "Buscar",
 			"infoEmpty": "No hay registros que mostrar",

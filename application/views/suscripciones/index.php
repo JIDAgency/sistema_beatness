@@ -34,7 +34,7 @@
 							<div class="card-content collapse show">
 								<div class="card-body card-dashboard">
 									<!--p class="card-text"></p-->
-									<table name="tabla" id="tabla" class="table table-striped table-bordered zero-configuration">
+									<table name="tabla" id="tabla" class="table display nowrap table-striped table-bordered scroll-horizontal table-hover">
 										<thead>
 											<tr>
 												<th>ID</th>

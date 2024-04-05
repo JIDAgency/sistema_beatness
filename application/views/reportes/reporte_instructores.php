@@ -67,7 +67,7 @@
                                     </div>
                                     <h4 class="form-section"><i class="ft-calendar"></i> Mensual</h4>
                                     <hr>
-                                    <table class="table table-striped table-bordered" name="table" id="table">
+                                    <table class="table display nowrap table-striped table-bordered scroll-horizontal table-hover" name="table" id="table">
                                         <thead>
                                             <tr>
                                                 <th>#</th>
@@ -84,7 +84,7 @@
                                         <div class="col-6">
                                             <h4 class="form-section"><i class="ft-calendar"></i> Primera quincena</h4>
                                             <hr>
-                                            <table class="table table-striped table-bordered" name="table_primera_quincena" id="table_primera_quincena">
+                                            <table class="table display nowrap table-striped table-bordered scroll-horizontal table-hover" name="table_primera_quincena" id="table_primera_quincena">
                                                 <thead>
                                                     <tr>
                                                         <th>#</th>
@@ -101,7 +101,7 @@
                                         <div class="col-6">
                                             <h4 class="form-section"><i class="ft-calendar"></i> Segunda quincena</h4>
                                             <hr>
-                                            <table class="table table-striped table-bordered" name="table_segunda_quincena" id="table_segunda_quincena">
+                                            <table class="table display nowrap table-striped table-bordered scroll-horizontal table-hover" name="table_segunda_quincena" id="table_segunda_quincena">
                                                 <thead>
                                                     <tr>
                                                         <th>#</th>

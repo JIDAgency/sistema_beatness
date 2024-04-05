@@ -14,16 +14,15 @@ $.fn.dataTable.ext.errMode = 'throw';
 
 $(document).ready(function(){
     table = $('#tabla').DataTable({ 
+        "scrollX": true,
+        "deferRender": true,
+        'processing': true,
+        "order": [[0, "desc"]],
+        "lengthMenu": [[25, 50, 100, 250, 500, -1], [25, 50, 100, 250, 500, "Todos"]],
         "ajax": {
             "url" : method_call+"get_lista_de_ventas_del_dia_para_fd_con_permisos",
             "type" : 'POST'
         },
-        "scrollX": true,
-        "autoWidth": false,
-        "deferRender": true,
-        'processing': true,
-        "order": [[0, "desc"]],
-        "lengthMenu": [[25, 50, 100, 250, 500, -1],[25, 50, 100, 250, 500, "Todos"]],
         "columns": [
             { "data": "id" },
             { "data": "concepto" },

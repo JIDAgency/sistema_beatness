@@ -43,7 +43,7 @@
 									<div class="card-body">
 										<?php $this->load->view('_comun/mensajes_alerta'); ?>
 										<div class="table-responsive">
-											<table id="tabla-disciplinas" class="table table-striped table-bordered compact" cellspacing="0">
+											<table id="tabla-disciplinas" class="table display nowrap table-striped table-bordered scroll-horizontal table-hover" cellspacing="0">
 												<thead>
 													<tr>
 														<th>ID</th>

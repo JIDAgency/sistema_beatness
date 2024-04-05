@@ -11,10 +11,10 @@ $(document).ready(function(){
             "type" : 'POST',
         },
         "scrollX": true,
-        "autoWidth": false,
         "deferRender": true,
         'processing': true,
-        "lengthMenu": [[25, 50, 100, 250, 500, -1],[25, 50, 100, 250, 500, "Todos"]],
+        "order": [[0, "desc"]],
+        "lengthMenu": [[25, 50, 100, 250, 500, -1], [25, 50, 100, 250, 500, "Todos"]],
         "order": [[0, "desc"]],
         "columns": [
             { "data": "id" },

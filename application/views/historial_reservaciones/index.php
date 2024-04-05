@@ -63,7 +63,7 @@
                                 </div>
                             </div>
 
-                            <table id="tabla-historial-reservaciones" class="table table-striped table-bordered dataex-res-immediately table-striped">
+                            <table id="tabla-historial-reservaciones" class="table display nowrap table-striped table-bordered scroll-horizontal table-hover">
                                 <thead>
                                     <th>ID</th>
                                     <th>Clase</th>

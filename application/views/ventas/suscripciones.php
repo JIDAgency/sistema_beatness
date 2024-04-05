@@ -34,7 +34,7 @@
                         <div class="card-content collapse show">
                             <div class="card-body card-dashboard table-responsive">
                                 <!--p class="card-text">Texto</p-->
-                                <table name="tabla-suscripciones" id="tabla-suscripciones" class="table table-striped table-bordered zero-configuration">
+                                <table name="tabla-suscripciones" id="tabla-suscripciones" class="table display nowrap table-striped table-bordered scroll-horizontal table-hover">
                                     <thead>
                                         <tr>
                                             <th>ID</th>

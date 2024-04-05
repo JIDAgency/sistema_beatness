@@ -48,7 +48,7 @@
 									<div class="card-body">
 										<?php $this->load->view('_comun/mensajes_alerta');
 										$i = 1; ?>
-										<table id="tabla-planes" class="table table-striped table-bordered compact" cellspacing="0">
+										<table id="tabla-planes" class="table display nowrap table-striped table-bordered scroll-horizontal table-hover" cellspacing="0">
 											<thead>
 												<tr>
 													<th>ID</th>

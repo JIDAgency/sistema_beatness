@@ -15,10 +15,10 @@ if(actual_url.indexOf("index") < 0){
 $(function () {
     table = $('#tabla').DataTable({
         "scrollX": true,
-        "lengthMenu": [[25, 50, 100, 250, 500],[25, 50, 100, 250, 500]],
         "deferRender": true,
-        "order": [[0, "desc"]],
         'processing': true,
+        "order": [[0, "desc"]],
+        "lengthMenu": [[25, 50, 100, 250, 500, -1], [25, 50, 100, 250, 500, "Todos"]],
         "ajax": {
             "url" : method_call+"get_lista_de_clientes_suspendidos",
             "type" : 'POST'

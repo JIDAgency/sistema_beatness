@@ -57,7 +57,7 @@
                     <?php echo $plan_row->nombre.' ['.$plan_row->sku.']'; ?>
                 </div>
                 <div class="card-body">
-                    <table class="table table-bordered">
+                    <table class="table display nowrap table-striped table-bordered scroll-horizontal table-hover">
                         <thead>
                             <tr>
 								<th>Descripción</th>

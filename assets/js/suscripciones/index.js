@@ -15,7 +15,7 @@ $(document).ready(function(){
         "deferRender": true,
         'processing': true,
         "order": [[0, "desc"]],
-        "lengthMenu": [[25, 50, 100, 250, 500, -1],[25, 50, 100, 250, 500, "Todos"]],
+        "lengthMenu": [[25, 50, 100, 250, 500, -1], [25, 50, 100, 250, 500, "Todos"]],
         "columns": [
             {"data": "id"},
             {"data": "cliente_nombre"},

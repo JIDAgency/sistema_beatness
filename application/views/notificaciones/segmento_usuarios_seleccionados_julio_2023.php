@@ -57,7 +57,7 @@
 
                                         <div class="col-xl-6 col-md-6 col-sm-12">
 
-                                            <table class="table table-striped table-bordered" name="table" id="table">
+                                            <table class="table display nowrap table-striped table-bordered scroll-horizontal table-hover" name="table" id="table">
                                                 <thead>
                                                     <tr>
                                                         <th>ID</th>
