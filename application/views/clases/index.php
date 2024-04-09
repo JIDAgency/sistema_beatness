@@ -33,7 +33,7 @@
 								<div class="card-content p_dt">
 									<div class="card-body">
 										<?php $this->load->view('_comun/mensajes_alerta'); ?>
-										<table id="tabla-clases" class="table display nowrap table-striped table-bordered scroll-horizontal table-hover">
+										<table id="table" class="table display nowrap table-striped table-bordered scroll-horizontal table-hover">
 											<thead>
 												<tr>
 													<th>ID</th>
@@ -56,7 +56,7 @@
 												</tr>
 											</thead>
 											<tbody>
-												<?php foreach ($clases->result() as $clase) : $i = 0; ?>
+												<!-- <?php foreach ($clases->result() as $clase) : $i = 0; ?>
 													<tr>
 														<td>
 															<?php echo $clase->id; ?>
@@ -163,7 +163,7 @@
 															<?php endif; ?>
 														</td>
 													</tr>
-												<?php endforeach; ?>
+												<?php endforeach; ?> -->
 											</tbody>
 										</table>
 									</div>

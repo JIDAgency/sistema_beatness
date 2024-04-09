@@ -15,15 +15,17 @@ class Clases extends MY_Controller
         $this->load->model('clases_en_linea_model');
     }
 
-    function search_reservar(){
-	    $this->load->model('clases_model');
-	    if (isset($_GET['term'])){
-      	    $q = mb_strtolower($_GET['term']);
+    function search_reservar()
+    {
+        $this->load->model('clases_model');
+        if (isset($_GET['term'])) {
+            $q = mb_strtolower($_GET['term']);
             $this->clases_model->autosearch($q);
-	    }
+        }
     }
 
-    public function index() {
+    public function index()
+    {
         $data['menu_clases_activo'] = true;
         $data['pagina_titulo'] = 'Lista de clases';
 
@@ -47,10 +49,104 @@ class Clases extends MY_Controller
         );
 
         $this->construir_private_site_ui('clases/index', $data);
-
     }
 
-    public function crear_clases() {
+    public function obtener_tabla_index()
+    {
+        setlocale(LC_ALL, "es_ES");
+
+        $draw = intval($this->input->post('draw'));
+        $start = intval($this->input->post('start'));
+        $length = intval($this->input->post('length'));
+
+        $clases_list = $this->clases_model->obtener_todas_para_front_con_detalle();
+        $usuarios_list = $this->usuarios_model->obtener_todos();
+
+        $data = [];
+
+        foreach ($clases_list->result() as $clase) {
+            $i = 0;
+
+            $fecha = strtotime($clase->inicia);
+            $fecha_espaniol = strftime("%d de %b del %Y<br>%T", $fecha);
+
+            if ($clase->intervalo_horas != 1) {
+                $intervalo_horas = $clase->intervalo_horas . " hrs.";
+            } else {
+                $intervalo_horas = $clase->intervalo_horas . " hr.";
+            }
+
+            $lugares = '';
+            $cupo_lugares = $clase->cupo_lugares;
+            $cupo_lugares = json_decode($cupo_lugares);
+            foreach ($cupo_lugares as $lugar) {
+                if ($lugar->nombre_usuario) {
+                    $i++;
+                    foreach ($usuarios_list->result() as $usuario) {
+                        if ($lugar->nombre_usuario == $usuario->id) {
+                            $lugares = $i . ' - Lugar: ' . $lugar->no_lugar . ' |  Cliente: ' . $lugar->nombre_usuario . ' - ' . $usuario->nombre_completo . ' ' . $usuario->apellido_paterno . ' ' . $usuario->apellido_materno . '<br>';
+                        }
+                    }
+                    if (!is_numeric($lugar->nombre_usuario)) {
+                        $lugares = $i . ' - Lugar: ' . $lugar->no_lugar . ' |  Cliente: ' . $lugar->nombre_usuario . '<br>';
+                    }
+                }
+            }
+
+            $opciones = '';
+
+            if ($clase->estatus != 'Cancelada') {
+
+                $fecha_de_clase = $clase->inicia;
+                $fecha_limite_de_clase = strtotime('+48 hours', strtotime($fecha_de_clase));
+
+                if (strtotime('now') < $fecha_limite_de_clase) {
+                    $opciones = anchor('clases/reservar/' . $clase->id, 'Reservar');
+                }
+
+                $opciones = anchor('clases/editar/' . $clase->id, 'Editar');
+            }
+            if ($clase->reservado == 0 and $clase->estatus == 'Activa') {
+
+                $opciones = anchor('clases/cancelar/' . $clase->id, '<span class="red">Cancelar</span>');
+
+                $opciones = anchor('clases/borrar/' . $clase->id, '<span class="red">Borrar</span>');
+            }
+
+            $data[] = array(
+                'id' => $clase->id,
+                'sku' => !empty($clase->identificador) ? $clase->identificador : '',
+                'disciplina' => $clase->subdisciplina_id != 0 ? $clase->disciplina_nombre . ' | ' . $clase->disciplina_nombre . ' GODIN' : $clase->disciplina_nombre,
+                'cupo' => !empty($clase->cupo) ? ucfirst($clase->cupo) : '',
+                'sucursal' => !empty($clase->sucursal_nombre . ' [' . $clase->sucursal_locacion . ']') ? $clase->sucursal_nombre . ' [' . $clase->sucursal_locacion . ']' : '',
+                'instructor' => !empty($clase->instructor_nombre) ? $clase->instructor_nombre : '',
+                'dificultad' => !empty($clase->dificultad) ? ucwords($clase->dificultad) : '',
+                'horario' => !empty($clase->inicia) ? mb_strtoupper($clase->inicia) : '',
+                'horario_esp' => !empty($fecha_espaniol) ? ucfirst($fecha_espaniol) : '',
+                'estatus' => !empty($clase->estatus) ? ucwords($clase->estatus) : '',
+                'intervalo_horas' => !empty($intervalo_horas) ? mb_strtoupper($intervalo_horas) : '',
+                'cupo_restantes' => !empty($clase->cupo - $clase->reservado) ? $clase->cupo - $clase->reservado : '',
+                'cupo_original' => !empty($clase->cupo) ? ucfirst($clase->cupo) : '',
+                'cupo_reservado' => !empty($clase->reservado) ? ucfirst($clase->reservado) : 0,
+                'inasistencias' => !empty($clase->inasistencias) ? ucfirst($clase->inasistencias) : 0,
+                'lugares' => !empty($lugares) ? ucfirst($lugares) : '',
+                'opciones' => $opciones,
+            );
+        }
+
+        $result = array(
+            'draw' => $draw,
+            'recordsTotal' => $clases_list->num_rows(),
+            'recordsFiltered' => $clases_list->num_rows(),
+            'data' => $data
+        );
+
+        echo json_encode($result);
+        exit();
+    }
+
+    public function crear_clases()
+    {
         // Validar que existan usuarios en el rol de instructores
         $instructores = $this->usuarios_model->obtener_todos_instructores();
 
@@ -66,7 +162,7 @@ class Clases extends MY_Controller
             $this->session->set_flashdata('MENSAJE_INFO', 'Es necesario que exista por lo menos alguna disciplina disponible para poder crear la clase.');
             redirect('clases/index');
         }
-    
+
         $data['instructores'] = $instructores;
 
         $data['disciplinas'] = $disciplinas;
@@ -74,8 +170,7 @@ class Clases extends MY_Controller
         $data['menu_clases_activo'] = true;
         $data['pagina_titulo'] = 'Nueva clase';
 
-        $data['styles'] = array(
-        );
+        $data['styles'] = array();
         $data['scripts'] = array(
             array('es_rel' => true, 'src' => 'clases/crear_clases.js'),
         );
@@ -83,7 +178,8 @@ class Clases extends MY_Controller
         $this->construir_private_site_ui('clases/crear_clases', $data);
     }
 
-    public function crear() {
+    public function crear()
+    {
         // Validar que existan usuarios en el rol de instructores
         $instructores = $this->usuarios_model->obtener_todos_instructores();
 
@@ -145,15 +241,14 @@ class Clases extends MY_Controller
                 );
 
                 array_push($cupo_lugares, $lugar);
-
             }
 
             $cupo_lugares_json = json_encode($cupo_lugares);
 
             if (strtotime($this->input->post('inicia_time')) <= strtotime('12:00')) {
-                $img_acceso = base_url().'almacenamiento/img_app/img_acceso/acceso-matutino.png';
+                $img_acceso = base_url() . 'almacenamiento/img_app/img_acceso/acceso-matutino.png';
             } elseif (strtotime($this->input->post('inicia_time')) >= strtotime('12:01')) {
-                $img_acceso = base_url().'almacenamiento/img_app/img_acceso/acceso-vespertino.png';
+                $img_acceso = base_url() . 'almacenamiento/img_app/img_acceso/acceso-vespertino.png';
             }
 
             $hora_de_incio = date('Y-m-d', strtotime(str_replace('/', '-', $this->input->post('inicia_date')))) . 'T' . $this->input->post('inicia_time');
@@ -164,7 +259,7 @@ class Clases extends MY_Controller
              */
 
             //$godin_bike = 5; $godin_box = 6; $godin_body = 7; $dorado_godin_bike = 9;
-            
+
             /*if($this->input->post('disciplina_id') == $godin_bike){
                 $disciplina_id = 2;
                 $subdisciplina_id = $this->input->post('disciplina_id');
@@ -208,7 +303,6 @@ class Clases extends MY_Controller
 
             // Si algo falla regresar a la vista de crear
             $this->construir_private_site_ui('clases/crear', $data);
-
         }
     }
 
@@ -218,7 +312,7 @@ class Clases extends MY_Controller
         $data['mensaje_exito'] = $this->session->flashdata('MENSAJE_EXITO');
         $data['mensaje_info'] = $this->session->flashdata('MENSAJE_INFO');
         $data['mensaje_error'] = $this->session->flashdata('MENSAJE_ERROR');
-        
+
         // Validar que existan usuarios en el rol de instructores
         $instructores = $this->usuarios_model->obtener_todos_instructores();
         $data['usuarios'] = $this->usuarios_model->obtener_todos();
@@ -284,7 +378,6 @@ class Clases extends MY_Controller
             $data['clase_a_editar'] = $clase_a_editar;
 
             $this->construir_private_site_ui('clases/editar', $data);
-
         } else {
             // Preparar los datos a insertar
             // log_message('debug', print_r($this->input->post(), true));
@@ -316,7 +409,7 @@ class Clases extends MY_Controller
                 $subdisciplina_id = 0;
             }
             */
-            
+
             $data = array(
                 'identificador' => $this->input->post('identificador'),
                 'disciplina_id' => $this->input->post('disciplina_id'),
@@ -340,16 +433,14 @@ class Clases extends MY_Controller
 
             // Si algo falla regresar a la vista de editar
             $this->construir_private_site_ui('clases/editar', $data);
-
         }
-
     }
 
     public function reservar($id = null)
     {
-        
+
         $data['clase_a_reservar'] = $this->clases_model->obtener_todas_con_detalle_por_id($id)->row();
-        
+
         // Validar que existan usuarios disponibles
         $usuarios = $this->usuarios_model->obtener_todos();
 
@@ -374,13 +465,13 @@ class Clases extends MY_Controller
             array('es_rel' => false, 'src' => 'https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js'),
             array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/extensions/datedropper.min.js'),
             array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/extensions/timedropper.min.js'),
-            array('es_rel' => false, 'src' => base_url().'app-assets/vendors/js/easyautocomplete/jquery.easy-autocomplete.min.js'),
+            array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/easyautocomplete/jquery.easy-autocomplete.min.js'),
             array('es_rel' => false, 'src' => 'https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'),
             array('es_rel' => false, 'src' => 'https://code.jquery.com/ui/1.10.2/jquery-ui.js'),
-            array('es_rel' => false, 'src' => base_url().'app-assets/vendors/js/forms/extended/inputmask/jquery.inputmask.bundle.min.js'),
+            array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/forms/extended/inputmask/jquery.inputmask.bundle.min.js'),
             array('es_rel' => true, 'src' => 'clases/reservar.js'),
         );
-        
+
         $this->form_validation->set_rules('usuario_id', 'Cliente', 'required');
         $this->form_validation->set_rules('no_lugar', 'Lugar', 'required');
 
@@ -434,20 +525,20 @@ class Clases extends MY_Controller
             foreach ($asignaciones_por_cliente->result() as $asignacion) {
 
                 $fecha_de_asignacion = $asignacion->fecha_activacion;
-                $fecha_limite_de_asignacion = strtotime('+'.$asignacion->vigencia_en_dias.' days', strtotime($fecha_de_asignacion));
+                $fecha_limite_de_asignacion = strtotime('+' . $asignacion->vigencia_en_dias . ' days', strtotime($fecha_de_asignacion));
 
                 if (strtotime('now') < $fecha_limite_de_asignacion) {
                     /*$this->session->set_flashdata('MENSAJE_ERROR', 'El plan del usuario seleccionado ya ha vencido el '.date('Y-m-d H:i:s',$fecha_limite_de_asignacion).', por favor notifique al usuario');
                     redirect('clases/index');*/
 
-                    if ($asignacion->clases_incluidas - $asignacion->clases_usadas >= $clase_a_reservar->intervalo_horas ) {
+                    if ($asignacion->clases_incluidas - $asignacion->clases_usadas >= $clase_a_reservar->intervalo_horas) {
                         /*$this->session->set_flashdata('MENSAJE_ERROR', 'El usuario aún cuenta con clase disponibles para reservar.');
                         redirect('clases/index');*/
 
-                        $disciplinas_ids_asignacion = explode('|',$asignacion->disciplinas);
+                        $disciplinas_ids_asignacion = explode('|', $asignacion->disciplinas);
 
-                        foreach($disciplinas_ids_asignacion as $disciplina) {    
-                            if ($clase_a_reservar->disciplina_id == $disciplina OR $clase_a_reservar->subdisciplina_id == $disciplina) {
+                        foreach ($disciplinas_ids_asignacion as $disciplina) {
+                            if ($clase_a_reservar->disciplina_id == $disciplina or $clase_a_reservar->subdisciplina_id == $disciplina) {
 
                                 // Establecer como ocupado/reservado el lugar que se seleccionó
                                 $cupo_lugares = $clase_a_reservar->cupo_lugares;
@@ -470,13 +561,15 @@ class Clases extends MY_Controller
                                 $reservado = $clase_a_reservar->reservado + 1;
 
                                 // Actualizar el plan del cliente y la clase para que se establezca que una clase ha sido usada
-                                if (!$this->asignaciones_model->editar($asignacion->id, array('clases_usadas' => $clases_usadas)) ||
-                                !$this->clases_model->editar($clase_a_reservar->id, array('reservado' => $reservado, 'cupo_lugares' => $cupo_lugares_json))) {
+                                if (
+                                    !$this->asignaciones_model->editar($asignacion->id, array('clases_usadas' => $clases_usadas)) ||
+                                    !$this->clases_model->editar($clase_a_reservar->id, array('reservado' => $reservado, 'cupo_lugares' => $cupo_lugares_json))
+                                ) {
                                     $this->session->set_flashdata('MENSAJE_ERROR', 'La reservación no pudo ser creada.');
                                     redirect('clases/index');
                                 }
 
-                                 // Crear reservación
+                                // Crear reservación
                                 $reservacion = $this->reservaciones_model->crear(array(
                                     'usuario_id' => $this->input->post('usuario_id'),
                                     'clase_id' => $clase_a_reservar->id,
@@ -489,7 +582,7 @@ class Clases extends MY_Controller
                                     redirect('clases/index');
                                 }
 
-                                $this->session->set_flashdata('MENSAJE_EXITO', 'La reservación se ha realizado con éxito. Para ID '.$this->input->post('usuario_id').' con el Lugar: '.$this->input->post('no_lugar'));
+                                $this->session->set_flashdata('MENSAJE_EXITO', 'La reservación se ha realizado con éxito. Para ID ' . $this->input->post('usuario_id') . ' con el Lugar: ' . $this->input->post('no_lugar'));
                                 redirect('reservaciones/index');
                             }
                         }
@@ -499,7 +592,6 @@ class Clases extends MY_Controller
             $this->session->set_flashdata('MENSAJE_ERROR', 'Por favor revise que el usuario cuente con algún plan adecuado para hacer una reservación o que la clase tengan lugares disponibles');
             redirect('clases/index');
         }
-
     }
 
     public function generar_horarios_ionic()
@@ -519,7 +611,7 @@ class Clases extends MY_Controller
             $hora_de_incio = $clase->inicia;
             $fecha_numerica_de_la_clase = date(DATE_ISO8601, strtotime($hora_de_incio));
 
-            $imprimir = $clase->id.' -- '.$clase->inicia.' -- '.$fecha_numerica_de_la_clase;
+            $imprimir = $clase->id . ' -- ' . $clase->inicia . ' -- ' . $fecha_numerica_de_la_clase;
             $this->debug_to_console($imprimir);
 
             $generar_fechas_bonitas = $this->clases_model->editar($clase->id, array(
@@ -534,17 +626,15 @@ class Clases extends MY_Controller
 
         $this->session->set_flashdata('MENSAJE_EXITO', 'Las clases SI pudieron ser modificadas.');
         redirect('reservaciones/index');
-
     }
 
-    function debug_to_console($data = null) 
+    function debug_to_console($data = null)
     {
 
         $output = $data;
 
-        if ( is_array( $output ) )
-        {
-            $output = implode( ',', $output);
+        if (is_array($output)) {
+            $output = implode(',', $output);
         }
 
         echo "<script>console.log( 'Que vas a probar: " . $output . "' );</script>";
@@ -559,7 +649,7 @@ class Clases extends MY_Controller
             redirect('clases/index');
         }
 
-        if($clase->reservado > 0){
+        if ($clase->reservado > 0) {
             $this->session->set_flashdata('MENSAJE_ERROR', 'La clase que intenta cancelar ya tiene reservaciones hechas, por favor cancele todas las reservaciones antes de cancelar esta clase.');
             redirect('clases/index');
         }
@@ -568,16 +658,17 @@ class Clases extends MY_Controller
             'estatus' => 'Cancelada',
         ));
 
-        if($clase_a_cancelar){
-            $this->session->set_flashdata('MENSAJE_EXITO', 'La clase '.$id.' ha sido cancelada.');
+        if ($clase_a_cancelar) {
+            $this->session->set_flashdata('MENSAJE_EXITO', 'La clase ' . $id . ' ha sido cancelada.');
             redirect('clases/index');
         }
 
-        $this->session->set_flashdata('MENSAJE_ERROR', 'La clase '.$id.' no ha podido ser cancelada.');
+        $this->session->set_flashdata('MENSAJE_ERROR', 'La clase ' . $id . ' no ha podido ser cancelada.');
         redirect('clases/index');
     }
-    
-    public function borrar($id = null) {
+
+    public function borrar($id = null)
+    {
         $clase = $this->clases_model->obtener_por_id($id)->row();
 
         if (!$clase) {
@@ -585,288 +676,286 @@ class Clases extends MY_Controller
             redirect('clases/index');
         }
 
-        if($clase->reservado > 0){
+        if ($clase->reservado > 0) {
             $this->session->set_flashdata('MENSAJE_ERROR', 'La clase que intenta borrar ya tiene reservaciones hechas.');
             redirect('clases/index');
         }
 
-        if($this->clases_model->borrar($id)){
-            $this->session->set_flashdata('MENSAJE_INFO', 'Advertencia, la clase que intenta borrar puede que ya tenga cancelaciones de las personas que han reservado, si este es el caso la clase no se borrara, por favor corrobore que la clase '.$id.' ya no aparezca en la lista de clases.');
-            $this->session->set_flashdata('MENSAJE_EXITO', 'La clase '.$id.' ha sido borrada.');
+        if ($this->clases_model->borrar($id)) {
+            $this->session->set_flashdata('MENSAJE_INFO', 'Advertencia, la clase que intenta borrar puede que ya tenga cancelaciones de las personas que han reservado, si este es el caso la clase no se borrara, por favor corrobore que la clase ' . $id . ' ya no aparezca en la lista de clases.');
+            $this->session->set_flashdata('MENSAJE_EXITO', 'La clase ' . $id . ' ha sido borrada.');
             redirect('clases/index');
         }
 
-        $this->session->set_flashdata('MENSAJE_ERROR', 'La clase '.$id.' no ha podido ser borrada.');
+        $this->session->set_flashdata('MENSAJE_ERROR', 'La clase ' . $id . ' no ha podido ser borrada.');
         redirect('clases/index');
     }
 
     /** Módulo de Clases Online [Inicio] */
-    
-        /**
-         * Prueba de clases por streaming
-         */
 
-        public function index_clases_en_linea()
-        {
+    /**
+     * Prueba de clases por streaming
+     */
 
-            $data['menu_clases_activo'] = true;
-            $data['pagina_titulo'] = 'Clases por Streaming';
+    public function index_clases_en_linea()
+    {
 
-            $data['mensaje_exito'] = $this->session->flashdata('MENSAJE_EXITO');
-            $data['mensaje_info'] = $this->session->flashdata('MENSAJE_INFO');
-            $data['mensaje_error'] = $this->session->flashdata('MENSAJE_ERROR');
+        $data['menu_clases_activo'] = true;
+        $data['pagina_titulo'] = 'Clases por Streaming';
 
-            /** JS propio del controlador */
-            $controlador_js = "clases/index_clases_en_linea";
+        $data['mensaje_exito'] = $this->session->flashdata('MENSAJE_EXITO');
+        $data['mensaje_info'] = $this->session->flashdata('MENSAJE_INFO');
+        $data['mensaje_error'] = $this->session->flashdata('MENSAJE_ERROR');
 
-            /** Carga todas los estilos y librerias */
-            $data['styles'] = array(
-                array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/tables/datatable/datatables.min.css'),
+        /** JS propio del controlador */
+        $controlador_js = "clases/index_clases_en_linea";
+
+        /** Carga todas los estilos y librerias */
+        $data['styles'] = array(
+            array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/tables/datatable/datatables.min.css'),
+        );
+
+        $data['scripts'] = array(
+            array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/tables/datatable/datatables.min.js'),
+            array('es_rel' => true, 'src' => '' . $controlador_js . '.js'),
+        );
+
+        /** Configuracion del formulario */
+        $data['controlador'] = 'clases/index_clases_en_linea';
+        $data['regresar_a'] = 'inicio';
+
+        $this->construir_private_site_ui('clases/index_clases_en_linea', $data);
+    }
+
+    public function nueva_clase_streaming()
+    {
+        $data['menu_clases_activo'] = true;
+        $data['pagina_titulo'] = 'Nueva clase por streaming';
+
+
+        /** JS propio del controlador */
+        $controlador_js = "clases/nueva_clase_streaming";
+
+        /** Carga todas los estilos y librerias */
+        $data['styles'] = array(
+            array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/forms/selects/select2.min.css'),
+        );
+
+        $data['scripts'] = array(
+            array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/forms/select/select2.full.min.js'),
+            array('es_rel' => true, 'src' => '' . $controlador_js . '.js'),
+        );
+
+
+        /** Configuracion del formulario */
+        $data['controlador'] = 'clases/nueva_clase_streaming';
+        $data['regresar_a'] = 'clases/index_clases_en_linea';
+
+        $this->form_validation->set_rules('identificador', 'Identificador', 'required');
+        $this->form_validation->set_rules('descripcion', 'Descripción', 'required');
+        $this->form_validation->set_rules('url_video', 'Url del video', 'required');
+        $this->form_validation->set_rules('url_preview', 'Nombre del archivo de imagen', 'required');
+        $this->form_validation->set_rules('tematica', 'Temática', 'required');
+        $this->form_validation->set_rules('disciplina_id', 'Disciplina', 'required');
+        $this->form_validation->set_rules('instructor_id', 'Instructor', 'required');
+        $this->form_validation->set_rules('duracion', 'Duración', 'required');
+        $this->form_validation->set_rules('fecha_transmision', 'Fecha', 'required');
+        $this->form_validation->set_rules('estatus', 'Estatus', 'required');
+
+        $instructores_list = $this->usuarios_model->obtener_todos_instructores()->result();
+        $disciplinas_list = $this->disciplinas_model->get_disciplinas_para_clases_online()->result();
+
+        $data['instructores_list'] = $instructores_list;
+        $data['disciplinas_list'] = $disciplinas_list;
+
+        if ($this->form_validation->run() == false) {
+
+            $this->construir_private_site_ui('clases/nueva_clase_streaming', $data);
+        } else {
+
+            $cupo_lugares = array();
+
+            $lugar = array(
+                'no_lugar' => 0,
+                'esta_reservado' => false,
+                'id_usuario' => '0',
+                'nombre_usuario' => 'Control',
             );
 
-            $data['scripts'] = array(
-                array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/tables/datatable/datatables.min.js'),
-                array('es_rel' => true, 'src' => ''.$controlador_js.'.js'),
+            array_push($cupo_lugares, $lugar);
+
+            $cupo_lugares_json = json_encode($cupo_lugares);
+
+            $data_clase = array(
+                'identificador' => $this->input->post('identificador'),
+                'descripcion' => $this->input->post('descripcion'),
+                'url_video' => $this->input->post('url_video'),
+                'url_preview' => $this->input->post('url_preview'),
+                'tematica' => $this->input->post('tematica'),
+                'disciplina_id' => $this->input->post('disciplina_id'),
+                'instructor_id' => $this->input->post('instructor_id'),
+                'duracion' => $this->input->post('duracion'),
+                'fecha_clase' => date('Y-m-d', strtotime(str_replace('/', '-', $this->input->post('fecha_transmision')))) . 'T00:00',
+                'cupo_lugares' => $cupo_lugares_json,
+                'estatus' => $this->input->post('estatus'),
+                'fecha_registro' => date('Y-m-d H:i:s'),
             );
 
-            /** Configuracion del formulario */
-            $data['controlador'] = 'clases/index_clases_en_linea';
-            $data['regresar_a'] = 'inicio';
+            if (!$data_clase) {
 
-            $this->construir_private_site_ui('clases/index_clases_en_linea', $data);
-        }
+                $this->session->set_flashdata('MENSAJE_ERROR', 'Al parecer hubo un error, por favor intentelo mas tarde. 1');
+                redirect($data['regresar_a']);
+            }
 
-        public function nueva_clase_streaming()
-        {
-            $data['menu_clases_activo'] = true;
-            $data['pagina_titulo'] = 'Nueva clase por streaming';
+            if ($this->clases_en_linea_model->insert_clase_streaming($data_clase)) {
 
-
-            /** JS propio del controlador */
-            $controlador_js = "clases/nueva_clase_streaming";
-
-            /** Carga todas los estilos y librerias */
-            $data['styles'] = array(
-                array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/forms/selects/select2.min.css'),
-            );
-
-            $data['scripts'] = array(
-                array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/forms/select/select2.full.min.js'),
-                array('es_rel' => true, 'src' => ''.$controlador_js.'.js'),
-            );
-
-
-            /** Configuracion del formulario */
-            $data['controlador'] = 'clases/nueva_clase_streaming';
-            $data['regresar_a'] = 'clases/index_clases_en_linea';
-
-            $this->form_validation->set_rules('identificador', 'Identificador', 'required');
-            $this->form_validation->set_rules('descripcion', 'Descripción', 'required');
-            $this->form_validation->set_rules('url_video', 'Url del video', 'required');
-            $this->form_validation->set_rules('url_preview', 'Nombre del archivo de imagen', 'required');
-            $this->form_validation->set_rules('tematica', 'Temática', 'required');
-            $this->form_validation->set_rules('disciplina_id', 'Disciplina', 'required');
-            $this->form_validation->set_rules('instructor_id', 'Instructor', 'required');
-            $this->form_validation->set_rules('duracion', 'Duración', 'required');
-            $this->form_validation->set_rules('fecha_transmision', 'Fecha', 'required');
-            $this->form_validation->set_rules('estatus', 'Estatus', 'required');
-            
-            $instructores_list = $this->usuarios_model->obtener_todos_instructores()->result();
-            $disciplinas_list = $this->disciplinas_model->get_disciplinas_para_clases_online()->result();
-
-            $data['instructores_list'] = $instructores_list;
-            $data['disciplinas_list'] = $disciplinas_list;
-
-            if ($this->form_validation->run() == false) {
-
-                $this->construir_private_site_ui('clases/nueva_clase_streaming', $data);
-
+                $this->session->set_flashdata('MENSAJE_EXITO', 'La clase por streaming #' . $this->db->insert_id() . ' ha sido registrada correctamente.');
+                redirect($data['regresar_a']);
             } else {
 
-                $cupo_lugares = array();
-
-                $lugar = array(
-                    'no_lugar' => 0,
-                    'esta_reservado' => false,
-                    'id_usuario' => '0',
-                    'nombre_usuario' => 'Control',
-                );
-
-                array_push($cupo_lugares, $lugar);
-
-                $cupo_lugares_json = json_encode($cupo_lugares);
-
-                $data_clase = array(
-                    'identificador' => $this->input->post('identificador'),
-                    'descripcion' => $this->input->post('descripcion'),
-                    'url_video' => $this->input->post('url_video'),
-                    'url_preview' => $this->input->post('url_preview'),
-                    'tematica' => $this->input->post('tematica'),
-                    'disciplina_id' => $this->input->post('disciplina_id'),
-                    'instructor_id' => $this->input->post('instructor_id'),
-                    'duracion' => $this->input->post('duracion'),
-                    'fecha_clase' => date('Y-m-d', strtotime(str_replace('/', '-', $this->input->post('fecha_transmision')))).'T00:00',
-                    'cupo_lugares' => $cupo_lugares_json,
-                    'estatus' => $this->input->post('estatus'),
-                    'fecha_registro' => date('Y-m-d H:i:s'),
-                );
-
-                if(!$data_clase){
-
-                    $this->session->set_flashdata('MENSAJE_ERROR', 'Al parecer hubo un error, por favor intentelo mas tarde. 1');
-                    redirect($data['regresar_a']);
-                }
-
-                if ($this->clases_en_linea_model->insert_clase_streaming($data_clase)) {
-                    
-                    $this->session->set_flashdata('MENSAJE_EXITO', 'La clase por streaming #'.$this->db->insert_id().' ha sido registrada correctamente.');
-                    redirect($data['regresar_a']);
-                } else {
-
-                    $this->session->set_flashdata('MENSAJE_ERROR', 'Al parecer hubo un error, por favor intentelo mas tarde. 2');
-                    redirect($data['regresar_a']);
-                }
-
-                $this->construir_private_site_ui('clases/nueva_clase_streaming', $data);
+                $this->session->set_flashdata('MENSAJE_ERROR', 'Al parecer hubo un error, por favor intentelo mas tarde. 2');
+                redirect($data['regresar_a']);
             }
+
+            $this->construir_private_site_ui('clases/nueva_clase_streaming', $data);
+        }
+    }
+
+    public function editar_clase_streaming($id = null)
+    {
+
+        $data['menu_clases_activo'] = true;
+        $data['pagina_titulo'] = 'Editar clase por streaming';
+
+
+        /** JS propio del controlador */
+        $controlador_js = "clases/editar_clase_streaming";
+
+        /** Carga todas los estilos y librerias */
+        $data['styles'] = array(
+            array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/forms/selects/select2.min.css'),
+        );
+
+        $data['scripts'] = array(
+            array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/forms/select/select2.full.min.js'),
+            array('es_rel' => true, 'src' => '' . $controlador_js . '.js'),
+        );
+
+        if ($this->input->post()) {
+            $id = $this->input->post('id');
         }
 
-        public function editar_clase_streaming($id = null)
-        {
-            
-            $data['menu_clases_activo'] = true;
-            $data['pagina_titulo'] = 'Editar clase por streaming';
+        /** Configuracion del formulario */
+        $data['controlador'] = 'clases/editar_clase_streaming/' . $id;
+        $data['regresar_a'] = 'clases/index_clases_en_linea';
 
+        $this->form_validation->set_rules('identificador', 'Identificador', 'required');
+        $this->form_validation->set_rules('descripcion', 'Descripción', 'required');
+        $this->form_validation->set_rules('url_video', 'Url del video', 'required');
+        $this->form_validation->set_rules('url_preview', 'Nombre del archivo de imagen', 'required');
+        $this->form_validation->set_rules('tematica', 'Temática', 'required');
+        $this->form_validation->set_rules('disciplina_id', 'Disciplina', 'required');
+        $this->form_validation->set_rules('instructor_id', 'Instructor', 'required');
+        $this->form_validation->set_rules('duracion', 'Duración', 'required');
+        $this->form_validation->set_rules('fecha_transmision', 'Fecha', 'required');
+        $this->form_validation->set_rules('estatus', 'Estatus', 'required');
 
-            /** JS propio del controlador */
-            $controlador_js = "clases/editar_clase_streaming";
+        $clase_a_editar = $this->clases_en_linea_model->get_clase_streaming_por_id($id)->row();
 
-            /** Carga todas los estilos y librerias */
-            $data['styles'] = array(
-                array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/forms/selects/select2.min.css'),
+        $instructores_list = $this->usuarios_model->obtener_todos_instructores()->result();
+        $disciplinas_list = $this->disciplinas_model->get_disciplinas_para_clases_online()->result();
+
+        $data['clase_a_editar'] = $clase_a_editar;
+        $data['instructores_list'] = $instructores_list;
+        $data['disciplinas_list'] = $disciplinas_list;
+
+        if ($this->form_validation->run() == false) {
+
+            $this->construir_private_site_ui('clases/editar_clase_streaming', $data);
+        } else {
+
+            $data_clase = array(
+                'identificador' => $this->input->post('identificador'),
+                'descripcion' => $this->input->post('descripcion'),
+                'url_video' => $this->input->post('url_video'),
+                'url_preview' => $this->input->post('url_preview'),
+                'tematica' => $this->input->post('tematica'),
+                'disciplina_id' => $this->input->post('disciplina_id'),
+                'instructor_id' => $this->input->post('instructor_id'),
+                'duracion' => $this->input->post('duracion'),
+                'fecha_clase' => date('Y-m-d', strtotime(str_replace('/', '-', $this->input->post('fecha_transmision')))) . 'T00:00',
+                'estatus' => $this->input->post('estatus'),
             );
 
-            $data['scripts'] = array(
-                array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/forms/select/select2.full.min.js'),
-                array('es_rel' => true, 'src' => ''.$controlador_js.'.js'),
-            );
+            if (!$data_clase) {
 
-            if ($this->input->post()) {
-                $id = $this->input->post('id');
+                $this->session->set_flashdata('MENSAJE_ERROR', 'Al parecer hubo un error, por favor intentelo mas tarde. 1');
+                redirect($data['regresar_a']);
             }
 
-            /** Configuracion del formulario */
-            $data['controlador'] = 'clases/editar_clase_streaming/'.$id;
-            $data['regresar_a'] = 'clases/index_clases_en_linea';
+            if ($this->clases_en_linea_model->update_clase_streaming($id, $data_clase)) {
 
-            $this->form_validation->set_rules('identificador', 'Identificador', 'required');
-            $this->form_validation->set_rules('descripcion', 'Descripción', 'required');
-            $this->form_validation->set_rules('url_video', 'Url del video', 'required');
-            $this->form_validation->set_rules('url_preview', 'Nombre del archivo de imagen', 'required');
-            $this->form_validation->set_rules('tematica', 'Temática', 'required');
-            $this->form_validation->set_rules('disciplina_id', 'Disciplina', 'required');
-            $this->form_validation->set_rules('instructor_id', 'Instructor', 'required');
-            $this->form_validation->set_rules('duracion', 'Duración', 'required');
-            $this->form_validation->set_rules('fecha_transmision', 'Fecha', 'required');
-            $this->form_validation->set_rules('estatus', 'Estatus', 'required');
-
-            $clase_a_editar = $this->clases_en_linea_model->get_clase_streaming_por_id($id)->row();
-
-            $instructores_list = $this->usuarios_model->obtener_todos_instructores()->result();
-            $disciplinas_list = $this->disciplinas_model->get_disciplinas_para_clases_online()->result();
-
-            $data['clase_a_editar'] = $clase_a_editar;
-            $data['instructores_list'] = $instructores_list;
-            $data['disciplinas_list'] = $disciplinas_list;
-
-            if ($this->form_validation->run() == false) {
-
-                $this->construir_private_site_ui('clases/editar_clase_streaming', $data);
-
+                $this->session->set_flashdata('MENSAJE_EXITO', 'La clase por streaming #' . $id . ' ha sido editada correctamente.');
+                redirect($data['regresar_a']);
             } else {
 
-                $data_clase = array(
-                    'identificador' => $this->input->post('identificador'),
-                    'descripcion' => $this->input->post('descripcion'),
-                    'url_video' => $this->input->post('url_video'),
-                    'url_preview' => $this->input->post('url_preview'),
-                    'tematica' => $this->input->post('tematica'),
-                    'disciplina_id' => $this->input->post('disciplina_id'),
-                    'instructor_id' => $this->input->post('instructor_id'),
-                    'duracion' => $this->input->post('duracion'),
-                    'fecha_clase' => date('Y-m-d', strtotime(str_replace('/', '-', $this->input->post('fecha_transmision')))).'T00:00',
-                    'estatus' => $this->input->post('estatus'),
-                );
-
-                if(!$data_clase){
-
-                    $this->session->set_flashdata('MENSAJE_ERROR', 'Al parecer hubo un error, por favor intentelo mas tarde. 1');
-                    redirect($data['regresar_a']);
-                }
-
-                if ($this->clases_en_linea_model->update_clase_streaming($id, $data_clase)) {
-                    
-                    $this->session->set_flashdata('MENSAJE_EXITO', 'La clase por streaming #'.$id.' ha sido editada correctamente.');
-                    redirect($data['regresar_a']);
-                } else {
-
-                    $this->session->set_flashdata('MENSAJE_ERROR', 'Al parecer hubo un error, por favor intentelo mas tarde. 2');
-                    redirect($data['regresar_a']);
-                }
-
-                $this->construir_private_site_ui('clases/editar_clase_streaming', $data);
+                $this->session->set_flashdata('MENSAJE_ERROR', 'Al parecer hubo un error, por favor intentelo mas tarde. 2');
+                redirect($data['regresar_a']);
             }
+
+            $this->construir_private_site_ui('clases/editar_clase_streaming', $data);
         }
+    }
 
     /** Módulo de Clases Online [Fin] */
-    
+
     /** Métodos Tablas (Inicio) //////////////////////////////////////////////////////////////////////////// */
 
-        /** JSON encoder DINAMICO para la tabla de Portafolios de Inversion */
-        public function load_lista_de_todas_las_clases_por_streaming_con_detalles_para_datatables()
-        {
-            $clases_por_streaming_list = $this->clases_en_linea_model->get_todas_las_clases_en_linea_con_detalles()->result();
+    /** JSON encoder DINAMICO para la tabla de Portafolios de Inversion */
+    public function load_lista_de_todas_las_clases_por_streaming_con_detalles_para_datatables()
+    {
+        $clases_por_streaming_list = $this->clases_en_linea_model->get_todas_las_clases_en_linea_con_detalles()->result();
 
-            $result = array();
+        $result = array();
 
-            foreach ($clases_por_streaming_list as $clase_por_streaming) {
+        foreach ($clases_por_streaming_list as $clase_por_streaming) {
 
-                $menu = '
+            $menu = '
                     <!-- /btn-group -->
                         <button type="button" class="btn btn-light btn-icon dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cog"></i></button>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="'.site_url('clases/editar_clase_streaming/').$clase_por_streaming->id.'">Editar</a>
+                            <a class="dropdown-item" href="' . site_url('clases/editar_clase_streaming/') . $clase_por_streaming->id . '">Editar</a>
                         </div>
                     <!-- /btn-group -->
                 ';
-                
-                $cupos_lugares_list = json_decode($clase_por_streaming->cupo_lugares);
-                $cupos = "";
-                foreach ($cupos_lugares_list as $cupo_lugar_row) {
-                    $cupos = $cupos.'<br>Lugar: '.$cupo_lugar_row->no_lugar.' | Usuario: '.$cupo_lugar_row->nombre_usuario.' #'.$cupo_lugar_row->id_usuario;
-                }
 
-                $result[] = array(
-                    "id" => $clase_por_streaming->id,
-                    "identificador" => $clase_por_streaming->identificador,
-                    "disciplina" => $clase_por_streaming->disciplina,
-                    "tematica" => $clase_por_streaming->tematica,
-                    "instructor" => $clase_por_streaming->instructor,
-                    "fecha_clase" => date('d/m/Y', strtotime($clase_por_streaming->fecha_clase)),
-                    "estatus" => ucfirst($clase_por_streaming->estatus),
-                    "opciones" => $menu,
-                    "descripcion" => $clase_por_streaming->descripcion,
-                    "url_preview" => $clase_por_streaming->url_preview,
-                    "url_video" => $clase_por_streaming->url_video,
-                    "duracion" => $clase_por_streaming->duracion,
-                    "reservados" => $clase_por_streaming->reservados,
-                    "fecha_registro" => date('d/m/Y H:i', strtotime($clase_por_streaming->fecha_registro)),
-                    
-                );
+            $cupos_lugares_list = json_decode($clase_por_streaming->cupo_lugares);
+            $cupos = "";
+            foreach ($cupos_lugares_list as $cupo_lugar_row) {
+                $cupos = $cupos . '<br>Lugar: ' . $cupo_lugar_row->no_lugar . ' | Usuario: ' . $cupo_lugar_row->nombre_usuario . ' #' . $cupo_lugar_row->id_usuario;
             }
 
-            echo json_encode(array("data" => $result));
+            $result[] = array(
+                "id" => $clase_por_streaming->id,
+                "identificador" => $clase_por_streaming->identificador,
+                "disciplina" => $clase_por_streaming->disciplina,
+                "tematica" => $clase_por_streaming->tematica,
+                "instructor" => $clase_por_streaming->instructor,
+                "fecha_clase" => date('d/m/Y', strtotime($clase_por_streaming->fecha_clase)),
+                "estatus" => ucfirst($clase_por_streaming->estatus),
+                "opciones" => $menu,
+                "descripcion" => $clase_por_streaming->descripcion,
+                "url_preview" => $clase_por_streaming->url_preview,
+                "url_video" => $clase_por_streaming->url_video,
+                "duracion" => $clase_por_streaming->duracion,
+                "reservados" => $clase_por_streaming->reservados,
+                "fecha_registro" => date('d/m/Y H:i', strtotime($clase_por_streaming->fecha_registro)),
+
+            );
         }
+
+        echo json_encode(array("data" => $result));
+    }
 
     /** Métodos Tablas (Fin) //////////////////////////////////////////////////////////////////////////// */
 
@@ -874,19 +963,19 @@ class Clases extends MY_Controller
     {
         if (!$clase_id) {
             $this->session->set_flashdata('MENSAJE_ERROR', '¡Oops! Al parecer ha ocurrido un error, por favor intentelo más tarde. (1)');
-            redirect('clases/editar/'.$clase_id);
+            redirect('clases/editar/' . $clase_id);
         }
 
         $clase_row = $this->clases_model->obtener_por_id($clase_id)->row();
 
         if (!$clase_row) {
             $this->session->set_flashdata('MENSAJE_ERROR', '¡Oops! Al parecer ha ocurrido un error, por favor intentelo más tarde. (2)');
-            redirect('clases/editar/'.$clase_id);
+            redirect('clases/editar/' . $clase_id);
         }
 
         if ($clase_row->estatus != "Activa") {
-            $this->session->set_flashdata('MENSAJE_INFO', '¡Oops! Al parecer esta clase #'.$clase_row->id.' ya no se encuentra activa y ha sido marcada como: '.$clase_row->estatus.'. (2)');
-            redirect('clases/editar/'.$clase_id);
+            $this->session->set_flashdata('MENSAJE_INFO', '¡Oops! Al parecer esta clase #' . $clase_row->id . ' ya no se encuentra activa y ha sido marcada como: ' . $clase_row->estatus . '. (2)');
+            redirect('clases/editar/' . $clase_id);
         }
 
         $cupo_actualizado = $clase_row->cupo + 1;
@@ -900,11 +989,11 @@ class Clases extends MY_Controller
             array_push($no_lugar_array, $cupo_lugar_row->no_lugar);
         }
 
-        $max_lugar = max($no_lugar_array)+1;
-        
-        if ($cupo_actualizado != $max_lugar OR $cupo_actualizado > $max_lugar) {
+        $max_lugar = max($no_lugar_array) + 1;
+
+        if ($cupo_actualizado != $max_lugar or $cupo_actualizado > $max_lugar) {
             $this->session->set_flashdata('MENSAJE_ERROR', '¡Oops! Al parecer ha ocurrido un error, por favor intentelo más tarde. (3)');
-            redirect('clases/editar/'.$clase_id);
+            redirect('clases/editar/' . $clase_id);
         } /*else {
             $this->session->set_flashdata('MENSAJE_INFO', ''.$max_lugar.'');
             redirect('clases/editar/'.$clase_id);
@@ -924,12 +1013,12 @@ class Clases extends MY_Controller
             'cupo_lugares' => $cupo_lugares_json,
         );
 
-        if($this->clases_model->editar($clase_row->id, $data_clase)){
-            $this->session->set_flashdata('MENSAJE_EXITO', 'La clase #'.$clase_row->id.' ha sido modificada con éxito. Cupo actualizado de '.$clase_row->cupo.' a '.$cupo_actualizado.'.');
-            redirect('clases/editar/'.$clase_id);
+        if ($this->clases_model->editar($clase_row->id, $data_clase)) {
+            $this->session->set_flashdata('MENSAJE_EXITO', 'La clase #' . $clase_row->id . ' ha sido modificada con éxito. Cupo actualizado de ' . $clase_row->cupo . ' a ' . $cupo_actualizado . '.');
+            redirect('clases/editar/' . $clase_id);
         }
 
         $this->session->set_flashdata('MENSAJE_ERROR', '¡Oops! Al parecer ha ocurrido un error, por favor intentelo más tarde. (4)');
-        redirect('clases/editar/'.$clase_id);
+        redirect('clases/editar/' . $clase_id);
     }
 }
