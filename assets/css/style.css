@@ -201,3 +201,34 @@ html body.bg-calendario {
     background: url(../../almacenamiento/img/bg-calendario.svg) no-repeat center center;
     background-size: cover;
 }
+
+.editable-cell:hover {
+    background-color: rgba(0, 0, 0, 0.07);
+}
+
+.editable-cell input {
+    min-width: 160px;
+}
+
+.editable-cell select {
+    min-width: 160px;
+}
+
+.table-hover tbody tr {
+    transition: all ease 50ms;
+
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+
+.table tbody tr {
+    transition: all ease 50ms;
+
+}
+
+.table tbody tr:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}

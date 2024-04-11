@@ -9,50 +9,50 @@ class Clases_model extends CI_Model
 
     /** Funciones de clases controller (Inicio) */
 
-        public function obtener_todas_para_front_con_detalle($sucursal_id = null)
-        {
-            $date = new DateTime("now");
-            $curr_date = $date->format('Y-m');
+    public function obtener_todas_para_front_con_detalle($sucursal_id = null)
+    {
+        $date = new DateTime("now");
+        $curr_date = $date->format('Y-m');
 
-            if ($this->session->userdata('sucursal_asignada') != null) {
-                $sucursal_id = $this->session->userdata('sucursal_asignada');
-            }
-
-            if (!$sucursal_id) {
-                $query = $this->db
-                    ->where("DATE_FORMAT(t1.inicia,'%Y-%m-%d') >=", date('Y-m-d', strtotime('-15 days')))
-                    ->select("
-                        t1.*,
-                        t2.nombre as disciplina_nombre,
-                        t3.nombre as sucursal_nombre,
-                        t3.locacion as sucursal_locacion,
-                        CONCAT(COALESCE(t4.nombre_completo, 'N/D'), ' ', COALESCE(t4.apellido_paterno, 'N/D')) as instructor_nombre
-                    ")
-                    ->from('clases t1')
-                    ->join("disciplinas t2", "t1.disciplina_id = t2.id")
-                    ->join("sucursales t3", "t2.sucursal_id = t3.id")
-                    ->join("usuarios t4", "t1.instructor_id = t4.id")
-                ->get();
-            } else {
-                $query = $this->db
-                    ->where("DATE_FORMAT(t1.inicia,'%Y-%m-%d') >=", date('Y-m-d', strtotime('-15 days')))
-                    ->where('t3.id', $sucursal_id)
-                    ->select("
-                        t1.*,
-                        t2.nombre as disciplina_nombre,
-                        t3.nombre as sucursal_nombre,
-                        t3.locacion as sucursal_locacion,
-                        CONCAT(COALESCE(t4.nombre_completo, 'N/D'), ' ', COALESCE(t4.apellido_paterno, 'N/D')) as instructor_nombre
-                    ")
-                    ->from('clases t1')
-                    ->join("disciplinas t2", "t1.disciplina_id = t2.id")
-                    ->join("sucursales t3", "t2.sucursal_id = t3.id")
-                    ->join("usuarios t4", "t1.instructor_id = t4.id")
-                ->get();
-            }
-
-            return $query;
+        if ($this->session->userdata('sucursal_asignada') != null) {
+            $sucursal_id = $this->session->userdata('sucursal_asignada');
         }
+
+        if (!$sucursal_id) {
+            $query = $this->db
+                ->where("DATE_FORMAT(t1.inicia,'%Y-%m-%d') >=", date('Y-m-d', strtotime('-15 days')))
+                ->select("
+                        t1.*,
+                        t2.nombre as disciplina_nombre,
+                        t3.nombre as sucursal_nombre,
+                        t3.locacion as sucursal_locacion,
+                        CONCAT(COALESCE(t4.nombre_completo, 'N/D'), ' ', COALESCE(t4.apellido_paterno, 'N/D')) as instructor_nombre
+                    ")
+                ->from('clases t1')
+                ->join("disciplinas t2", "t1.disciplina_id = t2.id")
+                ->join("sucursales t3", "t2.sucursal_id = t3.id")
+                ->join("usuarios t4", "t1.instructor_id = t4.id")
+                ->get();
+        } else {
+            $query = $this->db
+                ->where("DATE_FORMAT(t1.inicia,'%Y-%m-%d') >=", date('Y-m-d', strtotime('-15 days')))
+                ->where('t3.id', $sucursal_id)
+                ->select("
+                        t1.*,
+                        t2.nombre as disciplina_nombre,
+                        t3.nombre as sucursal_nombre,
+                        t3.locacion as sucursal_locacion,
+                        CONCAT(COALESCE(t4.nombre_completo, 'N/D'), ' ', COALESCE(t4.apellido_paterno, 'N/D')) as instructor_nombre
+                    ")
+                ->from('clases t1')
+                ->join("disciplinas t2", "t1.disciplina_id = t2.id")
+                ->join("sucursales t3", "t2.sucursal_id = t3.id")
+                ->join("usuarios t4", "t1.instructor_id = t4.id")
+                ->get();
+        }
+
+        return $query;
+    }
 
     /** Funciones de clases controller (Fin) */
 
@@ -97,6 +97,19 @@ class Clases_model extends CI_Model
             ->get();
     }
 
+    public function obtener_clase_por_identificador($identificador)
+    {
+        return $this->db->select('
+                t1.*, 
+                CONCAT(COALESCE(t2.nombre_completo, \'N/D\'), \' \', COALESCE(t2.apellido_paterno, \'N/D\'), \' \', COALESCE(t2.apellido_materno, \'N/D\')) AS instructor,
+                t2.nombre_imagen_avatar as usuario_nombre_imagen_avatar
+            ')
+            ->from('clases as t1')
+            ->join('usuarios as t2', 't2.id = t1.instructor_id')
+            ->where('t1.identificador', intval($identificador))
+            ->get();
+    }
+
     public function obtener_por_disciplina_id($disciplina_id)
     {
         return $this->db->query("SELECT t1.*,
@@ -137,10 +150,10 @@ class Clases_model extends CI_Model
 						  FROM clases AS t1
                           JOIN usuarios AS t2 ON t1.instructor_id = t2.id
                           JOIN disciplinas AS t3 ON t1.disciplina_id = t3.id
-                          WHERE t1.disciplina_id =" . $disciplina_id . " AND DATE(t1.inicia) >= DATE(".$this->db->escape($fecha_inicio).") AND DATE(t1.inicia) <= DATE(".$this->db->escape($fecha_final).") AND t1.estatus != 'Cancelada' OR t1.subdisciplina_id =" . $disciplina_id . " AND DATE(t1.inicia) >= DATE(".$this->db->escape($fecha_inicio).") AND DATE(t1.inicia) <= DATE(".$this->db->escape($fecha_final).") AND t1.estatus != 'Cancelada'
+                          WHERE t1.disciplina_id =" . $disciplina_id . " AND DATE(t1.inicia) >= DATE(" . $this->db->escape($fecha_inicio) . ") AND DATE(t1.inicia) <= DATE(" . $this->db->escape($fecha_final) . ") AND t1.estatus != 'Cancelada' OR t1.subdisciplina_id =" . $disciplina_id . " AND DATE(t1.inicia) >= DATE(" . $this->db->escape($fecha_inicio) . ") AND DATE(t1.inicia) <= DATE(" . $this->db->escape($fecha_final) . ") AND t1.estatus != 'Cancelada'
                           ORDER BY t1.inicia");
     }
-    
+
     public function crear($data)
     {
         return $this->db->insert('clases', $data);
@@ -151,27 +164,29 @@ class Clases_model extends CI_Model
         $this->db->where('id', $id);
         return $this->db->update('clases', $data);
     }
-    
+
     public function borrar($id)
     {
         $this->db->where('id', $id);
-        $this->db->delete('clases');
-        {return true;}
+        $this->db->delete('clases'); {
+            return true;
+        }
     }
 
-    public function autosearch($q){
+    public function autosearch($q)
+    {
         $this->db->or_like('nombre_completo', $q)
-        ->or_like('apellido_paterno', $q)
-        ->or_like('apellido_materno', $q);
+            ->or_like('apellido_paterno', $q)
+            ->or_like('apellido_materno', $q);
         $query = $this->db->get('usuarios');
-        if($query->num_rows() > 0){
-          foreach ($query->result_array() as $row){
-            $new_row['label']= $row['id'].' -- '.$row['nombre_completo'].' '.$row['apellido_paterno'].' '.$row['apellido_materno'];
-            $new_row['value']= '';
-            $new_row['ref']= $row['id'];
-            $row_set[] = $new_row;
-          }
-          echo json_encode($row_set); //format the array into json data
+        if ($query->num_rows() > 0) {
+            foreach ($query->result_array() as $row) {
+                $new_row['label'] = $row['id'] . ' -- ' . $row['nombre_completo'] . ' ' . $row['apellido_paterno'] . ' ' . $row['apellido_materno'];
+                $new_row['value'] = '';
+                $new_row['ref'] = $row['id'];
+                $row_set[] = $new_row;
+            }
+            echo json_encode($row_set); //format the array into json data
         }
     }
 
@@ -192,7 +207,7 @@ class Clases_model extends CI_Model
         $date = new DateTime("now");
         $curr_date = $date->format('Y-m');
 
-        if($mes_a_consultar == null){
+        if ($mes_a_consultar == null) {
             $query = $this->db
                 ->select("
                     t1.*,
@@ -204,7 +219,7 @@ class Clases_model extends CI_Model
                 ->join("usuarios t3", "t1.instructor_id = t3.id")
                 ->where("DATE_FORMAT(t1.inicia,'%Y-%m')", $curr_date)
                 ->get();
-        } else{
+        } else {
             $query = $this->db
                 ->select("
                     t1.*,
@@ -221,7 +236,8 @@ class Clases_model extends CI_Model
         return $query;
     }
 
-    public function get_numero_de_clases_de_esta_semana(){
+    public function get_numero_de_clases_de_esta_semana()
+    {
         $query = null;
 
         $date = new DateTime("now");
@@ -235,4 +251,22 @@ class Clases_model extends CI_Model
         return $query;
     }
 
+    public function actualizar_clase_por_identificador($identificador, $data)
+    {
+        $query = $this->db
+            ->where('identificador', $identificador)
+            ->update('clases', $data);
+
+        return $query;
+    }
+
+    public function obtener_dificultades()
+    {
+        $query = $this->db
+            ->distinct()
+            ->select("t1.dificultad")
+            ->from('clases t1')
+            ->get();
+        return $query;
+    }
 }

@@ -32,20 +32,19 @@ class Clases extends MY_Controller
         $data['mensaje_exito'] = $this->session->flashdata('MENSAJE_EXITO');
         $data['mensaje_info'] = $this->session->flashdata('MENSAJE_INFO');
         $data['mensaje_error'] = $this->session->flashdata('MENSAJE_ERROR');
+        $controlador_js = "clases/index";
 
         //$data['clases'] = $this->clases_model->obtener_todas_con_detalle();
-        $data['clases'] = $this->clases_model->obtener_todas_para_front_con_detalle();
-        $data['usuarios'] = $this->usuarios_model->obtener_todos();
+        // $data['clases'] = $this->clases_model->obtener_todas_para_front_con_detalle();
+        // $data['usuarios'] = $this->usuarios_model->obtener_todos();
 
         // Cargar estilos y scripts
         $data['styles'] = array(
             array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/tables/datatable/datatables.min.css'),
-            array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/tables/extensions/responsive.dataTables.min.css'),
         );
         $data['scripts'] = array(
             array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/tables/datatable/datatables.min.js'),
-            array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js'),
-            array('es_rel' => true, 'src' => 'clases/index.js'),
+            array('es_rel' => true, 'src' => '' . $controlador_js . '.js'),
         );
 
         $this->construir_private_site_ui('clases/index', $data);
@@ -53,8 +52,6 @@ class Clases extends MY_Controller
 
     public function obtener_tabla_index()
     {
-        setlocale(LC_ALL, "es_ES");
-
         $draw = intval($this->input->post('draw'));
         $start = intval($this->input->post('start'));
         $length = intval($this->input->post('length'));
@@ -68,7 +65,7 @@ class Clases extends MY_Controller
             $i = 0;
 
             $fecha = strtotime($clase->inicia);
-            $fecha_espaniol = strftime("%d de %b del %Y<br>%T", $fecha);
+            $fecha_espaniol = strftime("%d de %B del %Y<br>%T", $fecha);
 
             if ($clase->intervalo_horas != 1) {
                 $intervalo_horas = $clase->intervalo_horas . " hrs.";
@@ -94,6 +91,8 @@ class Clases extends MY_Controller
             }
 
             $opciones = '';
+            $fecha_de_clase = '';
+            $fecha_limite_de_clase = '';
 
             if ($clase->estatus != 'Cancelada') {
 
@@ -104,25 +103,28 @@ class Clases extends MY_Controller
                     $opciones = anchor('clases/reservar/' . $clase->id, 'Reservar');
                 }
 
-                $opciones = anchor('clases/editar/' . $clase->id, 'Editar');
+                $opciones .= '<br>';
+                $opciones .= anchor('clases/editar/' . $clase->id, 'Editar');
+                $opciones .= '<br>';
             }
+            $opciones .= '<a href="' . site_url('clases/duplicar_clase/' . $clase->id) . '"><span>Duplicar</span></a>';
             if ($clase->reservado == 0 and $clase->estatus == 'Activa') {
 
-                $opciones = anchor('clases/cancelar/' . $clase->id, '<span class="red">Cancelar</span>');
-
-                $opciones = anchor('clases/borrar/' . $clase->id, '<span class="red">Borrar</span>');
+                $opciones .= '<br>';
+                $opciones .=  '<a href="' . site_url('clases/cancelar/' . $clase->id) . '"><span class="red">Cancelar</span></a>';
+                $opciones .=  ' <br> ';
+                $opciones .= '<a href="' . site_url('clases/borrar/' . $clase->id) . '"><span class="red">Borrar</span></a>';
             }
 
             $data[] = array(
                 'id' => $clase->id,
-                'sku' => !empty($clase->identificador) ? $clase->identificador : '',
-                'disciplina' => $clase->subdisciplina_id != 0 ? $clase->disciplina_nombre . ' | ' . $clase->disciplina_nombre . ' GODIN' : $clase->disciplina_nombre,
-                'cupo' => !empty($clase->cupo) ? ucfirst($clase->cupo) : '',
-                'sucursal' => !empty($clase->sucursal_nombre . ' [' . $clase->sucursal_locacion . ']') ? $clase->sucursal_nombre . ' [' . $clase->sucursal_locacion . ']' : '',
-                'instructor' => !empty($clase->instructor_nombre) ? $clase->instructor_nombre : '',
+                'identificador' => !empty($clase->identificador) ? $clase->identificador : '',
+                'disciplina_id' => $clase->disciplina_nombre,
                 'dificultad' => !empty($clase->dificultad) ? ucwords($clase->dificultad) : '',
-                'horario' => !empty($clase->inicia) ? mb_strtoupper($clase->inicia) : '',
+                'inicia' => !empty($clase->inicia) ? mb_strtoupper($clase->inicia) : '',
                 'horario_esp' => !empty($fecha_espaniol) ? ucfirst($fecha_espaniol) : '',
+                'instructor_id' => !empty($clase->instructor_nombre) ? $clase->instructor_nombre : '',
+                'cupo' => !empty($clase->cupo) ? ucfirst($clase->cupo) : '',
                 'estatus' => !empty($clase->estatus) ? ucwords($clase->estatus) : '',
                 'intervalo_horas' => !empty($intervalo_horas) ? mb_strtoupper($intervalo_horas) : '',
                 'cupo_restantes' => !empty($clase->cupo - $clase->reservado) ? $clase->cupo - $clase->reservado : '',
@@ -130,6 +132,7 @@ class Clases extends MY_Controller
                 'cupo_reservado' => !empty($clase->reservado) ? ucfirst($clase->reservado) : 0,
                 'inasistencias' => !empty($clase->inasistencias) ? ucfirst($clase->inasistencias) : 0,
                 'lugares' => !empty($lugares) ? ucfirst($lugares) : '',
+                'sucursal' => !empty($clase->sucursal_nombre . ' [' . $clase->sucursal_locacion . ']') ? $clase->sucursal_nombre . ' [' . $clase->sucursal_locacion . ']' : '',
                 'opciones' => $opciones,
             );
         }
@@ -142,6 +145,123 @@ class Clases extends MY_Controller
         );
 
         echo json_encode($result);
+        exit();
+    }
+
+    public function duplicar_clase($id = null)
+    {
+        $clase = $this->clases_model->obtener_por_id($id)->row();
+
+        if (!$clase) {
+            $this->session->set_flashdata('MENSAJE_ERROR', 'No se ha podido encontrar la clase que desea clonar.');
+            redirect('clases/index');
+        }
+
+        $fecha_registro = date("Y-m-d H:i:s");
+
+        $key_1 = "clases-" . date("Y-m-d-H-i-s", strtotime($fecha_registro));
+        $identificador_1 = hash("crc32b", $key_1);
+
+        $cupo_lugares = array();
+        // Crear un arreglo de arreglos para llevar un registro mas detallado del cupo
+        for ($i = 1; $i <= 20; $i++) {
+            $lugar = array(
+                'no_lugar' => $i,
+                'esta_reservado' => false,
+                'nombre_usuario' => '',
+            );
+
+            array_push($cupo_lugares, $lugar);
+        }
+
+        $cupo_lugares_json = json_encode($cupo_lugares);
+
+        $clase_a_clonar = $this->clases_model->crear(array(
+            'identificador' => $identificador_1,
+            'disciplina_id' => $clase->disciplina_id,
+            'instructor_id' => $clase->instructor_id,
+            'cupo' => 0,
+            'img_acceso' => $clase->img_acceso,
+            'inicia' => $clase->inicia,
+            'inicia_ionic' => $clase->inicia_ionic,
+            'intervalo_horas' => $clase->intervalo_horas,
+            'distribucion_imagen' => $clase->distribucion_imagen,
+            'distribucion_lugares' => $clase->distribucion_lugares,
+            'dificultad' => $clase->dificultad,
+            'cupo_lugares' => $cupo_lugares_json,
+        ));
+
+        if ($clase_a_clonar) {
+            $this->session->set_flashdata('MENSAJE_EXITO', 'La clase ha sido clonada.');
+            redirect('clases');
+        }
+
+        $this->session->set_flashdata('MENSAJE_ERROR', 'La clase ' . $id . ' no ha podido ser clonada.');
+        redirect('clases/index');
+    }
+
+    public function actualizar()
+    {
+        $identificador = $this->input->post('identificador');
+        $columna = $this->input->post('columna'); // Índice de la columna
+        $nuevoValor = $this->input->post('nuevoValor');
+
+        $disciplinas_list = $this->disciplinas_model->obtener_todas();
+
+        if ($columna == 'disciplina_id') {
+            $disciplina_row = $this->disciplinas_model->obtener_por_nombre($nuevoValor)->row();
+            $nuevoValor = $disciplina_row->id;
+        } else if ($columna == 'instructor_id') {
+            $instructor_row = $this->usuarios_model->obtener_por_nombre($nuevoValor)->row();
+            $nuevoValor = $instructor_row->id;
+        }
+
+
+        $data_1 = array(
+            $columna => $nuevoValor,
+        );
+
+        $this->clases_model->actualizar_clase_por_identificador($identificador, $data_1);
+
+        // Devuelve una respuesta (puede ser JSON o lo que necesites)
+        echo json_encode(array('status' => 'success', 'message' => 'Dato actualizado'));
+    }
+
+    public function obtener_opciones_select_disciplina()
+    {
+        echo json_encode(select_disciplina());
+        exit();
+    }
+
+    public function obtener_opciones_select_instructor()
+    {
+        $instructores = $this->usuarios_model->obtener_todos_instructores();
+
+        $data = [];
+        foreach ($instructores->result() as $instructor) {
+            $data[] = array(
+                'nombre' => $instructor->nombre,
+                'valor' => $instructor->nombre
+            );
+        }
+
+        echo json_encode($data);
+        exit();
+    }
+
+    public function obtener_opciones_select_dificultad()
+    {
+        $dificultades = $this->clases_model->obtener_dificultades();
+
+        $data = [];
+        foreach ($dificultades->result() as $dificultad) {
+            $data[] = array(
+                'nombre' => $dificultad->dificultad,
+                'valor' => $dificultad->dificultad
+            );
+        }
+
+        echo json_encode($data);
         exit();
     }
 

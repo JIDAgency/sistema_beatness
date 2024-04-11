@@ -24,25 +24,27 @@ class Disciplinas_model extends CI_Model
                 COUNT(t2.id) as cont,
             ')
             ->from('disciplinas t1')
-            ->join('clases_streaming t2', 't2.disciplina_id = t1.id','left')
+            ->join('clases_streaming t2', 't2.disciplina_id = t1.id', 'left')
             ->group_by('t1.id')
-            ->order_by('COUNT(t2.id)','desc')
+            ->order_by('COUNT(t2.id)', 'desc')
             ->get();
-        
+
         return $query;
     }
 
     /** Obtener todos los registros de la tabla de disciplinas */
-    public function get_lista_de_todas_las_disciplinas(){
+    public function get_lista_de_todas_las_disciplinas()
+    {
         $query = $this->db->get('disciplinas');
         return $query;
     }
 
     /** Obtener todas las disciplinas con la sucursal limitada a datos específicos*/
-    public function get_lista_de_todas_las_disciplinas_limitada(){
+    public function get_lista_de_todas_las_disciplinas_limitada()
+    {
 
         $query = $this->db
-            ->order_by('t1.id','desc')
+            ->order_by('t1.id', 'desc')
             ->select("
                 t1.id as listar_id,
                 t1.nombre as listar_nombre,
@@ -51,21 +53,21 @@ class Disciplinas_model extends CI_Model
             ")
             ->from('disciplinas t1')
             ->join('sucursales t2', 't1.sucursal_id = t2.id')
-        ->get();
+            ->get();
 
         return $query;
     }
 
-	/** //////////////////////////////////////////////////////////////////////////// Metodos del sistema //////////////////////////////////////////////////////////////////////////// */
+    /** //////////////////////////////////////////////////////////////////////////// Metodos del sistema //////////////////////////////////////////////////////////////////////////// */
     /** ////////////////////////////////////////////////////////////////////////////  Metodos para clases //////////////////////////////////////////////////////////////////////////// */
     public function get_lista_de_disciplinas_para_crear_y_editar_clases()
     {
         return $this->db
             ->get('disciplinas');
     }
-	/** ////////////////////////////////////////////////////////////////////////////  Metodos para clases //////////////////////////////////////////////////////////////////////////// */
-	/** //////////////////////////////////////////////////////////////////////////// Metodos del sistema //////////////////////////////////////////////////////////////////////////// */
-	/** //////////////////////////////////////////////////////////////////////////// Métodos básicos para la APP //////////////////////////////////////////////////////////////////////////// */
+    /** ////////////////////////////////////////////////////////////////////////////  Metodos para clases //////////////////////////////////////////////////////////////////////////// */
+    /** //////////////////////////////////////////////////////////////////////////// Metodos del sistema //////////////////////////////////////////////////////////////////////////// */
+    /** //////////////////////////////////////////////////////////////////////////// Métodos básicos para la APP //////////////////////////////////////////////////////////////////////////// */
 
     public function obtener_disponibles_por_sucursal($id)
     {
@@ -73,7 +75,7 @@ class Disciplinas_model extends CI_Model
             ->from('disciplinas')
             ->where('estatus', 'activo')
             ->where('sucursal_id', intval($id))
-        ->get();
+            ->get();
         return $query;
     }
 
@@ -81,9 +83,9 @@ class Disciplinas_model extends CI_Model
     public function get_disciplinas_para_clases_online()
     {
         $query = $this->db
-            ->where_in('id', ['10','11','12','13','14'])
+            ->where_in('id', ['10', '11', '12', '13', '14'])
             ->get('disciplinas');
-        
+
         return $query;
     }
 
@@ -117,6 +119,16 @@ class Disciplinas_model extends CI_Model
         ->where_in('id', ['2','5','8','9','15','16'])
         ->get('disciplinas');
         */
+    }
+
+    public function obtener_por_nombre($nombre)
+    {
+        $query = $this->db
+            ->where('nombre', $nombre)
+            ->select('t1.id')
+            ->from('disciplinas t1')
+            ->get();
+        return $query;
     }
 
     /** Viejos metodos ****************************************************************************************** */

@@ -54,21 +54,21 @@ function formato_capitalizar(data) {
     return data.charAt(0).toUpperCase() + data.slice(1);
 }
 
-function generar_campo_de_celda_a_editar(tipo_celda, valor_original_de_celda, data_opciones = null, data_opciones_2 = null) {
+function generar_campo_de_celda_a_editar(tipo_celda, valor_original_de_celda, data_opciones = null) {
     switch (tipo_celda) {
         case 'texto':
             var input = $('<input type="text" class="form-control">').val(valor_original_de_celda);
             return input;
 
         case 'numero':
-            var input = $('<input type="number" class="form-control">').val(formato_numero(valor_original_de_celda));
+            var input = $('<input type="number" class="form-control">').val(valor_original_de_celda);
             return input;
 
         case 'fecha':
             var fecha_dividida = valor_original_de_celda.split('/');
 
             var fecha_con_formato = fecha_dividida[0] + '-' + fecha_dividida[1] + '-' + fecha_dividida[2];
-            var input = $('<input type="date" class="form-control">').val(fecha_con_formato);
+            var input = $('<input type="datetime-local" class="form-control">').val(fecha_con_formato);
             return input;
 
         case 'select':
@@ -78,6 +78,20 @@ function generar_campo_de_celda_a_editar(tipo_celda, valor_original_de_celda, da
             // Agregar opciones al select
             $.each(data_opciones, function (index, opcion) {
                 input.append('<option selected value="' + opcion.valor + '">' + opcion.nombre + '</option>');
+            });
+
+            // Establecer el valor original seleccionado
+            input.val(valor_original_de_celda.toLowerCase());
+
+            return input;
+
+        case 'select_indice':
+
+            var input = $('<select class="form-control"></select>');
+
+            // Agregar opciones al select
+            $.each(data_opciones, function (index, opcion) {
+                input.append('<option selected value="' + opcion.nombre + '">' + opcion.nombre + '</option>');
             });
 
             // Establecer el valor original seleccionado
@@ -102,7 +116,7 @@ function generar_salida_de_celda_editada(tipo_celda, valor_nuevo_de_celda, celda
 
         case 'numero':
             // Formatear el nuevo valor como decimales para la celda
-            valor_nuevo_de_celda = formato_numero(valor_nuevo_de_celda);
+            valor_nuevo_de_celda = valor_nuevo_de_celda;
             celda_seleccionada.html(valor_nuevo_de_celda);
 
             actualizar_data_de_tabla(celda_seleccionada, valor_nuevo_de_celda);

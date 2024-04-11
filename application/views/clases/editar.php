@@ -195,6 +195,7 @@
 												<?php 
 													$cupo_lugares = json_decode($clase_a_editar->cupo_lugares);
 													echo '<br>';
+													$i = 0;
 													foreach ($cupo_lugares as $lugar) {
 														$i++;
 														if ($lugar->nombre_usuario) {

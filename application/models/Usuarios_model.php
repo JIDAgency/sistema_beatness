@@ -230,7 +230,7 @@ class Usuarios_model extends CI_Model
 
     public function obtener_todos_instructores()
     {
-        $this->db->select("t1.*,t2.tipo as rol");
+        $this->db->select("t1.*, CONCAT(COALESCE(t1.nombre_completo, 'N/D'), ' ', COALESCE(t1.apellido_paterno, 'N/D'), ' ', COALESCE(t1.apellido_materno, 'N/D')) AS nombre, t2.tipo as rol");
         $this->db->from("usuarios t1");
         $this->db->join("roles t2", "t1.rol_id = t2.id");
         $this->db->where_in('rol_id', 3);
@@ -345,6 +345,19 @@ class Usuarios_model extends CI_Model
             ->select("
                 t1.*,
                 CONCAT(COALESCE(t1.nombre_completo, 'N/D'), ' ', COALESCE(t1.apellido_paterno, 'N/D'), ' ', COALESCE(t1.apellido_materno, 'N/D')) AS nombre
+            ")
+            ->from("usuarios t1")
+            ->get();
+
+        return $query;
+    }
+
+    public function obtener_por_nombre($nombre)
+    {
+        $query = $this->db
+            ->where_in("CONCAT(COALESCE(t1.nombre_completo, 'N/D'), ' ', COALESCE(t1.apellido_paterno, 'N/D'), ' ', COALESCE(t1.apellido_materno, 'N/D'))", $nombre)
+            ->select("
+                t1.id
             ")
             ->from("usuarios t1")
             ->get();

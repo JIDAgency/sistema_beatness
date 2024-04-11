@@ -4,15 +4,21 @@ var actual_url = document.URL;
 var method_call = "";
 var url;
 var flag_editando = false;
-var select_estatus_pago = [];
+var select_disciplina = [];
+var select_instructor = [];
+var select_dificultad = [];
 
 // Configuraciones
 (actual_url.indexOf("index") < 0) ? method_call = "clases/" : method_call = "";
 $.fn.dataTable.ext.errMode = 'throw'; // Configuración de manejo de errores de DataTables
 
 $(document).ready(function () {
-    // Inicializar
     url = method_call + "obtener_tabla_index"
+    obtener_opciones_select_disciplina(); // Obtención de opciones para el select 'disciplina'
+    obtener_opciones_select_instructor(); // Obtención de opciones para el select 'instructor'
+    obtener_opciones_select_dificultad(); // Obtención de opciones para el select 'dificultad'
+
+    // Inicializar
     table = $('#table').DataTable({
         "scrollX": true,
         "deferRender": true,
@@ -25,21 +31,21 @@ $(document).ready(function () {
         },
         "columns": [
             { "data": "id" },
-            { "data": "sku" },
-            { "data": "disciplina" },
-            { "data": "cupo" },
-            { "data": "sucursal" },
-            { "data": "instructor" },
+            { "data": "identificador" },
+            { "data": "disciplina_id" },
             { "data": "dificultad" },
-            { "data": "horario" },
+            { "data": "inicia" },
             { "data": "horario_esp" },
+            { "data": "instructor_id" },
+            { "data": "cupo" },
             { "data": "estatus" },
             { "data": "intervalo_horas" },
-            { "data": "cupo_restantes"},
+            { "data": "cupo_restantes" },
             { "data": "cupo_original" },
             { "data": "cupo_reservado" },
             { "data": "inasistencias" },
             { "data": "lugares" },
+            { "data": "sucursal" },
             { "data": "opciones" },
         ],
         "createdRow": createEditableCells,
@@ -79,18 +85,19 @@ $(document).ready(function () {
             var celda_seleccionada = $(this); // Obtener la celda seleccionada
             var columna_indice = celda_seleccionada.index(); // Obtener el nombre de la columna según el índice
             var columna_nombres_list = table.settings().init().columns;
-            console.log(columna_nombres_list);
             var columna_nombre = columna_nombres_list[columna_indice].data;
             var valor_original_de_celda = celda_seleccionada.text();
 
-            if (columna_nombre === "monto") {
-                var input = generar_campo_de_celda_a_editar('numero', valor_original_de_celda, null)
-            } else if (columna_nombre === "regimen_fiscal") {
-                var input = generar_campo_de_celda_a_editar('select', valor_original_de_celda, select_regimen_fiscal, select_regimen_fiscal_moral);
-            } else if (columna_nombre === "uso_cfdi") {
-                var input = generar_campo_de_celda_a_editar('select', valor_original_de_celda, select_uso_cfdi, select_uso_cfdi_moral);
-            } else if (columna_nombre === "estatus_factura") {
-                var input = generar_campo_de_celda_a_editar('select', valor_original_de_celda, select_estatus_factura);
+            if (columna_nombre === "disciplina_id") {
+                var input = generar_campo_de_celda_a_editar('select_indice', valor_original_de_celda, select_disciplina);
+            } else if (columna_nombre === "instructor_id") {
+                var input = generar_campo_de_celda_a_editar('select_indice', valor_original_de_celda, select_instructor);
+            } else if (columna_nombre === "dificultad") {
+                var input = generar_campo_de_celda_a_editar('select', valor_original_de_celda, select_dificultad);
+            } else if (columna_nombre === "inicia") {
+                var input = generar_campo_de_celda_a_editar('fecha', valor_original_de_celda);
+            } else if (columna_nombre === "cupo") {
+                var input = generar_campo_de_celda_a_editar('numero', valor_original_de_celda);
             } else {
                 var input = generar_campo_de_celda_a_editar('texto', valor_original_de_celda, null);
             }
@@ -102,6 +109,7 @@ $(document).ready(function () {
 
             // Guardar los cambios al salir del campo de entrada
             input.blur(function () {
+                console.log(input.val());
                 guardar_valor_de_celda(celda_seleccionada, columna_nombre, input);
             });
 
@@ -127,14 +135,16 @@ $(document).ready(function () {
             return; // Salir de la función sin hacer nada
         }
 
-        if (columna_nombre === "monto") {
-            valor_nuevo_de_celda = generar_salida_de_celda_editada('moneda', valor_nuevo_de_celda, celda_seleccionada);
-        } else if (columna_nombre === "regimen_fiscal") {
+        if (columna_nombre === "disciplina_id") {
             valor_nuevo_de_celda = generar_salida_de_celda_editada('select', valor_nuevo_de_celda, celda_seleccionada);
-        } else if (columna_nombre === "uso_cfdi") {
+        } else if (columna_nombre === "instructor_id") {
             valor_nuevo_de_celda = generar_salida_de_celda_editada('select', valor_nuevo_de_celda, celda_seleccionada);
-        } else if (columna_nombre === "estatus_factura") {
+        } else if (columna_nombre === "dificultad") {
             valor_nuevo_de_celda = generar_salida_de_celda_editada('select', valor_nuevo_de_celda, celda_seleccionada);
+        } else if (columna_nombre === "inicia") {
+            valor_nuevo_de_celda = generar_salida_de_celda_editada('fecha', valor_nuevo_de_celda, celda_seleccionada);
+        } else if (columna_nombre === "cupo") {
+            valor_nuevo_de_celda = generar_salida_de_celda_editada('numero', valor_nuevo_de_celda, celda_seleccionada);
         } else {
             valor_nuevo_de_celda = generar_salida_de_celda_editada('texto', valor_nuevo_de_celda, celda_seleccionada);
         }
@@ -153,6 +163,9 @@ $(document).ready(function () {
                 nuevoValor: valor_nuevo_de_celda
             },
             success: function (response) {
+                if (columna_nombre === 'inicia') {
+                    table.ajax.reload();
+                }
                 console.log('Dato actualizado en la base de datos');
                 console.log(response);
                 flag_editando = false; // Marcar como fuera de edición
@@ -167,8 +180,57 @@ $(document).ready(function () {
     }
 });
 
+// Función para obtener opciones del select 'disciplina'
+async function obtener_opciones_select_disciplina() {
+    // Realizar una solicitud AJAX para obtener las opciones de select_disciplina
+    $.ajax({
+        url: method_call + "obtener_opciones_select_disciplina",
+        method: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            select_disciplina = data;
+            console.log('Opciones de disciplina cargadas:', select_disciplina);
+        },
+        error: function (xhr, status, error) {
+            console.error('Error al obtener opciones de disciplina: ' + error);
+        }
+    });
+}
+
+async function obtener_opciones_select_instructor() {
+    // Realizar una solicitud AJAX para obtener las opciones de select_instructor
+    $.ajax({
+        url: method_call + "obtener_opciones_select_instructor",
+        method: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            select_instructor = data;
+            console.log('Opciones de instructor cargadas:', select_instructor);
+        },
+        error: function (xhr, status, error) {
+            console.error('Error al obtener opciones de instructor: ' + error);
+        }
+    });
+}
+
+// Función para obtener opciones del select 'dificultad'
+async function obtener_opciones_select_dificultad() {
+    $.ajax({
+        url: method_call + "obtener_opciones_select_dificultad",
+        method: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            select_dificultad = data;
+            console.log('Opciones de dificultad cargadas:', select_dificultad);
+        },
+        error: function (xhr, status, error) {
+            console.error('Error al obtener opciones de dificultad: ' + error);
+        }
+    });
+}
+
 function createEditableCells(row, data, dataIndex) {
-    var columnsToEdit = [5, 6, 7, 8, 9, 10, 12, 13];
+    var columnsToEdit = [2, 3, 4, 6, 7];
     $.each(columnsToEdit, function (index, columnIndex) {
         $('td:eq(' + columnIndex + ')', row).addClass('editable-cell');
     });

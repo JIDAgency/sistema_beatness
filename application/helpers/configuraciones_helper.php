@@ -1,5 +1,12 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed');
 
+if (!function_exists('db_activa')) {
+    function db_activa()
+    {
+        return get_instance()->config->item('db_activa');
+    }
+}
+
 if (!function_exists('branding')) {
     
     function branding()
@@ -94,3 +101,23 @@ if (!function_exists('author')) {
 
 }
 
+if (!function_exists('select_disciplina')) {
+    function select_disciplina()
+    {
+        return get_instance()->config->item('select_disciplina');
+    }
+}
+
+if (!function_exists('select_instructor')) {
+    function select_instructor()
+    {
+        return get_instance()->config->item('select_instructor');
+    }
+}
+
+if (!function_exists('select_dificultad')) {
+    function select_dificultad()
+    {
+        return get_instance()->config->item('select_dificultad');
+    }
+}

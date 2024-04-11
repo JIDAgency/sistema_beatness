@@ -8,7 +8,8 @@ class MY_Controller extends CI_Controller {
         parent::__construct();
         
         date_default_timezone_set('America/Mexico_City');
-        setlocale(LC_TIME,"es_ES.UTF-8");
+        setlocale(LC_ALL, 'es_MX.UTF-8', 'es_MX');
+        setlocale(LC_TIME, 'es_VE.UTF-8','esp');  
 
         $this->config->load('b3studio', true);
 
