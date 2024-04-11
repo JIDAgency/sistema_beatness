@@ -185,7 +185,6 @@ $(document).ready(function () {
             }
         }
 
-
         // Realizar una solicitud AJAX para actualizar el dato en la base de datos
         $.ajax({
             url: method_call + "actualizar", // Actualiza con la ruta correcta

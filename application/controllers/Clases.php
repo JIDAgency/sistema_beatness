@@ -206,16 +206,6 @@ class Clases extends MY_Controller
         $columna = $this->input->post('columna'); // Índice de la columna
         $nuevoValor = $this->input->post('nuevoValor');
 
-        $disciplinas_list = $this->disciplinas_model->obtener_todas();
-
-        // if ($columna == 'disciplina_id') {
-        //     $disciplina_row = $this->disciplinas_model->obtener_por_nombre($nuevoValor)->row();
-        //     $nuevoValor = $disciplina_row->id;
-        // } else if ($columna == 'instructor_id') {
-        //     $instructor_row = $this->usuarios_model->obtener_por_nombre($nuevoValor)->row();
-        //     $nuevoValor = $instructor_row->id;
-        // }
-
         if ($columna == 'inicia') {
             $data_1 = array(
                 $columna => $nuevoValor,

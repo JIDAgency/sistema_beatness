@@ -119,30 +119,3 @@ $select_disciplina = array(
 );
 
 $config['select_disciplina'] = $select_disciplina;
-
-/* ====== disciplina ====== */
-
-$select_instructor = array(
-    (object) array(
-        'nombre'    => 'Homero',
-        'valor'     => '4',
-        'activo'    => false,
-    ),
-    (object) array(
-        'nombre'    => 'Roberto Vasquez',
-        'valor'     => '34',
-        'activo'    => false,
-    )
-);
-
-$config['select_instructor'] = $select_instructor;
-
-$select_dificultad = array(
-    (object) array(
-        'nombre'    => 'Homero',
-        'valor'     => '3',
-        'activo'    => false,
-    ),
-);
-
-$config['select_dificultad'] = $select_dificultad;
