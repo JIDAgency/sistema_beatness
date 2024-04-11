@@ -89,9 +89,9 @@ $(document).ready(function () {
             var valor_original_de_celda = celda_seleccionada.text();
 
             if (columna_nombre === "disciplina_id") {
-                var input = generar_campo_de_celda_a_editar('select_indice', valor_original_de_celda, select_disciplina);
+                var input = generar_campo_de_celda_a_editar('select_indice_disciplina', valor_original_de_celda, select_disciplina);
             } else if (columna_nombre === "instructor_id") {
-                var input = generar_campo_de_celda_a_editar('select_indice', valor_original_de_celda, select_instructor);
+                var input = generar_campo_de_celda_a_editar('select_indice_instructor', valor_original_de_celda, select_instructor);
             } else if (columna_nombre === "dificultad") {
                 var input = generar_campo_de_celda_a_editar('select', valor_original_de_celda, select_dificultad);
             } else if (columna_nombre === "inicia") {
@@ -152,6 +152,39 @@ $(document).ready(function () {
         // Obtener la fila y los datos correspondientes
         var fila_tabla = table.row(celda_seleccionada.closest('tr'));
         var datos_fila_tabla = fila_tabla.data();
+
+        function formatoNombrePropio(nombre) {
+            return nombre.toLowerCase().replace(/\b\w/g, function (char) {
+                return char.toUpperCase();
+            });
+        }
+
+        if (columna_nombre === 'disciplina_id') {
+            console.log('Entre al if 1');
+            for (var i = 0; i < select_disciplina.length; i++) {
+                console.log(select_disciplina[i].nombre)
+                console.log(valor_nuevo_de_celda)
+                if (select_disciplina[i].nombre === valor_nuevo_de_celda.toLocaleUpperCase()) {
+                    console.log('Entre al if 2');
+                    valor_nuevo_de_celda = select_disciplina[i].valor;
+                    console.log(valor_nuevo_de_celda);
+                    break;
+                }
+            }
+        } else if (columna_nombre === 'instructor_id') {
+            console.log('Entre al if 1');
+            for (var i = 0; i < select_instructor.length; i++) {
+                console.log(select_instructor[i].nombre)
+                console.log(formatoNombrePropio(valor_nuevo_de_celda))
+                if (select_instructor[i].nombre === formatoNombrePropio(valor_nuevo_de_celda)) {
+                    console.log('Entre al if 2');
+                    valor_nuevo_de_celda = select_instructor[i].valor;
+                    console.log(valor_nuevo_de_celda);
+                    break;
+                }
+            }
+        }
+
 
         // Realizar una solicitud AJAX para actualizar el dato en la base de datos
         $.ajax({

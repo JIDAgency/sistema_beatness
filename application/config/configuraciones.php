@@ -82,7 +82,7 @@ $config['select_estatus'] = $select_estatus;
 
 $select_disciplina = array(
     (object) array(
-        'nombre'    => 'INDOR CYCLING',
+        'nombre'    => 'INDOOR CYCLING',
         'valor'     => '2',
         'activo'    => false,
     ),
@@ -127,6 +127,11 @@ $select_instructor = array(
         'nombre'    => 'Homero',
         'valor'     => '4',
         'activo'    => false,
+    ),
+    (object) array(
+        'nombre'    => 'Roberto Vasquez',
+        'valor'     => '34',
+        'activo'    => false,
     )
 );
 
@@ -137,7 +142,7 @@ $select_dificultad = array(
         'nombre'    => 'Homero',
         'valor'     => '3',
         'activo'    => false,
-    )
+    ),
 );
 
 $config['select_dificultad'] = $select_dificultad;

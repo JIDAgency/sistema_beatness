@@ -54,6 +54,12 @@ function formato_capitalizar(data) {
     return data.charAt(0).toUpperCase() + data.slice(1);
 }
 
+function formatoNombrePropio(nombre) {
+    return nombre.toLowerCase().replace(/\b\w/g, function (char) {
+        return char.toUpperCase();
+    });
+}
+
 function generar_campo_de_celda_a_editar(tipo_celda, valor_original_de_celda, data_opciones = null) {
     switch (tipo_celda) {
         case 'texto':
@@ -85,7 +91,7 @@ function generar_campo_de_celda_a_editar(tipo_celda, valor_original_de_celda, da
 
             return input;
 
-        case 'select_indice':
+        case 'select_indice_disciplina':
 
             var input = $('<select class="form-control"></select>');
 
@@ -95,7 +101,20 @@ function generar_campo_de_celda_a_editar(tipo_celda, valor_original_de_celda, da
             });
 
             // Establecer el valor original seleccionado
-            input.val(valor_original_de_celda.toLowerCase());
+            input.val(valor_original_de_celda.toLocaleUpperCase());
+
+            return input;
+        case 'select_indice_instructor':
+
+            var input = $('<select class="form-control"></select>');
+
+            // Agregar opciones al select
+            $.each(data_opciones, function (index, opcion) {
+                input.append('<option selected value="' + opcion.nombre + '">' + opcion.nombre + '</option>');
+            });
+
+            // Establecer el valor original seleccionado
+            input.val(formatoNombrePropio(valor_original_de_celda));
 
             return input;
         default:

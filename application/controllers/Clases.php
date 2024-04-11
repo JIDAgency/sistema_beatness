@@ -208,18 +208,24 @@ class Clases extends MY_Controller
 
         $disciplinas_list = $this->disciplinas_model->obtener_todas();
 
-        if ($columna == 'disciplina_id') {
-            $disciplina_row = $this->disciplinas_model->obtener_por_nombre($nuevoValor)->row();
-            $nuevoValor = $disciplina_row->id;
-        } else if ($columna == 'instructor_id') {
-            $instructor_row = $this->usuarios_model->obtener_por_nombre($nuevoValor)->row();
-            $nuevoValor = $instructor_row->id;
+        // if ($columna == 'disciplina_id') {
+        //     $disciplina_row = $this->disciplinas_model->obtener_por_nombre($nuevoValor)->row();
+        //     $nuevoValor = $disciplina_row->id;
+        // } else if ($columna == 'instructor_id') {
+        //     $instructor_row = $this->usuarios_model->obtener_por_nombre($nuevoValor)->row();
+        //     $nuevoValor = $instructor_row->id;
+        // }
+
+        if ($columna == 'inicia') {
+            $data_1 = array(
+                $columna => $nuevoValor,
+                'inicia_ionic' => $nuevoValor,
+            );
+        } else {
+            $data_1 = array(
+                $columna => $nuevoValor,
+            );
         }
-
-
-        $data_1 = array(
-            $columna => $nuevoValor,
-        );
 
         $this->clases_model->actualizar_clase_por_identificador($identificador, $data_1);
 
@@ -239,14 +245,20 @@ class Clases extends MY_Controller
 
         $data = [];
         foreach ($instructores->result() as $instructor) {
+            $nombre = trim("{$instructor->nombre_completo} {$instructor->apellido_paterno} {$instructor->apellido_materno}");
+            $nombre = preg_replace('/\s+/', ' ', $nombre);
+
             $data[] = array(
-                'nombre' => $instructor->nombre,
-                'valor' => $instructor->nombre
+                'nombre' => $nombre,
+                'valor' => $instructor->id
             );
         }
 
         echo json_encode($data);
         exit();
+
+        // echo json_encode(select_instructor());
+        // exit();
     }
 
     public function obtener_opciones_select_dificultad()
