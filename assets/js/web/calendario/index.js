@@ -1,15 +1,17 @@
-obtener_clases_semana_actual_por_disciplina_id(2);
-obtener_clases_fin_de_semana_actual_por_disciplina_id(2);
-
 var select = document.getElementById('disciplina_seleccionada');
+var disciplina_seleccionada = 2;
 
 document.getElementById('disciplina_titulo').innerHTML = select.options[select.selectedIndex].innerText;
+
+obtener_clases_semana_actual_por_disciplina_id(disciplina_seleccionada);
+obtener_clases_fin_de_semana_actual_por_disciplina_id(disciplina_seleccionada);
 
 select.onchange = function () {
     //document.getElementById('card_titulo').innerHTML = this.value;
     document.getElementById('disciplina_titulo').innerHTML = select.options[select.selectedIndex].innerText;
-    obtener_clases_semana_actual_por_disciplina_id(this.value);
-    obtener_clases_fin_de_semana_actual_por_disciplina_id(this.value);
+    disciplina_seleccionada = this.value;
+    obtener_clases_semana_actual_por_disciplina_id(disciplina_seleccionada);
+    obtener_clases_fin_de_semana_actual_por_disciplina_id(disciplina_seleccionada);
 };
 
 function obtener_clases_semana_actual_por_disciplina_id(disciplina_id) {

@@ -31,11 +31,18 @@
             padding-left: 0 !important;
         }
 
+        .card {
+            background-color: rgba(240, 240, 240, 0.15);
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            /* Sombra blanca suave */
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
             border-spacing: 0;
-            color: #f0f0f0;
+            color: #FFFFFF;
 
         }
 
@@ -46,8 +53,20 @@
         }
 
         th {
-            background-color: rgba(240, 240, 240, 0.5);
-            color: #f0f0f0;
+            background-color: rgba(240, 240, 240, 0.30);
+            color: #FFFFFF;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            /* Sombra blanca suave */
+        }
+
+        th:first-child {
+            border-top-left-radius: 8px;
+            border-bottom-left-radius: 8px;
+        }
+
+        th:last-child {
+            border-top-right-radius: 8px;
+            border-bottom-right-radius: 8px;
         }
 
         th:first-child,
@@ -66,6 +85,59 @@
         .weekdays {
             margin-bottom: 20px;
         }
+
+        /* Estilos personalizados */
+        .neon-select {
+            background-color: rgba(255, 255, 255, 0.2);
+            /* Color de fondo semi-transparente */
+            color: white;
+            /* Color de texto blanco */
+            opacity: 0.8;
+            /* Opacidad del texto */
+            text-shadow: 0 0 10px #FF0000, 0 0 20px #FF0000, 0 0 30px #FF0000, 0 0 40px #FF0000, 0 0 50px #FF0000, 0 0 60px #FF0000, 0 0 70px #FF0000, 0 0 80px #FF0000;
+            /* Sombra estilo neón */
+        }
+
+
+        .neon-magenta {
+            text-shadow: 0 0 10px #FF00FF, 0 0 20px #FF00FF, 0 0 30px #FF00FF, 0 0 40px #FF00FF, 0 0 50px #FF00FF, 0 0 60px #FF00FF, 0 0 70px #FF00FF, 0 0 80px #FF00FF;
+            /* Sombra estilo neón magenta */
+        }
+
+        .neon-blue-magenta {
+            text-shadow: 0 0 10px #4B0082, 0 0 20px #4B0082, 0 0 30px #4B0082, 0 0 40px #4B0082, 0 0 50px #4B0082, 0 0 60px #4B0082, 0 0 70px #4B0082, 0 0 80px #4B0082;
+            /* Sombra estilo neón azul-magenta */
+        }
+
+        .neon-green {
+            text-shadow: 0 0 10px #00FF00, 0 0 20px #00FF00, 0 0 30px #00FF00, 0 0 40px #00FF00, 0 0 50px #00FF00, 0 0 60px #00FF00, 0 0 70px #00FF00, 0 0 80px #00FF00;
+            /* Sombra estilo neón verde limón */
+        }
+
+        .neon-pink {
+            text-shadow: 0 0 10px #FF1493, 0 0 20px #FF1493, 0 0 30px #FF1493, 0 0 40px #FF1493, 0 0 50px #FF1493, 0 0 60px #FF1493, 0 0 70px #FF1493, 0 0 80px #FF1493;
+            /* Sombra estilo neón rosa */
+        }
+
+        .neon-blue {
+            text-shadow: 0 0 10px #0000FF, 0 0 20px #0000FF, 0 0 30px #0000FF, 0 0 40px #0000FF, 0 0 50px #0000FF, 0 0 60px #0000FF, 0 0 70px #0000FF, 0 0 80px #0000FF;
+            /* Sombra estilo neón azul */
+        }
+
+        .neon-orange {
+            text-shadow: 0 0 10px #FFA500, 0 0 20px #FFA500, 0 0 30px #FFA500, 0 0 40px #FFA500, 0 0 50px #FFA500, 0 0 60px #FFA500, 0 0 70px #FFA500, 0 0 80px #FFA500;
+            /* Sombra estilo neón naranja */
+        }
+
+        .neon-red {
+            text-shadow: 0 0 10px #FF0000, 0 0 20px #FF0000, 0 0 30px #FF0000, 0 0 40px #FF0000, 0 0 50px #FF0000, 0 0 60px #FF0000, 0 0 70px #FF0000, 0 0 80px #FF0000;
+            /* Sombra estilo neón rojo */
+        }
+
+        .neon-purple {
+            text-shadow: 0 0 10px #800080, 0 0 20px #800080, 0 0 30px #800080, 0 0 40px #800080, 0 0 50px #800080, 0 0 60px #800080, 0 0 70px #800080, 0 0 80px #800080;
+            /* Sombra estilo neón purpura */
+        }
     </style>
 </head>
 
@@ -78,7 +150,7 @@
 
             <div class="content-header row">
                 <div class="content-header-left col-md-6 col-12 mb-2">
-                    <h3 class="content-header-title text-white mb-0">CALENDARIOS</h3>
+                    <h3 class="content-header-title text-bold-600 text-white mb-0">CALENDARIO</h3>
                 </div>
                 <div class="content-header-right col-md-6 col-12">
                 </div>
@@ -92,7 +164,7 @@
                         <div class="col-xl-12 col-lg-12">
                             <div class="card card-transparent no-border">
                                 <div class="card-header bg-transparent">
-                                    <h4 class="card-title text-white" name="card_titulo" id="card_titulo">CLASES DE <span name="disciplina_titulo" id="disciplina_titulo"></span> </h4>
+                                    <h4 class="card-title text-bold-600 text-white neon-magenta" name="card_titulo" id="card_titulo">CLASES DE <span name="disciplina_titulo" id="disciplina_titulo"></span> </h4>
                                 </div>
                                 <div class="card-content">
                                     <div class="card-body bg-transparent">
@@ -102,9 +174,9 @@
 
                                                 <div class="form-group">
                                                     <div class="row">
-                                                        <label class="col-lg-12 text-white"><b>+ DISCIPLINAS&nbsp;</b></label>
+                                                        <label class="col-lg-12 text-white neon-blue-magenta"><b>+ DISCIPLINAS&nbsp;</b></label>
                                                         <div class="col-lg-12">
-                                                            <select class="form-control select2 custom-select" name="disciplina_seleccionada" id="disciplina_seleccionada" required>
+                                                            <select class="form-control select2 custom-select neon-select" name="disciplina_seleccionada" id="disciplina_seleccionada" required>
                                                                 <?php foreach ($disciplinas_list as $disciplina_key => $disciplina_value) : ?>
                                                                     <?php if ($disciplina_key != 0) : ?>
                                                                         <option value="<?php echo $disciplina_value->id; ?>" <?php echo ($disciplina_key == 1) ? 'selected' : ''; ?> <?php echo set_select('disciplina_seleccionada', $disciplina_value->id, set_value('disciplina_seleccionada') ? false : $disciplina_value->id == $this->session->flashdata('disciplina_seleccionada')); ?>><?php echo trim(ucfirst($disciplina_value->nombre)); ?></option>

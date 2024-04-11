@@ -35,12 +35,12 @@ class Calendario extends CI_Controller
         <table class="semana">
             <thead>
                 <tr>
-                    <th>Hora</th>
-                    <th>Lun</th>
-                    <th>Mar</th>
-                    <th>Mie</th>
-                    <th>Jue</th>
-                    <th>Vie</th>
+                    <th class="neon-green">Hora</th>
+                    <th class="neon-blue">Lun</th>
+                    <th class="neon-blue">Mar</th>
+                    <th class="neon-blue">Mie</th>
+                    <th class="neon-blue">Jue</th>
+                    <th class="neon-blue">Vie</th>
                 </tr>
             </thead>
             <tbody>
@@ -64,9 +64,9 @@ class Calendario extends CI_Controller
             }
 
             $contenido .= '<tr>';
-            $contenido .= '<td>' . $hora . '</td>';
+            $contenido .= '<td class="neon-orange">' . $hora . '</td>';
             foreach (['Mon', 'Tue', 'Wed', 'Thu', 'Fri'] as $dia) {
-                $contenido .= '<td>' . ($clases_dia[$dia] ?? '/') . '</td>';
+                $contenido .= '<td class="neon-pink">' . ($clases_dia[$dia] ?? '/') . '</td>';
             }
             $contenido .= '</tr>';
         }
@@ -99,9 +99,9 @@ class Calendario extends CI_Controller
         <table class="semana">
             <thead>
                 <tr>
-                    <th>Hora</th>
-                    <th>Sab</th>
-                    <th>Dom</th>
+                    <th class="neon-green">Hora</th>
+                    <th class="neon-purple">Sab</th>
+                    <th class="neon-purple">Dom</th>
                 </tr>
             </thead>
             <tbody>
@@ -125,9 +125,9 @@ class Calendario extends CI_Controller
             }
 
             $contenido .= '<tr>';
-            $contenido .= '<td>' . $hora . '</td>';
+            $contenido .= '<td class="neon-orange">' . $hora . '</td>';
             foreach (['Sat', 'Sun'] as $dia) {
-                $contenido .= '<td>' . ($clases_dia[$dia] ?? '/') . '</td>';
+                $contenido .= '<td class="neon-pink">' . ($clases_dia[$dia] ?? '/') . '</td>';
             }
             $contenido .= '</tr>';
         }
