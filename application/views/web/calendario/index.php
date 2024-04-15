@@ -5,13 +5,17 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
-    <meta name="description" content="Robust admin is super flexible, powerful, clean &amp; modern responsive bootstrap 4 admin template.">
-    <meta name="keywords" content="admin template, robust admin template, dashboard template, flat admin template, responsive admin template, web app, crypto dashboard, bitcoin dashboard">
+    <meta name="description"
+        content="Robust admin is super flexible, powerful, clean &amp; modern responsive bootstrap 4 admin template.">
+    <meta name="keywords"
+        content="admin template, robust admin template, dashboard template, flat admin template, responsive admin template, web app, crypto dashboard, bitcoin dashboard">
     <meta name="author" content="BEATNESS STUDIO">
     <title>Tabs - Robust - Responsive Bootstrap 4 Admin Dashboard Template for Web Application</title>
     <link rel="apple-touch-icon" href="<?php echo base_url(); ?>app-assets/images/ico/apple-icon-120.png">
     <link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url(); ?>app-assets/images/ico/favicon.ico">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i%7CMuli:300,400,500,700" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i%7CMuli:300,400,500,700"
+        rel="stylesheet">
     <!-- BEGIN VENDOR CSS-->
     <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>app-assets/css/vendors.css">
     <!-- END VENDOR CSS-->
@@ -19,8 +23,10 @@
     <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>app-assets/css/app.css">
     <!-- END ROBUST CSS-->
     <!-- BEGIN Page Level CSS-->
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>app-assets/css/core/menu/menu-types/horizontal-menu.css">
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>app-assets/css/core/colors/palette-gradient.css">
+    <link rel="stylesheet" type="text/css"
+        href="<?php echo base_url(); ?>app-assets/css/core/menu/menu-types/horizontal-menu.css">
+    <link rel="stylesheet" type="text/css"
+        href="<?php echo base_url(); ?>app-assets/css/core/colors/palette-gradient.css">
     <!-- END Page Level CSS-->
     <!-- BEGIN Custom CSS-->
     <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/style.css">
@@ -34,8 +40,6 @@
         .card {
             background-color: rgba(240, 240, 240, 0.15);
             border-radius: 8px;
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-            /* Sombra blanca suave */
         }
 
         table {
@@ -55,8 +59,6 @@
         th {
             background-color: rgba(240, 240, 240, 0.30);
             color: #FFFFFF;
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-            /* Sombra blanca suave */
         }
 
         th:first-child {
@@ -87,61 +89,19 @@
         }
 
         /* Estilos personalizados */
-        .neon-select {
+        .tp-select {
             background-color: rgba(255, 255, 255, 0.2);
             /* Color de fondo semi-transparente */
             color: white;
             /* Color de texto blanco */
             opacity: 0.8;
             /* Opacidad del texto */
-            text-shadow: 0 0 10px #FF0000, 0 0 20px #FF0000, 0 0 30px #FF0000, 0 0 40px #FF0000, 0 0 50px #FF0000, 0 0 60px #FF0000, 0 0 70px #FF0000, 0 0 80px #FF0000;
-            /* Sombra estilo neón */
-        }
-
-
-        .neon-magenta {
-            text-shadow: 0 0 10px #FF00FF, 0 0 20px #FF00FF, 0 0 30px #FF00FF, 0 0 40px #FF00FF, 0 0 50px #FF00FF, 0 0 60px #FF00FF, 0 0 70px #FF00FF, 0 0 80px #FF00FF;
-            /* Sombra estilo neón magenta */
-        }
-
-        .neon-blue-magenta {
-            text-shadow: 0 0 10px #4B0082, 0 0 20px #4B0082, 0 0 30px #4B0082, 0 0 40px #4B0082, 0 0 50px #4B0082, 0 0 60px #4B0082, 0 0 70px #4B0082, 0 0 80px #4B0082;
-            /* Sombra estilo neón azul-magenta */
-        }
-
-        .neon-green {
-            text-shadow: 0 0 10px #00FF00, 0 0 20px #00FF00, 0 0 30px #00FF00, 0 0 40px #00FF00, 0 0 50px #00FF00, 0 0 60px #00FF00, 0 0 70px #00FF00, 0 0 80px #00FF00;
-            /* Sombra estilo neón verde limón */
-        }
-
-        .neon-pink {
-            text-shadow: 0 0 10px #FF1493, 0 0 20px #FF1493, 0 0 30px #FF1493, 0 0 40px #FF1493, 0 0 50px #FF1493, 0 0 60px #FF1493, 0 0 70px #FF1493, 0 0 80px #FF1493;
-            /* Sombra estilo neón rosa */
-        }
-
-        .neon-blue {
-            text-shadow: 0 0 10px #0000FF, 0 0 20px #0000FF, 0 0 30px #0000FF, 0 0 40px #0000FF, 0 0 50px #0000FF, 0 0 60px #0000FF, 0 0 70px #0000FF, 0 0 80px #0000FF;
-            /* Sombra estilo neón azul */
-        }
-
-        .neon-orange {
-            text-shadow: 0 0 10px #FFA500, 0 0 20px #FFA500, 0 0 30px #FFA500, 0 0 40px #FFA500, 0 0 50px #FFA500, 0 0 60px #FFA500, 0 0 70px #FFA500, 0 0 80px #FFA500;
-            /* Sombra estilo neón naranja */
-        }
-
-        .neon-red {
-            text-shadow: 0 0 10px #FF0000, 0 0 20px #FF0000, 0 0 30px #FF0000, 0 0 40px #FF0000, 0 0 50px #FF0000, 0 0 60px #FF0000, 0 0 70px #FF0000, 0 0 80px #FF0000;
-            /* Sombra estilo neón rojo */
-        }
-
-        .neon-purple {
-            text-shadow: 0 0 10px #800080, 0 0 20px #800080, 0 0 30px #800080, 0 0 40px #800080, 0 0 50px #800080, 0 0 60px #800080, 0 0 70px #800080, 0 0 80px #800080;
-            /* Sombra estilo neón purpura */
         }
     </style>
 </head>
 
-<body class="horizontal-layout bg-calendario horizontal-menu horizontal-menu-padding 2-columns   menu-expanded" data-open="hover" data-menu="horizontal-menu" data-col="2-columns">
+<body class="horizontal-layout bg-calendario horizontal-menu horizontal-menu-padding 2-columns   menu-expanded"
+    data-open="hover" data-menu="horizontal-menu" data-col="2-columns">
 
     <!-- ////////////////////////////////////////////////////////////////////////////-->
 
@@ -160,47 +120,59 @@
 
                 <!-- Start -->
                 <section id="basic-tabs-components">
+
+                    <div class="row match-height">
+                        <div class="col-xl-6 col-md-6 col-sm-12">
+
+                            <div class="form-group">
+                                <div class="row">
+                                    <label class="col-lg-12 text-white"><b>+ DISCIPLINAS</b></label>
+                                    <div class="col-lg-12">
+                                        <select class="form-control select2 custom-select tp-select"
+                                            name="disciplina_seleccionada" id="disciplina_seleccionada" required>
+                                            <?php foreach ($disciplinas_list as $disciplina_key => $disciplina_value): ?>
+                                                <?php if ($disciplina_key != 0): ?>
+                                                    <option value="<?php echo $disciplina_value->id; ?>" <?php echo ($disciplina_key == 1) ? 'selected' : ''; ?>         <?php echo set_select('disciplina_seleccionada', $disciplina_value->id, set_value('disciplina_seleccionada') ? false : $disciplina_value->id == $this->session->flashdata('disciplina_seleccionada')); ?>>
+                                                        <?php echo trim(ucfirst($disciplina_value->nombre)); ?>
+                                                    </option>
+                                                <?php endif; ?>
+                                            <?php endforeach; ?>
+                                        </select>
+                                        <div class="invalid-feedback">
+                                            Se requiere seleccionar una disciplina válida.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
                     <div class="row match-height">
                         <div class="col-xl-12 col-lg-12">
                             <div class="card card-transparent no-border">
+
                                 <div class="card-header bg-transparent">
-                                    <h4 class="card-title text-bold-600 text-white neon-magenta" name="card_titulo" id="card_titulo">CLASES DE <span name="disciplina_titulo" id="disciplina_titulo"></span> </h4>
+                                    <h4 class="card-title text-bold-600 text-white" name="card_titulo" id="card_titulo">
+                                        <span name="disciplina_titulo" id="disciplina_titulo"></span>
+                                    </h4>
                                 </div>
+
                                 <div class="card-content">
                                     <div class="card-body bg-transparent">
 
-                                        <div class="row match-height">
-                                            <div class="col-xl-6 col-md-6 col-sm-12">
-
-                                                <div class="form-group">
-                                                    <div class="row">
-                                                        <label class="col-lg-12 text-white neon-blue-magenta"><b>+ DISCIPLINAS&nbsp;</b></label>
-                                                        <div class="col-lg-12">
-                                                            <select class="form-control select2 custom-select neon-select" name="disciplina_seleccionada" id="disciplina_seleccionada" required>
-                                                                <?php foreach ($disciplinas_list as $disciplina_key => $disciplina_value) : ?>
-                                                                    <?php if ($disciplina_key != 0) : ?>
-                                                                        <option value="<?php echo $disciplina_value->id; ?>" <?php echo ($disciplina_key == 1) ? 'selected' : ''; ?> <?php echo set_select('disciplina_seleccionada', $disciplina_value->id, set_value('disciplina_seleccionada') ? false : $disciplina_value->id == $this->session->flashdata('disciplina_seleccionada')); ?>><?php echo trim(ucfirst($disciplina_value->nombre)); ?></option>
-                                                                    <?php endif; ?>
-                                                                <?php endforeach; ?>
-                                                            </select>
-                                                            <div class="invalid-feedback">
-                                                                Se requiere seleccionar un servicio válido.
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                        </div>
-
                                         <div name="contenido_semana" id="contenido_semana">
                                         </div>
+
+                                        <br>
+                                        <br>
 
                                         <div name="contenido_fin_de_semana" id="contenido_fin_de_semana">
                                         </div>
 
                                     </div>
                                 </div>
+                                
                             </div>
                         </div>
                     </div>

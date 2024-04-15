@@ -1,4 +1,5 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH'))
+    exit('No direct script access allowed');
 
 class Calendario extends CI_Controller
 {
@@ -32,15 +33,15 @@ class Calendario extends CI_Controller
         }
 
         $contenido = '
-        <table class="semana">
+        <table class="semana responsive">
             <thead>
                 <tr>
-                    <th class="neon-green">Hora</th>
-                    <th class="neon-blue">Lun</th>
-                    <th class="neon-blue">Mar</th>
-                    <th class="neon-blue">Mie</th>
-                    <th class="neon-blue">Jue</th>
-                    <th class="neon-blue">Vie</th>
+                    <th class="">Horario</th>
+                    <th class="">Lun</th>
+                    <th class="">Mar</th>
+                    <th class="">Mie</th>
+                    <th class="">Jue</th>
+                    <th class="">Vie</th>
                 </tr>
             </thead>
             <tbody>
@@ -64,9 +65,9 @@ class Calendario extends CI_Controller
             }
 
             $contenido .= '<tr>';
-            $contenido .= '<td class="neon-orange">' . $hora . '</td>';
+            $contenido .= '<td class="">' . $hora . '</td>';
             foreach (['Mon', 'Tue', 'Wed', 'Thu', 'Fri'] as $dia) {
-                $contenido .= '<td class="neon-pink">' . ($clases_dia[$dia] ?? '/') . '</td>';
+                $contenido .= '<td class="">' . ($clases_dia[$dia] ?? '/') . '</td>';
             }
             $contenido .= '</tr>';
         }
@@ -99,9 +100,9 @@ class Calendario extends CI_Controller
         <table class="semana">
             <thead>
                 <tr>
-                    <th class="neon-green">Hora</th>
-                    <th class="neon-purple">Sab</th>
-                    <th class="neon-purple">Dom</th>
+                    <th class="">Horario</th>
+                    <th class="">Sab</th>
+                    <th class="">Dom</th>
                 </tr>
             </thead>
             <tbody>
@@ -125,9 +126,9 @@ class Calendario extends CI_Controller
             }
 
             $contenido .= '<tr>';
-            $contenido .= '<td class="neon-orange">' . $hora . '</td>';
+            $contenido .= '<td class="">' . $hora . '</td>';
             foreach (['Sat', 'Sun'] as $dia) {
-                $contenido .= '<td class="neon-pink">' . ($clases_dia[$dia] ?? '/') . '</td>';
+                $contenido .= '<td class="">' . ($clases_dia[$dia] ?? '/') . '</td>';
             }
             $contenido .= '</tr>';
         }
