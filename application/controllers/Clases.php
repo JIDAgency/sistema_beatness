@@ -103,18 +103,18 @@ class Clases extends MY_Controller
                     $opciones = anchor('clases/reservar/' . $clase->id, 'Reservar');
                 }
 
-                $opciones .= '<br>';
+                $opciones .= ' | ';
                 $opciones .= anchor('clases/editar/' . $clase->id, 'Editar');
-                $opciones .= '<br>';
+                $opciones .= ' | ';
             }
             if ($clase->estatus == 'Activa') {
                 $opciones .= '<a href="' . site_url('clases/duplicar_clase/' . $clase->id) . '"><span>Duplicar</span></a>';
             }
             if ($clase->reservado == 0 and $clase->estatus == 'Activa') {
 
-                $opciones .= '<br>';
+                $opciones .= ' | ';
                 $opciones .=  '<a href="' . site_url('clases/cancelar/' . $clase->id) . '"><span class="red">Cancelar</span></a>';
-                $opciones .=  ' <br> ';
+                $opciones .=  '  |  ';
                 $opciones .= '<a href="' . site_url('clases/borrar/' . $clase->id) . '"><span class="red">Borrar</span></a>';
             }
 
@@ -153,10 +153,23 @@ class Clases extends MY_Controller
     public function duplicar_clase($id = null)
     {
         $clase = $this->clases_model->obtener_por_id($id)->row();
+        $clases_list = $this->clases_model->obtener_todas_para_front_con_detalle();
 
         if (!$clase) {
             $this->session->set_flashdata('MENSAJE_ERROR', 'No se ha podido encontrar la clase que desea clonar.');
             redirect(site_url('clases'));
+        }
+
+        $i=1;
+        foreach ($clases_list->result() as $clases_row) {
+            if ($clases_row->identificador == $clase->identificador) {
+                $identificador_nuevo = $clase->identificador.$i; 
+                $i++;
+            }
+            if ($identificador_nuevo == $clases_row->identificador) {
+                $identificador_nuevo = $clase->identificador.$i;
+                $i++;
+            }
         }
 
         $fecha_registro = date("Y-m-d H:i:s");
@@ -179,10 +192,10 @@ class Clases extends MY_Controller
         $cupo_lugares_json = json_encode($cupo_lugares);
 
         $clase_a_clonar = $this->clases_model->crear(array(
-            'identificador' => $identificador_1,
+            'identificador' => $identificador_nuevo,
             'disciplina_id' => $clase->disciplina_id,
             'instructor_id' => $clase->instructor_id,
-            'cupo' => 0,
+            'cupo' => $clase->cupo,
             'img_acceso' => $clase->img_acceso,
             'inicia' => $clase->inicia,
             'inicia_ionic' => $clase->inicia_ionic,

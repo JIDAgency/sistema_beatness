@@ -195,7 +195,7 @@ $(document).ready(function () {
                 nuevoValor: valor_nuevo_de_celda
             },
             success: function (response) {
-                if (columna_nombre === 'inicia') {
+                if (columna_nombre === 'inicia' || columna_nombre === 'cupo') {
                     table.ajax.reload();
                 }
                 console.log('Dato actualizado en la base de datos');
@@ -262,7 +262,7 @@ async function obtener_opciones_select_dificultad() {
 }
 
 function createEditableCells(row, data, dataIndex) {
-    var columnsToEdit = [2, 3, 4, 6, 7];
+    var columnsToEdit = [2, 3, 4, 6];
     $.each(columnsToEdit, function (index, columnIndex) {
         $('td:eq(' + columnIndex + ')', row).addClass('editable-cell');
     });

@@ -109,7 +109,7 @@
 													<label for="identificador" class="label-control">Hora de inicio:</label>
                                                     <h3><?php echo $clase_a_reservar->inicia ?></h3>			
 
-													<label for="identificador" class="label-control">Intervalo de horas: <br>(Estas son las que horas o clases que consumirá del plan)</label>
+													<label for="identificador" class="label-control">Intervalo de horas: <br>(Estas son las horas o clases que consumirá del plan)</label>
                                                     <h3><?php echo $clase_a_reservar->intervalo_horas ?></h3>						
 													
 												</div>												
@@ -139,7 +139,7 @@
 											<div class="col-sm-12">
                                                 <label for="identificador" class="label-control">Lugares:</label>
                                                 <p><strong><?php 
-                                                    
+                                                    $i=0;
                                                     foreach ($cupo_lugares as $lugar) {
                                                         $i++;
                                                         foreach ($usuarios->result() as $usuario){
