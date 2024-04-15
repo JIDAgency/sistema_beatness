@@ -107,7 +107,9 @@ class Clases extends MY_Controller
                 $opciones .= anchor('clases/editar/' . $clase->id, 'Editar');
                 $opciones .= '<br>';
             }
-            $opciones .= '<a href="' . site_url('clases/duplicar_clase/' . $clase->id) . '"><span>Duplicar</span></a>';
+            if ($clase->estatus == 'Activa') {
+                $opciones .= '<a href="' . site_url('clases/duplicar_clase/' . $clase->id) . '"><span>Duplicar</span></a>';
+            }
             if ($clase->reservado == 0 and $clase->estatus == 'Activa') {
 
                 $opciones .= '<br>';
@@ -121,7 +123,7 @@ class Clases extends MY_Controller
                 'identificador' => !empty($clase->identificador) ? $clase->identificador : '',
                 'disciplina_id' => $clase->disciplina_nombre,
                 'dificultad' => !empty($clase->dificultad) ? ucwords($clase->dificultad) : '',
-                'inicia' => !empty($clase->inicia) ? mb_strtoupper($clase->inicia) : '',
+                'inicia' => (!empty($clase->inicia) ? date('Y/m/d H:i:s', strtotime($clase->inicia)) : ''),
                 'horario_esp' => !empty($fecha_espaniol) ? ucfirst($fecha_espaniol) : '',
                 'instructor_id' => !empty($clase->instructor_nombre) ? $clase->instructor_nombre : '',
                 'cupo' => !empty($clase->cupo) ? ucfirst($clase->cupo) : '',
@@ -154,7 +156,7 @@ class Clases extends MY_Controller
 
         if (!$clase) {
             $this->session->set_flashdata('MENSAJE_ERROR', 'No se ha podido encontrar la clase que desea clonar.');
-            redirect('clases/index');
+            redirect(site_url('clases'));
         }
 
         $fecha_registro = date("Y-m-d H:i:s");
@@ -192,12 +194,11 @@ class Clases extends MY_Controller
         ));
 
         if ($clase_a_clonar) {
-            $this->session->set_flashdata('MENSAJE_EXITO', 'La clase ha sido clonada.');
-            redirect('clases');
+            redirect(site_url('clases'));
         }
 
         $this->session->set_flashdata('MENSAJE_ERROR', 'La clase ' . $id . ' no ha podido ser clonada.');
-        redirect('clases/index');
+        redirect(site_url('clases'));
     }
 
     public function actualizar()
@@ -231,24 +232,24 @@ class Clases extends MY_Controller
 
     public function obtener_opciones_select_instructor()
     {
-        $instructores = $this->usuarios_model->obtener_todos_instructores();
+        // $instructores = $this->usuarios_model->obtener_todos_instructores();
 
-        $data = [];
-        foreach ($instructores->result() as $instructor) {
-            $nombre = trim("{$instructor->nombre_completo} {$instructor->apellido_paterno} {$instructor->apellido_materno}");
-            $nombre = preg_replace('/\s+/', ' ', $nombre);
+        // $data = [];
+        // foreach ($instructores->result() as $instructor) {
+        //     $nombre = trim("{$instructor->nombre_completo} {$instructor->apellido_paterno} {$instructor->apellido_materno}");
+        //     $nombre = preg_replace('/\s+/', ' ', $nombre);
 
-            $data[] = array(
-                'nombre' => $nombre,
-                'valor' => $instructor->id
-            );
-        }
+        //     $data[] = array(
+        //         'nombre' => $nombre,
+        //         'valor' => $instructor->id
+        //     );
+        // }
 
-        echo json_encode($data);
-        exit();
-
-        // echo json_encode(select_instructor());
+        // echo json_encode($data);
         // exit();
+
+        echo json_encode(select_instructor());
+        exit();
     }
 
     public function obtener_opciones_select_dificultad()
@@ -804,8 +805,6 @@ class Clases extends MY_Controller
         }
 
         if ($this->clases_model->borrar($id)) {
-            $this->session->set_flashdata('MENSAJE_INFO', 'Advertencia, la clase que intenta borrar puede que ya tenga cancelaciones de las personas que han reservado, si este es el caso la clase no se borrara, por favor corrobore que la clase ' . $id . ' ya no aparezca en la lista de clases.');
-            $this->session->set_flashdata('MENSAJE_EXITO', 'La clase ' . $id . ' ha sido borrada.');
             redirect('clases/index');
         }
 

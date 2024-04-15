@@ -12,6 +12,7 @@
 				</div>
 			</div>
 		</div>
+		<?php $this->load->view('_comun/mensajes_alerta'); ?>
 		<div class="content-wrapper">
 			<div class="content-body">
 				<section>
@@ -32,7 +33,6 @@
 								</div>
 								<div class="card-content p_dt">
 									<div class="card-body">
-										<?php $this->load->view('_comun/mensajes_alerta'); ?>
 										<table id="table" class="table display nowrap table-striped table-bordered scroll-horizontal table-hover">
 											<thead>
 												<tr>

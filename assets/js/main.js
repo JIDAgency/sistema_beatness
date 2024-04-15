@@ -70,35 +70,35 @@ function generar_campo_de_celda_a_editar(tipo_celda, valor_original_de_celda, da
             var input = $('<input type="number" class="form-control">').val(valor_original_de_celda);
             return input;
 
-        // case 'fecha':
-        //     var fecha_dividida = valor_original_de_celda.split('/');
-
-        //     var fecha_con_formato = fecha_dividida[0] + '-' + fecha_dividida[1] + '-' + fecha_dividida[2];
-        //     var input = $('<input type="datetime-local" class="form-control">').val(fecha_con_formato);
-        //     return input;
-
         case 'fecha':
             var fecha_dividida = valor_original_de_celda.split('/');
 
-            // Crear una instancia de Date con los componentes de la fecha
-            var fecha = new Date(fecha_dividida[2], fecha_dividida[1] - 1, fecha_dividida[0]);
-
-            // Obtener los componentes de la fecha y formatearlos según el formato deseado
-            var year = fecha.getFullYear();
-            var month = (fecha.getMonth() + 1).toString().padStart(2, '0');
-            var day = fecha.getDate().toString().padStart(2, '0');
-            var hours = '12'; // Se establece la hora a las 12:00
-            var minutes = '30';
-            var seconds = '00';
-
-            // Construir la cadena de fecha en el formato deseado
-            var fecha_con_formato = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-
-            // Reemplazar 'T' por un espacio en blanco
-            fecha_con_formato = fecha_con_formato.replace('T', ' ');
-
+            var fecha_con_formato = fecha_dividida[0] + '-' + fecha_dividida[1] + '-' + fecha_dividida[2];
             var input = $('<input type="datetime-local" class="form-control">').val(fecha_con_formato);
             return input;
+
+        // case 'fecha':
+        //     var fecha_dividida = valor_original_de_celda.split('/');
+
+        //     // Crear una instancia de Date con los componentes de la fecha
+        //     var fecha = new Date(fecha_dividida[2], fecha_dividida[1] - 1, fecha_dividida[0]);
+
+        //     // Obtener los componentes de la fecha y formatearlos según el formato deseado
+        //     var year = fecha.getFullYear();
+        //     var month = (fecha.getMonth() + 1).toString().padStart(2, '0');
+        //     var day = fecha.getDate().toString().padStart(2, '0');
+        //     var hours = '12'; // Se establece la hora a las 12:00
+        //     var minutes = '30';
+        //     var seconds = '00';
+
+        //     // Construir la cadena de fecha en el formato deseado
+        //     var fecha_con_formato = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+
+        //     // Reemplazar 'T' por un espacio en blanco
+        //     fecha_con_formato = fecha_con_formato.replace('T', ' ');
+
+        //     var input = $('<input type="datetime-local" class="form-control">').val(fecha_con_formato);
+        //     return input;
 
         case 'select':
 
@@ -167,7 +167,17 @@ function generar_salida_de_celda_editada(tipo_celda, valor_nuevo_de_celda, celda
 
         case 'fecha':
             var fecha_dividida = valor_nuevo_de_celda.split('-');
-            var fecha_con_formato = fecha_dividida[0] + '/' + fecha_dividida[1] + '/' + fecha_dividida[2];
+            var mes_dividida = fecha_dividida[2].split('T'); // Dividir en T
+            var hora_dividida = mes_dividida[1].split(':'); // Dividir en H
+            var hora = hora_dividida[0]; // Hora
+            var minutos = hora_dividida[1]; // Minutos
+            console.log(valor_nuevo_de_celda);
+            console.log(fecha_dividida);
+            console.log(mes_dividida);
+            console.log(hora_dividida);
+            console.log(hora);
+            console.log(minutos);
+            var fecha_con_formato = fecha_dividida[0] + '/' + fecha_dividida[1] + '/' + mes_dividida[0] + ' ' + hora_dividida[0] + ':' + hora_dividida[1] + ':' + '00';
 
             celda_seleccionada.html(fecha_con_formato);
 
