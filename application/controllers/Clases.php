@@ -232,24 +232,24 @@ class Clases extends MY_Controller
 
     public function obtener_opciones_select_instructor()
     {
-        // $instructores = $this->usuarios_model->obtener_todos_instructores();
+        $instructores = $this->usuarios_model->obtener_todos_instructores();
 
-        // $data = [];
-        // foreach ($instructores->result() as $instructor) {
-        //     $nombre = trim("{$instructor->nombre_completo} {$instructor->apellido_paterno} {$instructor->apellido_materno}");
-        //     $nombre = preg_replace('/\s+/', ' ', $nombre);
+        $data = [];
+        foreach ($instructores->result() as $instructor) {
+            $nombre = trim("{$instructor->nombre_completo} {$instructor->apellido_paterno} {$instructor->apellido_materno}");
+            $nombre = preg_replace('/\s+/', ' ', $nombre);
 
-        //     $data[] = array(
-        //         'nombre' => $nombre,
-        //         'valor' => $instructor->id
-        //     );
-        // }
+            $data[] = array(
+                'nombre' => $nombre,
+                'valor' => $instructor->id
+            );
+        }
 
-        // echo json_encode($data);
-        // exit();
-
-        echo json_encode(select_instructor());
+        echo json_encode($data);
         exit();
+
+        // echo json_encode(select_instructor());
+        // exit();
     }
 
     public function obtener_opciones_select_dificultad()

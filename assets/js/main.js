@@ -110,7 +110,7 @@ function generar_campo_de_celda_a_editar(tipo_celda, valor_original_de_celda, da
             });
 
             // Establecer el valor original seleccionado
-            input.val(valor_original_de_celda.toLowerCase());
+            input.val(valor_original_de_celda.toString());
 
             return input;
 
@@ -137,7 +137,8 @@ function generar_campo_de_celda_a_editar(tipo_celda, valor_original_de_celda, da
             });
 
             // Establecer el valor original seleccionado
-            input.val(formatoNombrePropio(valor_original_de_celda));
+            input.val(valor_original_de_celda.toString());
+            // input.val(formatoNombrePropio(valor_original_de_celda));
 
             return input;
         default:
