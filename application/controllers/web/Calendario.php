@@ -13,6 +13,21 @@ class Calendario extends CI_Controller
 
     public function index($disciplina = null)
     {
+        $data['pagina_titulo'] = 'Calendario';
+        $data['pagina_subtitulo'] = '';
+        $data['pagina_menu_calendario'] = true;
+
+        $data['controlador'] = 'site/calendario';
+        $data['regresar_a'] = 'site/calendario';
+        $controlador_js = "site/calendario/index";
+
+        $data['styles'] = array(
+        );
+
+        $data['scripts'] = array(
+            array('es_rel' => true, 'src' => '' . $controlador_js . '.js'),
+        );
+
         $disciplinas_list = $this->calendario_model->obtener_disciplinas();
 
         $data['disciplinas_list'] = $disciplinas_list;

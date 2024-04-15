@@ -5,14 +5,15 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
-    <meta name="description"
-        content="Robust admin is super flexible, powerful, clean &amp; modern responsive bootstrap 4 admin template.">
-    <meta name="keywords"
-        content="admin template, robust admin template, dashboard template, flat admin template, responsive admin template, web app, crypto dashboard, bitcoin dashboard">
-    <meta name="author" content="BEATNESS STUDIO">
-    <title>Tabs - Robust - Responsive Bootstrap 4 Admin Dashboard Template for Web Application</title>
-    <link rel="apple-touch-icon" href="<?php echo base_url(); ?>app-assets/images/ico/apple-icon-120.png">
-    <link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url(); ?>app-assets/images/ico/favicon.ico">
+    
+    <meta name="description" content="<?php echo description();?>">
+    <meta name="keywords" content="<?php echo keywords();?>">
+    <meta name="author" content="<?php echo author();?>">
+    
+    <title><?php echo isset($pagina_titulo) ? $pagina_titulo . " | " : ""; ?><?php echo titulo() ? titulo() : ""; ?></title>
+
+    <link rel="apple-touch-icon" href="<?php echo base_url(); ?>almacenamiento/logos/open-graph.jpg">
+    <link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url(); ?>almacenamiento/logos/logo.jpg">
     <link
         href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i%7CMuli:300,400,500,700"
         rel="stylesheet">
