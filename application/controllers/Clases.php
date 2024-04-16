@@ -266,22 +266,22 @@ class Clases extends MY_Controller
     public function obtener_opciones_select_disciplina()
     {
 
-        // $disciplinas = $this->disciplinas_model->get_lista_de_todas_las_disciplinas();
+        $disciplinas = $this->disciplinas_model->get_lista_de_todas_las_disciplinas();
 
-        // $data = [];
-        // foreach ($disciplinas->result() as $disciplina) {
+        $data = [];
+        foreach ($disciplinas->result() as $disciplina) {
 
-        //     $data[] = array(
-        //         'nombre' => $disciplina->nombre,
-        //         'valor' => $disciplina->id
-        //     );
-        // }
+            $data[] = array(
+                'nombre' => $disciplina->nombre,
+                'valor' => $disciplina->id
+            );
+        }
 
-        // echo json_encode($data);
-        // exit();
-        
-        echo json_encode(select_disciplina());
+        echo json_encode($data);
         exit();
+        
+        // echo json_encode(select_disciplina());
+        // exit();
     }
 
     public function obtener_opciones_select_instructor()
