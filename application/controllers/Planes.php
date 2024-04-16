@@ -175,12 +175,12 @@ class Planes extends MY_Controller
 
             if ($plan_row->listar_activo == 1) {
                 $menu = '<a href="' . site_url("planes/editar/") . $plan_row->listar_id . '">Editar</a>
-                <br>
+                |
                 <a href="' . site_url("planes/desactivar/") . $plan_row->listar_id . '">Desactivar</a>
                 ';
             } elseif ($plan_row->listar_activo == 0) {
                 $menu = '<a href="' . site_url("planes/editar/") . $plan_row->listar_id . '">Editar</a>
-                <br>
+                |
                 <a href="' . site_url("planes/activar/") . $plan_row->listar_id . '">Activar</a>
                 ';
             }
