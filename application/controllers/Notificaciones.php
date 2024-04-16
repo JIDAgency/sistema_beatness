@@ -1,8 +1,10 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') or exit('No direct script access allowed');
 
-class Notificaciones extends MY_Controller {
+class Notificaciones extends MY_Controller
+{
 
-	public function __construct() {
+	public function __construct()
+	{
 		parent::__construct();
 
 		$this->load->model('clases_model');
@@ -10,8 +12,9 @@ class Notificaciones extends MY_Controller {
 		$this->load->model('usuarios_model');
 	}
 
-	public function index() {
-        $data['pagina_titulo'] = 'Notificaciones';
+	public function index()
+	{
+		$data['pagina_titulo'] = 'Notificaciones';
 		$data['pagina_menu_notificaciones'] = true;
 
 		$data['controlador'] = 'notificaciones';
@@ -24,56 +27,58 @@ class Notificaciones extends MY_Controller {
 
 		$data['scripts'] = array(
 			array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/tables/datatable/datatables.min.js'),
-			array('es_rel' => true, 'src' => ''.$controlador_js.'.js'),
+			array('es_rel' => true, 'src' => '' . $controlador_js . '.js'),
 		);
 
 		$this->construir_private_site_ui('notificaciones/index', $data);
 	}
 
-	public function obtener_list_index() {
+	public function obtener_list_index()
+	{
 		$draw = intval($this->input->post('draw'));
-        $start = intval($this->input->post('start'));
-        $length = intval($this->input->post('length'));
+		$start = intval($this->input->post('start'));
+		$length = intval($this->input->post('length'));
 
-        $list = $this->notificaciones_model->get_notificaciones();
+		$list = $this->notificaciones_model->get_notificaciones();
 
-        foreach ($list->result() as $key => $value) {
+		foreach ($list->result() as $key => $value) {
 
 			if ($value->segmento == 'general') {
 				$opciones = '
-					<a href="javascript:modal_notificaciones_enviar(\''.$value->id.'\');"><i class="fa fa-check-circle"></i>&nbsp;Enviar</a>
+					<a href="javascript:modal_notificaciones_enviar(\'' . $value->id . '\');"><i class="fa fa-check-circle"></i>&nbsp;Enviar</a>
 				';
 			} elseif ($value->segmento == 'segmento_usuarios_sin_compras_hace_dos_meses') {
 				$opciones = '
-					<a href="javascript:modal_enviar_notificacion_segmento_usuarios_sin_compras_hace_dos_meses(\''.$value->id.'\');"><i class="fa fa-check-circle"></i>&nbsp;Enviar</a>
+					<a href="javascript:modal_enviar_notificacion_segmento_usuarios_sin_compras_hace_dos_meses(\'' . $value->id . '\');"><i class="fa fa-check-circle"></i>&nbsp;Enviar</a>
 				';
 			}
 
-            $data[] = array(
-                'id' => $value->id,
-                'titulo' => $value->titulo,
-                'mensaje' => $value->mensaje,
-                'no_envios' => $value->no_envios,
-                'estatus' => ucfirst($value->estatus),
-                'fecha_registro' => date('Y-m-d H:i', strtotime($value->fecha_registro)),
-                'fecha_actualizacion' => date('Y-m-d H:i', strtotime($value->fecha_actualizacion)),
-                'opciones' => $opciones,
-            );
-        }
+			$data[] = array(
+				'id' => $value->id,
+				'titulo' => $value->titulo,
+				'mensaje' => $value->mensaje,
+				'no_envios' => $value->no_envios,
+				'estatus' => ucfirst($value->estatus),
+				'fecha_registro' => date('Y-m-d H:i', strtotime($value->fecha_registro)),
+				'fecha_actualizacion' => date('Y-m-d H:i', strtotime($value->fecha_actualizacion)),
+				'opciones' => $opciones,
+			);
+		}
 
-        $result = array(
-            'draw' => $draw,
-            'recordsTotal' => $list->num_rows(),
-            'recordsFiltered' => $list->num_rows(),
-            'data' => $data
-        );
+		$result = array(
+			'draw' => $draw,
+			'recordsTotal' => $list->num_rows(),
+			'recordsFiltered' => $list->num_rows(),
+			'data' => $data
+		);
 
-        echo json_encode($result);
-        exit();
+		echo json_encode($result);
+		exit();
 	}
 
-	public function agregar() {
-        $data['pagina_titulo'] = 'Agregar notificación';
+	public function agregar()
+	{
+		$data['pagina_titulo'] = 'Agregar notificación';
 		$data['pagina_menu_areas'] = true;
 
 		$data['controlador'] = 'notificaciones/agregar';
@@ -84,7 +89,7 @@ class Notificaciones extends MY_Controller {
 		);
 
 		$data['scripts'] = array(
-			array('es_rel' => true, 'src' => ''.$controlador_js.'.js'),
+			array('es_rel' => true, 'src' => '' . $controlador_js . '.js'),
 		);
 
 		$this->form_validation->set_rules('titulo', 'Título', 'trim|required|min_length[1]|max_length[120]');
@@ -92,7 +97,7 @@ class Notificaciones extends MY_Controller {
 
 		if ($this->form_validation->run() == false) {
 			$this->construir_private_site_ui('notificaciones/agregar', $data);
-        } else {
+		} else {
 
 			$this->session->set_flashdata('nombre', $this->input->post('nombre'));
 			$this->session->set_flashdata('mensaje', $this->input->post('mensaje'));
@@ -102,7 +107,7 @@ class Notificaciones extends MY_Controller {
 				'mensaje' => trim(strval($this->input->post('mensaje'))),
 				'segmento' => trim('general'),
 				'estatus' => trim(strval('activo')),
-            );
+			);
 
 			if (!$data_post) {
 				$this->mensaje_del_sistema('MENSAJE_ERROR', 'Ha ocurrido un error, por favor inténtalo más tarde. (1)', $data['controlador']);
@@ -112,18 +117,19 @@ class Notificaciones extends MY_Controller {
 				$this->mensaje_del_sistema('MENSAJE_ERROR', 'No se pudo procesar la solicitud, por favor inténtalo más tarde. (2)', $data['controlador']);
 			}
 
-			$this->mensaje_del_sistema('MENSAJE_EXITO', '"'.trim(ucfirst(strval(mb_strtolower($this->input->post('nombre'))))).'" se agregó con éxito.', $data['regresar_a']);
+			$this->mensaje_del_sistema('MENSAJE_EXITO', '"' . trim(ucfirst(strval(mb_strtolower($this->input->post('nombre'))))) . '" se agregó con éxito.', $data['regresar_a']);
 
 			$this->construir_private_site_ui('notificaciones/agregar', $data);
 		}
 	}
 
-	public function enviar() {
-		
+	public function enviar()
+	{
+
 		if ($this->input->post()) {
 			$id = $this->input->post('id');
 			if ($this->input->post('segmento') == 'Active Users') {
-				$mensaje_confirmacion = $this->input->post('segmento').' y Engaged Users';
+				$mensaje_confirmacion = $this->input->post('segmento') . ' y Engaged Users';
 				$segmento = array($this->input->post('segmento'), 'Engaged Users');
 			} else {
 				$mensaje_confirmacion = $this->input->post('segmento');
@@ -147,18 +153,18 @@ class Notificaciones extends MY_Controller {
 
 		$img = '';
 
-		$app_id = 'f951eb20-c2ca-45d1-9e66-ce5252a4ce7e';
-		$app_key = 'NzdiMTVhNjktYjYxMy00NGU5LWI2YWYtNWQ5NGMzZjZiZjdj';
+		$app_id = '66454c58-6e0b-4489-ba82-524c05331a3b';
+		$app_key = 'YmNkMzhkMjYtM2U5NS00N2IyLThlNWEtYjg2NTE5YWFmNDg4';
 
 		$msg = $message;
 
 		$content = array(
-			"en" => $msg,
+			"es" => $msg,
 			"en" => $msg
 		);
 
 		$headings = array(
-			"en" => $title,
+			"es" => $title,
 			"en" => $title
 		);
 
@@ -191,11 +197,11 @@ class Notificaciones extends MY_Controller {
 				'content_available' => true,
 				"ios_attachments" => $ios_img
 			);
-	
+
 		}
 
 		$headers = array(
-			'Authorization: Basic '.$app_key.'',
+			'Authorization: Basic ' . $app_key . '',
 			'accept: application/json',
 			'content-type: application/json'
 		);
@@ -207,7 +213,7 @@ class Notificaciones extends MY_Controller {
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-		curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($fields, JSON_UNESCAPED_UNICODE));
+		curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields, JSON_UNESCAPED_UNICODE));
 
 		$result = curl_exec($ch);
 
@@ -215,13 +221,14 @@ class Notificaciones extends MY_Controller {
 
 		//return $result;
 
-        $this->notificaciones_model->update_notificacion($id, array('no_envios' => $notificacion_row->no_envios+1,'fecha_actualizacion' => date('Y-m-d H:i:s')));
+		$this->notificaciones_model->update_notificacion($id, array('no_envios' => $notificacion_row->no_envios + 1, 'fecha_actualizacion' => date('Y-m-d H:i:s')));
 
-		$this->mensaje_del_sistema('MENSAJE_EXITO', 'Notificación enviada con éxito: '.$title, 'notificaciones');
+		$this->mensaje_del_sistema('MENSAJE_EXITO', 'Notificación enviada con éxito: ' . $title, 'notificaciones');
 	}
 
-	public function segmentos() {
-        $data['pagina_titulo'] = 'Segmentos';
+	public function segmentos()
+	{
+		$data['pagina_titulo'] = 'Segmentos';
 		$data['pagina_menu_notificaciones'] = true;
 
 		$data['controlador'] = 'notificaciones/segmentos';
@@ -232,13 +239,14 @@ class Notificaciones extends MY_Controller {
 		);
 
 		$data['scripts'] = array(
-			array('es_rel' => true, 'src' => ''.$controlador_js.'.js'),
+			array('es_rel' => true, 'src' => '' . $controlador_js . '.js'),
 		);
 
 		$this->construir_private_site_ui('notificaciones/segmentos', $data);
 	}
 
-	public function segmento_usuarios_seleccionados_julio_2023() {
+	public function segmento_usuarios_seleccionados_julio_2023()
+	{
 		$data['pagina_titulo'] = 'Segmento de usuarios seleccionados en Julio 2023';
 		$data['pagina_subtitulo'] = 'Enviar una notificación al segmento de usuarios';
 		$data['pagina_menu_notificaciones'] = true;
@@ -255,13 +263,13 @@ class Notificaciones extends MY_Controller {
 		$data['scripts'] = array(
 			array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/tables/datatable/datatables.min.js'),
 			array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/forms/select/select2.full.min.js'),
-			array('es_rel' => true, 'src' => ''.$controlador_js.'.js'),
+			array('es_rel' => true, 'src' => '' . $controlador_js . '.js'),
 		);
 
 		$this->form_validation->set_rules('fecha_notificacion', 'Fecha de notificación', 'trim');
 
 		$usuarios_seleccionados_list = array('934', '347', '933', '931', '411', '906', '562', '719', '717', '235', '880', '885', '169', '505', '354', '861', '195', '91', '989', '862', '994', '829', '990', '856', '282', '975', '973', '156');
-		
+
 		$usuarios_list = $this->usuarios_model->obtener_usuarios_seleccionados($usuarios_seleccionados_list)->result();
 
 		$data['usuarios_list'] = $usuarios_list;
@@ -279,18 +287,18 @@ class Notificaciones extends MY_Controller {
 
 			$img = '';
 
-			$app_id = 'f951eb20-c2ca-45d1-9e66-ce5252a4ce7e';
-			$app_key = 'NzdiMTVhNjktYjYxMy00NGU5LWI2YWYtNWQ5NGMzZjZiZjdj';
+			$app_id = '66454c58-6e0b-4489-ba82-524c05331a3b';
+			$app_key = 'YmNkMzhkMjYtM2U5NS00N2IyLThlNWEtYjg2NTE5YWFmNDg4';
 
 			$msg = $message;
 
 			$content = array(
-				"en" => $msg,
+				"es" => $msg,
 				"en" => $msg
 			);
 
 			$headings = array(
-				"en" => $title,
+				"es" => $title,
 				"en" => $title
 			);
 
@@ -321,11 +329,11 @@ class Notificaciones extends MY_Controller {
 					'content_available' => true,
 					"ios_attachments" => $ios_img
 				);
-		
+
 			}
 
 			$headers = array(
-				'Authorization: Basic '.$app_key.'',
+				'Authorization: Basic ' . $app_key . '',
 				'accept: application/json',
 				'content-type: application/json'
 			);
@@ -337,7 +345,7 @@ class Notificaciones extends MY_Controller {
 			curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-			curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($fields, JSON_UNESCAPED_UNICODE));
+			curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields, JSON_UNESCAPED_UNICODE));
 
 			$result = curl_exec($ch);
 
@@ -346,14 +354,15 @@ class Notificaciones extends MY_Controller {
 			//return $result;
 
 
-			$this->mensaje_del_sistema('MENSAJE_EXITO', 'Notificación enviada con éxito: '.$title, $data['controlador']);
+			$this->mensaje_del_sistema('MENSAJE_EXITO', 'Notificación enviada con éxito: ' . $title, $data['controlador']);
 
 			$this->construir_private_site_ui('notificaciones/segmento_usuarios_seleccionados_julio_2023', $data);
 		}
 	}
 
-	public function segmento_usuarios_sin_compras_hace_dos_meses() {
-        $data['pagina_titulo'] = 'Segmento de usuarios sin compras hace dos meses';
+	public function segmento_usuarios_sin_compras_hace_dos_meses()
+	{
+		$data['pagina_titulo'] = 'Segmento de usuarios sin compras hace dos meses';
 		$data['pagina_menu_notificaciones'] = true;
 
 		$data['controlador'] = 'notificaciones/segmento_usuarios_sin_compras_hace_dos_meses';
@@ -366,16 +375,17 @@ class Notificaciones extends MY_Controller {
 
 		$data['scripts'] = array(
 			array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/tables/datatable/datatables.min.js'),
-			array('es_rel' => true, 'src' => ''.$controlador_js.'.js'),
+			array('es_rel' => true, 'src' => '' . $controlador_js . '.js'),
 		);
 
 		$this->construir_private_site_ui('notificaciones/segmento_usuarios_sin_compras_hace_dos_meses', $data);
 	}
 
-	public function obtener_lista_segmento_usuarios_sin_compras_hace_dos_meses() {
+	public function obtener_lista_segmento_usuarios_sin_compras_hace_dos_meses()
+	{
 		$draw = intval($this->input->post('draw'));
-        $start = intval($this->input->post('start'));
-        $length = intval($this->input->post('length'));
+		$start = intval($this->input->post('start'));
+		$length = intval($this->input->post('length'));
 
 		$list_usuarios_que_si_han_comprado_los_ultimos_dos_meses = $this->notificaciones_model->obtener_usuarios_que_si_han_comprado_los_ultimos_dos_meses();
 
@@ -383,33 +393,34 @@ class Notificaciones extends MY_Controller {
 		foreach ($list_usuarios_que_si_han_comprado_los_ultimos_dos_meses->result() as $key => $value) {
 			array_push($array_usuarios_que_si_han_comprado_los_ultimos_dos_meses, $value->id);
 		}
-		
+
 		$lista_usuarios_que_no_han_comprado_los_ultimos_dos_meses = $this->notificaciones_model->obtener_usuarios_que_no_han_comprado_los_ultimos_dos_meses($array_usuarios_que_si_han_comprado_los_ultimos_dos_meses);
-	
-        foreach ($lista_usuarios_que_no_han_comprado_los_ultimos_dos_meses->result() as $key => $value) {
-            $data[] = array(
-                'id' => $value->id,
-                'correo' => $value->correo,
-                'nombre_completo' => $value->nombre_completo.' '.$value->apellido_paterno.' '.$value->apellido_materno,
-                'asignaciones_nombre' => $value->asignaciones_nombre,
-                'asignaciones_fecha_activacion' => (!empty($value->asignaciones_fecha_activacion)) ? strval(date('Y-m-d', strtotime($value->asignaciones_fecha_activacion))) : '',
 
-            );
-        }
+		foreach ($lista_usuarios_que_no_han_comprado_los_ultimos_dos_meses->result() as $key => $value) {
+			$data[] = array(
+				'id' => $value->id,
+				'correo' => $value->correo,
+				'nombre_completo' => $value->nombre_completo . ' ' . $value->apellido_paterno . ' ' . $value->apellido_materno,
+				'asignaciones_nombre' => $value->asignaciones_nombre,
+				'asignaciones_fecha_activacion' => (!empty($value->asignaciones_fecha_activacion)) ? strval(date('Y-m-d', strtotime($value->asignaciones_fecha_activacion))) : '',
 
-        $result = array(
-            'draw' => $draw,
-            'recordsTotal' => $lista_usuarios_que_no_han_comprado_los_ultimos_dos_meses->num_rows(),
-            'recordsFiltered' => $lista_usuarios_que_no_han_comprado_los_ultimos_dos_meses->num_rows(),
-            'data' => $data
-        );
+			);
+		}
 
-        echo json_encode($result);
-        exit();
+		$result = array(
+			'draw' => $draw,
+			'recordsTotal' => $lista_usuarios_que_no_han_comprado_los_ultimos_dos_meses->num_rows(),
+			'recordsFiltered' => $lista_usuarios_que_no_han_comprado_los_ultimos_dos_meses->num_rows(),
+			'data' => $data
+		);
+
+		echo json_encode($result);
+		exit();
 	}
 
-	public function agregar_notificacion_segmento_usuarios_sin_compras_hace_dos_meses() {
-        $data['pagina_titulo'] = 'Agregar notificación para el segmento de usuarios sin compras hace dos meses';
+	public function agregar_notificacion_segmento_usuarios_sin_compras_hace_dos_meses()
+	{
+		$data['pagina_titulo'] = 'Agregar notificación para el segmento de usuarios sin compras hace dos meses';
 		$data['pagina_menu_areas'] = true;
 
 		$data['controlador'] = 'notificaciones/agregar_notificacion_segmento_usuarios_sin_compras_hace_dos_meses';
@@ -420,7 +431,7 @@ class Notificaciones extends MY_Controller {
 		);
 
 		$data['scripts'] = array(
-			array('es_rel' => true, 'src' => ''.$controlador_js.'.js'),
+			array('es_rel' => true, 'src' => '' . $controlador_js . '.js'),
 		);
 
 		$this->form_validation->set_rules('titulo', 'Título', 'trim|required|min_length[1]|max_length[120]');
@@ -428,7 +439,7 @@ class Notificaciones extends MY_Controller {
 
 		if ($this->form_validation->run() == false) {
 			$this->construir_private_site_ui('notificaciones/agregar', $data);
-        } else {
+		} else {
 
 			$this->session->set_flashdata('nombre', $this->input->post('nombre'));
 			$this->session->set_flashdata('mensaje', $this->input->post('mensaje'));
@@ -438,7 +449,7 @@ class Notificaciones extends MY_Controller {
 				'mensaje' => trim(strval($this->input->post('mensaje'))),
 				'segmento' => trim('segmento_usuarios_sin_compras_hace_dos_meses'),
 				'estatus' => trim(strval('activo')),
-            );
+			);
 
 			if (!$data_post) {
 				$this->mensaje_del_sistema('MENSAJE_ERROR', 'Ha ocurrido un error, por favor inténtalo más tarde. (1)', $data['controlador']);
@@ -448,14 +459,15 @@ class Notificaciones extends MY_Controller {
 				$this->mensaje_del_sistema('MENSAJE_ERROR', 'No se pudo procesar la solicitud, por favor inténtalo más tarde. (2)', $data['controlador']);
 			}
 
-			$this->mensaje_del_sistema('MENSAJE_EXITO', '"'.trim(ucfirst(strval(mb_strtolower($this->input->post('nombre'))))).'" se agregó con éxito.', $data['regresar_a']);
+			$this->mensaje_del_sistema('MENSAJE_EXITO', '"' . trim(ucfirst(strval(mb_strtolower($this->input->post('nombre'))))) . '" se agregó con éxito.', $data['regresar_a']);
 
 			$this->construir_private_site_ui('notificaciones/agregar', $data);
 		}
 	}
 
-	public function enviar_notificacion_segmento_usuarios_sin_compras_hace_dos_meses() {
-		
+	public function enviar_notificacion_segmento_usuarios_sin_compras_hace_dos_meses()
+	{
+
 		if ($this->input->post()) {
 			$id = $this->input->post('id_2');
 		} else {
@@ -475,18 +487,18 @@ class Notificaciones extends MY_Controller {
 
 		$img = '';
 
-		$app_id = 'f951eb20-c2ca-45d1-9e66-ce5252a4ce7e';
-		$app_key = 'NzdiMTVhNjktYjYxMy00NGU5LWI2YWYtNWQ5NGMzZjZiZjdj';
+		$app_id = '66454c58-6e0b-4489-ba82-524c05331a3b';
+		$app_key = 'YmNkMzhkMjYtM2U5NS00N2IyLThlNWEtYjg2NTE5YWFmNDg4';
 
 		$msg = $message;
 
 		$content = array(
-			"en" => $msg,
+			"es" => $msg,
 			"en" => $msg
 		);
 
 		$headings = array(
-			"en" => $title,
+			"es" => $title,
 			"en" => $title
 		);
 
@@ -496,7 +508,7 @@ class Notificaciones extends MY_Controller {
 		foreach ($list_usuarios_que_si_han_comprado_los_ultimos_dos_meses->result() as $key => $value) {
 			array_push($array_usuarios_que_si_han_comprado_los_ultimos_dos_meses, $value->id);
 		}
-		
+
 		$lista_usuarios_que_no_han_comprado_los_ultimos_dos_meses = $this->notificaciones_model->obtener_usuarios_que_no_han_comprado_los_ultimos_dos_meses($array_usuarios_que_si_han_comprado_los_ultimos_dos_meses);
 
 		$cont = 1;
@@ -512,18 +524,18 @@ class Notificaciones extends MY_Controller {
 
 		$img = '';
 
-		$app_id = 'f951eb20-c2ca-45d1-9e66-ce5252a4ce7e';
-		$app_key = 'NzdiMTVhNjktYjYxMy00NGU5LWI2YWYtNWQ5NGMzZjZiZjdj';
+		$app_id = '66454c58-6e0b-4489-ba82-524c05331a3b';
+		$app_key = 'YmNkMzhkMjYtM2U5NS00N2IyLThlNWEtYjg2NTE5YWFmNDg4';
 
 		$msg = $message;
 
 		$content = array(
-			"en" => $msg,
+			"es" => $msg,
 			"en" => $msg
 		);
 
 		$headings = array(
-			"en" => $title,
+			"es" => $title,
 			"en" => $title
 		);
 
@@ -554,11 +566,11 @@ class Notificaciones extends MY_Controller {
 				'content_available' => true,
 				"ios_attachments" => $ios_img
 			);
-	
+
 		}
 
 		$headers = array(
-			'Authorization: Basic '.$app_key.'',
+			'Authorization: Basic ' . $app_key . '',
 			'accept: application/json',
 			'content-type: application/json'
 		);
@@ -577,18 +589,19 @@ class Notificaciones extends MY_Controller {
 		curl_close($ch);
 
 
-        $this->notificaciones_model->update_notificacion($id, array('no_envios' => $notificacion_row->no_envios+1,'fecha_actualizacion' => date('Y-m-d H:i:s')));
+		$this->notificaciones_model->update_notificacion($id, array('no_envios' => $notificacion_row->no_envios + 1, 'fecha_actualizacion' => date('Y-m-d H:i:s')));
 
-		$this->mensaje_del_sistema('MENSAJE_EXITO', 'Notificación enviada con éxito: '.$title, 'notificaciones');
+		$this->mensaje_del_sistema('MENSAJE_EXITO', 'Notificación enviada con éxito: ' . $title, 'notificaciones');
 	}
 
-	public function notificacion_clase($id) {
+	public function notificacion_clase($id)
+	{
 
 		if ($this->input->post()) {
 			$id = $this->input->post('id');
 		}
 
-        $data['pagina_titulo'] = 'Notificacar a clase';
+		$data['pagina_titulo'] = 'Notificacar a clase';
 		$data['pagina_menu_notificaciones'] = true;
 
 		$data['controlador'] = 'notificaciones/notificacion_clase';
@@ -602,7 +615,7 @@ class Notificaciones extends MY_Controller {
 		);
 
 		$data['scripts'] = array(
-			array('es_rel' => true, 'src' => ''.$controlador_js.'.js'),
+			array('es_rel' => true, 'src' => '' . $controlador_js . '.js'),
 		);
 
 		$clase_row = $this->clases_model->obtener_por_id($id)->row();
@@ -626,7 +639,7 @@ class Notificaciones extends MY_Controller {
 
 			$this->construir_private_site_ui('notificaciones/notificacion_clase', $data);
 
-        } else {
+		} else {
 
 			$to = $usuarios_ids;
 
@@ -635,18 +648,18 @@ class Notificaciones extends MY_Controller {
 
 			$img = '';
 
-			$app_id = 'f951eb20-c2ca-45d1-9e66-ce5252a4ce7e';
-			$app_key = 'NzdiMTVhNjktYjYxMy00NGU5LWI2YWYtNWQ5NGMzZjZiZjdj';
+			$app_id = '66454c58-6e0b-4489-ba82-524c05331a3b';
+			$app_key = 'YmNkMzhkMjYtM2U5NS00N2IyLThlNWEtYjg2NTE5YWFmNDg4';
 
 			$msg = $message;
 
 			$content = array(
-				"en" => $msg,
+				"es" => $msg,
 				"en" => $msg
 			);
 
 			$headings = array(
-				"en" => $title,
+				"es" => $title,
 				"en" => $title
 			);
 
@@ -677,11 +690,11 @@ class Notificaciones extends MY_Controller {
 					'content_available' => true,
 					"ios_attachments" => $ios_img
 				);
-		
+
 			}
 
 			$headers = array(
-				'Authorization: Basic '.$app_key.'',
+				'Authorization: Basic ' . $app_key . '',
 				'accept: application/json',
 				'content-type: application/json'
 			);

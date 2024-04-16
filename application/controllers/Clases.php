@@ -113,8 +113,8 @@ class Clases extends MY_Controller
             if ($clase->reservado == 0) {
                 if ($clase->estatus == 'Activa') {
                     $opciones .= ' | ';
-                    $opciones .=  '<a href="' . site_url('clases/cancelar/' . $clase->id) . '"><span class="red">Cancelar</span></a>';
-                    $opciones .=  '  |  ';
+                    $opciones .= '<a href="' . site_url('clases/cancelar/' . $clase->id) . '"><span class="red">Cancelar</span></a>';
+                    $opciones .= '  |  ';
                     $opciones .= '<a href="' . site_url('clases/borrar/' . $clase->id) . '"><span class="red">Borrar</span></a>';
                 }
                 if ($clase->reservado == 0 and $clase->estatus == 'Cancelada') {
@@ -156,33 +156,38 @@ class Clases extends MY_Controller
 
     public function duplicar_clase($id = null)
     {
+        // Obtener la clase que se desea duplicar
         $clase = $this->clases_model->obtener_por_id($id)->row();
+        // Obtener todas las clases para verificar duplicados
         $clases_list = $this->clases_model->obtener_todas_para_front_con_detalle();
 
+        // Verificar si la clase existe
         if (!$clase) {
+            // Redireccionar si no se encuentra la clase
             $this->session->set_flashdata('MENSAJE_ERROR', 'No se ha podido encontrar la clase que desea clonar.');
             redirect(site_url('clases'));
         }
 
+        // Obtener el nombre base de la clase sin el sufijo DUP
+        $nombre_base = preg_replace('/\s\(DUP\d+\)$/', '', $clase->identificador);
+
+        // Inicializar el contador
         $i = 1;
-        foreach ($clases_list->result() as $clases_row) {
-            if ($clases_row->identificador == $clase->identificador) {
-                $identificador_nuevo = $clase->identificador . $i;
-                $i++;
-            }
-            if ($identificador_nuevo == $clases_row->identificador) {
-                $identificador_nuevo = $clase->identificador . $i;
-                $i++;
-            }
+        // Construir el nuevo identificador
+        $identificador_nuevo = $nombre_base . ' DUP' . $i;
+        // Verificar si el identificador ya existe, si es así, incrementar el número
+        while ($this->identificador_existente($identificador_nuevo, $clases_list)) {
+            $i++;
+            $identificador_nuevo = $nombre_base . ' DUP' . $i;
         }
 
+        // Resto del código para crear la clase duplicada
         $fecha_registro = date("Y-m-d H:i:s");
-
         $key_1 = "clases-" . date("Y-m-d-H-i-s", strtotime($fecha_registro));
         $identificador_1 = hash("crc32b", $key_1);
 
         $cupo_lugares = array();
-        // Crear un arreglo de arreglos para llevar un registro mas detallado del cupo
+        // Crear un arreglo de arreglos para llevar un registro más detallado del cupo
         for ($i = 1; $i <= 20; $i++) {
             $lugar = array(
                 'no_lugar' => $i,
@@ -195,28 +200,45 @@ class Clases extends MY_Controller
 
         $cupo_lugares_json = json_encode($cupo_lugares);
 
-        $clase_a_clonar = $this->clases_model->crear(array(
-            'identificador' => $identificador_nuevo,
-            'disciplina_id' => $clase->disciplina_id,
-            'instructor_id' => $clase->instructor_id,
-            'cupo' => $clase->cupo,
-            'img_acceso' => $clase->img_acceso,
-            'inicia' => $clase->inicia,
-            'inicia_ionic' => $clase->inicia_ionic,
-            'intervalo_horas' => $clase->intervalo_horas,
-            'distribucion_imagen' => $clase->distribucion_imagen,
-            'distribucion_lugares' => $clase->distribucion_lugares,
-            'dificultad' => $clase->dificultad,
-            'cupo_lugares' => $cupo_lugares_json,
-        ));
+        // Crear la clase duplicada
+        $clase_a_clonar = $this->clases_model->crear(
+            array(
+                'identificador' => $identificador_nuevo,
+                'disciplina_id' => $clase->disciplina_id,
+                'instructor_id' => $clase->instructor_id,
+                'cupo' => $clase->cupo,
+                'img_acceso' => $clase->img_acceso,
+                'inicia' => $clase->inicia,
+                'inicia_ionic' => $clase->inicia_ionic,
+                'intervalo_horas' => $clase->intervalo_horas,
+                'distribucion_imagen' => $clase->distribucion_imagen,
+                'distribucion_lugares' => $clase->distribucion_lugares,
+                'dificultad' => $clase->dificultad,
+                'cupo_lugares' => $cupo_lugares_json,
+            )
+        );
 
+        // Redireccionar después de crear la clase duplicada
         if ($clase_a_clonar) {
             redirect(site_url('clases'));
         }
 
+        // Redireccionar si falla la creación de la clase duplicada
         $this->session->set_flashdata('MENSAJE_ERROR', 'La clase ' . $id . ' no ha podido ser clonada.');
         redirect(site_url('clases'));
     }
+
+    // Función para verificar si un identificador ya existe en la lista de clases
+    private function identificador_existente($identificador, $clases_list)
+    {
+        foreach ($clases_list->result() as $clases_row) {
+            if ($clases_row->identificador === $identificador) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     public function actualizar()
     {
@@ -717,12 +739,14 @@ class Clases extends MY_Controller
                                 }
 
                                 // Crear reservación
-                                $reservacion = $this->reservaciones_model->crear(array(
-                                    'usuario_id' => $this->input->post('usuario_id'),
-                                    'clase_id' => $clase_a_reservar->id,
-                                    'asignaciones_id' => $asignacion->id,
-                                    'no_lugar' => $this->input->post('no_lugar'),
-                                ));
+                                $reservacion = $this->reservaciones_model->crear(
+                                    array(
+                                        'usuario_id' => $this->input->post('usuario_id'),
+                                        'clase_id' => $clase_a_reservar->id,
+                                        'asignaciones_id' => $asignacion->id,
+                                        'no_lugar' => $this->input->post('no_lugar'),
+                                    )
+                                );
 
                                 if (!$reservacion) {
                                     $this->session->set_flashdata('MENSAJE_ERROR', 'La reservación no pudo ser creada.');
@@ -763,7 +787,8 @@ class Clases extends MY_Controller
 
             $generar_fechas_bonitas = $this->clases_model->editar($clase->id, array(
                 'inicia_ionic' => $fecha_numerica_de_la_clase,
-            ));
+            )
+            );
 
             if (!$generar_fechas_bonitas) {
                 $this->session->set_flashdata('MENSAJE_ERROR', 'La clase no pudo ser modificada.');
@@ -803,7 +828,8 @@ class Clases extends MY_Controller
 
         $clase_a_cancelar = $this->clases_model->editar($id, array(
             'estatus' => 'Cancelada',
-        ));
+        )
+        );
 
         if ($clase_a_cancelar) {
             $this->session->set_flashdata('MENSAJE_EXITO', 'La clase ' . $id . ' ha sido cancelada.');
@@ -1140,9 +1166,9 @@ class Clases extends MY_Controller
             $this->session->set_flashdata('MENSAJE_ERROR', '¡Oops! Al parecer ha ocurrido un error, por favor intentelo más tarde. (3)');
             redirect('clases/editar/' . $clase_id);
         } /*else {
-            $this->session->set_flashdata('MENSAJE_INFO', ''.$max_lugar.'');
-            redirect('clases/editar/'.$clase_id);
-        }*/
+           $this->session->set_flashdata('MENSAJE_INFO', ''.$max_lugar.'');
+           redirect('clases/editar/'.$clase_id);
+       }*/
 
         $lugar = array(
             'no_lugar' => $cupo_actualizado,
@@ -1153,7 +1179,7 @@ class Clases extends MY_Controller
         array_push($cupo_lugares, $lugar);
         $cupo_lugares_json = json_encode($cupo_lugares);
 
-        $data_clase =  array(
+        $data_clase = array(
             'cupo' => $cupo_actualizado,
             'cupo_lugares' => $cupo_lugares_json,
         );
