@@ -2436,7 +2436,7 @@ class Ventas extends MY_Controller
 
         $data["empresa"] = "BEATNESS FRANQUICIAS S.A. DE C.V.";
         $data["regimen_fiscal"] = "RÉGIMEN GENERAL DE LEY PERSONAS MORALES";
-        $data["rfc"] = "RFC: ICO1303131D1";
+        $data["rfc"] = "RFC: BFR1810156I4";
         $data["domicilio_fiscal"] = "CALLE LAMARTINE 205
         POLANCO V SECCION DELEGACIÓN MIGUEL HIDALGO 
         CDMX CODIGO POSTAL 11560";
