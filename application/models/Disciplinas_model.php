@@ -78,6 +78,7 @@ class Disciplinas_model extends CI_Model
             ->from('disciplinas')
             ->where('estatus', 'activo')
             ->where('sucursal_id', intval($id))
+            ->where('mostrar_en_app', 'si')
             ->get();
         return $query;
     }
