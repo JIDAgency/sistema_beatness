@@ -364,4 +364,14 @@ class Usuarios_model extends CI_Model
 
         return $query;
     }
+
+    public function  obtener_instructor_por_id($id){
+        $query = $this->db
+            ->where('t1.id', $id)
+            ->select("CONCAT(COALESCE(t1.nombre_completo, 'N/D'), ' ', COALESCE(t1.apellido_paterno, 'N/D'), ' ', COALESCE(t1.apellido_materno, 'N/D')) AS nombre")
+            ->from('usuarios t1')
+            ->get();
+
+        return $query;
+    }
 }

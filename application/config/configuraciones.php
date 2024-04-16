@@ -111,11 +111,6 @@ $select_disciplina = array(
         'valor'     => '7',
         'activo'    => false,
     ),
-    (object) array(
-        'nombre'    => 'SPECIAL EVENT',
-        'valor'     => '15',
-        'activo'    => false,
-    )
 );
 
 $config['select_disciplina'] = $select_disciplina;

@@ -110,12 +110,16 @@ class Clases extends MY_Controller
             if ($clase->estatus == 'Activa') {
                 $opciones .= '<a href="' . site_url('clases/duplicar_clase/' . $clase->id) . '"><span>Duplicar</span></a>';
             }
-            if ($clase->reservado == 0 and $clase->estatus == 'Activa') {
-
-                $opciones .= ' | ';
-                $opciones .=  '<a href="' . site_url('clases/cancelar/' . $clase->id) . '"><span class="red">Cancelar</span></a>';
-                $opciones .=  '  |  ';
-                $opciones .= '<a href="' . site_url('clases/borrar/' . $clase->id) . '"><span class="red">Borrar</span></a>';
+            if ($clase->reservado == 0) {
+                if ($clase->estatus == 'Activa') {
+                    $opciones .= ' | ';
+                    $opciones .=  '<a href="' . site_url('clases/cancelar/' . $clase->id) . '"><span class="red">Cancelar</span></a>';
+                    $opciones .=  '  |  ';
+                    $opciones .= '<a href="' . site_url('clases/borrar/' . $clase->id) . '"><span class="red">Borrar</span></a>';
+                }
+                if ($clase->reservado == 0 and $clase->estatus == 'Cancelada') {
+                    $opciones .= '<a href="' . site_url('clases/borrar/' . $clase->id) . '"><span class="red">Borrar</span></a>';
+                }
             }
 
             $data[] = array(
@@ -160,14 +164,14 @@ class Clases extends MY_Controller
             redirect(site_url('clases'));
         }
 
-        $i=1;
+        $i = 1;
         foreach ($clases_list->result() as $clases_row) {
             if ($clases_row->identificador == $clase->identificador) {
-                $identificador_nuevo = $clase->identificador.$i; 
+                $identificador_nuevo = $clase->identificador . $i;
                 $i++;
             }
             if ($identificador_nuevo == $clases_row->identificador) {
-                $identificador_nuevo = $clase->identificador.$i;
+                $identificador_nuevo = $clase->identificador . $i;
                 $i++;
             }
         }
@@ -354,7 +358,6 @@ class Clases extends MY_Controller
         );
 
         // Establecer validaciones
-        $this->form_validation->set_rules('identificador', 'Identificador', 'required|is_unique[clases.identificador]');
         $this->form_validation->set_rules('disciplina_id', 'Disciplina', 'required');
         $this->form_validation->set_rules('instructor_id', 'Instructor', 'required');
         $this->form_validation->set_rules('cupo', 'Cupo', 'required');
@@ -362,11 +365,46 @@ class Clases extends MY_Controller
         $this->form_validation->set_rules('inicia_time', 'Hora', 'required');
         $this->form_validation->set_rules('distribucion_lugares', 'Distribución de lugares', 'required');
         $this->form_validation->set_rules('intervalo_horas', 'Intervalo en horas', 'required');
-        //$this->form_validation->set_rules('dificultad', 'Dificultad', 'required');
+        $this->form_validation->set_rules('dificultad', 'Dificultad', 'required');
 
         if ($this->form_validation->run() == false) {
             $this->construir_private_site_ui('clases/crear', $data);
         } else {
+
+            $disciplina = $this->disciplinas_model->obtener_por_id($this->input->post('disciplina_id'))->row();
+            $instructor = $this->usuarios_model->obtener_instructor_por_id($this->input->post('instructor_id'))->row();
+
+            $valor = $disciplina->nombre;
+            $valor1 = substr($valor, 0, 2);
+
+            $valor2 = $instructor->nombre; // Suponiendo que estás obteniendo el valor del select mediante un formulario POST
+            // Eliminar caracteres acentuados y especiales
+            $valor2 = preg_replace('/(á|é|í|ó|ú|ñ|ä|ë|ï|ö|\.|ü)/iu', '', $valor2);
+            // Conservar solo la primera letra de cada palabra y convertirla a mayúsculas
+            $valor2 = preg_replace_callback('/[A-Za-z]+/iu', function ($match) {
+                return strtoupper(trim($match[0])[0]);
+            }, $valor2);
+            // Eliminar espacios en blanco
+            $valor2 = preg_replace('/\s/', '', $valor2);
+
+            $valor3 = $this->input->post('inicia_date');
+            $valor3 = preg_replace('/\D/', '', $valor3);
+
+            $valor4 = $this->input->post('inicia_time');
+            $valor4 = preg_replace('/\D/', '', $valor4);
+
+            $valor5 = $this->input->post('dificultad');
+            $valor5 = preg_replace('/(á|é|í|ó|ú|ñ|ä|ë|ï|ö|\.|ü)/iu', '', $valor5);
+            $valor5 = substr($valor5, 0, 2);
+
+            $valor5 = $this->input->post('dificultad');
+            $acentos = array('á', 'é', 'í', 'ó', 'ú', 'Á', 'É', 'Í', 'Ó', 'Ú');
+            $sin_acentos = array('a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U');
+            $valor5 = str_replace($acentos, $sin_acentos, $valor5);
+            $valor5 = strtoupper(substr($valor5, 0, 2));
+
+            $identificador = $valor1 . $valor2 . $valor3 . $valor4 . '00' . $valor5;
+
             $cupo_lugares = array();
             // Crear un arreglo de arreglos para llevar un registro mas detallado del cupo
             for ($i = 1; $i <= $this->input->post('cupo'); $i++) {
@@ -389,37 +427,10 @@ class Clases extends MY_Controller
 
             $hora_de_incio = date('Y-m-d', strtotime(str_replace('/', '-', $this->input->post('inicia_date')))) . 'T' . $this->input->post('inicia_time');
             $fecha_numerica_de_la_clase = date(DATE_ISO8601, strtotime($hora_de_incio));
-
-            /**
-             * Comprobar si es una de las disciplinas godin para agregarla como sub-disciplina.
-             */
-
-            //$godin_bike = 5; $godin_box = 6; $godin_body = 7; $dorado_godin_bike = 9;
-
-            /*if($this->input->post('disciplina_id') == $godin_bike){
-                $disciplina_id = 2;
-                $subdisciplina_id = $this->input->post('disciplina_id');
-            } elseif($this->input->post('disciplina_id') == $godin_box){
-                $disciplina_id = 3;
-                $subdisciplina_id = $this->input->post('disciplina_id');
-            } elseif($this->input->post('disciplina_id') == $godin_body){
-                $disciplina_id = 4;
-                $subdisciplina_id = $this->input->post('disciplina_id');
-            } elseif($this->input->post('disciplina_id') == $dorado_godin_bike){
-                $disciplina_id = 8;
-                $subdisciplina_id = $this->input->post('disciplina_id');
-            } else{
-                $disciplina_id = $this->input->post('disciplina_id');
-                $subdisciplina_id = 0;
-            }*/
-
             // Preparar los datos a insertar
             $data = array(
-                'identificador' => $this->input->post('identificador'),
+                'identificador' => $identificador,
                 'disciplina_id' => $this->input->post('disciplina_id'),
-                //Cambio del 22 de Feb de 2022 en Beatness no usan clases godin por lo que no hay una subdisciplina... NO CLASES Godin
-                //'disciplina_id' => $disciplina_id,
-                //'subdisciplina_id' => $subdisciplina_id,
                 'instructor_id' => $this->input->post('instructor_id'),
                 'cupo' => $this->input->post('cupo'),
                 'img_acceso' => $img_acceso,
