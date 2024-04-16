@@ -169,18 +169,14 @@ class Planes extends MY_Controller {
             
 
             if ($plan_row->listar_activo == 1) {
-                $menu = '<a href="'.site_url("planes/editar/").$plan_row->listar_id.'"><i class="ft-eye"></i> Detalles</a>
+                $menu = '<a href="'.site_url("planes/editar/").$plan_row->listar_id.'">Detalles</a>
                 <br>
-                <a href="'.site_url("planes/desactivar/").$plan_row->listar_id.'"><i class="ft-x-square"></i> Desactivar</a>
-                <br>
-                <a href="'.site_url("planes/subir_imagen/".$plan_row->listar_id).'"><i class="fa fa-cloud-upload"></i> Imagen</a>
+                <a href="'.site_url("planes/desactivar/").$plan_row->listar_id.'">Desactivar</a>
                 ';
             } elseif ($plan_row->listar_activo == 0) {
-                $menu = '<a href="'.site_url("planes/editar/").$plan_row->listar_id.'"><i class="ft-eye"></i> Detalles</a>
+                $menu = '<a href="'.site_url("planes/editar/").$plan_row->listar_id.'">Detalles</a>
                 <br>
-                <a href="'.site_url("planes/activar/").$plan_row->listar_id.'"><i class="ft-check-square"></i> Activar</a>
-                <br>
-                <a href="'.site_url("planes/subir_imagen/".$plan_row->listar_id).'"><i class="fa fa-cloud-upload"></i> Imagen</a>
+                <a href="'.site_url("planes/activar/").$plan_row->listar_id.'">Activar</a>
                 ';
             }
             
