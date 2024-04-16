@@ -11,7 +11,8 @@
     <link rel="apple-touch-icon" href="<?php echo base_url(); ?>almacenamiento/logos/open-graph.jpg">
     <link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url(); ?>almacenamiento/logos/logo.jpg">
     <!-- <link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url(); ?>app-assets/images/ico/favicon.ico"> -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans: 300,300i,400,400i,600,600i,700,700i|Muli:300,400,500,700">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Open+Sans: 300,300i,400,400i,600,600i,700,700i|Muli:300,400,500,700">
     <!-- BEGIN VENDOR CSS-->
     <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>app-assets/css/vendors.css">
     <!-- END VENDOR CSS-->
@@ -19,8 +20,10 @@
     <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>app-assets/css/app.css">
     <!-- END ROBUST CSS-->
     <!-- BEGIN Page Level CSS-->
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>app-assets/css/core/menu/menu-types/horizontal-menu.css">
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>app-assets/css/core/colors/palette-gradient.css">
+    <link rel="stylesheet" type="text/css"
+        href="<?php echo base_url(); ?>app-assets/css/core/menu/menu-types/horizontal-menu.css">
+    <link rel="stylesheet" type="text/css"
+        href="<?php echo base_url(); ?>app-assets/css/core/colors/palette-gradient.css">
     <!-- END Page Level CSS-->
     <!-- BEGIN Custom CSS-->
     <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/style.css">
@@ -35,14 +38,16 @@
     <link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url(); ?>almacenamiento/logos/logo.jpg">
     <!-- <link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url(); ?>app-assets/images/ico/favicon.ico"> -->
 
-    <title><?php echo isset($titulo_pagina) ? $titulo_pagina . " | " : ""; ?><?php echo titulo(); ?><?php $lema = lema();
-                                                                                                    echo isset($lema) ? ", " . $lema : ""; ?></title>
+    <title>
+        <?php echo isset($titulo_pagina) ? $titulo_pagina . " | " : ""; ?><?php echo titulo(); ?><?php $lema = lema();
+                    echo isset($lema) ? ", " . $lema : ""; ?>
+    </title>
 
     <!-- Meta Pixel Code -->
     <script>
-        ! function(f, b, e, v, n, t, s) {
+        ! function (f, b, e, v, n, t, s) {
             if (f.fbq) return;
-            n = f.fbq = function() {
+            n = f.fbq = function () {
                 n.callMethod ?
                     n.callMethod.apply(n, arguments) : n.queue.push(arguments)
             };
@@ -61,7 +66,8 @@
         fbq('init', '1230227784598664');
         fbq('track', 'PageView');
     </script>
-    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1230227784598664&ev=PageView&noscript=1" /></noscript>
+    <noscript><img height="1" width="1" style="display:none"
+            src="https://www.facebook.com/tr?id=1230227784598664&ev=PageView&noscript=1" /></noscript>
     <!-- End Meta Pixel Code -->
 
 
@@ -74,13 +80,10 @@
         <div class="container">
             <div class="row">
 
-                <!--div class="col-xs-4 col-md-4">
-                    <a href="<?php echo site_url(); ?>"><img src="<?php echo base_url(); ?>almacenamiento/img/logo-sensoria-horizontal.png" class="img-fluid"></a>
-                </div-->
-
                 <div class="col-xs-12 text-center">
-                    <!-- <a href="https://beatness.mx/descarga" target="_blank"><img src="<?php echo base_url(); ?>almacenamiento/logos/logo.jpg" alt="" class="img-fluid"></a> -->
-                    <a href="https://pentha.mx/descarga" target="_blank"><img src="<?php echo base_url(); ?>almacenamiento/img/header-01.jpg" alt="" class="img-fluid"></a>
+                    <a href="https://beatness.com.mx/descarga" target="_blank"><img
+                            src="<?php echo base_url(); ?>almacenamiento/img/header-01.jpg" alt=""
+                            class="img-fluid"></a>
                 </div>
 
             </div>

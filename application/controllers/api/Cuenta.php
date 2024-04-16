@@ -27,27 +27,30 @@ class Cuenta extends REST_Controller
      */
     public function registrar_usuario_post()
     {
-
         $datos_post = $this->post();
 
         // Verificar si los datos requeridos están presentes
         if (!$datos_post['nombre_completo'] || !$datos_post['no_telefono'] || !$datos_post['correo'] || !$datos_post['contrasena']) {
-            $this->response(array(
-                'error' => true,
-                'mensaje' => 'Por favor complete todos los campos obligatorios para registrar su cuenta.'
-            ), REST_Controller::HTTP_BAD_REQUEST);
+            $this->response(
+                array(
+                    'error' => true,
+                    'mensaje' => 'Por favor complete todos los campos obligatorios para registrar su cuenta. (1)'
+                ),
+                REST_Controller::HTTP_BAD_REQUEST
+            );
         }
 
         // Iniciar la transacción
         $this->db->trans_begin();
 
         try {
+
             // Verificar si el usuario existe con el número de teléfono
             $verificar_no_telefono_existente = $this->usuarios_model->verificar_no_telefono_existente($datos_post['no_telefono']);
 
             if ($verificar_no_telefono_existente) {
                 // Si el número de teléfono ya está registrado, lanzar una excepción
-                throw new Exception('Ya existe una cuenta registrada con este <b>número de teléfono</b>. Si olvidaste tu contraseña, puedes restablecerla a través de la opción "Olvidé mi contraseña". Si necesitas ayuda, por favor contáctanos.', REST_Controller::HTTP_BAD_REQUEST);
+                throw new Exception('Ya existe una cuenta registrada con este <b>número de teléfono</b>. Si olvidaste tu contraseña, puedes restablecerla a través de la opción "Olvidé mi contraseña". Si necesitas ayuda, por favor contáctanos. (2)', REST_Controller::HTTP_BAD_REQUEST);
             }
 
             // Verificar si el usuario existe con el correo electrónico
@@ -55,7 +58,7 @@ class Cuenta extends REST_Controller
 
             if ($verificar_correo_existente) {
                 // Si el correo electrónico ya está registrado, lanzar una excepción
-                throw new Exception('Ya existe una cuenta registrada con esta dirección de <b>correo electrónico</b>. Si olvidaste tu contraseña, puedes restablecerla a través de la opción "Olvidé mi contraseña". Si necesitas ayuda, por favor contáctanos.', REST_Controller::HTTP_BAD_REQUEST);
+                throw new Exception('Ya existe una cuenta registrada con esta dirección de <b>correo electrónico</b>. Si olvidaste tu contraseña, puedes restablecerla a través de la opción "Olvidé mi contraseña". Si necesitas ayuda, por favor contáctanos. (3)', REST_Controller::HTTP_BAD_REQUEST);
             }
 
             // Crear usuario
@@ -73,12 +76,12 @@ class Cuenta extends REST_Controller
 
             if (!$data_1) {
                 // Si no se pudo crear el usuario, lanzar una excepción
-                throw new Exception('Ha ocurrido un error al procesar el registro, por favor inténtenlo más tarde.', REST_Controller::HTTP_BAD_REQUEST);
+                throw new Exception('Ha ocurrido un error al procesar el registro, por favor inténtenlo más tarde. (4)', REST_Controller::HTTP_BAD_REQUEST);
             }
 
-            if ($this->usuarios_model->crear($data_1)) {
+            if (!$this->usuarios_model->crear($data_1)) {
                 // Si no se pudo crear el usuario, lanzar una excepción
-                throw new Exception('Ha ocurrido un error al procesar el registro, por favor inténtenlo más tarde.', REST_Controller::HTTP_BAD_REQUEST);
+                throw new Exception('Ha ocurrido un error al procesar el registro, por favor inténtenlo más tarde. (5)', REST_Controller::HTTP_BAD_REQUEST);
             }
 
             $usuario_id = $this->db->insert_id();
@@ -89,27 +92,32 @@ class Cuenta extends REST_Controller
             // Actualizar el token del usuario recién creado
             if (!$this->usuarios_model->editar($usuario_id, array('token' => $token))) {
                 // Si no se pudo actualizar el token, lanzar una excepción
-                throw new Exception('Ha ocurrido un error al generar la sesión, por favor inténtenlo más tarde', REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
+                throw new Exception('Ha ocurrido un error al generar la sesión, por favor inténtenlo más tarde. (6)', REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
             }
 
             // Confirmar la transacción
             $this->db->trans_commit();
 
             // Responder con éxito y devolver el token y el ID del usuario
-            $this->response(array(
-                'error' => false,
-                'token' => $token,
-                'usuario_id' => $usuario_id,
-            ));
+            $this->response(
+                array(
+                    'error' => false,
+                    'token' => $token,
+                    'usuario_id' => $usuario_id,
+                )
+            );
         } catch (Exception $e) {
             // Deshacer la transacción en caso de error
             $this->db->trans_rollback();
 
             // Responder con el mensaje de error y el código de estado HTTP correspondiente
-            $this->response(array(
-                'error' => true,
-                'mensaje' => $e->getMessage(),
-            ), $e->getCode());
+            $this->response(
+                array(
+                    'error' => true,
+                    'mensaje' => $e->getMessage(),
+                ),
+                $e->getCode()
+            );
         }
     }
 
@@ -188,10 +196,13 @@ class Cuenta extends REST_Controller
         $datos_post = $this->post();
 
         if (!$datos_post['facebook_id']) {
-            $this->response(array(
-                'error' => true,
-                'mensaje' => 'El facebook id es necesario para acceder a la aplicación utilizando el servicio de terceros Facebook',
-            ), REST_Controller::HTTP_BAD_REQUEST);
+            $this->response(
+                array(
+                    'error' => true,
+                    'mensaje' => 'El facebook id es necesario para acceder a la aplicación utilizando el servicio de terceros Facebook',
+                ),
+                REST_Controller::HTTP_BAD_REQUEST
+            );
         }
 
         // Buscar usuario por facebook id
@@ -200,29 +211,44 @@ class Cuenta extends REST_Controller
         // Si existe ya un usuario con ese id de facebook, entonces actualizar sus datos
         if ($usuario_facebook) {
 
-            if (!$this->usuarios_model->editar($usuario_facebook->id, array(
-                'nombre_completo' => $datos_post['nombre_completo'],
-                'apellido_paterno' => $datos_post['apellido_paterno'],
-                'correo' => $datos_post['correo'],
-            ))) {
-                $this->response(array(
-                    'error' => true,
-                    'mensaje' => 'Ha ocurrido un error al intentar entrar a la aplicación usando Facebook, por favor inténtalo más tarde',
-                ), REST_Controller::HTTP_BAD_REQUEST);
+            if (
+                !$this->usuarios_model->editar(
+                    $usuario_facebook->id,
+                    array(
+                        'nombre_completo' => $datos_post['nombre_completo'],
+                        'apellido_paterno' => $datos_post['apellido_paterno'],
+                        'correo' => $datos_post['correo'],
+                    )
+                )
+            ) {
+                $this->response(
+                    array(
+                        'error' => true,
+                        'mensaje' => 'Ha ocurrido un error al intentar entrar a la aplicación usando Facebook, por favor inténtalo más tarde',
+                    ),
+                    REST_Controller::HTTP_BAD_REQUEST
+                );
             }
         } else { // si no, entoces registrar al usuario
-            if (!$this->usuarios_model->crear(array(
-                'nombre_completo' => $datos_post['nombre_completo'],
-                'apellido_paterno' => $datos_post['apellido_paterno'],
-                'correo' => $datos_post['correo'],
-                'facebook_id' => $datos_post['facebook_id'],
-                'rol_id' => $this->config->item('id_rol_cliente', 'b3studio'), // Los usuarios que se registren por si mismos desde la página serán, por
-                // defecto, usuarios de tipo 'cliente'
-            ))) {
-                $this->response(array(
-                    'error' => true,
-                    'mensaje' => 'Ha ocurrido un error al intentar entrar a la aplicación usando Facebook, por favor inténtalo más tarde',
-                ), REST_Controller::HTTP_BAD_REQUEST);
+            if (
+                !$this->usuarios_model->crear(
+                    array(
+                        'nombre_completo' => $datos_post['nombre_completo'],
+                        'apellido_paterno' => $datos_post['apellido_paterno'],
+                        'correo' => $datos_post['correo'],
+                        'facebook_id' => $datos_post['facebook_id'],
+                        'rol_id' => $this->config->item('id_rol_cliente', 'b3studio'), // Los usuarios que se registren por si mismos desde la página serán, por
+                        // defecto, usuarios de tipo 'cliente'
+                    )
+                )
+            ) {
+                $this->response(
+                    array(
+                        'error' => true,
+                        'mensaje' => 'Ha ocurrido un error al intentar entrar a la aplicación usando Facebook, por favor inténtalo más tarde',
+                    ),
+                    REST_Controller::HTTP_BAD_REQUEST
+                );
             }
         }
 
@@ -233,17 +259,22 @@ class Cuenta extends REST_Controller
         $token = bin2hex(openssl_random_pseudo_bytes(20));
 
         if (!$this->usuarios_model->editar($usuario_facebook->id, array('token' => $token))) {
-            $this->response(array(
-                'error' => true,
-                'mensaje' => 'Ha ocurrido un error al intentar entrar a la aplicación usando Facebook, por favor inténtalo más tarde',
-            ), REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
+            $this->response(
+                array(
+                    'error' => true,
+                    'mensaje' => 'Ha ocurrido un error al intentar entrar a la aplicación usando Facebook, por favor inténtalo más tarde',
+                ),
+                REST_Controller::HTTP_INTERNAL_SERVER_ERROR
+            );
         }
 
-        $this->response(array(
-            'error' => false,
-            'token' => $token,
-            'usuario_id' => $usuario_facebook->id,
-            'facebook_id' => $usuario_facebook->facebook_id,
-        ));
+        $this->response(
+            array(
+                'error' => false,
+                'token' => $token,
+                'usuario_id' => $usuario_facebook->id,
+                'facebook_id' => $usuario_facebook->facebook_id,
+            )
+        );
     }
 }
