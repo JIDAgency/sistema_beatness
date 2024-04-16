@@ -46,7 +46,7 @@ class Sucursales_model extends CI_Model
         public function get_sucursales_para_select_de_ventas()
         {
             $query = $this->db
-                ->where_in('id', array('2','3','5'))
+                ->where_in('id', array('2','3','4'))
                 ->where('estatus', 'activo')
                 ->from('sucursales')
                 ->order_by("orden_mostrar", "asc")
