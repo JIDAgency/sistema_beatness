@@ -49,6 +49,9 @@ class Disciplinas_model extends CI_Model
                 t1.id as listar_id,
                 t1.nombre as listar_nombre,
                 CONCAT(COALESCE(t2.nombre, 'N/D'), ' - ', COALESCE(t2.locacion, 'N/D')) as listar_sucursal,
+                t1.mostrar_en_app,
+                t1.mostrar_en_web,
+                t1.es_ilimitado,
                 CONCAT(UPPER(SUBSTRING(t1.estatus, 1, 1)),LOWER(SUBSTRING(t1.estatus FROM 2))) as listar_estatus,
             ")
             ->from('disciplinas t1')

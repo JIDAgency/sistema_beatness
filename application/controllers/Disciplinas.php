@@ -8,6 +8,7 @@ class Disciplinas extends MY_Controller
     {
         parent::__construct();
         $this->load->model('disciplinas_model');
+        $this->load->model('sucursales_model');
     }
 
     public function index()
@@ -16,11 +17,11 @@ class Disciplinas extends MY_Controller
         // Cargar estilos y scripts
         $data['styles'] = array(
             array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/tables/datatable/datatables.min.css'),
-			array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/tables/extensions/responsive.dataTables.min.css'),
+            array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/tables/extensions/responsive.dataTables.min.css'),
         );
         $data['scripts'] = array(
             array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/tables/datatable/datatables.min.js'),
-			array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js'),
+            array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js'),
             array('es_rel' => true, 'src' => 'disciplinas/index.js'),
         );
 
@@ -32,27 +33,30 @@ class Disciplinas extends MY_Controller
         $data['mensaje_error'] = $this->session->flashdata('MENSAJE_ERROR');
 
         $this->construir_private_site_ui('disciplinas/index', $data);
-
     }
 
     /** Metodos para formato JSON de las datatables */
 
     /** JSON encoder para la tabla de clientes */
-    public function load_lista_de_todas_las_disciplinas_para_datatable(){
+    public function load_lista_de_todas_las_disciplinas_para_datatable()
+    {
         $disciplinas_list = $this->disciplinas_model->get_lista_de_todas_las_disciplinas_limitada()->result();
 
         $result = array();
 
         foreach ($disciplinas_list as $disciplina_row) {
 
-            $menu = '<a href="'.site_url("disciplinas/editar/").$disciplina_row->listar_id.'"><i class="ft-eye"></i> Detalles</a>';
-            
+            $menu = '<a href="' . site_url("disciplinas/editar/") . $disciplina_row->listar_id . '">Editar</a>';
+
             $result[] = array(
-				"listar_id" => $disciplina_row->listar_id,
-				"listar_nombre" => $disciplina_row->listar_nombre,
-				"listar_sucursal" => $disciplina_row->listar_sucursal,
-				"listar_estatus" => $disciplina_row->listar_estatus,
-				"listar_opciones" => $menu
+                "listar_id" => $disciplina_row->listar_id,
+                "listar_nombre" => $disciplina_row->listar_nombre,
+                "listar_sucursal" => $disciplina_row->listar_sucursal,
+                "listar_es_ilimitado" => $disciplina_row->es_ilimitado,
+                "listar_mostrar_app" => $disciplina_row->mostrar_en_app,
+                "listar_mostrar_web" => $disciplina_row->mostrar_en_web,
+                "listar_estatus" => $disciplina_row->listar_estatus,
+                "listar_opciones" => $menu
             );
         }
         echo json_encode(array("data" => $result));
@@ -66,6 +70,9 @@ class Disciplinas extends MY_Controller
         $this->form_validation->set_rules('url_titulo', 'titulo', 'required');
         $this->form_validation->set_rules('url_logo', 'logo', 'required');
         $this->form_validation->set_rules('sucursal_id', 'sucursal', 'required');
+        $this->form_validation->set_rules('ilimitado', 'ilimitado', 'required');
+        $this->form_validation->set_rules('mostrar_app', 'mostrar_app', 'required');
+        $this->form_validation->set_rules('mostrar_web', 'mostrar_web', 'required');
         $this->form_validation->set_rules('estatus', 'estatus', 'required');
 
         // Inicializar vista, scripts
@@ -79,10 +86,13 @@ class Disciplinas extends MY_Controller
 
         );
 
+        $sucursales_list = $this->sucursales_model->get_todas_las_sucursales()->result();
+
+        $data['sucursales_list'] = $sucursales_list;
+
         if ($this->form_validation->run() == false) {
 
             $this->construir_private_site_ui('disciplinas/crear', $data);
-
         } else {
             // Preparar datos para hacer el insert en la bd
             $data = array(
@@ -91,6 +101,9 @@ class Disciplinas extends MY_Controller
                 'url_titulo' => $this->input->post('url_titulo'),
                 'url_logo' => $this->input->post('url_logo'),
                 'sucursal_id' => $this->input->post('sucursal_id'),
+                'es_ilimitado' => $this->input->post('ilimitado'),
+                'mostrar_en_app' => $this->input->post('mostrar_app'),
+                'mostrar_en_web' => $this->input->post('mostrar_web'),
                 'estatus' => $this->input->post('estatus'),
             );
 
@@ -100,7 +113,6 @@ class Disciplinas extends MY_Controller
             }
 
             $this->construir_private_site_ui('disciplinas/crear', $data);
-
         }
     }
 
@@ -113,7 +125,10 @@ class Disciplinas extends MY_Controller
         $this->form_validation->set_rules('url_titulo', 'titulo', 'required');
         $this->form_validation->set_rules('url_logo', 'logotipo', 'required');
         $this->form_validation->set_rules('sucursal_id', 'sucursal', 'required');
-        $this->form_validation->set_rules('estatus', 'estatus', 'required');        
+        $this->form_validation->set_rules('ilimitado', 'ilimitado', 'required');
+        $this->form_validation->set_rules('mostrar_app', 'mostrar_app', 'required');
+        $this->form_validation->set_rules('mostrar_web', 'mostrar_web', 'required');
+        $this->form_validation->set_rules('estatus', 'estatus', 'required');
 
         // Inicializar vista, scripts y catálogos
         $data['menu_disciplinas_activo'] = true;
@@ -134,6 +149,10 @@ class Disciplinas extends MY_Controller
             // Verificar que la membresía a editar exista, obtener sus datos y pasarlos a la vista
             $disciplina_a_editar_row = $this->disciplinas_model->obtener_por_id($id)->row();
 
+            $sucursales_list = $this->sucursales_model->get_todas_las_sucursales()->result();
+
+            $data['sucursales_list'] = $sucursales_list;
+
             if (!$disciplina_a_editar_row) {
                 $this->session->set_flashdata('MENSAJE_INFO', 'La disciplina que intenta editar no existe.');
                 redirect('/disciplinas/index');
@@ -142,7 +161,6 @@ class Disciplinas extends MY_Controller
             $data['disciplina_a_editar_row'] = $disciplina_a_editar_row;
 
             $this->construir_private_site_ui('disciplinas/editar', $data);
-
         } else {
 
             $data = array(
@@ -151,6 +169,9 @@ class Disciplinas extends MY_Controller
                 'url_titulo' => $this->input->post('url_titulo'),
                 'url_logo' => $this->input->post('url_logo'),
                 'sucursal_id' => $this->input->post('sucursal_id'),
+                'es_ilimitado' => $this->input->post('ilimitado'),
+                'mostrar_en_app' => $this->input->post('mostrar_app'),
+                'mostrar_en_web' => $this->input->post('mostrar_web'),
                 'estatus' => $this->input->post('estatus'),
 
             );
@@ -162,8 +183,6 @@ class Disciplinas extends MY_Controller
             }
 
             $this->construir_private_site_ui('disciplinas/editar', $data);
-
         }
-
     }
 }

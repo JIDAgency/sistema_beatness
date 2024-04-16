@@ -49,6 +49,9 @@
 														<th>ID</th>
 														<th>Disciplina</th>
 														<th>Sucursal</th>
+														<th>Es ilimitado</th>
+														<th>Mostrar en app</th>
+														<th>Mostrar en web</th>
 														<th>Estatus</th>
 														<th>Opciones</th>
 													</tr>

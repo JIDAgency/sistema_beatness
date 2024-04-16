@@ -121,3 +121,10 @@ if (!function_exists('select_dificultad')) {
         return get_instance()->config->item('select_dificultad');
     }
 }
+
+if (!function_exists('select_mostrar')) {
+    function select_mostrar()
+    {
+        return get_instance()->config->item('select_mostrar');
+    }
+}

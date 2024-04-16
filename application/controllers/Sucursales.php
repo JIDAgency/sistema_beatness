@@ -32,6 +32,29 @@ class Sucursales extends MY_Controller {
 
         $this->construir_private_site_ui('sucursales/index', $data);
     }
+    
+    /** JSON encoder para la tabla de Usuarios */
+    public function load_lista_de_todas_las_sucursales_de_la_plantilla_para_datatable(){
+
+        $sucursales_list = $this->sucursales_model->get_todas_las_sucursales()->result();
+
+        $result = array();
+
+        foreach ($sucursales_list as $sucursales_row) {
+
+            $menu = '<a href="'.site_url("sucursales/editar/").$sucursales_row->id.'">Editar</a>';
+            
+            $result[] = array(
+                "listar_id" => $sucursales_row->id,
+                "listar_nombre" => $sucursales_row->nombre.' ['.$sucursales_row->locacion.']',
+                "listar_orden_mostrar" => $sucursales_row->orden_mostrar.' º',
+                "listar_estatus" => ucfirst($sucursales_row->estatus),
+                "listar_opciones" => $menu,
+            );
+        }
+
+        echo json_encode(array("data" => $result));
+    }
 
     public function crear()
     {
@@ -160,29 +183,6 @@ class Sucursales extends MY_Controller {
 
         }
 
-    }
-    
-    /** JSON encoder para la tabla de Usuarios */
-    public function load_lista_de_todas_las_sucursales_de_la_plantilla_para_datatable(){
-
-        $sucursales_list = $this->sucursales_model->get_todas_las_sucursales()->result();
-
-        $result = array();
-
-        foreach ($sucursales_list as $sucursales_row) {
-
-            $menu = '<a href="'.site_url("sucursales/editar/").$sucursales_row->id.'"><i class="ft-eye"></i> Detalles</a>';
-            
-            $result[] = array(
-                "listar_id" => $sucursales_row->id,
-                "listar_nombre" => $sucursales_row->nombre.' ['.$sucursales_row->locacion.']',
-                "listar_orden_mostrar" => $sucursales_row->orden_mostrar.' º',
-                "listar_estatus" => ucfirst($sucursales_row->estatus),
-                "listar_opciones" => $menu,
-            );
-        }
-
-        echo json_encode(array("data" => $result));
     }
 
 }

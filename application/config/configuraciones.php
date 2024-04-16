@@ -78,6 +78,23 @@ $select_estatus = array(
 
 $config['select_estatus'] = $select_estatus;
 
+/* ====== Mostrar en app ====== */
+
+$select_mostrar = array(
+    (object) array(
+        'nombre'    => 'Si',
+        'valor'     => 'si',
+        'activo'    => false,
+    ),
+    (object) array(
+        'nombre'    => 'No',
+        'valor'     => 'no',
+        'activo'    => false,
+    )
+);
+
+$config['select_mostrar'] = $select_mostrar;
+
 /* ====== disciplina ====== */
 
 $select_disciplina = array(
