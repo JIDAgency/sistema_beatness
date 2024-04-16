@@ -168,17 +168,17 @@ class Clases extends MY_Controller
             redirect(site_url('clases'));
         }
 
-        // Obtener el nombre base de la clase sin el sufijo DUP
-        $nombre_base = preg_replace('/\s\(DUP\d+\)$/', '', $clase->identificador);
+        // Obtener el número de duplicación actual
+        preg_match('/DUP(\d+)$/', $clase->identificador, $matches);
+        $numero_duplicado = isset($matches[1]) ? intval($matches[1]) : 1;
 
-        // Inicializar el contador
-        $i = 1;
         // Construir el nuevo identificador
-        $identificador_nuevo = $nombre_base . ' DUP' . $i;
+        $identificador_nuevo = preg_replace('/\sDUP\d+$/', '', $clase->identificador) . ' DUP' . ($numero_duplicado + 1);
+
         // Verificar si el identificador ya existe, si es así, incrementar el número
         while ($this->identificador_existente($identificador_nuevo, $clases_list)) {
-            $i++;
-            $identificador_nuevo = $nombre_base . ' DUP' . $i;
+            $numero_duplicado++;
+            $identificador_nuevo = preg_replace('/\sDUP\d+$/', '', $clase->identificador) . ' DUP' . ($numero_duplicado + 1);
         }
 
         // Resto del código para crear la clase duplicada
@@ -785,9 +785,11 @@ class Clases extends MY_Controller
             $imprimir = $clase->id . ' -- ' . $clase->inicia . ' -- ' . $fecha_numerica_de_la_clase;
             $this->debug_to_console($imprimir);
 
-            $generar_fechas_bonitas = $this->clases_model->editar($clase->id, array(
-                'inicia_ionic' => $fecha_numerica_de_la_clase,
-            )
+            $generar_fechas_bonitas = $this->clases_model->editar(
+                $clase->id,
+                array(
+                    'inicia_ionic' => $fecha_numerica_de_la_clase,
+                )
             );
 
             if (!$generar_fechas_bonitas) {
@@ -826,9 +828,11 @@ class Clases extends MY_Controller
             redirect('clases/index');
         }
 
-        $clase_a_cancelar = $this->clases_model->editar($id, array(
-            'estatus' => 'Cancelada',
-        )
+        $clase_a_cancelar = $this->clases_model->editar(
+            $id,
+            array(
+                'estatus' => 'Cancelada',
+            )
         );
 
         if ($clase_a_cancelar) {
@@ -1166,9 +1170,9 @@ class Clases extends MY_Controller
             $this->session->set_flashdata('MENSAJE_ERROR', '¡Oops! Al parecer ha ocurrido un error, por favor intentelo más tarde. (3)');
             redirect('clases/editar/' . $clase_id);
         } /*else {
-           $this->session->set_flashdata('MENSAJE_INFO', ''.$max_lugar.'');
-           redirect('clases/editar/'.$clase_id);
-       }*/
+       $this->session->set_flashdata('MENSAJE_INFO', ''.$max_lugar.'');
+       redirect('clases/editar/'.$clase_id);
+   }*/
 
         $lugar = array(
             'no_lugar' => $cupo_actualizado,
