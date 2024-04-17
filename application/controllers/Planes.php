@@ -228,7 +228,7 @@ class Planes extends MY_Controller
         );
 
 
-        $data['disciplinas'] = $this->disciplinas_model->obtener_todas();
+        $data['disciplinas'] = $this->disciplinas_model->obtener_todas()->result();
 
         $codigos_list = $this->codigos_model->get_codigos_activos();
         $data['codigos_list'] = $codigos_list;
@@ -313,11 +313,11 @@ class Planes extends MY_Controller
         $this->form_validation->set_rules('costo', 'costo', 'trim|required');
         $this->form_validation->set_rules('orden_venta', 'Orden de venta', 'trim|required');
         $this->form_validation->set_rules('codigo', 'Código', 'trim');
-        $this->form_validation->set_rules('disciplinas', 'disciplinas', 'trim');
+        $this->form_validation->set_rules('disciplinas[]', 'disciplinas', 'trim');
         $this->form_validation->set_rules('terminos_condiciones', 'términos y condiciones', 'trim');
         $this->form_validation->set_rules('descripcion', 'descripción', 'trim');
 
-        $data['disciplinas'] = $this->disciplinas_model->obtener_todas();
+        $data['disciplinas'] = $this->disciplinas_model->obtener_todas()->result();
 
         // Verificar que el plan a editar exista, obtener sus datos y pasarlos a la vista
         $plan_a_editar = $this->planes_model->obtener_por_id($id)->row();
@@ -331,7 +331,7 @@ class Planes extends MY_Controller
 
         $data['codigos_list'] = $codigos_list;
         $data['plan_a_editar'] = $plan_a_editar;
-        $data['disciplinas_seleccionadas'] = $this->planes_model->obtener_disciplinas_por_plan_id($id);
+        $data['disciplinas_seleccionadas'] = $this->planes_model->obtener_disciplinas_por_plan_id($id)->result();
 
         if ($this->form_validation->run() == false) {
 
@@ -397,9 +397,9 @@ class Planes extends MY_Controller
 
                 // Añadir las disciplinas seleccionadas
                 if ($this->planes_model->eliminar_disciplinas($id)) {
-                    // foreach ($this->input->post('disciplinas') as $k => $v) {
-                    //     $this->planes_model->agregar_disciplina(array('plan_id' => $id, 'disciplina_id' => $v));
-                    // }
+                    foreach ($this->input->post('disciplinas') as $k => $v) {
+                        $this->planes_model->agregar_disciplina(array('plan_id' => $id, 'disciplina_id' => $v));
+                    }
                 }
 
                 $this->session->set_flashdata('MENSAJE_EXITO', 'El plan se ha editado correctamente.');

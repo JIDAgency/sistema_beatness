@@ -97,7 +97,7 @@
 														<div class="col-lg-12">
 															<select id="codigo" name="codigo" class="form-control select2 custom-select">
 																<option value="" <?php echo set_select('codigo', '', set_value('codigo') ? false : '' == $this->session->flashdata('codigo')); ?>>Seleccione un código</option>
-																<?php foreach ($codigos_list->result() as $key => $codigo_row): ?>
+																<?php foreach ($codigos_list->result() as $key => $codigo_row) : ?>
 																	<option value="<?php echo $codigo_row->codigo; ?>" <?php echo set_select('codigo', $codigo_row->codigo, set_value('codigo') ? false : $codigo_row->codigo == $plan_a_editar->codigo); ?>><?php echo trim(mb_strtoupper($codigo_row->codigo)); ?></option>
 																<?php endforeach; ?>
 															</select>
@@ -114,14 +114,27 @@
 													<label for="clases_incluidas" class="col-md-12">Seleccione las disciplinas&nbsp;<span class="red">*</span></label>
 													<div class="col-md-12">
 														<select class="select2-disciplinas form-control" name="disciplinas[]" multiple>
-															<?php foreach ($disciplinas->result() as $disciplina): ?>
-    															<?php if ($disciplina->id != 1): ?>
-        															<option value="<?php echo $disciplina->id; ?>" <?php foreach ($disciplinas_seleccionadas->result() as $disciplina_seleccionada){
-        																echo $disciplina->id == $disciplina_seleccionada->disciplina_id ? 'selected' : ''; }?>>
-        																<?php echo $disciplina->nombre; ?>
-        															</option>
-                                                                <?php endif; ?>
-															<?php endforeach;?>
+															<!-- <?php foreach ($disciplinas as $disciplina) : ?>
+																<?php if ($disciplina->id != 1) : ?>
+																	<?php
+																	// Verificar si la flashdata es un array y si el valor está presente en la flashdata.
+																	$selected = is_array($this->session->flashdata('disciplinas')) && in_array($disciplina->id, $this->session->flashdata('disciplinas')) ? 'selected' : '';
+																	?>
+																	<option value="<?php echo $disciplina->id; ?>" <?php foreach ($disciplinas_seleccionadas as $disciplina_seleccionada) {
+																														echo $disciplina->id == $disciplina_seleccionada->disciplina_id ? 'selected' : '';
+																													} ?>>
+																		<?php echo $disciplina->nombre; ?>
+																	</option>
+																<?php endif; ?>
+															<?php endforeach; ?> -->
+
+															<?php foreach ($disciplinas as $amenidades_key => $disciplina) : ?>
+																<?php
+																// Verificar si la flashdata es un array y si el valor está presente en la flashdata.
+																$selected = is_array($this->session->flashdata('disciplinas')) && in_array($disciplina->id, $this->session->flashdata('disciplinas')) ? 'selected' : '';
+																?>
+																<option value="<?php echo $disciplina->id; ?>"<?php foreach ($disciplinas_seleccionadas as $disciplina_seleccionada) {echo $disciplina->id == $disciplina_seleccionada->disciplina_id ? 'selected' : '';} ?>><?php echo trim(mb_strtoupper($disciplina->nombre)); ?></option>
+															<?php endforeach; ?>
 														</select>
 													</div>
 												</div>
