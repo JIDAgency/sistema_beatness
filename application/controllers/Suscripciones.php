@@ -56,7 +56,6 @@ class Suscripciones extends MY_Controller {
 			$this->asignaciones_model->editar($suscripcion_row->id, $data);
 			*/
 			$opciones = '
-				<br>
 				<a href="'.site_url("suscripciones/ver/".$suscripcion_row->id."").'" target="_blank" rel="noopener noreferrer">Ver</a>
 			';
 

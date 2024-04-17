@@ -114,19 +114,6 @@
 													<label for="clases_incluidas" class="col-md-12">Seleccione las disciplinas&nbsp;<span class="red">*</span></label>
 													<div class="col-md-12">
 														<select class="select2-disciplinas form-control" name="disciplinas[]" multiple>
-															<!-- <?php foreach ($disciplinas as $disciplina) : ?>
-																<?php if ($disciplina->id != 1) : ?>
-																	<?php
-																			// Verificar si la flashdata es un array y si el valor está presente en la flashdata.
-																			$selected = is_array($this->session->flashdata('disciplinas')) && in_array($disciplina->id, $this->session->flashdata('disciplinas')) ? 'selected' : '';
-																	?>
-																	<option value="<?php echo $disciplina->id; ?>" <?php foreach ($disciplinas_seleccionadas as $disciplina_seleccionada) {
-																														echo $disciplina->id == $disciplina_seleccionada->disciplina_id ? 'selected' : '';
-																													} ?>>
-																		<?php echo $disciplina->nombre; ?>
-																	</option>
-																<?php endif; ?>
-															<?php endforeach; ?> -->
 
 															<?php foreach ($disciplinas as $amenidades_key => $disciplina) : ?>
 																<?php if ($disciplina->id != 1) : ?>

@@ -77,8 +77,8 @@
 															<?php
 															if ($reservacion->estatus == 'Activa') {
 																if (strtotime('now') < strtotime('+48 hours', strtotime($reservacion->horario)) and $reservacion->asistencia == 'asistencia') {
-																	echo '<br>' . anchor('reservaciones/cancelar/' . $reservacion->id, '<span style="color: red;">Cancelar</span>');
-																	echo '<br>' . anchor('reservaciones/retirar_reservacion/' . $reservacion->id, '<span style="color: red;">Retirar</span>');
+																	echo anchor('reservaciones/cancelar/' . $reservacion->id, '<span style="color: red;">Cancelar</span>');
+																	echo '|' . anchor('reservaciones/retirar_reservacion/' . $reservacion->id, '<span style="color: red;">Retirar</span>');
 																} elseif ($reservacion->asistencia == 'inasistencia') {
 																	echo 'Retirada por inasistencia';
 																} else {

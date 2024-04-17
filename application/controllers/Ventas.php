@@ -1,4 +1,4 @@
-<?php
+    <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
 class Ventas extends MY_Controller
@@ -1649,12 +1649,11 @@ class Ventas extends MY_Controller
         foreach ($ventas_list as $venta_row) {
 
             $opciones = "
-                <br>
-                " . ($venta_row->estatus == "Vendido" ? anchor('ventas/ticket/' . $venta_row->id, '<i class="fa fa-print"></i> Imprimir ticket', $attr) : $venta_row->estatus) . "
-                <br>
-                " . anchor('ventas/cambiar_fecha_venta/' . $venta_row->id, '<i class="fa fa-calendar"></i> Cambiar fecha de venta', $attr) . "
-                <br>
-                " . ($venta_row->estatus == "Vendido" ? anchor('ventas/cancelar/' . $venta_row->id, '<i class="fa fa-trash"></i> Cancelar') : $venta_row->estatus) . "
+                " . ($venta_row->estatus == "Vendido" ? anchor('ventas/ticket/' . $venta_row->id, ' Imprimir ticket', $attr) : $venta_row->estatus) . "
+                |
+                " . anchor('ventas/cambiar_fecha_venta/' . $venta_row->id, ' Cambiar fecha de venta', $attr) . "
+                |
+                " . ($venta_row->estatus == "Vendido" ? anchor('ventas/cancelar/' . $venta_row->id, ' Cancelar') : $venta_row->estatus) . "
             ";
 
             $list[] = array(
@@ -1720,10 +1719,9 @@ class Ventas extends MY_Controller
         foreach ($ventas_list as $venta_row) {
 
             $opciones = "
-                <br>
-                " . ($venta_row->estatus == "Vendido" ? anchor('ventas/ticket/' . $venta_row->id, '<i class="fa fa-print"></i> Imprimir ticket', $attr) : $venta_row->estatus) . "
-                <br>
-                " . ($venta_row->estatus == "Vendido" ? anchor('ventas/cancelar/' . $venta_row->id, '<i class="fa fa-trash"></i> Cancelar') : $venta_row->estatus) . "
+                " . ($venta_row->estatus == "Vendido" ? anchor('ventas/ticket/' . $venta_row->id, ' Imprimir ticket', $attr) : $venta_row->estatus) . "
+                |
+                " . ($venta_row->estatus == "Vendido" ? anchor('ventas/cancelar/' . $venta_row->id, ' Cancelar') : $venta_row->estatus) . "
             ";
 
             $list[] = array(

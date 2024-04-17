@@ -53,12 +53,11 @@ class Clientes extends MY_Controller {
             foreach ($usuarios_list as $usuario_row) {
                 
                 $menu = '
-                    <br>
-                    <a href="'.site_url("clientes/editar/").$usuario_row->id.'"><i class="fa fa-pencil-square-o"></i> Editar</a>    
-                    <br>
-                    <a href="'.site_url("sistema/change_password/").$usuario_row->id.'"><i class="fa fa-key"></i> Cambiar contraseña</a>
-                    <br>
-                    <a href="#" onclick="suspender('.$usuario_row->id.');return false;"><i class="fa fa-ban"></i> Suspender</a>
+                    <a href="'.site_url("clientes/editar/").$usuario_row->id.'">Editar</a>    
+                    |
+                    <a href="'.site_url("sistema/change_password/").$usuario_row->id.'">Cambiar contraseña</a>
+                    |
+                    <a href="#" onclick="suspender('.$usuario_row->id.');return false;">Suspender</a>
                 ';
 
                 $result[] = array(
@@ -153,12 +152,11 @@ class Clientes extends MY_Controller {
             foreach ($usuarios_list as $usuario_row) {
                 
                 $menu = '
-                    <br>
-                    <a href="'.site_url("clientes/editar/").$usuario_row->id.'"><i class="fa fa-pencil-square-o"></i> Editar</a>    
-                    <br>
-                    <a href="'.site_url("sistema/change_password/").$usuario_row->id.'"><i class="fa fa-key"></i> Cambiar contraseña</a>
-                    <br>
-                    <a href="#" onclick="activar('.$usuario_row->id.');return false;"><i class="fa fa-unlock"></i> Activar</a>
+                    <a href="'.site_url("clientes/editar/").$usuario_row->id.'">Editar</a>    
+                    |
+                    <a href="'.site_url("sistema/change_password/").$usuario_row->id.'">Cambiar contraseña</a>
+                    |
+                    <a href="#" onclick="activar('.$usuario_row->id.');return false;">Activar</a>
 
                 ';
 

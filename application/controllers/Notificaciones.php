@@ -45,7 +45,7 @@ class Notificaciones extends MY_Controller
 
 			if ($value->segmento == 'general') {
 				$opciones = '
-					<a href="javascript:modal_notificaciones_enviar(\'' . $value->id . '\');"><i class="fa fa-check-circle"></i>&nbsp;Enviar</a>
+					<a href="javascript:modal_notificaciones_enviar(\'' . $value->id . '\');">Enviar</a>
 				';
 			} elseif ($value->segmento == 'segmento_usuarios_sin_compras_hace_dos_meses') {
 				$opciones = '

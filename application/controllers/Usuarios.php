@@ -49,7 +49,7 @@ class Usuarios extends MY_Controller
         
         foreach ($usuarios_list as $usuario_row) {
             
-            $menu = '<a href="'.site_url("usuarios/editar_usuario/").$usuario_row->listar_id.'"><i class="ft-eye"></i> Detalles</a>';
+            $menu = '<a href="'.site_url("usuarios/editar_usuario/").$usuario_row->listar_id.'">Editar</a>';
 
             $result[] = array(
 				"listar_id" => $usuario_row->listar_id,
