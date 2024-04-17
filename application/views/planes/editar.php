@@ -117,10 +117,6 @@
 
 															<?php foreach ($disciplinas as $amenidades_key => $disciplina) : ?>
 																<?php if ($disciplina->id != 1) : ?>
-																	<?php
-																	// Verificar si la flashdata es un array y si el valor está presente en la flashdata.
-																	$selected = is_array($this->session->flashdata('disciplinas')) && in_array($disciplina->id, $this->session->flashdata('disciplinas')) ? 'selected' : '';
-																	?>
 																	<option value="<?php echo $disciplina->id; ?>" <?php foreach ($disciplinas_seleccionadas as $disciplina_seleccionada) {echo $disciplina->id == $disciplina_seleccionada->disciplina_id ? 'selected' : '';} ?>><?php echo trim(mb_strtoupper($disciplina->nombre)); ?></option>
 																<?php endif; ?>
 															<?php endforeach; ?>

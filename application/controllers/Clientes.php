@@ -336,7 +336,7 @@ class Clientes extends MY_Controller {
                 'ciudad' => $this->input->post('ciudad'),
                 'estado' => $this->input->post('estado'),
                 'pais' => $this->input->post('pais'),
-				'nombre_imagen_avatar' => $nombre_archivo,
+				'nombre_imagen_avatar' => $nombre_foto,
 				// 'url_ine' => $nombre_archivo,
                 'dominio' => $dominio
             );
