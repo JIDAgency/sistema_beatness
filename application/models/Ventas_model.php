@@ -6,7 +6,7 @@ class Ventas_model extends CI_Model
 
     /** //////////////////////////////////////////////////////////////////////////// Nuevos métodos para el sistema (Mejora de la calidad de programación del sistema //////////////////////////////////////////////////////////////////////////// */
     /** //////////////////////////////////////////////////////////////////////////// Métodos para cargar las listas del panel de ventas //////////////////////////////////////////////////////////////////////////// */
-    
+
     /** Este modelo consulta los datos necesarios para la TABLA de ventas mensual. */
     public function get_lista_de_ventas_del_mes_para_fd_global($mes_a_consultar)
     {
@@ -15,7 +15,7 @@ class Ventas_model extends CI_Model
 
                 $query = $this->db
                     ->where("DATE_FORMAT(t1.fecha_venta,'%Y-%m')", $mes_a_consultar)
-                    ->where_in('t1.sucursal_id', array(1,2))
+                    ->where_in('t1.sucursal_id', array(1, 2))
                     ->select("
                         t1.*,
 
@@ -50,7 +50,7 @@ class Ventas_model extends CI_Model
             } elseif ($this->session->userdata('sucursal_asignada') == 3) {
                 $query = $this->db
                     ->where("DATE_FORMAT(t1.fecha_venta,'%Y-%m')", $mes_a_consultar)
-                    ->where_in('t1.sucursal_id', array(1,3))
+                    ->where_in('t1.sucursal_id', array(1, 3))
                     ->select("
                         t1.*,
 
@@ -81,12 +81,12 @@ class Ventas_model extends CI_Model
                     ->join("asignaciones t5", "t1.asignacion_id = t5.id")
                     ->join("planes t6", "t5.plan_id = t6.id")
                     ->get();
-            } elseif ($this->session->userdata('sucursal_asignada') == 5) {
+            } elseif ($this->session->userdata('sucursal_asignada') == 4) {
                 $query = $this->db
                     ->where("DATE_FORMAT(t1.fecha_venta,'%Y-%m')", $mes_a_consultar)
                     ->group_start()
-                        ->where_in('t7.disciplina_id', array(16))
-                        ->or_where('t1.sucursal_id', 5)
+                    ->where_in('t7.disciplina_id', array(16))
+                    ->or_where('t1.sucursal_id', 4)
                     ->group_end()
                     ->select("
                         t1.*,
@@ -119,10 +119,10 @@ class Ventas_model extends CI_Model
                     ->join("planes t6", "t5.plan_id = t6.id")
                     ->join("planes_disciplinas t7", "t6.id = t7.plan_id")
                     ->group_by('t1.id')
-                ->get();
+                    ->get();
                 // Este metodo fue modificado para que el se pueda consultar la sucursal a travez de las asignaciones
             }
-        } elseif (es_superadministrador() OR es_administrador()) {
+        } elseif (es_superadministrador() or es_administrador()) {
             $query = $this->db
                 ->where("DATE_FORMAT(t1.fecha_venta,'%Y-%m')", $mes_a_consultar)
                 ->select("
@@ -168,7 +168,7 @@ class Ventas_model extends CI_Model
 
                 $query = $this->db
                     ->where("DATE_FORMAT(t1.fecha_venta,'%Y-%m-%d')", $dia_a_consultar)
-                    ->where_in('t1.sucursal_id', array(1,2))
+                    ->where_in('t1.sucursal_id', array(1, 2))
                     ->select("
                         t1.*,
 
@@ -203,9 +203,9 @@ class Ventas_model extends CI_Model
             } elseif ($this->session->userdata('sucursal_asignada') == 3) {
 
                 $query = $this->db
-                ->where("DATE_FORMAT(t1.fecha_venta,'%Y-%m-%d')", $dia_a_consultar)
-                ->where_in('t1.sucursal_id', array(1,3))
-                ->select("
+                    ->where("DATE_FORMAT(t1.fecha_venta,'%Y-%m-%d')", $dia_a_consultar)
+                    ->where_in('t1.sucursal_id', array(1, 3))
+                    ->select("
                     t1.*,
 
                     t2.nombre as metodo_de_pago,
@@ -228,23 +228,23 @@ class Ventas_model extends CI_Model
                     t5.suscripcion_fecha_de_actualizacion as asignacion_suscripcion_fecha_de_actualizacion,
                     t6.dominio_id as plan_dominio_id,
                 ")
-                ->from("ventas t1")
-                ->join("metodos_pago t2", "t1.metodo_id = t2.id")
-                ->join("usuarios t3", "t1.usuario_id = t3.id")
-                ->join("sucursales t4", "t1.sucursal_id = t4.id")
-                ->join("asignaciones t5", "t1.asignacion_id = t5.id")
-                ->join("planes t6", "t5.plan_id = t6.id")
-                ->get();
+                    ->from("ventas t1")
+                    ->join("metodos_pago t2", "t1.metodo_id = t2.id")
+                    ->join("usuarios t3", "t1.usuario_id = t3.id")
+                    ->join("sucursales t4", "t1.sucursal_id = t4.id")
+                    ->join("asignaciones t5", "t1.asignacion_id = t5.id")
+                    ->join("planes t6", "t5.plan_id = t6.id")
+                    ->get();
 
             } elseif ($this->session->userdata('sucursal_asignada') == 5) {
 
                 $query = $this->db
-                ->where("DATE_FORMAT(t1.fecha_venta,'%Y-%m-%d')", $dia_a_consultar)
-                ->group_start()
+                    ->where("DATE_FORMAT(t1.fecha_venta,'%Y-%m-%d')", $dia_a_consultar)
+                    ->group_start()
                     ->where_in('t7.disciplina_id', array(16))
                     ->or_where('t1.sucursal_id', 5)
-                ->group_end()
-                ->select("
+                    ->group_end()
+                    ->select("
                     t1.*,
 
                     t2.nombre as metodo_de_pago,
@@ -267,18 +267,18 @@ class Ventas_model extends CI_Model
                     t5.suscripcion_fecha_de_actualizacion as asignacion_suscripcion_fecha_de_actualizacion,
                     t6.dominio_id as plan_dominio_id,
                 ")
-                ->from("ventas t1")
-                ->join("metodos_pago t2", "t1.metodo_id = t2.id")
-                ->join("usuarios t3", "t1.usuario_id = t3.id")
-                ->join("sucursales t4", "t1.sucursal_id = t4.id")
-                ->join("asignaciones t5", "t1.asignacion_id = t5.id")
-                ->join("planes t6", "t5.plan_id = t6.id")
-                ->join("planes_disciplinas t7", "t6.id = t7.plan_id")
-                ->group_by('t1.id')
-                ->get();
+                    ->from("ventas t1")
+                    ->join("metodos_pago t2", "t1.metodo_id = t2.id")
+                    ->join("usuarios t3", "t1.usuario_id = t3.id")
+                    ->join("sucursales t4", "t1.sucursal_id = t4.id")
+                    ->join("asignaciones t5", "t1.asignacion_id = t5.id")
+                    ->join("planes t6", "t5.plan_id = t6.id")
+                    ->join("planes_disciplinas t7", "t6.id = t7.plan_id")
+                    ->group_by('t1.id')
+                    ->get();
 
             }
-        } elseif (es_superadministrador() OR es_administrador() OR es_operaciones()) {
+        } elseif (es_superadministrador() or es_administrador() or es_operaciones()) {
 
             $query = $this->db
                 ->where("DATE_FORMAT(t1.fecha_venta,'%Y-%m-%d')", $dia_a_consultar)
@@ -317,16 +317,16 @@ class Ventas_model extends CI_Model
 
         return $query;
     }
-    
-    
+
+
     public function get_lista_de_todas_las_ventas_de_hoy_para_admin_front()
     {
         $start_date = strtotime("-7 days", strtotime(date('Y-m-d')));
         $end_date = strtotime("+1 days", strtotime(date('Y-m-d')));
 
         $query = $this->db
-        ->where('t1.fecha_venta BETWEEN "'. date('Y-m-d', $start_date). '" and "'. date('Y-m-d', $end_date).'"')
-        ->select("
+            ->where('t1.fecha_venta BETWEEN "' . date('Y-m-d', $start_date) . '" and "' . date('Y-m-d', $end_date) . '"')
+            ->select("
             t1.id as listar_id,
             t1.concepto as listar_concepto,
             CONCAT(COALESCE(t3.nombre_completo, 'N/D'), ' ', COALESCE(t3.apellido_paterno, 'N/D'), ' #', COALESCE(t3.id, 'N/D')) as listar_usuario,
@@ -345,12 +345,12 @@ class Ventas_model extends CI_Model
             t1.vendedor as listar_vendedor,
             t1.fecha_venta as listar_fecha_venta,
         ")
-        ->from("ventas t1")
-        ->join("sucursales t2", "t1.sucursal_id = t2.id")
-        ->join("usuarios t3", "t1.usuario_id = t3.id")
-        ->join("metodos_pago t4", "t1.metodo_id = t4.id")
-        ->join("asignaciones t5", "t1.asignacion_id = t5.id")
-        ->get();
+            ->from("ventas t1")
+            ->join("sucursales t2", "t1.sucursal_id = t2.id")
+            ->join("usuarios t3", "t1.usuario_id = t3.id")
+            ->join("metodos_pago t4", "t1.metodo_id = t4.id")
+            ->join("asignaciones t5", "t1.asignacion_id = t5.id")
+            ->get();
 
         return $query;
     }
@@ -361,9 +361,9 @@ class Ventas_model extends CI_Model
         $end_date = strtotime("+1 days", strtotime(date('Y-m-d')));
 
         $query = $this->db
-        ->where('t1.fecha_venta BETWEEN "'. date('Y-m-d', $start_date). '" and "'. date('Y-m-d', $end_date).'"')
-        ->where_in('t1.sucursal_id', array(1,2))
-        ->select("
+            ->where('t1.fecha_venta BETWEEN "' . date('Y-m-d', $start_date) . '" and "' . date('Y-m-d', $end_date) . '"')
+            ->where_in('t1.sucursal_id', array(1, 2))
+            ->select("
             t1.id as listar_id,
             t1.concepto as listar_concepto,
             CONCAT(COALESCE(t3.nombre_completo, 'N/D'), ' ', COALESCE(t3.apellido_paterno, 'N/D'), ' #', COALESCE(t3.id, 'N/D')) as listar_usuario,
@@ -382,12 +382,12 @@ class Ventas_model extends CI_Model
             t1.vendedor as listar_vendedor,
             t1.fecha_venta as listar_fecha_venta,
         ")
-        ->from("ventas t1")
-        ->join("sucursales t2", "t1.sucursal_id = t2.id")
-        ->join("usuarios t3", "t1.usuario_id = t3.id")
-        ->join("metodos_pago t4", "t1.metodo_id = t4.id")
-        ->join("asignaciones t5", "t1.asignacion_id = t5.id")
-        ->get();
+            ->from("ventas t1")
+            ->join("sucursales t2", "t1.sucursal_id = t2.id")
+            ->join("usuarios t3", "t1.usuario_id = t3.id")
+            ->join("metodos_pago t4", "t1.metodo_id = t4.id")
+            ->join("asignaciones t5", "t1.asignacion_id = t5.id")
+            ->get();
 
         return $query;
     }
@@ -398,9 +398,9 @@ class Ventas_model extends CI_Model
         $end_date = strtotime("+1 days", strtotime(date('Y-m-d')));
 
         $query = $this->db
-        ->where('t1.fecha_venta BETWEEN "'. date('Y-m-d', $start_date). '" and "'. date('Y-m-d', $end_date).'"')
-        ->where_in('t1.sucursal_id', array(1,3))
-        ->select("
+            ->where('t1.fecha_venta BETWEEN "' . date('Y-m-d', $start_date) . '" and "' . date('Y-m-d', $end_date) . '"')
+            ->where_in('t1.sucursal_id', array(1, 3))
+            ->select("
             t1.id as listar_id,
             t1.concepto as listar_concepto,
             CONCAT(COALESCE(t3.nombre_completo, 'N/D'), ' ', COALESCE(t3.apellido_paterno, 'N/D'), ' #', COALESCE(t3.id, 'N/D')) as listar_usuario,
@@ -419,12 +419,12 @@ class Ventas_model extends CI_Model
             t1.vendedor as listar_vendedor,
             t1.fecha_venta as listar_fecha_venta,
         ")
-        ->from("ventas t1")
-        ->join("sucursales t2", "t1.sucursal_id = t2.id")
-        ->join("usuarios t3", "t1.usuario_id = t3.id")
-        ->join("metodos_pago t4", "t1.metodo_id = t4.id")
-        ->join("asignaciones t5", "t1.asignacion_id = t5.id")
-        ->get();
+            ->from("ventas t1")
+            ->join("sucursales t2", "t1.sucursal_id = t2.id")
+            ->join("usuarios t3", "t1.usuario_id = t3.id")
+            ->join("metodos_pago t4", "t1.metodo_id = t4.id")
+            ->join("asignaciones t5", "t1.asignacion_id = t5.id")
+            ->get();
 
         return $query;
     }
@@ -433,13 +433,13 @@ class Ventas_model extends CI_Model
 
     /** Administrador ------------- */
     public function get_feed_inicio_ventas_suma_de_ventas_del_dia_superadmin($start_date, $end_date)
-    {        
+    {
         $query = $this->db
-        ->select_sum('total')
-        ->where('fecha_venta BETWEEN "'. date('Y-m-d', $start_date). '" and "'. date('Y-m-d', $end_date).'"')
-        ->where('estatus', 'Vendido')
-        ->from('ventas')
-        ->get();
+            ->select_sum('total')
+            ->where('fecha_venta BETWEEN "' . date('Y-m-d', $start_date) . '" and "' . date('Y-m-d', $end_date) . '"')
+            ->where('estatus', 'Vendido')
+            ->from('ventas')
+            ->get();
 
         return $query;
     }
@@ -447,14 +447,14 @@ class Ventas_model extends CI_Model
     public function get_feed_inicio_ventas_suma_de_ventas_del_dia_admin($start_date, $end_date)
     {
         $array_sucursales = array(1, 2, 3);
-        
+
         $query = $this->db
-        ->select_sum('total')
-        ->where('fecha_venta BETWEEN "'. date('Y-m-d', $start_date). '" and "'. date('Y-m-d', $end_date).'"')
-        ->where('estatus', 'Vendido')
-        ->where_in('sucursal_id', $array_sucursales)
-        ->from('ventas')
-        ->get();
+            ->select_sum('total')
+            ->where('fecha_venta BETWEEN "' . date('Y-m-d', $start_date) . '" and "' . date('Y-m-d', $end_date) . '"')
+            ->where('estatus', 'Vendido')
+            ->where_in('sucursal_id', $array_sucursales)
+            ->from('ventas')
+            ->get();
 
         return $query;
     }
@@ -472,15 +472,15 @@ class Ventas_model extends CI_Model
         } elseif ($sucursal == 3) {
             $array_sucursales = array(1, 3);
         }
-        
+
         $query = $this->db
-        ->select_sum('total')
-        ->where('DATE_FORMAT(fecha_venta,"%Y-%m-%d")', date('Y-m-d'))
-        ->where('estatus', 'Vendido')
-        ->where('metodo_id !=', '3')
-        ->where_in('sucursal_id', $array_sucursales)
-        ->from('ventas')
-        ->get();
+            ->select_sum('total')
+            ->where('DATE_FORMAT(fecha_venta,"%Y-%m-%d")', date('Y-m-d'))
+            ->where('estatus', 'Vendido')
+            ->where('metodo_id !=', '3')
+            ->where_in('sucursal_id', $array_sucursales)
+            ->from('ventas')
+            ->get();
 
         return $query;
     }
@@ -494,14 +494,14 @@ class Ventas_model extends CI_Model
         } elseif ($sucursal == 3) {
             $array_sucursales = array(1, 3);
         }
-        
+
         $query = $this->db
-        //->select_sum('total')
-        ->where('DATE_FORMAT(fecha_venta,"%Y-%m-%d")', date('Y-m-d'))
-        ->where('estatus', 'Vendido')
-        ->where_in('sucursal_id', $array_sucursales)
-        ->from('ventas')
-        ->get();
+            //->select_sum('total')
+            ->where('DATE_FORMAT(fecha_venta,"%Y-%m-%d")', date('Y-m-d'))
+            ->where('estatus', 'Vendido')
+            ->where_in('sucursal_id', $array_sucursales)
+            ->from('ventas')
+            ->get();
 
         return $query;
     }
@@ -515,15 +515,15 @@ class Ventas_model extends CI_Model
         } elseif ($sucursal == 3) {
             $array_sucursales = array(1, 3);
         }
-        
+
         $query = $this->db
-        ->select_sum('total')
-        ->where('DATE_FORMAT(fecha_venta,"%Y-%m-%d")', date('Y-m-d'))
-        ->where('metodo_id', 1)
-        ->where('estatus', 'Vendido')
-        ->where_in('sucursal_id', $array_sucursales)
-        ->from('ventas')
-        ->get();
+            ->select_sum('total')
+            ->where('DATE_FORMAT(fecha_venta,"%Y-%m-%d")', date('Y-m-d'))
+            ->where('metodo_id', 1)
+            ->where('estatus', 'Vendido')
+            ->where_in('sucursal_id', $array_sucursales)
+            ->from('ventas')
+            ->get();
 
         return $query;
     }
@@ -537,15 +537,15 @@ class Ventas_model extends CI_Model
         } elseif ($sucursal == 3) {
             $array_sucursales = array(1, 3);
         }
-        
+
         $query = $this->db
-        ->select_sum('total')
-        ->where('DATE_FORMAT(fecha_venta,"%Y-%m-%d")', date('Y-m-d'))
-        ->where('metodo_id', 2)
-        ->where('estatus', 'Vendido')
-        ->where_in('sucursal_id', $array_sucursales)
-        ->from('ventas')
-        ->get();
+            ->select_sum('total')
+            ->where('DATE_FORMAT(fecha_venta,"%Y-%m-%d")', date('Y-m-d'))
+            ->where('metodo_id', 2)
+            ->where('estatus', 'Vendido')
+            ->where_in('sucursal_id', $array_sucursales)
+            ->from('ventas')
+            ->get();
 
         return $query;
     }
@@ -559,15 +559,15 @@ class Ventas_model extends CI_Model
         } elseif ($sucursal == 3) {
             $array_sucursales = array(1, 3);
         }
-        
+
         $query = $this->db
-        ->select_sum('total')
-        ->where('DATE_FORMAT(fecha_venta,"%Y-%m-%d")', date('Y-m-d'))
-        ->where('metodo_id', 3)
-        ->where('estatus', 'Vendido')
-        ->where_in('sucursal_id', $array_sucursales)
-        ->from('ventas')
-        ->get();
+            ->select_sum('total')
+            ->where('DATE_FORMAT(fecha_venta,"%Y-%m-%d")', date('Y-m-d'))
+            ->where('metodo_id', 3)
+            ->where('estatus', 'Vendido')
+            ->where_in('sucursal_id', $array_sucursales)
+            ->from('ventas')
+            ->get();
 
         return $query;
     }
@@ -581,12 +581,12 @@ class Ventas_model extends CI_Model
         } elseif ($sucursal == 3) {
             $array_sucursales = array(1, 3);
         }
-        
+
         $query = $this->db
-        ->where('DATE_FORMAT(fecha_venta,"%Y-%m-%d")', date('Y-m-d'))
-        ->where('estatus', 'Vendido')
-        ->where_in('sucursal_id', $array_sucursales)
-        ->count_all_results('ventas');
+            ->where('DATE_FORMAT(fecha_venta,"%Y-%m-%d")', date('Y-m-d'))
+            ->where('estatus', 'Vendido')
+            ->where_in('sucursal_id', $array_sucursales)
+            ->count_all_results('ventas');
 
         return $query;
     }
@@ -602,10 +602,10 @@ class Ventas_model extends CI_Model
         }
 
         $query = $this->db
-        ->where('DATE_FORMAT(fecha_venta,"%Y-%m-%d")', date('Y-m-d'))
-        ->where('estatus', 'Cancelada')
-        ->where_in('sucursal_id', $array_sucursales)
-        ->count_all_results('ventas');
+            ->where('DATE_FORMAT(fecha_venta,"%Y-%m-%d")', date('Y-m-d'))
+            ->where('estatus', 'Cancelada')
+            ->where_in('sucursal_id', $array_sucursales)
+            ->count_all_results('ventas');
 
         return $query;
     }
@@ -613,7 +613,7 @@ class Ventas_model extends CI_Model
     /** Métodos para el Feed de ventas //////////////////////////////////////////////////////////////////////////// */
 
     /** //////////////////////////////////////////////////////////////////////////// Métodos para cargar las listas del panel de ventas //////////////////////////////////////////////////////////////////////////// */
-    
+
 
     public function obtener_todas()
     {
@@ -661,8 +661,8 @@ class Ventas_model extends CI_Model
     public function obtener_venta_por_id($id)
     {
         $query = $this->db
-        ->where('t1.id', intval($id))
-        ->select("
+            ->where('t1.id', intval($id))
+            ->select("
             t1.*,
 
             t2.nombre as metodo_pago_nombre,
@@ -684,12 +684,12 @@ class Ventas_model extends CI_Model
             t5.suscripcion_estatus_del_pago as asignacion_suscripcion_estatus_del_pago,
             t5.suscripcion_fecha_de_actualizacion as asignacion_suscripcion_fecha_de_actualizacion,
         ")
-        ->from("ventas t1")
-        ->join("metodos_pago t2", "t1.metodo_id = t2.id")
-        ->join("usuarios t3", "t1.usuario_id = t3.id")
-        ->join("sucursales t4", "t1.sucursal_id = t4.id")
-        ->join("asignaciones t5", "t1.asignacion_id = t5.id")
-        ->get();
+            ->from("ventas t1")
+            ->join("metodos_pago t2", "t1.metodo_id = t2.id")
+            ->join("usuarios t3", "t1.usuario_id = t3.id")
+            ->join("sucursales t4", "t1.sucursal_id = t4.id")
+            ->join("asignaciones t5", "t1.asignacion_id = t5.id")
+            ->get();
 
         return $query;
     }
@@ -720,28 +720,29 @@ class Ventas_model extends CI_Model
         return $this->db->update('ventas', $data);
     }
 
-    public function autosearch($q){
+    public function autosearch($q)
+    {
         $this->db->or_like('nombre_completo', $q)
-        ->or_like('apellido_paterno', $q)
-        ->or_like('apellido_materno', $q);
+            ->or_like('apellido_paterno', $q)
+            ->or_like('apellido_materno', $q);
         $query = $this->db->get('usuarios');
-        if($query->num_rows() > 0){
-          foreach ($query->result_array() as $row){
-            $new_row['label']= $row['id'].' -- '.$row['nombre_completo'].' '.$row['apellido_paterno'].' '.$row['apellido_materno'];
-            $new_row['value']= '';
-            $new_row['ref']= $row['id'];
-            $row_set[] = $new_row;
-          }
-          echo json_encode($row_set); //format the array into json data
+        if ($query->num_rows() > 0) {
+            foreach ($query->result_array() as $row) {
+                $new_row['label'] = $row['id'] . ' -- ' . $row['nombre_completo'] . ' ' . $row['apellido_paterno'] . ' ' . $row['apellido_materno'];
+                $new_row['value'] = '';
+                $new_row['ref'] = $row['id'];
+                $row_set[] = $new_row;
+            }
+            echo json_encode($row_set); //format the array into json data
         }
     }
-    
+
     /** Métodos para las ventas de suscripciones [Inicio] */
-        public function get_todas_las_ventas_de_suscripciones()
-        {
-            $query = $this->db
-                ->where('t1.categoria', 'suscripcion')
-                ->select("
+    public function get_todas_las_ventas_de_suscripciones()
+    {
+        $query = $this->db
+            ->where('t1.categoria', 'suscripcion')
+            ->select("
                     t1.*,
                     t2.openpay_suscripcion_id as asignacion_suscripcion_id,
                     t2.openpay_plan_id as asignacion_plan_id,
@@ -751,13 +752,13 @@ class Ventas_model extends CI_Model
                     CONCAT(COALESCE(t3.nombre_completo, 'N/D'), ' ', COALESCE(t3.apellido_paterno, 'N/D'), ' ', COALESCE(t3.apellido_materno, 'N/D')) as nombre_cliente,
                     t4.nombre as metodo_pago,
                 ")
-                ->from("ventas t1")
-                ->join("asignaciones t2", "t1.asignacion_id = t2.id")
-                ->join("usuarios t3", "t1.usuario_id = t3.id")
-                ->join("metodos_pago t4", "t1.metodo_id = t4.id")
-                ->get();
+            ->from("ventas t1")
+            ->join("asignaciones t2", "t1.asignacion_id = t2.id")
+            ->join("usuarios t3", "t1.usuario_id = t3.id")
+            ->join("metodos_pago t4", "t1.metodo_id = t4.id")
+            ->get();
 
-            return $query;
-        }
+        return $query;
+    }
     /** Métodos para las ventas de suscripciones [Fin] */
 }

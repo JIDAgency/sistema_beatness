@@ -15,7 +15,7 @@ select.onchange = function () {
 };
 
 function obtener_clases_semana_actual_por_disciplina_id(disciplina_id) {
-    fetch('http://localhost:8888/sistema_beatness/web/calendario/obtener_clases_semana_actual_por_disciplina_id/' + disciplina_id)
+    fetch('https://beatness.com.mx/web/calendario/obtener_clases_semana_actual_por_disciplina_id/' + disciplina_id)
         .then(response => response.json())
         .then(data => {
             if (data.error) {
@@ -33,7 +33,7 @@ function obtener_clases_semana_actual_por_disciplina_id(disciplina_id) {
 }
 
 function obtener_clases_fin_de_semana_actual_por_disciplina_id(disciplina_id) {
-    fetch('http://localhost:8888/sistema_beatness/web/calendario/obtener_clases_fin_de_semana_actual_por_disciplina_id/' + disciplina_id)
+    fetch('https://beatness.com.mx/web/calendario/obtener_clases_fin_de_semana_actual_por_disciplina_id/' + disciplina_id)
         .then(response => response.json())
         .then(data => {
             if (data.error) {
