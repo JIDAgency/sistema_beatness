@@ -75,19 +75,16 @@ class Planes extends MY_Controller
                     http_response_code(500);
                     $data['response'] = $this->upload->display_errors();
                 }
-
             } else {
                 $data['response'] = 'failed';
             }
 
             // load view 
             $this->construir_private_site_ui('planes/subir_imagen', $data);
-
         } else {
 
             // load view 
             $this->construir_private_site_ui('planes/subir_imagen', $data);
-
         }
     }
 
@@ -124,7 +121,6 @@ class Planes extends MY_Controller
             // load view 
             $this->load->view('user_view', $data);
             $this->construir_private_site_ui('planes/index', $data);
-
         } else {
             // load view 
             $this->load->view('user_view');
@@ -154,7 +150,6 @@ class Planes extends MY_Controller
         $data['mensaje_error'] = $this->session->flashdata('MENSAJE_ERROR');
 
         $this->construir_private_site_ui('planes/index', $data);
-
     }
 
     /** Metodos para formato JSON de las datatables */
@@ -203,6 +198,10 @@ class Planes extends MY_Controller
 
     public function crear()
     {
+        /** Carga los mensajes de validaciones para ser usados por los controladores */
+        $data['mensaje_exito'] = $this->session->flashdata('MENSAJE_EXITO');
+        $data['mensaje_info'] = $this->session->flashdata('MENSAJE_INFO');
+        $data['mensaje_error'] = $this->session->flashdata('MENSAJE_ERROR');
 
         // Establecer validaciones
         $this->form_validation->set_rules('nombre', 'nombre del plan', 'trim|required|is_unique[planes.nombre]');
@@ -212,11 +211,14 @@ class Planes extends MY_Controller
         $this->form_validation->set_rules('costo', 'costo', 'trim|required');
         $this->form_validation->set_rules('orden_venta', 'Orden de venta', 'trim|required');
         $this->form_validation->set_rules('codigo', 'Código', 'trim');
+        $this->form_validation->set_rules('url_infoventa', 'Imagen de información', 'trim');
 
         // Inicializar vista, scripts y catálogos
+        $data['controlador'] = 'planes/crear';
         $data['menu_planes_activo'] = true;
         $data['pagina_titulo'] = 'Nuevo plan';
         $data['styles'] = array(
+            array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/extensions/datedropper.min.css'),
             array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/forms/selects/select2.min.css'),
         );
 
@@ -224,6 +226,7 @@ class Planes extends MY_Controller
             array('es_rel' => false, 'src' => 'https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js'),
             array('es_rel' => false, 'src' => 'https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/additional-methods.js'),
             array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/forms/select/select2.full.min.js'),
+            array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/extensions/datedropper.min.js'),
             array('es_rel' => true, 'src' => 'planes/crear.js'),
         );
 
@@ -236,6 +239,38 @@ class Planes extends MY_Controller
         if ($this->form_validation->run() == false) {
             $this->construir_private_site_ui('planes/crear', $data);
         } else {
+
+            if (isset($_FILES) && $_FILES['url_infoventa']['error'] == '0') {
+
+				$config['upload_path'] = './almacenamiento/planes/';
+                $config['allowed_types'] = 'jpg';
+                //$config['max_width'] = 810;
+                //$config['max_height'] = 810;
+                $config['max_size'] = '600';
+                $config['overwrite'] = true;
+                $config['encrypt_name'] = true;
+                $config['remove_spaces'] = true;
+
+				if (!is_dir($config['upload_path'])) {
+					$this->mensaje_del_sistema("MENSAJE_ERROR", "La carpeta de carga no existe", site_url($data['controlador']));
+				}
+
+				$this->load->library('upload', $config);
+
+				if (!$this->upload->do_upload('url_infoventa')) {
+
+					$this->mensaje_del_sistema("MENSAJE_ERROR", $this->upload->display_errors(), site_url($data['controlador']));
+
+				} else {
+
+					$data_imagen = $this->upload->data();
+					$url_infoventa = base_url('almacenamiento/planes/' . $data_imagen['file_name']);
+
+				}
+
+			} else {
+				$url_infoventa = base_url('almacenamiento/planes/default.jpg');
+			}
 
             $this->session->set_flashdata('codigo', $this->input->post('codigo'));
 
@@ -256,6 +291,7 @@ class Planes extends MY_Controller
                 'orden_venta' => $this->input->post('orden_venta'),
                 'codigo' => $this->input->post('codigo'),
                 'terminos_condiciones' => $this->input->post('terminos_condiciones'),
+                'url_infoventa' => $url_infoventa,
                 'descripcion' => $this->input->post('descripcion'),
             );
 
@@ -274,7 +310,6 @@ class Planes extends MY_Controller
 
             $this->construir_private_site_ui('planes/crear', $data);
         }
-
     }
 
     public function editar($id = null)
@@ -336,7 +371,6 @@ class Planes extends MY_Controller
         if ($this->form_validation->run() == false) {
 
             $this->construir_private_site_ui('planes/editar', $data);
-
         } else {
 
             if (isset($_FILES) && $_FILES['url_infoventa']['error'] == '0') {
@@ -359,10 +393,9 @@ class Planes extends MY_Controller
                 if (!$this->upload->do_upload('url_infoventa')) {
 
                     $this->mensaje_del_sistema("MENSAJE_ERROR", $this->upload->display_errors() . " Imagen", site_url($data['controlador']));
-
                 } else {
 
-                    if ($plan_a_editar->url_infoventa and $plan_a_editar->url_infoventa != "default.jpg") {
+                    if ($plan_a_editar->url_infoventa and $plan_a_editar->url_infoventa != base_url('almacenamiento/planes/default.jpg')) {
                         $url_imagen_a_borrar = $plan_a_editar->url_infoventa;
                         $imagen_a_borrar = str_replace(base_url(), '', $url_imagen_a_borrar);
                         unlink($imagen_a_borrar);
@@ -371,13 +404,10 @@ class Planes extends MY_Controller
                     $data_imagen = $this->upload->data();
 
                     $url_infoventa = base_url('almacenamiento/planes/' . $data_imagen['file_name']);
-
                 }
-
             } else {
 
                 $url_infoventa = $plan_a_editar->url_infoventa;
-
             }
 
             $data = array(
@@ -407,9 +437,7 @@ class Planes extends MY_Controller
             }
 
             $this->construir_private_site_ui('planes/editar', $data);
-
         }
-
     }
 
     public function activar($id = null)
@@ -429,5 +457,4 @@ class Planes extends MY_Controller
         $this->planes_model->desactivar($id, $data);
         redirect('planes/index');
     }
-
 }

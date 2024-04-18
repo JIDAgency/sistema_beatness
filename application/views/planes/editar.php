@@ -34,65 +34,47 @@
 
 										<h4 class="form-section">Datos del plan</h4>
 
-										<div class="form-group">
-											<div class="row mt-2 mb-2">
-
-												<label class="col-sm-12"><b>Imagen</b></label>
-
-												<div class="col-sm-6">
-													<img class="img-fluid border" name="preview_url_infoventa" id="preview_url_infoventa" src="<?php echo $plan_a_editar->url_infoventa; ?>" style="width: 100%;">
-												</div>
-
-												<div class="col-sm-6">
-													<p><b>Formato:&nbsp;</b>JPG</p>
-													<p><b>Tamaño máximo:&nbsp;</b>400 Kb</p>
-													<input type="file" name="url_infoventa" id="url_infoventa" placeholder="Imagen" value="<?php echo set_value('url_infoventa') == false ? $plan_a_editar->url_infoventa : set_value('url_infoventa'); ?>" onchange="cargar_imagen(event)">
-												</div>
-
-											</div>
-										</div>
-
 										<div class="row">
-											<div class="col-md-6">
-												<div class="form-group row">
-													<label for="nombre" class="col-md-12">Nombre&nbsp;<span class="red">*</span></label>
-													<div class="col-md-12">
-														<input type="text" class="form-control" name="nombre" placeholder="Nombre" value="<?php echo set_value('nombre') == false ? $plan_a_editar->nombre : set_value('nombre'); ?>">
+											<div class="col-lg-6 col-md-6 col-sm-12">
+												<div class="row">
+													<div class="form-group row col-lg-12 col-md-12 col-sm-12">
+														<label for="nombre" class="col-md-12">Nombre&nbsp;<span class="red">*</span></label>
+														<div class="col-md-12">
+															<input type="text" class="form-control" name="nombre" placeholder="Nombre" value="<?php echo set_value('nombre') == false ? $plan_a_editar->nombre : set_value('nombre'); ?>">
+														</div>
 													</div>
-												</div>
-												<div class="form-group row">
-													<label for="sku" class="col-md-12">SKU&nbsp;<span class="red">*</span></label>
-													<div class="col-md-12">
-														<input type="text" class="form-control" name="sku" placeholder="SKU" value="<?php echo set_value('sku') == false ? $plan_a_editar->sku : set_value('sku'); ?>">
+													<div class="form-group row col-lg-12 col-md-12 col-sm-12">
+														<label for="sku" class="col-md-12">SKU&nbsp;<span class="red">*</span></label>
+														<div class="col-md-12">
+															<input type="text" class="form-control" name="sku" placeholder="SKU" value="<?php echo set_value('sku') == false ? $plan_a_editar->sku : set_value('sku'); ?>">
+														</div>
 													</div>
-												</div>
-												<div class="form-group row">
-													<label for="clases_incluidas" class="col-md-12">Clases incluidas&nbsp;<span class="red">*</span></label>
-													<div class="col-md-12">
-														<input type="text" name="clases_incluidas" class="form-control" placeholder="Clases incluidas" value="<?php echo set_value('clases_incluidas') == false ? $plan_a_editar->clases_incluidas : set_value('clases_incluidas'); ?>">
+													<div class="form-group row col-lg-12 col-md-12 col-sm-12">
+														<label for="clases_incluidas" class="col-md-12">Clases incluidas&nbsp;<span class="red">*</span></label>
+														<div class="col-md-12">
+															<input type="text" name="clases_incluidas" class="form-control" placeholder="Clases incluidas" value="<?php echo set_value('clases_incluidas') == false ? $plan_a_editar->clases_incluidas : set_value('clases_incluidas'); ?>">
+														</div>
 													</div>
-												</div>
-												<div class="form-group row">
-													<label for="vigencia_en_dias" class="col-md-12">Vigencia en días&nbsp;<span class="red">*</span></label>
-													<div class="col-md-12">
-														<input type="text" name="vigencia_en_dias" class="form-control" placeholder="Vigencia en días" value="<?php echo set_value('vigencia_en_dias') == false ? $plan_a_editar->vigencia_en_dias : set_value('vigencia_en_dias'); ?>">
+													<div class="form-group row col-lg-12 col-md-12 col-sm-12">
+														<label for="vigencia_en_dias" class="col-md-12">Vigencia en días&nbsp;<span class="red">*</span></label>
+														<div class="col-md-12">
+															<input type="text" name="vigencia_en_dias" class="form-control" placeholder="Vigencia en días" value="<?php echo set_value('vigencia_en_dias') == false ? $plan_a_editar->vigencia_en_dias : set_value('vigencia_en_dias'); ?>">
+														</div>
 													</div>
-												</div>
-												<div class="form-group row">
-													<label for="costo" class="col-md-12">Costo&nbsp;<span class="red">*</span></label>
-													<div class="col-md-12">
-														<input type="text" class="form-control" name="costo" placeholder="Costo" value="<?php echo set_value('costo') == false ? $plan_a_editar->costo : set_value('costo'); ?>">
+													<div class="form-group row col-lg-12 col-md-12 col-sm-12">
+														<label for="costo" class="col-md-12">Costo&nbsp;<span class="red">*</span></label>
+														<div class="col-md-12">
+															<input type="text" class="form-control" name="costo" placeholder="Costo" value="<?php echo set_value('costo') == false ? $plan_a_editar->costo : set_value('costo'); ?>">
+														</div>
 													</div>
-												</div>
-												<div class="form-group row">
-													<label for="orden_venta" class="col-md-12">Orden de venta&nbsp;<span class="red">*</span></label>
-													<label for="orden_venta" class="col-md-12"><small class="text-muted"><em>(Ordenar del 1 al …, el 5 es la posición normal de venta)</em></small></label>
-													<div class="col-md-12">
-														<input type="number" class="form-control" name="orden_venta" placeholder="Orden" value="<?php echo set_value('orden_venta') == false ? ($plan_a_editar->orden_venta ? $plan_a_editar->orden_venta : 5) : set_value('orden_venta'); ?>">
+													<div class="form-group row col-lg-12 col-md-12 col-sm-12">
+														<label for="orden_venta" class="col-md-12">Orden de venta&nbsp;<span class="red">*</span></label>
+														<label for="orden_venta" class="col-md-12"><small class="text-muted"><em>(Ordenar del 1 al …, el 5 es la posición normal de venta)</em></small></label>
+														<div class="col-md-12">
+															<input type="number" class="form-control" name="orden_venta" placeholder="Orden" value="<?php echo set_value('orden_venta') == false ? ($plan_a_editar->orden_venta ? $plan_a_editar->orden_venta : 5) : set_value('orden_venta'); ?>">
+														</div>
 													</div>
-												</div>
-												<div class="form-group">
-													<div class="row">
+													<div class="form-group row col-lg-12 col-md-12 col-sm-12">
 														<label class="col-lg-12">Vincular a código</label>
 														<div class="col-lg-12">
 															<select id="codigo" name="codigo" class="form-control select2 custom-select">
@@ -106,37 +88,56 @@
 															</div>
 														</div>
 													</div>
+
+													<div class="form-group row col-lg-12 col-md-12 col-sm-12">
+														<label for="clases_incluidas" class="col-md-12">Seleccione las disciplinas&nbsp;<span class="red">*</span></label>
+														<div class="col-md-12">
+															<select class="select2-disciplinas form-control" name="disciplinas[]" multiple>
+
+																<?php foreach ($disciplinas as $amenidades_key => $disciplina) : ?>
+																	<?php if ($disciplina->id != 1) : ?>
+																		<option value="<?php echo $disciplina->id; ?>" <?php foreach ($disciplinas_seleccionadas as $disciplina_seleccionada) {echo $disciplina->id == $disciplina_seleccionada->disciplina_id ? 'selected' : '';} ?>><?php echo trim(mb_strtoupper($disciplina->nombre)); ?></option>
+																	<?php endif; ?>
+																<?php endforeach; ?>
+															</select>
+														</div>
+													</div>
+													<div class="form-group row col-lg-12 col-md-12 col-sm-12">
+														<label for="terminos_condiciones" class="col-md-12">Términos y condiciones</label>
+														<div class="col-md-12">
+															<textarea class="form-control" name="terminos_condiciones" rows="5"><?php echo set_value('terminos_condiciones') == false ? $plan_a_editar->terminos_condiciones : set_value('terminos_condiciones'); ?></textarea>
+														</div>
+													</div>
+													<div class="form-group row col-lg-12 col-md-12 col-sm-12">
+														<label for="descripcion" class="col-md-12">Descripción</label>
+														<div class="col-md-12">
+															<textarea class="form-control" name="descripcion" rows="5"><?php echo set_value('descripcion') == false ? $plan_a_editar->descripcion : set_value('descripcion'); ?></textarea>
+														</div>
+													</div>
 												</div>
 											</div>
+											<div class="col-lg-6 col-md-6 col-sm-12">
+												<div class="form-group">
+													<div class="row mt-2 mb-2">
 
-											<div class="col-md-6">
-												<div class="form-group row">
-													<label for="clases_incluidas" class="col-md-12">Seleccione las disciplinas&nbsp;<span class="red">*</span></label>
-													<div class="col-md-12">
-														<select class="select2-disciplinas form-control" name="disciplinas[]" multiple>
+														<label class="col-sm-12"><b>Imagen</b></label>
 
-															<?php foreach ($disciplinas as $amenidades_key => $disciplina) : ?>
-																<?php if ($disciplina->id != 1) : ?>
-																	<option value="<?php echo $disciplina->id; ?>" <?php foreach ($disciplinas_seleccionadas as $disciplina_seleccionada) {echo $disciplina->id == $disciplina_seleccionada->disciplina_id ? 'selected' : '';} ?>><?php echo trim(mb_strtoupper($disciplina->nombre)); ?></option>
-																<?php endif; ?>
-															<?php endforeach; ?>
-														</select>
-													</div>
-												</div>
-												<div class="form-group row">
-													<label for="terminos_condiciones" class="col-md-12">Términos y condiciones</label>
-													<div class="col-md-12">
-														<textarea class="form-control" name="terminos_condiciones" rows="5"><?php echo set_value('terminos_condiciones') == false ? $plan_a_editar->terminos_condiciones : set_value('terminos_condiciones'); ?></textarea>
-													</div>
-												</div>
-												<div class="form-group row">
-													<label for="descripcion" class="col-md-12">Descripción</label>
-													<div class="col-md-12">
-														<textarea class="form-control" name="descripcion" rows="5"><?php echo set_value('descripcion') == false ? $plan_a_editar->descripcion : set_value('descripcion'); ?></textarea>
+														<div class="col-sm-6">
+															<img class="img-fluid border" name="preview_url_infoventa" id="preview_url_infoventa" src="<?php echo $plan_a_editar->url_infoventa; ?>" style="width: 100%;">
+														</div>
+
+														<div class="col-sm-6">
+															<p><b>Formato:&nbsp;</b>JPG</p>
+															<p><b>Tamaño máximo:&nbsp;</b>400 Kb</p>
+															<input type="file" name="url_infoventa" id="url_infoventa" placeholder="Imagen" value="<?php echo set_value('url_infoventa') == false ? $plan_a_editar->url_infoventa : set_value('url_infoventa'); ?>" onchange="cargar_imagen(event)">
+														</div>
+
 													</div>
 												</div>
 											</div>
 										</div>
+
+
 
 										<div class="form-actions right">
 											<a href="<?php echo site_url('planes/index'); ?>" class="btn btn-secondary btn-sm">Cancelar</a>

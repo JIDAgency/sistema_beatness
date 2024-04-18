@@ -24,21 +24,20 @@
 							</div>
 							<div class="card-content">
 								<div class="card-body">
-									<?php echo form_open('planes/crear', array('class' => 'form form-horizontal', 'id' => 'forma-crear-plan')); ?>
+									<?php echo form_open_multipart('planes/crear', array('class' => 'form form-horizontal', 'id' => 'forma-crear-plan')); ?>
 									<div class="form-body">
 
-										<?php if (validation_errors()): ?>
-										<div class="alert bg-danger alert-icon-left alert-dismissible mb-2 font-small-3" role="alert">
-											<span class="alert-icon"><i class="fa fa-thumbs-o-down"></i></span>
-											<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-												<span aria-hidden="true">×</span>
-											</button>
-											<?php echo validation_errors(); ?>
-										</div>
-										<?php endif?>
+										<?php if (validation_errors()) : ?>
+											<div class="alert bg-danger alert-icon-left alert-dismissible mb-2 font-small-3" role="alert">
+												<span class="alert-icon"><i class="fa fa-thumbs-o-down"></i></span>
+												<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+													<span aria-hidden="true">×</span>
+												</button>
+												<?php echo validation_errors(); ?>
+											</div>
+										<?php endif ?>
 
 										<h4 class="form-section">Datos del plan</h4>
-
 										<div class="row">
 											<div class="col-md-6">
 												<div class="form-group row">
@@ -84,7 +83,7 @@
 														<div class="col-lg-12">
 															<select id="codigo" name="codigo" class="form-control select2-disciplinas custom-select">
 																<option value="" <?php echo set_select('codigo', '', set_value('codigo') ? false : '' == $this->session->flashdata('codigo')); ?>>Seleccione un código</option>
-																<?php foreach ($codigos_list->result() as $key => $codigo_row): ?>
+																<?php foreach ($codigos_list->result() as $key => $codigo_row) : ?>
 																	<option value="<?php echo $codigo_row->codigo; ?>" <?php echo set_select('codigo', $codigo_row->codigo, set_value('codigo') ? false : $codigo_row->codigo == $this->session->flashdata('codigo')); ?>><?php echo trim(mb_strtoupper($codigo_row->codigo)); ?></option>
 																<?php endforeach; ?>
 															</select>
@@ -94,19 +93,16 @@
 														</div>
 													</div>
 												</div>
-											</div>
-
-											<div class="col-md-6">
 												<div class="form-group row">
 													<label for="disciplinas" class="col-md-12">Seleccione las disciplinas</label>
 													<div class="col-md-12">
 														<select class="select2-disciplinas form-control" name="disciplinas[]" multiple readonly>
-															<?php foreach ($disciplinas->result() as $disciplina): ?>
-    															<?php if ($disciplina->id != 1): ?>
-        															<option value="<?php echo $disciplina->id; ?>" selected="selected">
-        																<?php echo $disciplina->nombre; ?>
-        															</option>
-    															<?php endif; ?>
+															<?php foreach ($disciplinas as $disciplina) : ?>
+																<?php if ($disciplina->id != 1) : ?>
+																	<option value="<?php echo $disciplina->id; ?>" selected="selected">
+																		<?php echo $disciplina->nombre; ?>
+																	</option>
+																<?php endif; ?>
 															<?php endforeach; ?>
 														</select>
 													</div>
@@ -123,6 +119,22 @@
 														<textarea class="form-control" name="descripcion" rows="5"><?php echo set_value('descripcion'); ?></textarea>
 													</div>
 												</div>
+											</div>
+
+											<div class="col-lg-6 col-md-6 col-sm-12">
+												<div class="row">
+													<div class="col-lg-6 col-md-6 col-sm-12">
+														<img src="<?php echo site_url("almacenamiento/planes/default.jpg"); ?>" name="preview_url_infoventa" id="preview_url_infoventa" style="width: 200px; height: 200px;">
+													</div>
+													<div class="col-lg-6 col-md-6 col-sm-12">
+														<p><b>Formato: </b>JPG</p>
+														<p><b>Ancho: </b>1200</p>
+														<p><b>Altura: </b>1200</p>
+														<p><b>Tamaño máximo (Kb): </b>600</p>
+														<input type="file" name="url_infoventa" id="url_infoventa" placeholder="Miniatura" value="<?php echo set_value('url_infoventa') == false ? $this->session->flashdata('url_infoventa') : set_value('url_infoventa'); ?>" onchange="cargar_imagen(event)">
+													</div>
+												</div>
+
 											</div>
 										</div>
 
