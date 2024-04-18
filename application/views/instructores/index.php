@@ -13,11 +13,11 @@
 			</div>
 			<div class="content-header-right col-md-6 col-12 mb-2">
 				<div class="form-group float-md-right">
-					<a class="btn btn-secondary btn-min-width mr-1 mb-1" href="<?php echo site_url('instructores/crear') ?>">
-						<i class="ft-plus white"></i> Nuevo Instructor
+					<a class="btn btn-outline-secondary btn-min-width mr-1 mb-1" href="<?php echo site_url('instructores/crear') ?>">
+						<i class="ft-plus"></i> Nuevo Instructor
 					</a>
 					<div class="btn-group mr-1 mb-1">
-						<button type="button" class="btn btn-secondary btn-min-width dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i class="ft-settings icon-left"></i>&nbsp;Opciones</button>
+						<button type="button" class="btn btn-outline-secondary btn-min-width dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i class="ft-settings icon-left"></i>&nbsp;Opciones</button>
 						<div class="dropdown-menu">
 							<a class="dropdown-item" href="<?php echo site_url('clientes/crear') ?>">+ Nuevo Cliente</a>
 							<div class="dropdown-divider"></div>

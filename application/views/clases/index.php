@@ -22,8 +22,8 @@
 								<div class="card-header">
 									<h4 class="card-title">Clases disponibles</h4>
 									<div class="heading-elements">
-										<a href="<?php echo site_url('clases/crear') ?>" class="btn btn-secondary btn-sm">
-											<i class="ft-plus white"></i> Nueva clase
+										<a href="<?php echo site_url('clases/crear') ?>" class="btn btn-outline-secondary btn-min-width">
+											<i class="ft-plus"></i> Nueva clase
 										</a>
 										<!--a href="<?php //echo site_url('clases/generar_horarios_ionic') 
 													?>" class="btn btn-secondary btn-sm">

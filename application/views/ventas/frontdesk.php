@@ -17,8 +17,8 @@
             </div>
 
             <div class="content-header-right  col-md-6 col-12">
-                <div class="btn-group float-md-right" role="group" aria-label="Button group with nested dropdown">   
-                    <button class="btn btn-secondary round dropdown-toggle dropdown-menu-right px-2" id="btnGroupDrop1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="ft-settings icon-left"></i> Nuevo</button>
+                <div class="btn-group float-md-right" role="group" aria-label="Button group with nested dropdown">
+                    <button class="btn btn-outline-secondary btn-min-width dropdown-toggle" id="btnGroupDrop1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="ft-settings icon-left"></i> Nuevo</button>
                     <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                         <a class="dropdown-item" href="<?php echo site_url('clientes/crear') ?>">+ Nuevo Cliente</a>
                         <div class="dropdown-divider"></div>
@@ -28,37 +28,40 @@
                         <a class="dropdown-item" href="<?php echo site_url('ventas/crear_personalizada') ?>">+ Nueva Venta Personalizada</a>
                     </div>
                 </div>
-		    </div>
+                <div class="form-group float-right mx-1">
+                    <div id="buttons"></div>
+                </div>
+            </div>
 
         </div>
-        
+
         <div class="content-body">
             <section class="card">
                 <div id="invoice-template" class="card-body">
-                    <?php $this->load->view('_comun/mensajes_alerta');?>
-                    
+                    <?php $this->load->view('_comun/mensajes_alerta'); ?>
+
                     <h2>Reporte de ventas del <span name="mes_reportado" id="mes_reportado"><?php echo date('d/m/Y', strtotime($resultados_mes_actual['data']['mes_reportado'])); ?></span></h2>
-                        
+
                     <div class="row mt-2">
                         <div class="col-xl-3 col-lg-12">
                             <div class="form-group">
                                 <h5 class="card-titlel"><i class="ft-filter"></i> Periodo a consultar:</h5>
                                 <select id="mes_a_consultar" name="mes_a_consultar" class="select2 form-control">
 
-                                    <?php foreach ($period as $dt): ?>
-                                        <?php 
-                                            $date = DateTime::createFromFormat("Y-m-d", $dt->format("Y-m-d"));
+                                    <?php foreach ($period as $dt) : ?>
+                                        <?php
+                                        $date = DateTime::createFromFormat("Y-m-d", $dt->format("Y-m-d"));
                                         ?>
-                                        <option value="<?php echo $dt->format("Y-m-d"); ?>" <?php echo set_select('mes_a_consultar', $dt->format("Y-m-d") , set_value('mes_a_consultar') ? false : $dt->format("Y-m-d") == date('Y-m-d'));?>><?php echo ucfirst(strftime("%e de %B de %Y",$date->getTimestamp())); ?></option>
-                                    <?php endforeach;?>
+                                        <option value="<?php echo $dt->format("Y-m-d"); ?>" <?php echo set_select('mes_a_consultar', $dt->format("Y-m-d"), set_value('mes_a_consultar') ? false : $dt->format("Y-m-d") == date('Y-m-d')); ?>><?php echo ucfirst(strftime("%e de %B de %Y", $date->getTimestamp())); ?></option>
+                                    <?php endforeach; ?>
 
-                                </select>                                    
+                                </select>
                             </div>
                         </div>
                     </div>
 
                     <!--div class="row mt-2">
-                        <?php if ((es_superadministrador() OR es_administrador()) OR (es_frontdesk())): ?>
+                        <?php if ((es_superadministrador() or es_administrador()) or (es_frontdesk())) : ?>
                             <div class="col-xl-3 col-md-6 col-12">
                                 <h5><strong>Total de ventas Global</strong></h5>
                                 <br>
@@ -78,7 +81,7 @@
                             </div>
                         <?php endif; ?>
 
-                        <?php if ((es_superadministrador() OR es_administrador())): ?>
+                        <?php if ((es_superadministrador() or es_administrador())) : ?>
                             <div class="col-xl-3 col-md-6 col-12">
                                 <h5><strong>Total de ventas b3</strong></h5>
                                 <br>
@@ -96,7 +99,7 @@
                             </div>
                         <?php endif; ?>
 
-                        <?php if ((es_superadministrador() OR es_administrador()) OR (es_frontdesk() AND $this->session->userdata('sucursal_asignada') == 2)): ?>
+                        <?php if ((es_superadministrador() or es_administrador()) or (es_frontdesk() and $this->session->userdata('sucursal_asignada') == 2)) : ?>
                             <div class="col-xl-3 col-md-6 col-12">
                                 <h5><strong>Total de ventas Vela</strong></h5>
                                 <br>
@@ -114,7 +117,7 @@
                             </div>
                         <?php endif; ?>
 
-                        <?php if ((es_superadministrador() OR es_administrador()) OR (es_frontdesk() AND $this->session->userdata('sucursal_asignada') == 3)): ?>
+                        <?php if ((es_superadministrador() or es_administrador()) or (es_frontdesk() and $this->session->userdata('sucursal_asignada') == 3)) : ?>
                             <div class="col-xl-3 col-md-6 col-12">
                                 <h5><strong>Total de ventas  Sucursal 3</strong></h5>
                                 <br>
@@ -132,7 +135,7 @@
                             </div>
                         <?php endif; ?>
 
-                        <?php if ((es_superadministrador() OR es_administrador()) OR (es_frontdesk() AND $this->session->userdata('sucursal_asignada') == 5)): ?>
+                        <?php if ((es_superadministrador() or es_administrador()) or (es_frontdesk() and $this->session->userdata('sucursal_asignada') == 5)) : ?>
                             <div class="col-xl-3 col-md-6 col-12">
                                 <h5><strong>Total de ventas  Sucursal 4</strong></h5>
                                 <br>
@@ -150,26 +153,26 @@
                             </div>
                         <?php endif; ?>
 
-                        <?php if ((es_superadministrador() OR es_administrador()) OR es_frontdesk()): ?>
+                        <?php if ((es_superadministrador() or es_administrador()) or es_frontdesk()) : ?>
                             <div class="col-xl-3 col-md-6 col-12">
                                 <h5><strong>Total de ventas en línea</strong></h5>
                                 <br>
                                 <h6><strong><em>Total de ventas Packs OpenPay</em></strong></h6>
                                 <p><small><em>Número de ventas OpenPay:</em></small><br><strong><span name="no_ventas_openpay" id="no_ventas_openpay"><?php echo $resultados_mes_actual['data']['no_ventas_openpay']; ?></span></strong></p>
                                 <p><small><em>Total de ventas OpenPay:</em></small><br><strong><span name="ventas_openpay" id="ventas_openpay"><?php echo $resultados_mes_actual['data']['ventas_openpay']; ?></span></strong></p>
-                                <?php if ((es_superadministrador() OR es_administrador()) OR (es_frontdesk() AND ($this->session->userdata('sucursal_asignada') == 2)) OR (es_frontdesk() AND ($this->session->userdata('sucursal_asignada') == 3))): ?>
+                                <?php if ((es_superadministrador() or es_administrador()) or (es_frontdesk() and ($this->session->userdata('sucursal_asignada') == 2)) or (es_frontdesk() and ($this->session->userdata('sucursal_asignada') == 3))) : ?>
                                 <br>
                                 <h6><strong><em>Total de ventas Packs OpenPay</em></strong></h6>
                                 <p><small><em>Número de ventas OpenPay:</em></small><br><strong><span name="no_ventas_openpay_b3" id="no_ventas_openpay_b3"><?php echo $resultados_mes_actual['data']['no_ventas_openpay_b3']; ?></span></strong></p>
                                 <p><small><em>Total de ventas OpenPay:</em></small><br><strong><span name="ventas_openpay_b3" id="ventas_openpay_b3"><?php echo $resultados_mes_actual['data']['ventas_openpay_b3']; ?></span></strong></p>
                                 <?php endif; ?>
-                                <?php if ((es_superadministrador() OR es_administrador()) OR (es_frontdesk() AND $this->session->userdata('sucursal_asignada') == 5)): ?>
+                                <?php if ((es_superadministrador() or es_administrador()) or (es_frontdesk() and $this->session->userdata('sucursal_asignada') == 5)) : ?>
                                 <br>
                                 <h6><strong><em>Total de ventas Packs OpenPay sucursal 5</em></strong></h6>
                                 <p><small><em>Número de ventas OpenPay sucursal 5:</em></small><br><strong><span name="no_ventas_openpay_insan3" id="no_ventas_openpay_insan3"><?php echo $resultados_mes_actual['data']['no_ventas_openpay_insan3']; ?></span></strong></p>
                                 <p><small><em>Total de ventas OpenPay Insan3:</em></small><br><strong><span name="ventas_openpay_insan3" id="ventas_openpay_insan3"><?php echo $resultados_mes_actual['data']['ventas_openpay_insan3']; ?></span></strong></p>
                                 <?php endif; ?>
-                                <?php if ((es_superadministrador() OR es_administrador())): ?>
+                                <?php if ((es_superadministrador() or es_administrador())) : ?>
                                         <br>
                                         <h6><strong><em>Total de ventas Suscripciones</em></strong></h6>
                                         <p><small><em>Número de ventas Packs Suscripciones:</em></small><br><strong><span name="no_ventas_suscripcion" id="no_ventas_suscripcion"><?php echo $resultados_mes_actual['data']['no_ventas_suscripcion']; ?></span></strong></p>
@@ -186,12 +189,12 @@
                     <div id="invoice-items-details" class="pt-2">
                         <div class="row">
                             <div class="table-responsive col-sm-12">
-                                        
+
                                 <div class="row mt-2">
                                     <div class="col-12">
-                                        <div class="form-group float-md-right">
+                                        <!-- <div class="form-group float-md-right">
                                             <div id="buttons"></div>
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </div>
 

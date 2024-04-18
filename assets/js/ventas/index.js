@@ -82,7 +82,11 @@ $(document).ready(function(){
 
     var buttons = new $.fn.dataTable.Buttons(table, {
         buttons: [
-            'excelHtml5',
+            {
+                extend: 'excelHtml5',
+                className: 'custom-button'
+
+            }
         ]
     }).container().appendTo($('#buttons'));
 

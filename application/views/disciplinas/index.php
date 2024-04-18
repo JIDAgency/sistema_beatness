@@ -13,7 +13,7 @@
 			</div>
 			<div class="content-header-right  col-md-6 col-12">
 				<div class="btn-group float-md-right" role="group" aria-label="Button group with nested dropdown">
-					<button class="btn btn-secondary round dropdown-toggle dropdown-menu-right px-2" id="btnGroupDrop1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="ft-settings icon-left"></i> Nuevo</button>
+					<button class="btn btn-outline-secondary btn-min-width dropdown-toggle" id="btnGroupDrop1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="ft-settings icon-left"></i> Nuevo</button>
 					<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
 						<a class="dropdown-item" href="<?php echo site_url('clientes/crear') ?>">+ Nuevo Cliente</a>
 						<div class="dropdown-divider"></div>
@@ -22,6 +22,11 @@
 						<a class="dropdown-item" href="<?php echo site_url('ventas/crear') ?>">+ Nueva Venta</a>
 						<a class="dropdown-item" href="<?php echo site_url('ventas/crear_personalizada') ?>">+ Nueva Venta Personalizada</a>
 					</div>
+				</div>
+				<div class="heading-elements float-right mx-1">
+					<a href="<?php echo site_url('disciplinas/crear') ?>" class="btn btn-outline-secondary btn-min-width">
+						<i class="ft-plus"></i> Nueva disciplina
+					</a>
 				</div>
 			</div>
 		</div>
@@ -33,11 +38,7 @@
 							<div class="card">
 								<div class="card-header">
 									<h4 class="card-title">Registro de disciplinas</h4>
-									<div class="heading-elements">
-										<a href="<?php echo site_url('disciplinas/crear') ?>" class="btn btn-secondary btn-sm">
-											<i class="ft-plus white"></i> Nueva disciplina
-										</a>
-									</div>
+
 								</div>
 								<div class="card-content p_dt">
 									<div class="card-body">

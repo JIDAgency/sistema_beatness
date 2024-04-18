@@ -15,7 +15,7 @@
 			</div>
 			<div class="content-header-right  col-md-6 col-12">
 				<div class="btn-group float-md-right" role="group" aria-label="Button group with nested dropdown">
-					<button class="btn btn-secondary round dropdown-toggle dropdown-menu-right px-2" id="btnGroupDrop1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="ft-settings icon-left"></i> Opciones</button>
+					<button class="btn btn-outline-secondary btn-min-width dropdown-toggle" id="btnGroupDrop1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="ft-settings icon-left"></i> Opciones</button>
 					<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
 						<a class="dropdown-item" href="<?php echo site_url('clientes/crear') ?>">+ Nuevo Cliente</a>
 						<div class="dropdown-divider"></div>
@@ -24,6 +24,9 @@
 						<a class="dropdown-item" href="<?php echo site_url('ventas/crear') ?>">+ Nueva Venta</a>
 						<a class="dropdown-item" href="<?php echo site_url('ventas/crear_personalizada') ?>">+ Nueva Venta Personalizada</a>
 					</div>
+				</div>
+				<div class="form-group float-md-right mx-1">
+					<div id="buttons"></div>
 				</div>
 			</div>
 		</div>
@@ -56,9 +59,7 @@
 											<div class="row">
 												<div class="content-header-right col-md-12 col-12">
 
-													<div class="form-group float-md-right">
-														<div id="buttons"></div>
-													</div>
+
 
 												</div>
 											</div>
