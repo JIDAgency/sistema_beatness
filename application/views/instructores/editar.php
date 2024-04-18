@@ -1,7 +1,7 @@
 <div class="app-content content center-layout mt-2">
-    <div class="content-wrapper">
-        <div class="content-header row">
-            <div class="content-header-left col-md-6 col-12 mb-2">
+	<div class="content-wrapper">
+		<div class="content-header row">
+			<div class="content-header-left col-md-6 col-12 mb-2">
 				<div class="row breadcrumbs-top">
 					<div class="breadcrumb-wrapper col-12">
 						<ol class="breadcrumb">
@@ -30,177 +30,177 @@
 									<input type="hidden" name="id" value="<?php echo $instructor_a_editar->id; ?>">
 									<?php $this->load->view('_comun/mensajes_alerta'); ?>
 									<div class="form-body">
-										<?php if (validation_errors()): ?>
-										<div class="alert bg-danger alert-icon-left alert-dismissible mb-2 font-small-3" role="alert">
-											<span class="alert-icon"><i class="fa fa-thumbs-o-down"></i></span>
-											<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-												<span aria-hidden="true">×</span>
-											</button>
-											<?php echo validation_errors(); ?>
-										</div>
-										<?php endif?>
-
-										<h4 class="form-section">Foto</h4>
-										<div class="row">
-											<div class="col-sm-3">
-												<img src="<?php echo site_url("subidas/perfil/".$instructor_a_editar->nombre_imagen_avatar); ?>" name="preview" id="preview" style="width: 200px; height: 200px;">
+										<?php if (validation_errors()) : ?>
+											<div class="alert bg-danger alert-icon-left alert-dismissible mb-2 font-small-3" role="alert">
+												<span class="alert-icon"><i class="fa fa-thumbs-o-down"></i></span>
+												<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+													<span aria-hidden="true">×</span>
+												</button>
+												<?php echo validation_errors(); ?>
 											</div>
-											<div class="col-sm-9">
-												<p><b>Formato: </b>JPG</p>
-												<p><b>Ancho: </b>1200</p>
-												<p><b>Altura: </b>1200</p>
-												<p><b>Tamaño máximo (Kb): </b>600</p>
-												<input type="file" name="nombre_imagen_avatar" id="nombre_imagen_avatar" placeholder="Miniatura" value="<?php echo set_value('nombre_imagen_avatar') == false ? $instructor_a_editar->nombre_imagen_avatar : set_value('nombre_imagen_avatar'); ?>" onchange="cargar_imagen(event)">
-											</div>
-										</div>
-
-										<h4 class="form-section">Datos de acceso</h4>
-										<div class="row">
-											<div class="col-md-6">
-												<div class="form-group row">
-													<label for="correo" class="col-md-3 label-control"><span class="red">*</span> Email</label>
-													<div class="col-md-9">
-														<input type="email" name="correo" id="correo" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toLowerCase()" class="form-control" placeholder="Correo Electrónico" value="<?php echo set_value('correo') == false ? $instructor_a_editar->correo : set_value('correo'); ?>">
-													</div>
-												</div>
-											</div>
-										</div>
-
-										<h4 class="form-section">Datos de contacto</h4>
-										<div class="row">
-											<div class="col-md-6">
-												<div class="form-group row">
-													<label for="nombre_completo" class="col-md-3 label-control"><span class="red">*</span> Nombre completo</label>
-													<div class="col-md-9">
-														<input type="text" name="nombre_completo" class="form-control" placeholder="Nombre Completo" value="<?php echo set_value('nombre_completo') == false ? $instructor_a_editar->nombre_completo : set_value('nombre_completo'); ?>">
-													</div>
-												</div>
-											</div>
-											<div class="col-md-6">
-												<div class="form-group row">
-													<label for="apellido_paterno" class="col-md-3 label-control"><span class="red">*</span> Apellido paterno</label>
-													<div class="col-md-9">
-														<input type="text" name="apellido_paterno" class="form-control" placeholder="Apellido Paterno" value="<?php echo set_value('apellido_paterno') == false ? $instructor_a_editar->apellido_paterno : set_value('apellido_paterno'); ?>">
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="row">
-											<div class="col-md-6">
-												<div class="form-group row">
-													<label for="apellido_materno" class="col-md-3 label-control">Apellido materno</label>
-													<div class="col-md-9">
-														<input type="text" name="apellido_materno" class="form-control" placeholder="Apellido Materno" value="<?php echo set_value('apellido_materno') == false ? $instructor_a_editar->apellido_materno : set_value('apellido_materno'); ?>">
-													</div>
-												</div>
-											</div>
-											<div class="col-md-6">
-												<div class="form-group row">
-													<label for="no_telefono" class="col-md-3 label-control">Télefono</label>
-													<div class="col-md-5">
-														<input autocomplete="off" type="text" class="form-control" name="no_telefono" placeholder="No. de Teléfono"
-														 value="<?php echo set_value('no_telefono') == false ? $instructor_a_editar->no_telefono : set_value('no_telefono'); ?>">
-													</div>
-												</div>
-											</div>
-										</div>
-
-										<h4 class="form-section">Datos personales</h4>
-										<div class="row">
-											<div class="col-md-6">
-												<div class="form-group row">
-													<label for="fecha_nacimiento" class="col-md-3 label-control">Fecha de nacimiento</label>
-													<div class="col-md-9">
-														<input type="text" name="fecha_nacimiento" class="date-dropper form-control" placeholder="Seleccione una fecha"
-														 value="<?php echo set_value('fecha_nacimiento') == false ? date('d/m/Y', strtotime($instructor_a_editar->fecha_nacimiento)) : date('d/m/Y', strtotime(set_value('fecha_nacimiento'))); ?>">
-													</div>
-												</div>
-											</div>
-											<div class="col-md-6">
-												<div class="form-group row">
-													<label for="rfc" class="col-md-3 label-control">RFC</label>
-													<div class="col-md-9">
-														<input type="text" name="rfc" class="form-control" placeholder="RFC" value="<?php echo set_value('rfc') == false ? $instructor_a_editar->rfc : set_value('rfc'); ?>">
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="row">
-											<div class="col-md-6">
-												<div class="form-group row">
-													<label for="genero" class="col-md-3 label-control">Género</label>
-													<div class="col-md-3">
-														<select name="genero" class="form-control">
-															<option value="H" <?php echo set_select('genero', "H" , set_value('genero') ? false : "H"==$instructor_a_editar->genero);
-																?>>Hombre</option>
-															<option value="M" <?php echo set_select('genero', "M" , set_value('genero') ? false : "M"==$instructor_a_editar->genero);
-																?>>Mujer</option>
-														</select>
-													</div>
-												</div>
-											</div>
-										</div>
-
-										<h4 class="form-section">Domicilio</h4>
-										<div class="row">
-											<div class="col-md-6">
-												<div class="form-group row">
-													<label for="pais" class="col-md-3 label-control">País</label>
-													<div class="col-md-9">
-														<input type="text" name="pais" class="form-control" placeholder="País" value="<?php echo set_value('pais') == false ? $instructor_a_editar->pais : set_value('pais'); ?>">
-													</div>
-												</div>
-											</div>
-											<div class="col-md-6">
-												<div class="form-group row">
-													<label for="estado" class="col-md-3 label-control">Estado</label>
-													<div class="col-md-8">
-														<input type="text" name="estado" class="form-control" placeholder="Estado" value="<?php echo set_value('estado') == false ? $instructor_a_editar->estado : set_value('estado'); ?>">
-													</div>
-												</div>
-											</div>
-										</div>
+										<?php endif ?>
 
 										<div class="row">
-											<div class="col-md-6">
-												<div class="form-group row">
-													<label for="ciudad" class="col-md-3 label-control">Ciudad</label>
-													<div class="col-md-9">
-														<input type="text" name="ciudad" class="form-control" placeholder="Ciudad" value="<?php echo set_value('ciudad') == false ? $instructor_a_editar->ciudad : set_value('colonia'); ?>">
+											<div class="col-lg-6 col-md-6 col-sm-12">
+												<h4 class="form-section">Datos de acceso</h4>
+												<div class="row">
+													<div class="col-lg-12 col-md-12 col-sm-12">
+														<div class="form-group row">
+															<label for="correo" class="col-md-3 label-control"><span class="red">*</span> Email</label>
+															<div class="col-md-9">
+																<input type="email" name="correo" id="correo" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toLowerCase()" class="form-control" placeholder="Correo Electrónico" value="<?php echo set_value('correo') == false ? $instructor_a_editar->correo : set_value('correo'); ?>">
+															</div>
+														</div>
+													</div>
+												</div>
+
+												<h4 class="form-section">Datos de contacto</h4>
+												<div class="row">
+													<div class="col-lg-12 col-md-12 col-sm-12">
+														<div class="form-group row">
+															<label for="nombre_completo" class="col-md-3 label-control"><span class="red">*</span> Nombre completo</label>
+															<div class="col-md-9">
+																<input type="text" name="nombre_completo" class="form-control" placeholder="Nombre Completo" value="<?php echo set_value('nombre_completo') == false ? $instructor_a_editar->nombre_completo : set_value('nombre_completo'); ?>">
+															</div>
+														</div>
+													</div>
+													<div class="col-lg-12 col-md-12 col-sm-12">
+														<div class="form-group row">
+															<label for="apellido_paterno" class="col-md-3 label-control"><span class="red">*</span> Apellido paterno</label>
+															<div class="col-md-9">
+																<input type="text" name="apellido_paterno" class="form-control" placeholder="Apellido Paterno" value="<?php echo set_value('apellido_paterno') == false ? $instructor_a_editar->apellido_paterno : set_value('apellido_paterno'); ?>">
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-lg-12 col-md-12 col-sm-12">
+														<div class="form-group row">
+															<label for="apellido_materno" class="col-md-3 label-control">Apellido materno</label>
+															<div class="col-md-9">
+																<input type="text" name="apellido_materno" class="form-control" placeholder="Apellido Materno" value="<?php echo set_value('apellido_materno') == false ? $instructor_a_editar->apellido_materno : set_value('apellido_materno'); ?>">
+															</div>
+														</div>
+													</div>
+													<div class="col-lg-12 col-md-12 col-sm-12">
+														<div class="form-group row">
+															<label for="no_telefono" class="col-md-3 label-control">Télefono</label>
+															<div class="col-md-5">
+																<input autocomplete="off" type="text" class="form-control" name="no_telefono" placeholder="No. de Teléfono" value="<?php echo set_value('no_telefono') == false ? $instructor_a_editar->no_telefono : set_value('no_telefono'); ?>">
+															</div>
+														</div>
+													</div>
+												</div>
+
+												<h4 class="form-section">Datos personales</h4>
+												<div class="row">
+													<div class="col-lg-12 col-md-12 col-sm-12">
+														<div class="form-group row">
+															<label for="fecha_nacimiento" class="col-md-3 label-control">Fecha de nacimiento</label>
+															<div class="col-md-9">
+																<input type="text" name="fecha_nacimiento" class="date-dropper form-control" placeholder="Seleccione una fecha" value="<?php echo set_value('fecha_nacimiento') == false ? date('d/m/Y', strtotime($instructor_a_editar->fecha_nacimiento)) : date('d/m/Y', strtotime(set_value('fecha_nacimiento'))); ?>">
+															</div>
+														</div>
+													</div>
+													<div class="col-lg-12 col-md-12 col-sm-12">
+														<div class="form-group row">
+															<label for="rfc" class="col-md-3 label-control">RFC</label>
+															<div class="col-md-9">
+																<input type="text" name="rfc" class="form-control" placeholder="RFC" value="<?php echo set_value('rfc') == false ? $instructor_a_editar->rfc : set_value('rfc'); ?>">
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-lg-12 col-md-12 col-sm-12">
+														<div class="form-group row">
+															<label for="genero" class="col-md-3 label-control">Género</label>
+															<div class="col-md-3">
+																<select name="genero" class="form-control">
+																	<option value="H" <?php echo set_select('genero', "H", set_value('genero') ? false : "H" == $instructor_a_editar->genero);
+																						?>>Hombre</option>
+																	<option value="M" <?php echo set_select('genero', "M", set_value('genero') ? false : "M" == $instructor_a_editar->genero);
+																						?>>Mujer</option>
+																</select>
+															</div>
+														</div>
+													</div>
+												</div>
+
+												<h4 class="form-section">Domicilio</h4>
+												<div class="row">
+													<div class="col-lg-12 col-md-12 col-sm-12">
+														<div class="form-group row">
+															<label for="pais" class="col-md-3 label-control">País</label>
+															<div class="col-md-9">
+																<input type="text" name="pais" class="form-control" placeholder="País" value="<?php echo set_value('pais') == false ? $instructor_a_editar->pais : set_value('pais'); ?>">
+															</div>
+														</div>
+													</div>
+													<div class="col-lg-12 col-md-12 col-sm-12">
+														<div class="form-group row">
+															<label for="estado" class="col-md-3 label-control">Estado</label>
+															<div class="col-md-8">
+																<input type="text" name="estado" class="form-control" placeholder="Estado" value="<?php echo set_value('estado') == false ? $instructor_a_editar->estado : set_value('estado'); ?>">
+															</div>
+														</div>
+													</div>
+												</div>
+
+												<div class="row">
+													<div class="col-lg-12 col-md-12 col-sm-12">
+														<div class="form-group row">
+															<label for="ciudad" class="col-md-3 label-control">Ciudad</label>
+															<div class="col-md-9">
+																<input type="text" name="ciudad" class="form-control" placeholder="Ciudad" value="<?php echo set_value('ciudad') == false ? $instructor_a_editar->ciudad : set_value('colonia'); ?>">
+															</div>
+														</div>
+													</div>
+													<div class="col-lg-12 col-md-12 col-sm-12">
+														<div class="form-group row">
+															<label for="colonia" class="col-md-3 label-control">Colonia</label>
+															<div class="col-md-9">
+																<input type="text" name="colonia" class="form-control" placeholder="Colonia" value="<?php echo set_value('colonia') == false ? $instructor_a_editar->colonia : set_value('colonia'); ?>">
+															</div>
+														</div>
+													</div>
+												</div>
+
+												<div class="row">
+													<div class="col-lg-12 col-md-12 col-sm-12">
+														<div class="form-group row">
+															<label for="calle" class="col-md-3 label-control">Calle</label>
+															<div class="col-md-9">
+																<input type="text" name="calle" class="form-control" placeholder="Calle" value="<?php echo set_value('calle') == false ? $instructor_a_editar->calle : set_value('calle'); ?>">
+															</div>
+														</div>
+													</div>
+													<div class="col-lg-12 col-md-12 col-sm-12">
+														<div class="form-group row">
+															<label for="numero" class="col-md-3 label-control">Número</label>
+															<div class="col-md-3">
+																<input type="text" name="numero" class="form-control" placeholder="Número" value="<?php echo set_value('numero') == false ? $instructor_a_editar->numero : set_value('numero'); ?>">
+															</div>
+														</div>
 													</div>
 												</div>
 											</div>
-											<div class="col-md-6">
-												<div class="form-group row">
-													<label for="colonia" class="col-md-3 label-control">Colonia</label>
-													<div class="col-md-9">
-														<input type="text" name="colonia" class="form-control" placeholder="Colonia" value="<?php echo set_value('colonia') == false ? $instructor_a_editar->colonia : set_value('colonia'); ?>">
+											<div class="col-lg-6 col-md-6 col-sm-12">
+												<h4 class="form-section">Foto</h4>
+												<div class="row">
+													<div class="col-lg-6 col-md-6 col-sm-12">
+														<img src="<?php echo site_url("subidas/perfil/" . $instructor_a_editar->nombre_imagen_avatar); ?>" name="preview" id="preview" style="width: 200px; height: 200px;">
+													</div>
+													<div class="col-lg-6 col-md-6 col-sm-12">
+														<p><b>Formato: </b>JPG</p>
+														<p><b>Ancho: </b>1200</p>
+														<p><b>Altura: </b>1200</p>
+														<p><b>Tamaño máximo (Kb): </b>600</p>
+														<input type="file" name="nombre_imagen_avatar" id="nombre_imagen_avatar" placeholder="Miniatura" value="<?php echo set_value('nombre_imagen_avatar') == false ? $instructor_a_editar->nombre_imagen_avatar : set_value('nombre_imagen_avatar'); ?>" onchange="cargar_imagen(event)">
 													</div>
 												</div>
 											</div>
 										</div>
-
-										<div class="row">
-											<div class="col-md-6">
-												<div class="form-group row">
-													<label for="calle" class="col-md-3 label-control">Calle</label>
-													<div class="col-md-9">
-														<input type="text" name="calle" class="form-control" placeholder="Calle" value="<?php echo set_value('calle') == false ? $instructor_a_editar->calle : set_value('calle'); ?>">
-													</div>
-												</div>
-											</div>
-											<div class="col-md-6">
-												<div class="form-group row">
-													<label for="numero" class="col-md-3 label-control">Número</label>
-													<div class="col-md-3">
-														<input type="text" name="numero" class="form-control" placeholder="Número" value="<?php echo set_value('numero') == false ? $instructor_a_editar->numero : set_value('numero'); ?>">
-													</div>
-												</div>
-											</div>
-										</div>
-
-
-
 
 										<div class="form-actions right">
 											<a href="<?php echo site_url('instructores/index'); ?>" class="btn btn-secondary btn-sm">Atrás</a>
