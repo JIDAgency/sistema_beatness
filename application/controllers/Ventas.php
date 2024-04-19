@@ -25,9 +25,9 @@ class Ventas extends MY_Controller
         $data['pagina_titulo'] = 'Ventas';
 
         /** Carga los mensajes de validaciones para ser usados por los controladores */
-        $data['mensaje_exito'] = $this->session->flashdata('MENSAJE_EXITO');
-        $data['mensaje_info'] = $this->session->flashdata('MENSAJE_INFO');
-        $data['mensaje_error'] = $this->session->flashdata('MENSAJE_ERROR');
+        // $data['mensaje_exito'] = $this->session->flashdata('MENSAJE_EXITO');
+        // $data['mensaje_info'] = $this->session->flashdata('MENSAJE_INFO');
+        // $data['mensaje_error'] = $this->session->flashdata('MENSAJE_ERROR');
 
         /** JS propio del controlador */
         $controlador_js = "ventas/index";
@@ -1938,7 +1938,7 @@ class Ventas extends MY_Controller
     /** Vistas para las ventas normales [Fin] */
 
     /** Vistas para las suscripciones [Inicio] */
-    public function suscripciones(Type $var = null)
+    public function suscripciones($var = null)
     {
         /** Carga a la vista la información del menú y del título de pestaña */
         $data['menu_ventas_activo'] = true;
@@ -2621,7 +2621,7 @@ class Ventas extends MY_Controller
             redirect($regresar_a);
         }
 
-        $this->construir_private_site_ui('ventas/index', $data);
+        $this->construir_private_site_ui('ventas/index');
     }
 
     public function genera_asignaciones_por_id_para_todas_las_ventas()
