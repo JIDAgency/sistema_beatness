@@ -64,7 +64,7 @@ class Historial_reservaciones extends MY_Controller
                 "asistencia" => $reservacion_del_mes_row->asistencia,
                 "horario" => $reservacion_del_mes_row->horario,
                 "estatus" => $reservacion_del_mes_row->estatus,
-                "opciones" => anchor('historial_reservaciones/retirar_reservacion/'.$reservacion_del_mes_row->id, '<span style="color: red;">Retirar</span>'),
+                "opciones" => anchor('historial_reservaciones/retirar_reservacion/'.$reservacion_del_mes_row->id, '<span style="color: red;">Inasistencia</span>'),
             );
         }
 

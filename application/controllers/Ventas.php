@@ -25,9 +25,9 @@ class Ventas extends MY_Controller
         $data['pagina_titulo'] = 'Ventas';
 
         /** Carga los mensajes de validaciones para ser usados por los controladores */
-        // $data['mensaje_exito'] = $this->session->flashdata('MENSAJE_EXITO');
-        // $data['mensaje_info'] = $this->session->flashdata('MENSAJE_INFO');
-        // $data['mensaje_error'] = $this->session->flashdata('MENSAJE_ERROR');
+        $data['mensaje_exito'] = $this->session->flashdata('MENSAJE_EXITO');
+        $data['mensaje_info'] = $this->session->flashdata('MENSAJE_INFO');
+        $data['mensaje_error'] = $this->session->flashdata('MENSAJE_ERROR');
 
         /** JS propio del controlador */
         $controlador_js = "ventas/index";

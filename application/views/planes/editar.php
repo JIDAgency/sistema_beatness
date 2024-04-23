@@ -96,7 +96,9 @@
 
 																<?php foreach ($disciplinas as $amenidades_key => $disciplina) : ?>
 																	<?php if ($disciplina->id != 1) : ?>
-																		<option value="<?php echo $disciplina->id; ?>" <?php foreach ($disciplinas_seleccionadas as $disciplina_seleccionada) {echo $disciplina->id == $disciplina_seleccionada->disciplina_id ? 'selected' : '';} ?>><?php echo trim(mb_strtoupper($disciplina->nombre)); ?></option>
+																		<option value="<?php echo $disciplina->id; ?>" <?php foreach ($disciplinas_seleccionadas as $disciplina_seleccionada) {
+																															echo $disciplina->id == $disciplina_seleccionada->disciplina_id ? 'selected' : '';
+																														} ?>><?php echo trim(mb_strtoupper($disciplina->nombre)); ?></option>
 																	<?php endif; ?>
 																<?php endforeach; ?>
 															</select>
@@ -123,7 +125,9 @@
 														<label class="col-sm-12"><b>Imagen</b></label>
 
 														<div class="col-sm-6">
-															<img class="img-fluid border" name="preview_url_infoventa" id="preview_url_infoventa" src="<?php echo $plan_a_editar->url_infoventa; ?>" style="width: 100%;">
+															<?php if ($plan_a_editar->url_infoventa != 'https://beatness.com.mx/almacenamiento/planes/default.jpg'):?>
+																<img class="img-fluid border" name="preview_url_infoventa" id="preview_url_infoventa" src="<?php echo $plan_a_editar->url_infoventa; ?>" style="width: 100%;">
+															<?php endif; ?>
 														</div>
 
 														<div class="col-sm-6">
