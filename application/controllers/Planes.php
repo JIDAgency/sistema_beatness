@@ -210,6 +210,7 @@ class Planes extends MY_Controller
         $this->form_validation->set_rules('vigencia_en_dias', 'vigencia en días ', 'trim|required');
         $this->form_validation->set_rules('costo', 'costo', 'trim|required');
         $this->form_validation->set_rules('orden_venta', 'Orden de venta', 'trim|required');
+        $this->form_validation->set_rules('ilimitado', 'ilimitado', 'required');
         $this->form_validation->set_rules('codigo', 'Código', 'trim');
         $this->form_validation->set_rules('url_infoventa', 'Imagen de información', 'trim');
 
@@ -287,6 +288,7 @@ class Planes extends MY_Controller
                 'dominio_id' => $dominio_id,
                 'clases_incluidas' => $this->input->post('clases_incluidas'),
                 'vigencia_en_dias' => $this->input->post('vigencia_en_dias'),
+                'es_ilimitado' => $this->input->post('ilimitado'),
                 'costo' => $this->input->post('costo'),
                 'orden_venta' => $this->input->post('orden_venta'),
                 'codigo' => $this->input->post('codigo'),

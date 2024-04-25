@@ -78,6 +78,15 @@
 													</div>
 												</div>
 												<div class="form-group">
+													<label for="ilimitado">Es ilimitado <span class="red">*</span></label>
+													<select name="ilimitado" id="ilimitado" class="form-control">
+														<option value="" <?php echo set_select('es_ilimitado', '', set_value('es_ilimitado') ? false : '' == $this->session->flashdata('es_ilimitado')); ?>>Seleccione una opcion…</option>
+														<?php foreach (select_mostrar() as $mostrar_key => $mostrar_row) : ?>
+															<option value="<?php echo $mostrar_row->valor; ?>" <?php echo $mostrar_row->activo == false ? '' : 'selected'; ?> <?php echo set_select('es_ilimitado', $mostrar_row->valor, set_value('es_ilimitado') ? false : $mostrar_row->valor == $this->session->flashdata('es_ilimitado')); ?>><?php echo trim($mostrar_row->nombre); ?></option>
+														<?php endforeach; ?>
+													</select>
+												</div>
+												<div class="form-group">
 													<div class="row">
 														<label class="col-lg-12">Vincular a código</label>
 														<div class="col-lg-12">
