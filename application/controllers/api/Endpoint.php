@@ -367,141 +367,27 @@ class Endpoint extends REST_Controller
 
         if (!$resultado_cargo['error']) {
 
-            if (!in_array($plan_row->id, array(20))) {
-
-                if (!$this->asignaciones_model->crear(array(
-                    'usuario_id' => $usuario_valido->id,
-                    'plan_id' => $plan_row->id,
-                    'nombre' => $plan_row->nombre,
-                    'clases_incluidas' => $plan_row->clases_incluidas,
-                    'disciplinas' => implode('|', $disciplinas_array),
-                    'vigencia_en_dias' => $plan_row->vigencia_en_dias,
-                    'fecha_activacion' => date('Y-m-d H:i:s'),
-                    'esta_activo' => 1
-                ))) {
-                    //$this->mensaje_del_sistema('MENSAJE_ERROR', 'Ha ocurrido un error, por favor intentelo mas tarde. (2)', 'usuario/shop');
-                    $this->response(array(
-                        'error' => true,
-                        'mostrar_mensaje' => true,
-                        'titulo' => 'No se realizó el cargo',
-                        'mensaje' => 'Ha ocurrido un error, por favor intentelo mas tarde. (2)'
-                    ), REST_Controller::HTTP_BAD_REQUEST);
-                }
-
-                $asignacion_row = $this->asignaciones_model->obtener_por_id($this->db->insert_id())->row();
-            } else {
-
-                switch ($plan_row->id) {
-                    case 20:
-                        if (!$this->asignaciones_model->crear(array(
-                            'usuario_id' => $usuario_valido->id,
-                            'plan_id' => $plan_row->id,
-                            'nombre' => $plan_row->nombre,
-                            'clases_incluidas' => 10,
-                            'disciplinas' => implode('|', array(2)),
-                            'vigencia_en_dias' => $plan_row->vigencia_en_dias,
-                            'fecha_activacion' => date('Y-m-d H:i:s'),
-                            'esta_activo' => 1
-                        ))) {
-                            //$this->mensaje_del_sistema('MENSAJE_ERROR', 'Ha ocurrido un error, por favor intentelo mas tarde. (2)', 'usuario/shop');
-                            $this->response(array(
-                                'error' => true,
-                                'mostrar_mensaje' => true,
-                                'titulo' => 'No se realizó el cargo',
-                                'mensaje' => 'Ha ocurrido un error, por favor intentelo mas tarde. (2.1)'
-                            ), REST_Controller::HTTP_BAD_REQUEST);
-                        }
-
-                        $asignacion_row_1 = $this->asignaciones_model->obtener_por_id($this->db->insert_id())->row();
-
-                        if (!$this->asignaciones_model->crear(array(
-                            'usuario_id' => $usuario_valido->id,
-                            'plan_id' => $plan_row->id,
-                            'nombre' => $plan_row->nombre,
-                            'clases_incluidas' => 10,
-                            'disciplinas' => implode('|', array(17)),
-                            'vigencia_en_dias' => $plan_row->vigencia_en_dias,
-                            'fecha_activacion' => date('Y-m-d H:i:s'),
-                            'esta_activo' => 1
-                        ))) {
-                            //$this->mensaje_del_sistema('MENSAJE_ERROR', 'Ha ocurrido un error, por favor intentelo mas tarde. (2)', 'usuario/shop');
-                            $this->response(array(
-                                'error' => true,
-                                'mostrar_mensaje' => true,
-                                'titulo' => 'No se realizó el cargo',
-                                'mensaje' => 'Ha ocurrido un error, por favor intentelo mas tarde. (2.1)'
-                            ), REST_Controller::HTTP_BAD_REQUEST);
-                        }
-
-                        $asignacion_row_2 = $this->asignaciones_model->obtener_por_id($this->db->insert_id())->row();
-
-                        if (!$this->asignaciones_model->crear(array(
-                            'usuario_id' => $usuario_valido->id,
-                            'plan_id' => $plan_row->id,
-                            'nombre' => $plan_row->nombre,
-                            'clases_incluidas' => 10,
-                            'disciplinas' => implode('|', array(18)),
-                            'vigencia_en_dias' => $plan_row->vigencia_en_dias,
-                            'fecha_activacion' => date('Y-m-d H:i:s'),
-                            'esta_activo' => 1
-                        ))) {
-                            //$this->mensaje_del_sistema('MENSAJE_ERROR', 'Ha ocurrido un error, por favor intentelo mas tarde. (2)', 'usuario/shop');
-                            $this->response(array(
-                                'error' => true,
-                                'mostrar_mensaje' => true,
-                                'titulo' => 'No se realizó el cargo',
-                                'mensaje' => 'Ha ocurrido un error, por favor intentelo mas tarde. (2.1)'
-                            ), REST_Controller::HTTP_BAD_REQUEST);
-                        }
-
-                        $asignacion_row_3 = $this->asignaciones_model->obtener_por_id($this->db->insert_id())->row();
-
-                        if (!$this->asignaciones_model->crear(array(
-                            'usuario_id' => $usuario_valido->id,
-                            'plan_id' => $plan_row->id,
-                            'nombre' => $plan_row->nombre,
-                            'clases_incluidas' => 10,
-                            'disciplinas' => implode('|', array(19)),
-                            'vigencia_en_dias' => $plan_row->vigencia_en_dias,
-                            'fecha_activacion' => date('Y-m-d H:i:s'),
-                            'esta_activo' => 1
-                        ))) {
-                            //$this->mensaje_del_sistema('MENSAJE_ERROR', 'Ha ocurrido un error, por favor intentelo mas tarde. (2)', 'usuario/shop');
-                            $this->response(array(
-                                'error' => true,
-                                'mostrar_mensaje' => true,
-                                'titulo' => 'No se realizó el cargo',
-                                'mensaje' => 'Ha ocurrido un error, por favor intentelo mas tarde. (2.1)'
-                            ), REST_Controller::HTTP_BAD_REQUEST);
-                        }
-
-                        $asignacion_row_4 = $this->asignaciones_model->obtener_por_id($this->db->insert_id())->row();
-
-                        if (!$this->asignaciones_model->crear(array(
-                            'usuario_id' => $usuario_valido->id,
-                            'plan_id' => $plan_row->id,
-                            'nombre' => $plan_row->nombre,
-                            'clases_incluidas' => 10,
-                            'disciplinas' => implode('|', array(20)),
-                            'vigencia_en_dias' => $plan_row->vigencia_en_dias,
-                            'fecha_activacion' => date('Y-m-d H:i:s'),
-                            'esta_activo' => 1
-                        ))) {
-                            //$this->mensaje_del_sistema('MENSAJE_ERROR', 'Ha ocurrido un error, por favor intentelo mas tarde. (2)', 'usuario/shop');
-                            $this->response(array(
-                                'error' => true,
-                                'mostrar_mensaje' => true,
-                                'titulo' => 'No se realizó el cargo',
-                                'mensaje' => 'Ha ocurrido un error, por favor intentelo mas tarde. (2.1)'
-                            ), REST_Controller::HTTP_BAD_REQUEST);
-                        }
-
-                        $asignacion_row_5 = $this->asignaciones_model->obtener_por_id($this->db->insert_id())->row();
-
-                        $asignaciones_id = json_encode(array($asignacion_row_1->id, $asignacion_row_2->id, $asignacion_row_3->id, $asignacion_row_4->id, $asignacion_row_5->id));
-                        break;
-                }
+            if (!$this->asignaciones_model->crear(array(
+                'usuario_id' => $usuario_valido->id,
+                'plan_id' => $plan_row->id,
+                'nombre' => $plan_row->nombre,
+                'clases_incluidas' => $plan_row->clases_incluidas,
+                'disciplinas' => implode('|', $disciplinas_array),
+                'vigencia_en_dias' => $plan_row->vigencia_en_dias,
+                'es_ilimitado' => !empty($plan_row->es_ilimitado) ? $plan_row->es_ilimitado : 'no',
+                'fecha_activacion' => date('Y-m-d H:i:s'),
+                'esta_activo' => 1
+            ))) {
+                //$this->mensaje_del_sistema('MENSAJE_ERROR', 'Ha ocurrido un error, por favor intentelo mas tarde. (2)', 'usuario/shop');
+                $this->response(array(
+                    'error' => true,
+                    'mostrar_mensaje' => true,
+                    'titulo' => 'No se realizó el cargo',
+                    'mensaje' => 'Ha ocurrido un error, por favor intentelo mas tarde. (2)'
+                ), REST_Controller::HTTP_BAD_REQUEST);
             }
+
+            $asignacion_row = $this->asignaciones_model->obtener_por_id($this->db->insert_id())->row();
 
             if (!$this->ventas_model->crear(array(
                 'concepto' => $plan_row->nombre,

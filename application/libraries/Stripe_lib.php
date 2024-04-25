@@ -1,22 +1,26 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed');
 
 // require_once APPPATH . 'third_party/vendor/autoload.php';
-        require  APPPATH . "third_party/vendor/stripe-php/init.php";
+require  APPPATH . "third_party/vendor/stripe-php/init.php";
 
-class Stripe_lib {
-    private $stripe;
+class Stripe_lib
+{
+	private $stripe;
 
-    public function __construct(){      
-		//set api key
+	public function __construct()
+	{
 		$stripe_keys = array(
-
-			/** Produccion Beatness by JID */
+			// Stripe Keys de PRODUCCIÓN
 			"secret_key"      => "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",
 			"publishable_key" => "pk_live_51OtxwKHKnadmFYpOGzncEgc7m6VjjxoigX0g0CROID5tbnE6p2oWMbz6AKn5IVO7YAVAejJVUqnwEBkfGwSI9K8p00Ijdh5Mcw"
+
+			// Stripe Keys de SANDBOX
+			// "secret_key"      => "sk_test_51OtxwKHKnadmFYpOSrh5jjOnqVfOoMJWqrTjJMQ5RcmN93BXwDcIW1Sgqpp153bdMnVI6S6I9mAguInNDpryYXog00JjEIAqXZ",
+			// "publishable_key" => "pk_test_51OtxwKHKnadmFYpOMWZZNJ49B4AcsXoBh9Z9pQhvXa4Hqdbhb42GiOPt2ReM6sBcKvi3JXp01j2PCdcDoW2idapV00pJ02cLtj"
 		);
 
 		$this->stripe = new \Stripe\StripeClient($stripe_keys['secret_key']);
-    }
+	}
 
 	public function cargo(
 		$amount,
@@ -29,7 +33,7 @@ class Stripe_lib {
 		if ($token) {
 
 			try {
-				
+
 				$cargo = $this->stripe->charges->create([
 					'amount' => $amount,
 					'currency' => 'mxn',
@@ -41,8 +45,7 @@ class Stripe_lib {
 					'receipt_email' => $receipt_email,
 					'source' => $token,
 				]);
-		
-			} catch(\Stripe\Exception\CardException $e) {
+			} catch (\Stripe\Exception\CardException $e) {
 				// Since it's a decline, \Stripe\Exception\CardException will be caught
 				//echo 'Status is:' . $e->getHttpStatus() . '\n';
 				//echo 'Type is:' . $e->getError()->type . '\n';
@@ -104,13 +107,13 @@ class Stripe_lib {
 				'error' => false,
 				'mensaje' => 'El cargo se realizó correctamente',
 			);
-
 		}
 
 		return false;
 	}
 
-	public function obtener_errores() {
+	public function obtener_errores()
+	{
 		# code...
 	}
 }
