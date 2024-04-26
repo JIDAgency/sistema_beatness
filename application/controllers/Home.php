@@ -1,15 +1,17 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') or exit('No direct script access allowed');
 
-class Home extends MY_Controller {
+class Home extends MY_Controller
+{
 
-	public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
-	}
+    }
 
-    public function index() {
+    public function index()
+    {
         // Cargar estilos y scripts
-        $data['styles'] = array(
-        );
+        $data['styles'] = array();
         $data['scripts'] = array(
             array('es_rel' => false, 'src' => 'https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js'),
             array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/charts/echarts/echarts.js'),
@@ -18,10 +20,5 @@ class Home extends MY_Controller {
         );
 
         $this->construir_public_ui('home/index', $data);
-
-
     }
-
-
 }
-
