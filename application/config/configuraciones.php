@@ -38,14 +38,13 @@ $config['db_activa'] = true;
 |
 */
 
-// $config['sistema_id'] = 'sistema_beatnes';
-
-// $config['titulo'] = '';
-// $config['nombre_comercial'] = '';
-// $config['nombre_fiscal'] = '';
-// $config['descripcion'] = '';
-// $config['palabras_clave'] = '';
-// $config['autor'] = 'jid.agency';
+$config['sistema_id'] = 'sistema_beatnes';
+$config['titulo'] = '';
+$config['nombre_comercial'] = '';
+$config['nombre_fiscal'] = '';
+$config['descripcion'] = '';
+$config['palabras_clave'] = '';
+$config['autor'] = 'jid.agency';
 
 /*
 |--------------------------------------------------------------------------
@@ -55,11 +54,11 @@ $config['db_activa'] = true;
 |
 */
 
-// $config['whatsapp'] = null;
-// $config['facebook'] = null;
-// $config['instagram'] = null;
-// $config['linkedin'] = null;
-// $config['twitter'] = null;
+$config['whatsapp'] = null;
+$config['facebook'] = null;
+$config['instagram'] = null;
+$config['linkedin'] = null;
+$config['twitter'] = null;
 
 /* ====== Estatus del sistema ====== */
 

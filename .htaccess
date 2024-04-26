@@ -1,10 +1,14 @@
-<IfModule mod_rewrite.c>
 RewriteEngine On
-RewriteBase /
+
+# Redirigir de www a no-www
+RewriteCond %{HTTP_HOST} ^www\.beatness\.com\.mx [NC]
+RewriteRule ^(.*)$ https://beatness.com.mx/$1 [L,R=301]
+
+# Redirigir a HTTPS
+RewriteCond %{HTTPS} off
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Regla para manejar URLs amigables para CodeIgniter
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ sistema_beatness//index.php?/$1 [L]
-</IfModule>
-<IfModule !mod_rewrite.c>
-ErrorDocument 404 /index.php
-</IfModule>
+RewriteRule ^(.*)$ index.php/$1 [L]
