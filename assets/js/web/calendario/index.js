@@ -1,5 +1,5 @@
 var select = document.getElementById('disciplina_seleccionada');
-var disciplina_seleccionada = 2;
+var disciplina_seleccionada = 10;
 
 document.getElementById('disciplina_titulo').innerHTML = select.options[select.selectedIndex].innerText;
 
@@ -15,7 +15,7 @@ select.onchange = function () {
 };
 
 function obtener_clases_semana_actual_por_disciplina_id(disciplina_id) {
-    fetch('https://beatness.com.mx/web/calendario/obtener_clases_semana_actual_por_disciplina_id/' + disciplina_id)
+    fetch('../web/calendario/obtener_clases_semana_actual_por_disciplina_id/' + disciplina_id)
         .then(response => response.json())
         .then(data => {
             if (data.error) {
@@ -33,7 +33,7 @@ function obtener_clases_semana_actual_por_disciplina_id(disciplina_id) {
 }
 
 function obtener_clases_fin_de_semana_actual_por_disciplina_id(disciplina_id) {
-    fetch('https://beatness.com.mx/web/calendario/obtener_clases_fin_de_semana_actual_por_disciplina_id/' + disciplina_id)
+    fetch('../web/calendario/obtener_clases_fin_de_semana_actual_por_disciplina_id/' + disciplina_id)
         .then(response => response.json())
         .then(data => {
             if (data.error) {

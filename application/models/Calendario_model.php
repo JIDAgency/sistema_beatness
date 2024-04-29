@@ -19,8 +19,11 @@ class Calendario_model extends CI_Model
     public function obtener_clases_semana_actual()
     {
         // Obtener la fecha de inicio y fin de la semana actual
-        $fecha_inicio_semana = date('Y-m-d', strtotime('Monday this week'));
-        $fecha_fin_semana = date('Y-m-d', strtotime('Friday this week'));
+        // $fecha_inicio_semana = date('Y-m-d', strtotime('Monday this week'));
+        // $fecha_fin_semana = date('Y-m-d', strtotime('Friday this week'));
+
+        $fecha_inicio_semana = date('Y-m-d', strtotime('Monday next week'));
+        $fecha_fin_semana = date('Y-m-d', strtotime('Friday next week'));
 
         // Consulta para obtener las clases de la semana actual
         $query = $this->db
@@ -40,8 +43,11 @@ class Calendario_model extends CI_Model
     public function obtener_clases_semana_actual_por_disciplina_id($disciplina_id)
     {
         // Obtener la fecha de inicio y fin de la semana actual
-        $fecha_inicio_semana = date('Y-m-d', strtotime('Monday this week'));
-        $fecha_fin_semana = date('Y-m-d', strtotime('Friday this week'));
+        //$fecha_inicio_semana = date('Y-m-d', strtotime('Monday this week'));
+        //$fecha_fin_semana = date('Y-m-d', strtotime('Friday this week'));
+
+        $fecha_inicio_semana = date('Y-m-d', strtotime('Monday next week'));
+        $fecha_fin_semana = date('Y-m-d', strtotime('Friday next week'));
 
         // Consulta para obtener las clases de la semana actual
         $query = $this->db
@@ -64,8 +70,11 @@ class Calendario_model extends CI_Model
     public function obtener_clases_fin_de_semana_actual()
     {
         // Obtener la fecha de inicio y fin de la semana actual
-        $fecha_inicio_semana = date('Y-m-d', strtotime('Saturday this week'));
-        $fecha_fin_semana = date('Y-m-d', strtotime('Sunday this week'));
+        // $fecha_inicio_semana = date('Y-m-d', strtotime('Saturday this week'));
+        // $fecha_fin_semana = date('Y-m-d', strtotime('Sunday this week'));
+
+        $fecha_inicio_semana = date('Y-m-d', strtotime('Saturday next week'));
+        $fecha_fin_semana = date('Y-m-d', strtotime('Sunday next week'));
 
         // Consulta para obtener las clases de la semana actual
         $query = $this->db
@@ -85,8 +94,11 @@ class Calendario_model extends CI_Model
     public function obtener_clases_fin_de_semana_actual_por_disciplina_id($disciplina_id)
     {
         // Obtener la fecha de inicio y fin de la semana actual
-        $fecha_inicio_semana = date('Y-m-d', strtotime('Saturday this week'));
-        $fecha_fin_semana = date('Y-m-d', strtotime('Sunday this week'));
+        // $fecha_inicio_semana = date('Y-m-d', strtotime('Saturday this week'));
+        // $fecha_fin_semana = date('Y-m-d', strtotime('Sunday this week'));
+
+        $fecha_inicio_semana = date('Y-m-d', strtotime('Saturday next week'));
+        $fecha_fin_semana = date('Y-m-d', strtotime('Sunday next week'));
 
         // Consulta para obtener las clases de la semana actual
         $query = $this->db

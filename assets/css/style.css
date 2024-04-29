@@ -197,10 +197,15 @@ html body.bg-full-screen-image {
     color: rgba(27, 237, 245, 1);
 }
 
-html body.bg-calendario {
+body.bg-calendario {
     background: url(../../almacenamiento/img/bg-calendario.svg) no-repeat center center;
     background-size: cover;
+    height: 100vh;
+    /* Ajusta la altura del cuerpo al 100% de la altura visible del dispositivo */
+    background-position: center center;
+    /* Centra la imagen verticalmente y horizontalmente */
 }
+
 
 .editable-cell:hover {
     background-color: rgba(0, 0, 0, 0.07);
@@ -234,7 +239,9 @@ html body.bg-calendario {
 }
 
 .custom-button {
-    background-color: #ffffff; /* Color de fondo rojo */
-    color: #000000; /* Color de texto blanco */
+    background-color: #ffffff;
+    /* Color de fondo rojo */
+    color: #000000;
+    /* Color de texto blanco */
     /* Otros estilos que desees aplicar */
 }

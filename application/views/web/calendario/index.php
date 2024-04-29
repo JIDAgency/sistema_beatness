@@ -5,18 +5,16 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
-    
-    <meta name="description" content="<?php echo description();?>">
-    <meta name="keywords" content="<?php echo keywords();?>">
-    <meta name="author" content="<?php echo author();?>">
-    
+
+    <meta name="description" content="<?php echo description(); ?>">
+    <meta name="keywords" content="<?php echo keywords(); ?>">
+    <meta name="author" content="<?php echo author(); ?>">
+
     <title><?php echo isset($pagina_titulo) ? $pagina_titulo . " | " : ""; ?><?php echo titulo() ? titulo() : ""; ?></title>
 
     <link rel="apple-touch-icon" href="<?php echo base_url(); ?>almacenamiento/logos/open-graph.jpg">
     <link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url(); ?>almacenamiento/logos/logo.jpg">
-    <link
-        href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i%7CMuli:300,400,500,700"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i%7CMuli:300,400,500,700" rel="stylesheet">
     <!-- BEGIN VENDOR CSS-->
     <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>app-assets/css/vendors.css">
     <!-- END VENDOR CSS-->
@@ -24,10 +22,8 @@
     <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>app-assets/css/app.css">
     <!-- END ROBUST CSS-->
     <!-- BEGIN Page Level CSS-->
-    <link rel="stylesheet" type="text/css"
-        href="<?php echo base_url(); ?>app-assets/css/core/menu/menu-types/horizontal-menu.css">
-    <link rel="stylesheet" type="text/css"
-        href="<?php echo base_url(); ?>app-assets/css/core/colors/palette-gradient.css">
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>app-assets/css/core/menu/menu-types/horizontal-menu.css">
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>app-assets/css/core/colors/palette-gradient.css">
     <!-- END Page Level CSS-->
     <!-- BEGIN Custom CSS-->
     <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/style.css">
@@ -101,8 +97,7 @@
     </style>
 </head>
 
-<body class="horizontal-layout bg-calendario horizontal-menu horizontal-menu-padding 2-columns   menu-expanded"
-    data-open="hover" data-menu="horizontal-menu" data-col="2-columns">
+<body class="horizontal-layout bg-calendario horizontal-menu horizontal-menu-padding 2-columns   menu-expanded" data-open="hover" data-menu="horizontal-menu" data-col="2-columns">
 
     <!-- ////////////////////////////////////////////////////////////////////////////-->
 
@@ -129,11 +124,10 @@
                                 <div class="row">
                                     <label class="col-lg-12 text-white"><b>+ DISCIPLINAS</b></label>
                                     <div class="col-lg-12">
-                                        <select class="form-control select2 custom-select tp-select"
-                                            name="disciplina_seleccionada" id="disciplina_seleccionada" required>
-                                            <?php foreach ($disciplinas_list as $disciplina_key => $disciplina_value): ?>
-                                                <?php if ($disciplina_key != 0): ?>
-                                                    <option value="<?php echo $disciplina_value->id; ?>" <?php echo ($disciplina_key == 1) ? 'selected' : ''; ?>         <?php echo set_select('disciplina_seleccionada', $disciplina_value->id, set_value('disciplina_seleccionada') ? false : $disciplina_value->id == $this->session->flashdata('disciplina_seleccionada')); ?>>
+                                        <select class="form-control select2 custom-select tp-select" name="disciplina_seleccionada" id="disciplina_seleccionada" required>
+                                            <?php foreach ($disciplinas_list as $disciplina_key => $disciplina_value) : ?>
+                                                <?php if ($disciplina_key != 0 and in_array($disciplina_value->id, array(10, 19))) : ?>
+                                                    <option value="<?php echo $disciplina_value->id; ?>" <?php echo ($disciplina_key == 1) ? 'selected' : ''; ?> <?php echo set_select('disciplina_seleccionada', $disciplina_value->id, set_value('disciplina_seleccionada') ? false : $disciplina_value->id == $this->session->flashdata('disciplina_seleccionada')); ?>>
                                                         <?php echo trim(ucfirst($disciplina_value->nombre)); ?>
                                                     </option>
                                                 <?php endif; ?>
@@ -173,7 +167,7 @@
 
                                     </div>
                                 </div>
-                                
+
                             </div>
                         </div>
                     </div>

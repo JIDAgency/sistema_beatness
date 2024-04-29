@@ -21,8 +21,7 @@ class Calendario extends CI_Controller
         $data['regresar_a'] = 'site/calendario';
         $controlador_js = "site/calendario/index";
 
-        $data['styles'] = array(
-        );
+        $data['styles'] = array();
 
         $data['scripts'] = array(
             array('es_rel' => true, 'src' => '' . $controlador_js . '.js'),
@@ -63,6 +62,18 @@ class Calendario extends CI_Controller
         ';
 
         if ($disciplina_id == 3) {
+            $contenido .= '
+                <tr>
+                    <td class=""><small></small></td>
+                    <td class=""><small><span class="blue lighten-3">LEGS &</span><br>BOOTY</small></td>
+                    <td class=""><small><span class="blue lighten-3">UPPER</span><br>BODY</small></td>
+                    <td class=""><small><span class="blue lighten-3">KILLER</span><br>ABS</small></td>
+                    <td class=""><small><span class="blue lighten-3">ARMS &</span><br>BOOTY</small></td>
+                    <td class=""><small><span class="blue lighten-3">FULL</span><br>BODY</small></td>
+                </tr>
+            ';
+        }
+        if ($disciplina_id == 10) {
             $contenido .= '
                 <tr>
                     <td class=""><small></small></td>
@@ -137,6 +148,15 @@ class Calendario extends CI_Controller
         ';
 
         if ($disciplina_id == 3) {
+            $contenido .= '
+                <tr>
+                    <td class=""><small></small></td>
+                    <td class=""><small><span class="blue lighten-3">ABS &</span><br>BOOTY</small></td>
+                    <td class=""><small><span class="blue lighten-3">FULL</span><br>BODY</small></td>
+                </tr>
+            ';
+        }
+        if ($disciplina_id == 10) {
             $contenido .= '
                 <tr>
                     <td class=""><small></small></td>
