@@ -197,16 +197,6 @@ html body.bg-full-screen-image {
     color: rgba(27, 237, 245, 1);
 }
 
-body.bg-calendario {
-    background: url(../../almacenamiento/img/bg-calendario.svg) no-repeat center center;
-    background-size: cover;
-    height: 100vh;
-    /* Ajusta la altura del cuerpo al 100% de la altura visible del dispositivo */
-    background-position: center center;
-    /* Centra la imagen verticalmente y horizontalmente */
-}
-
-
 .editable-cell:hover {
     background-color: rgba(0, 0, 0, 0.07);
 }

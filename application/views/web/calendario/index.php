@@ -29,72 +29,12 @@
     <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/style.css">
     <!-- END Custom CSS-->
 
-    <style>
-        .nav {
-            padding-left: 0 !important;
-        }
+    <?php if (isset($styles) && is_array($styles)) : ?>
+        <?php foreach ($styles as $style) : ?>
+            <link rel="stylesheet" type="text/css" href="<?php echo !$style['es_rel'] ? $style['href'] : base_url() . 'assets/css/' . $style['href']; ?>">
+        <?php endforeach; ?>
+    <?php endif; ?>
 
-        .card {
-            background-color: rgba(240, 240, 240, 0.15);
-            border-radius: 8px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            border-spacing: 0;
-            color: #FFFFFF;
-
-        }
-
-        th,
-        td {
-            padding: 8px;
-            text-align: center;
-        }
-
-        th {
-            background-color: rgba(240, 240, 240, 0.30);
-            color: #FFFFFF;
-        }
-
-        th:first-child {
-            border-top-left-radius: 8px;
-            border-bottom-left-radius: 8px;
-        }
-
-        th:last-child {
-            border-top-right-radius: 8px;
-            border-bottom-right-radius: 8px;
-        }
-
-        th:first-child,
-        td:first-child {
-            text-align: left;
-        }
-
-        tr:first-child td {
-            border-top: none;
-        }
-
-        tr:last-child td {
-            border-bottom: none;
-        }
-
-        .weekdays {
-            margin-bottom: 20px;
-        }
-
-        /* Estilos personalizados */
-        .tp-select {
-            background-color: rgba(255, 255, 255, 0.2);
-            /* Color de fondo semi-transparente */
-            color: white;
-            /* Color de texto blanco */
-            opacity: 0.8;
-            /* Opacidad del texto */
-        }
-    </style>
 </head>
 
 <body class="horizontal-layout bg-calendario horizontal-menu horizontal-menu-padding 2-columns   menu-expanded" data-open="hover" data-menu="horizontal-menu" data-col="2-columns">
@@ -198,7 +138,11 @@
     <!-- BEGIN PAGE LEVEL JS-->
     <script src="<?php echo base_url(); ?>app-assets/js/scripts/navs/navs.js"></script>
     <!-- END PAGE LEVEL JS-->
-    <script src="<?php echo base_url(); ?>assets/js/web/calendario/index.js"></script>
+    <?php if (isset($scripts) && is_array($scripts)) : ?>
+        <?php foreach ($scripts as $script) : ?>
+            <script type="text/javascript" src="<?php echo !$script['es_rel'] ? $script['src'] : base_url() . 'assets/js/' . $script['src']; ?>"></script>
+        <?php endforeach; ?>
+    <?php endif; ?>
 
 </body>
 

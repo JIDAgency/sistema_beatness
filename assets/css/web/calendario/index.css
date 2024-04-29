@@ -1,0 +1,70 @@
+.nav {
+    padding-left: 0 !important;
+}
+
+.card {
+    background-color: rgba(240, 240, 240, 0.15);
+    border-radius: 8px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    color: #FFFFFF;
+
+}
+
+th,
+td {
+    padding: 8px;
+    text-align: center;
+}
+
+th {
+    background-color: rgba(240, 240, 240, 0.30);
+    color: #FFFFFF;
+}
+
+th:first-child {
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+}
+
+th:last-child {
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+th:first-child,
+td:first-child {
+    text-align: left;
+}
+
+tr:first-child td {
+    border-top: none;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+.weekdays {
+    margin-bottom: 20px;
+}
+
+/* Estilos personalizados */
+.tp-select {
+    background-color: rgba(255, 255, 255, 0.2);
+    /* Color de fondo semi-transparente */
+    color: white;
+    /* Color de texto blanco */
+    opacity: 0.8;
+    /* Opacidad del texto */
+}
+
+html body.bg-calendario {
+    background: url(../../../../almacenamiento/img/bg-calendario.svg) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    background-size: cover;
+}

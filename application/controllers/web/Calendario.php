@@ -17,11 +17,13 @@ class Calendario extends CI_Controller
         $data['pagina_subtitulo'] = '';
         $data['pagina_menu_calendario'] = true;
 
-        $data['controlador'] = 'site/calendario';
-        $data['regresar_a'] = 'site/calendario';
-        $controlador_js = "site/calendario/index";
+        $data['controlador'] = 'web/calendario';
+        $data['regresar_a'] = 'web/calendario';
+        $controlador_js = "web/calendario/index";
 
-        $data['styles'] = array();
+        $data['styles'] = array(
+            array('es_rel' => true, 'href' => 'web/calendario/index.css'),
+        );
 
         $data['scripts'] = array(
             array('es_rel' => true, 'src' => '' . $controlador_js . '.js'),
@@ -46,7 +48,9 @@ class Calendario extends CI_Controller
             $horarios_semana[$hora_inicio][$dia_semana] = $clase['instructor_nombre'];
         }
 
-        $contenido = '
+        $contenido = '';
+
+        $contenido .= '
         <table class="semana responsive">
             <thead>
                 <tr>
@@ -135,7 +139,9 @@ class Calendario extends CI_Controller
             $horarios_semana[$hora_inicio][$dia_semana] = $clase['instructor_nombre'];
         }
 
-        $contenido = '
+        $contenido = '';
+
+        $contenido .= '
         <table class="semana">
             <thead>
                 <tr>
