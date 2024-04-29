@@ -69,11 +69,11 @@ class Calendario extends CI_Controller
             $contenido .= '
                 <tr>
                     <td class=""><small></small></td>
-                    <td class=""><small><span class="blue lighten-3">LEGS &</span><br>BOOTY</small></td>
-                    <td class=""><small><span class="blue lighten-3">UPPER</span><br>BODY</small></td>
-                    <td class=""><small><span class="blue lighten-3">KILLER</span><br>ABS</small></td>
-                    <td class=""><small><span class="blue lighten-3">ARMS &</span><br>BOOTY</small></td>
-                    <td class=""><small><span class="blue lighten-3">FULL</span><br>BODY</small></td>
+                    <td class=""><small><span class="blue lighten-3">LEGS &<br>BOOTY</span></small></td>
+                    <td class=""><small><span class="blue lighten-3">UPPER<br>BODY</span></small></td>
+                    <td class=""><small><span class="blue lighten-3">KILLER<br>ABS</span></small></td>
+                    <td class=""><small><span class="blue lighten-3">ARMS &<br>BOOTY</span></small></td>
+                    <td class=""><small><span class="blue lighten-3">FULL<br>BODY</span></small></td>
                 </tr>
             ';
         }
@@ -81,11 +81,11 @@ class Calendario extends CI_Controller
             $contenido .= '
                 <tr>
                     <td class=""><small></small></td>
-                    <td class=""><small><span class="blue lighten-3">LEGS &</span><br>BOOTY</small></td>
-                    <td class=""><small><span class="blue lighten-3">UPPER</span><br>BODY</small></td>
-                    <td class=""><small><span class="blue lighten-3">KILLER</span><br>ABS</small></td>
-                    <td class=""><small><span class="blue lighten-3">ARMS &</span><br>BOOTY</small></td>
-                    <td class=""><small><span class="blue lighten-3">FULL</span><br>BODY</small></td>
+                    <td class=""><small><span class="blue lighten-3">LEGS &<br>BOOTY</span></small></td>
+                    <td class=""><small><span class="blue lighten-3">UPPER<br>BODY</span></small></td>
+                    <td class=""><small><span class="blue lighten-3">KILLER<br>ABS</span></small></td>
+                    <td class=""><small><span class="blue lighten-3">ARMS &<br>BOOTY</span></small></td>
+                    <td class=""><small><span class="blue lighten-3">FULL<br>BODY</span></small></td>
                 </tr>
             ';
         }
@@ -157,8 +157,8 @@ class Calendario extends CI_Controller
             $contenido .= '
                 <tr>
                     <td class=""><small></small></td>
-                    <td class=""><small><span class="blue lighten-3">ABS &</span><br>BOOTY</small></td>
-                    <td class=""><small><span class="blue lighten-3">FULL</span><br>BODY</small></td>
+                    <td class=""><small><span class="blue lighten-3">ABS &<br>BOOTY</span></small></td>
+                    <td class=""><small><span class="blue lighten-3">FULL<br>BODY</span></small></td>
                 </tr>
             ';
         }
@@ -166,8 +166,8 @@ class Calendario extends CI_Controller
             $contenido .= '
                 <tr>
                     <td class=""><small></small></td>
-                    <td class=""><small><span class="blue lighten-3">ABS &</span><br>BOOTY</small></td>
-                    <td class=""><small><span class="blue lighten-3">FULL</span><br>BODY</small></td>
+                    <td class=""><small><span class="blue lighten-3">ABS &<br>BOOTY</span></small></td>
+                    <td class=""><small><span class="blue lighten-3">FULL<br>BODY</span></small></td>
                 </tr>
             ';
         }
@@ -240,11 +240,11 @@ class Calendario extends CI_Controller
             $contenido .= '
                 <tr>
                     <td class=""><small></small></td>
-                    <td class=""><small><span class="blue lighten-3">LEGS &</span><br>BOOTY</small></td>
-                    <td class=""><small><span class="blue lighten-3">UPPER</span><br>BODY</small></td>
-                    <td class=""><small><span class="blue lighten-3">KILLER</span><br>ABS</small></td>
-                    <td class=""><small><span class="blue lighten-3">ARMS &</span><br>BOOTY</small></td>
-                    <td class=""><small><span class="blue lighten-3">FULL</span><br>BODY</small></td>
+                    <td class=""><small><span class="blue lighten-3">LEGS &<br>BOOTY</span></small></td>
+                    <td class=""><small><span class="blue lighten-3">UPPER<br>BODY</span></small></td>
+                    <td class=""><small><span class="blue lighten-3">KILLER<br>ABS</span></small></td>
+                    <td class=""><small><span class="blue lighten-3">ARMS &<br>BOOTY</span></small></td>
+                    <td class=""><small><span class="blue lighten-3">FULL<br>BODY</span></small></td>
                 </tr>
             ';
         }
@@ -252,11 +252,11 @@ class Calendario extends CI_Controller
             $contenido .= '
                 <tr>
                     <td class=""><small></small></td>
-                    <td class=""><small><span class="blue lighten-3">LEGS &</span><br>BOOTY</small></td>
-                    <td class=""><small><span class="blue lighten-3">UPPER</span><br>BODY</small></td>
-                    <td class=""><small><span class="blue lighten-3">KILLER</span><br>ABS</small></td>
-                    <td class=""><small><span class="blue lighten-3">ARMS &</span><br>BOOTY</small></td>
-                    <td class=""><small><span class="blue lighten-3">FULL</span><br>BODY</small></td>
+                    <td class=""><small><span class="blue lighten-3">LEGS &<br>BOOTY</span></small></td>
+                    <td class=""><small><span class="blue lighten-3">UPPER<br>BODY</span></small></td>
+                    <td class=""><small><span class="blue lighten-3">KILLER<br>ABS</span></small></td>
+                    <td class=""><small><span class="blue lighten-3">ARMS &<br>BOOTY</span></small></td>
+                    <td class=""><small><span class="blue lighten-3">FULL<br>BODY</span></small></td>
                 </tr>
             ';
         }
@@ -326,8 +326,8 @@ class Calendario extends CI_Controller
             $contenido .= '
                 <tr>
                     <td class=""><small></small></td>
-                    <td class=""><small><span class="blue lighten-3">ABS &</span><br>BOOTY</small></td>
-                    <td class=""><small><span class="blue lighten-3">FULL</span><br>BODY</small></td>
+                    <td class=""><small><span class="blue lighten-3">ABS &<br>BOOTY</span></small></td>
+                    <td class=""><small><span class="blue lighten-3">FULL<br>BODY</span></small></td>
                 </tr>
             ';
         }
@@ -335,8 +335,8 @@ class Calendario extends CI_Controller
             $contenido .= '
                 <tr>
                     <td class=""><small></small></td>
-                    <td class=""><small><span class="blue lighten-3">ABS &</span><br>BOOTY</small></td>
-                    <td class=""><small><span class="blue lighten-3">FULL</span><br>BODY</small></td>
+                    <td class=""><small><span class="blue lighten-3">ABS &<br>BOOTY</span></small></td>
+                    <td class=""><small><span class="blue lighten-3">FULL<br>BODY</span></small></td>
                 </tr>
             ';
         }

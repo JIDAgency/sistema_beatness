@@ -144,33 +144,6 @@
                                 </div>
                             </div>
                         </div>
-
-                        <!-- <div class="col-lg-12 col-md-12 col-sm-12">
-                            <div class="card card-transparent no-border">
-
-                                <div class="card-header bg-transparent">
-                                    <h4 class="card-title text-bold-600 text-white" name="card_titulo" id="card_titulo">
-                                        <span name="disciplina_titulo_siguiente" id="disciplina_titulo_siguiente"></span>
-                                    </h4>
-                                </div>
-
-                                <div class="card-content">
-                                    <div class="card-body bg-transparent">
-
-                                        <div name="contenido_semana_siguiente" id="contenido_semana_siguiente">
-                                        </div>
-
-                                        <br>
-                                        <br>
-
-                                        <div name="contenido_fin_de_semana_siguiente" id="contenido_fin_de_semana_siguiente">
-                                        </div>
-
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div> -->
                     </div>
                 </section>
                 <!-- End -->

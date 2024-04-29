@@ -1,5 +1,6 @@
 var body = document.querySelector('body');
 var select = document.getElementById('disciplina_seleccionada');
+
 var disciplina_seleccionada = 10;
 
 document.getElementById('disciplina_titulo').innerHTML = select.options[select.selectedIndex].innerText;
@@ -7,20 +8,19 @@ document.getElementById('disciplina_titulo_siguiente').innerHTML = select.option
 
 obtener_clases_semana_actual_por_disciplina_id(disciplina_seleccionada);
 obtener_clases_fin_de_semana_actual_por_disciplina_id(disciplina_seleccionada);
-
 obtener_clases_semana_siguiente_por_disciplina_id(disciplina_seleccionada);
 obtener_clases_fin_de_semana_siguiente_por_disciplina_id(disciplina_seleccionada);
 
 cambiarFondo();
 
 select.onchange = function () {
-    //document.getElementById('card_titulo').innerHTML = this.value;
     document.getElementById('disciplina_titulo').innerHTML = select.options[select.selectedIndex].innerText;
     document.getElementById('disciplina_titulo_siguiente').innerHTML = select.options[select.selectedIndex].innerText;
+
     disciplina_seleccionada = this.value;
+
     obtener_clases_semana_actual_por_disciplina_id(disciplina_seleccionada);
     obtener_clases_fin_de_semana_actual_por_disciplina_id(disciplina_seleccionada);
-
     obtener_clases_semana_siguiente_por_disciplina_id(disciplina_seleccionada);
     obtener_clases_fin_de_semana_siguiente_por_disciplina_id(disciplina_seleccionada);
 
@@ -105,6 +105,6 @@ function cambiarFondo() {
     } else if (disciplina_seleccionada == 19) {
         body.style.backgroundImage = "url('../almacenamiento/disciplinas/bg-calendario-indoorcycling.jpg')";
     } else {
-        body.style.backgroundImage = "url('../almacenamiento/img/bg-calendario.svg')";
+        body.style.backgroundImage = "url('../almacenamiento/disciplinas/bg-calendario.svg')";
     }
 }

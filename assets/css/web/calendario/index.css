@@ -64,7 +64,21 @@ tr:last-child td {
 }
 
 html body.bg-calendario {
-    background: url(../../../../almacenamiento/img/bg-calendario.svg) no-repeat center center fixed;
+    background: url(../../../../almacenamiento/disciplinas/bg-calendario.svg) no-repeat center center fixed;
     -webkit-background-size: cover;
     background-size: cover;
+}
+
+.nav.nav-tabs .nav-item .nav-link.active {
+    background-color: rgba(32, 17, 44, 1);
+    border-radius: 0.25rem 0.25rem 0 0;
+    color: rgb(205, 0, 255);
+}
+
+.nav-tabs {
+    border-bottom: none !important;
+}
+
+.nav-tabs .nav-link.active {
+    border-color: transparent !important;
 }
