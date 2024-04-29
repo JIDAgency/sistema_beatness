@@ -84,32 +84,93 @@
                     </div>
 
                     <div class="row match-height">
-                        <div class="col-xl-12 col-lg-12">
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <div class="card card-transparent no-border">
+                                <ul class="nav nav-tabs">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" id="base-tab1" data-toggle="tab" aria-controls="tab1" href="#tab1" aria-expanded="true">Semana actual</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="base-tab2" data-toggle="tab" aria-controls="tab2" href="#tab2" aria-expanded="false">Semana siguiente</a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div role="tabpanel" class="tab-pane active" id="tab1" aria-expanded="true" aria-labelledby="base-tab1">
+                                        <div class="card-header bg-transparent">
+                                            <h4 class="card-title text-bold-600 text-white" name="card_titulo" id="card_titulo">
+                                                <span name="disciplina_titulo" id="disciplina_titulo"></span>
+                                            </h4>
+                                        </div>
+
+                                        <div class="card-content">
+                                            <div class="card-body bg-transparent">
+
+                                                <div name="contenido_semana" id="contenido_semana">
+                                                </div>
+
+                                                <br>
+                                                <br>
+
+                                                <div name="contenido_fin_de_semana" id="contenido_fin_de_semana">
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" id="tab2" aria-labelledby="base-tab2">
+
+                                        <div class="card-header bg-transparent">
+                                            <h4 class="card-title text-bold-600 text-white" name="card_titulo" id="card_titulo">
+                                                <span name="disciplina_titulo_siguiente" id="disciplina_titulo_siguiente"></span>
+                                            </h4>
+                                        </div>
+
+                                        <div class="card-content">
+                                            <div class="card-body bg-transparent">
+
+                                                <div name="contenido_semana_siguiente" id="contenido_semana_siguiente">
+                                                </div>
+
+                                                <br>
+                                                <br>
+
+                                                <div name="contenido_fin_de_semana_siguiente" id="contenido_fin_de_semana_siguiente">
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- <div class="col-lg-12 col-md-12 col-sm-12">
                             <div class="card card-transparent no-border">
 
                                 <div class="card-header bg-transparent">
                                     <h4 class="card-title text-bold-600 text-white" name="card_titulo" id="card_titulo">
-                                        <span name="disciplina_titulo" id="disciplina_titulo"></span>
+                                        <span name="disciplina_titulo_siguiente" id="disciplina_titulo_siguiente"></span>
                                     </h4>
                                 </div>
 
                                 <div class="card-content">
                                     <div class="card-body bg-transparent">
 
-                                        <div name="contenido_semana" id="contenido_semana">
+                                        <div name="contenido_semana_siguiente" id="contenido_semana_siguiente">
                                         </div>
 
                                         <br>
                                         <br>
 
-                                        <div name="contenido_fin_de_semana" id="contenido_fin_de_semana">
+                                        <div name="contenido_fin_de_semana_siguiente" id="contenido_fin_de_semana_siguiente">
                                         </div>
 
                                     </div>
                                 </div>
 
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </section>
                 <!-- End -->

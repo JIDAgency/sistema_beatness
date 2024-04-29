@@ -208,4 +208,173 @@ class Calendario extends CI_Controller
             ->set_content_type('application/json')
             ->set_output(json_encode($response));
     }
+
+    public function obtener_clases_semana_siguiente_por_disciplina_id($disciplina_id = null)
+    {
+        $clases_semana = $this->calendario_model->obtener_clases_semana_siguiente_por_disciplina_id($disciplina_id);
+
+        $horarios_semana = array();
+
+        foreach ($clases_semana as $clase) {
+            $hora_inicio = date('g:i A', strtotime($clase['inicia']));
+            $dia_semana = date('D', strtotime($clase['inicia']));
+            $horarios_semana[$hora_inicio][$dia_semana] = $clase['instructor_nombre'];
+        }
+
+        $contenido = '
+        <table class="semana responsive">
+            <thead>
+                <tr>
+                    <th class="">Horario</th>
+                    <th class="">Lun</th>
+                    <th class="">Mar</th>
+                    <th class="">Mie</th>
+                    <th class="">Jue</th>
+                    <th class="">Vie</th>
+                </tr>
+            </thead>
+            <tbody>
+        ';
+
+        if ($disciplina_id == 3) {
+            $contenido .= '
+                <tr>
+                    <td class=""><small></small></td>
+                    <td class=""><small><span class="blue lighten-3">LEGS &</span><br>BOOTY</small></td>
+                    <td class=""><small><span class="blue lighten-3">UPPER</span><br>BODY</small></td>
+                    <td class=""><small><span class="blue lighten-3">KILLER</span><br>ABS</small></td>
+                    <td class=""><small><span class="blue lighten-3">ARMS &</span><br>BOOTY</small></td>
+                    <td class=""><small><span class="blue lighten-3">FULL</span><br>BODY</small></td>
+                </tr>
+            ';
+        }
+        if ($disciplina_id == 10) {
+            $contenido .= '
+                <tr>
+                    <td class=""><small></small></td>
+                    <td class=""><small><span class="blue lighten-3">LEGS &</span><br>BOOTY</small></td>
+                    <td class=""><small><span class="blue lighten-3">UPPER</span><br>BODY</small></td>
+                    <td class=""><small><span class="blue lighten-3">KILLER</span><br>ABS</small></td>
+                    <td class=""><small><span class="blue lighten-3">ARMS &</span><br>BOOTY</small></td>
+                    <td class=""><small><span class="blue lighten-3">FULL</span><br>BODY</small></td>
+                </tr>
+            ';
+        }
+
+        $ciclo_es_tarde = false;
+
+        foreach ($horarios_semana as $hora => $clases_dia) {
+
+            $hora_formato_24 = date('H', strtotime($hora));
+            $es_tarde = $hora_formato_24 >= 14;
+
+            if ($es_tarde && ($ciclo_es_tarde === false)) {
+                $contenido .= '<tr>';
+                $contenido .= '<td><small> </small></td>';
+                foreach (['Mon', 'Tue', 'Wed', 'Thu', 'Fri'] as $dia) {
+                    $contenido .= '<td><small> </small></td>';
+                }
+                $contenido .= '</tr>';
+                $ciclo_es_tarde = true;
+            }
+
+            $contenido .= '<tr>';
+            $contenido .= '<td class=""><small>' . $hora . '</small></td>';
+            foreach (['Mon', 'Tue', 'Wed', 'Thu', 'Fri'] as $dia) {
+                $contenido .= '<td class=""><small>' . ($clases_dia[$dia] ?? '/') . '</small></td>';
+            }
+            $contenido .= '</tr>';
+        }
+
+        $contenido .= '
+            </tbody>
+        </table>
+        ';
+
+        $response = array('success' => true, 'data' => $contenido);
+
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($response));
+    }
+
+    public function obtener_clases_fin_de_semana_siguiente_por_disciplina_id($disciplina_id = null)
+    {
+        $clases_semana = $this->calendario_model->obtener_clases_fin_de_semana_siguiente_por_disciplina_id($disciplina_id);
+
+        $horarios_semana = array();
+
+        foreach ($clases_semana as $clase) {
+            $hora_inicio = date('g:i A', strtotime($clase['inicia']));
+            $dia_semana = date('D', strtotime($clase['inicia']));
+            $horarios_semana[$hora_inicio][$dia_semana] = $clase['instructor_nombre'];
+        }
+
+        $contenido = '
+        <table class="semana">
+            <thead>
+                <tr>
+                    <th class="">Horario</th>
+                    <th class="">Sab</th>
+                    <th class="">Dom</th>
+                </tr>
+            </thead>
+            <tbody>
+        ';
+
+        if ($disciplina_id == 3) {
+            $contenido .= '
+                <tr>
+                    <td class=""><small></small></td>
+                    <td class=""><small><span class="blue lighten-3">ABS &</span><br>BOOTY</small></td>
+                    <td class=""><small><span class="blue lighten-3">FULL</span><br>BODY</small></td>
+                </tr>
+            ';
+        }
+        if ($disciplina_id == 10) {
+            $contenido .= '
+                <tr>
+                    <td class=""><small></small></td>
+                    <td class=""><small><span class="blue lighten-3">ABS &</span><br>BOOTY</small></td>
+                    <td class=""><small><span class="blue lighten-3">FULL</span><br>BODY</small></td>
+                </tr>
+            ';
+        }
+
+        $ciclo_es_tarde = false;
+
+        foreach ($horarios_semana as $hora => $clases_dia) {
+
+            $hora_formato_24 = date('H', strtotime($hora));
+            $es_tarde = $hora_formato_24 >= 14;
+
+            if ($es_tarde && ($ciclo_es_tarde === false)) {
+                $contenido .= '<tr>';
+                $contenido .= '<td><small> </small></td>';
+                foreach (['Sat', 'Sun'] as $dia) {
+                    $contenido .= '<td><small> </small></td>';
+                }
+                $contenido .= '</tr>';
+                $ciclo_es_tarde = true;
+            }
+
+            $contenido .= '<tr>';
+            $contenido .= '<td class=""><small>' . $hora . '</small></td>';
+            foreach (['Sat', 'Sun'] as $dia) {
+                $contenido .= '<td class=""><small>' . ($clases_dia[$dia] ?? '/') . '</small></td>';
+            }
+            $contenido .= '</tr>';
+        }
+
+        $contenido .= '
+            </tbody>
+        </table>
+        ';
+
+        $response = array('success' => true, 'data' => $contenido);
+
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($response));
+    }
 }

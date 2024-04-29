@@ -61,6 +61,30 @@ class Calendario_model extends CI_Model
         return $query->result_array();
     }
 
+    public function obtener_clases_semana_siguiente_por_disciplina_id($disciplina_id)
+    {
+        // Obtener la fecha de inicio y fin de la semana actual
+        $fecha_inicio_semana = date('Y-m-d', strtotime('Monday next week'));
+        $fecha_fin_semana = date('Y-m-d', strtotime('Friday next week'));
+
+        // Consulta para obtener las clases de la semana actual
+        $query = $this->db
+            ->where('DATE_FORMAT(t1.inicia,"%Y-%m-%d") >=', $fecha_inicio_semana)
+            ->where('DATE_FORMAT(t1.inicia,"%Y-%m-%d") <=', $fecha_fin_semana)
+            ->where('t1.disciplina_id', $disciplina_id)
+            ->select('
+                t1.*,
+                DATE_FORMAT(t1.inicia,"%H:%i") as hora_clase,
+                CONCAT(COALESCE(t2.nombre_completo, "N/D")) as instructor_nombre
+            ')
+            ->from('clases t1')
+            ->join("usuarios t2", "t2.id = t1.instructor_id")
+            ->order_by('hora_clase', 'asc') // Ordenar por fecha de inicio
+            ->get();
+
+        return $query->result_array();
+    }
+
     public function obtener_clases_fin_de_semana_actual()
     {
         // Obtener la fecha de inicio y fin de la semana actual
@@ -85,8 +109,32 @@ class Calendario_model extends CI_Model
     public function obtener_clases_fin_de_semana_actual_por_disciplina_id($disciplina_id)
     {
         // Obtener la fecha de inicio y fin de la semana actual
-        $fecha_inicio_semana = date('Y-m-d', strtotime('Monday this week'));
-        $fecha_fin_semana = date('Y-m-d', strtotime('Friday this week'));
+        $fecha_inicio_semana = date('Y-m-d', strtotime('Saturday this week'));
+        $fecha_fin_semana = date('Y-m-d', strtotime('Sunday this week'));
+
+        // Consulta para obtener las clases de la semana actual
+        $query = $this->db
+            ->where('DATE_FORMAT(t1.inicia,"%Y-%m-%d") >=', $fecha_inicio_semana)
+            ->where('DATE_FORMAT(t1.inicia,"%Y-%m-%d") <=', $fecha_fin_semana)
+            ->where('t1.disciplina_id', $disciplina_id)
+            ->select('
+                t1.*,
+                DATE_FORMAT(t1.inicia,"%H:%i") as hora_clase,
+                CONCAT(COALESCE(t2.nombre_completo, "N/D")) as instructor_nombre
+            ')
+            ->from('clases t1')
+            ->join("usuarios t2", "t2.id = t1.instructor_id")
+            ->order_by('hora_clase', 'asc') // Ordenar por fecha de inicio
+            ->get();
+
+        return $query->result_array();
+    }
+
+    public function obtener_clases_fin_de_semana_siguiente_por_disciplina_id($disciplina_id)
+    {
+        // Obtener la fecha de inicio y fin de la semana actual
+        $fecha_inicio_semana = date('Y-m-d', strtotime('Saturday next week'));
+        $fecha_fin_semana = date('Y-m-d', strtotime('Sunday next week'));
 
         // Consulta para obtener las clases de la semana actual
         $query = $this->db
