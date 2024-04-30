@@ -14,7 +14,9 @@
     <div class="container-fluid mb-5">
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 text-center">
-                <a href="<?php echo site_url('web/calendario')?>"><button type="button" class="btn btn-secondary round" style="font-size: xx-large; background-color: rgba(32, 17, 44, 1) !important; color: rgba(27, 237, 245, 1);">Consulta nuestros horarios</button></a>
+                <!-- <a href="<?php echo site_url('web/calendario') ?>"><button type="button" class="btn btn-secondary round" style="font-size: xx-large; background-color: rgba(32, 17, 44, 1) !important; color: rgba(27, 237, 245, 1);">Consulta nuestros horarios</button></a> -->
+
+                <a href="<?php echo site_url('web/calendario') ?>"><img src="<?php echo base_url('almacenamiento/img/horarios-web.jpg'); ?>" alt="Horarios" class="img-fluid" width="50%"></a>
             </div>
         </div>
     </div>
