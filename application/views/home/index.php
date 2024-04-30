@@ -10,21 +10,21 @@
     </div>
 </section>
 
-<section class="seccion-previo-02">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-sm-12 text-center p-0">
-                <a href="https://beatness.com.mx/descarga" target="_blank"><img class="img-fluid" src="<?php echo base_url(); ?>almacenamiento/img/web-02.jpg"></a>
-            </div>
-        </div>
-    </div>
-</section>
-
 <section>
     <div class="container-fluid mb-5">
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 text-center">
                 <a href="<?php echo site_url('web/calendario')?>"><button type="button" class="btn btn-secondary round" style="font-size: xx-large; background-color: rgba(32, 17, 44, 1) !important; color: rgba(27, 237, 245, 1);">Consulta nuestros horarios</button></a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="seccion-previo-02">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12 text-center p-0">
+                <a href="https://beatness.com.mx/descarga" target="_blank"><img class="img-fluid" src="<?php echo base_url(); ?>almacenamiento/img/web-02.jpg"></a>
             </div>
         </div>
     </div>
