@@ -25,6 +25,7 @@ $(function () {
         },
         "columns": [
             { "data": "listar_id" },
+            { "data": "listar_gympass_gym_id" },
             { "data": "listar_nombre" },
             { "data": "listar_orden_mostrar" },
             { "data": "listar_estatus" },

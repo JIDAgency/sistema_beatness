@@ -48,6 +48,7 @@
 												<thead>
 													<tr>
 														<th>ID</th>
+														<th>GYMPASS PRODUCT ID</th>
 														<th>Disciplina</th>
 														<th>Sucursal</th>
 														<th>Es ilimitado</th>

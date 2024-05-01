@@ -47,6 +47,7 @@ class Disciplinas_model extends CI_Model
             ->order_by('t1.id', 'desc')
             ->select("
                 t1.id as listar_id,
+                t1.gympass_product_id as listar_gympass_product_id,
                 t1.nombre as listar_nombre,
                 CONCAT(COALESCE(t2.nombre, 'N/D'), ' - ', COALESCE(t2.locacion, 'N/D')) as listar_sucursal,
                 t1.mostrar_en_app,

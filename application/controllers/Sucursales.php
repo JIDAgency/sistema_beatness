@@ -46,6 +46,7 @@ class Sucursales extends MY_Controller {
             
             $result[] = array(
                 "listar_id" => $sucursales_row->id,
+                "listar_gympass_gym_id" => $sucursales_row->gympass_gym_id,
                 "listar_nombre" => $sucursales_row->nombre.' ['.$sucursales_row->locacion.']',
                 "listar_orden_mostrar" => $sucursales_row->orden_mostrar.' º',
                 "listar_estatus" => ucfirst($sucursales_row->estatus),
@@ -80,6 +81,7 @@ class Sucursales extends MY_Controller {
          $this->form_validation->set_rules('url_banner', 'banner', 'required');
          $this->form_validation->set_rules('orden_mostrar', 'orden', 'required');
          $this->form_validation->set_rules('estatus', 'seleccione un estatus', 'required');
+         $this->form_validation->set_rules('gympass_gym_id', 'GYM ID', 'required');
 
  
          if ($this->form_validation->run() == false) {
@@ -100,6 +102,7 @@ class Sucursales extends MY_Controller {
                  'url_banner' => $this->input->post('url_banner'),
                  'orden_mostrar' => $this->input->post('orden_mostrar'),
                  'estatus' => $this->input->post('estatus'),
+                 'gympass_gym_id' => $this->input->post('gympass_gym_id'),
                  
              );
  
@@ -138,6 +141,7 @@ class Sucursales extends MY_Controller {
         $this->form_validation->set_rules('url_banner', 'banner', 'required');
         $this->form_validation->set_rules('orden_mostrar', 'orden', 'required');
         $this->form_validation->set_rules('estatus', 'seleccione un estatus', 'required');
+        $this->form_validation->set_rules('gympass_gym_id', 'GYM ID', 'required');
 
         if ($this->input->post()) {
             $id = $this->input->post('id');
@@ -171,6 +175,7 @@ class Sucursales extends MY_Controller {
                 'url_banner' => $this->input->post('url_banner'),
                 'orden_mostrar' => $this->input->post('orden_mostrar'),
                 'estatus' => $this->input->post('estatus'),
+                'gympass_gym_id' => $this->input->post('gympass_gym_id'),
                 
             );
 

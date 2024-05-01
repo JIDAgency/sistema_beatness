@@ -50,6 +50,7 @@ class Disciplinas extends MY_Controller
 
             $result[] = array(
                 "listar_id" => $disciplina_row->listar_id,
+                "listar_gympass_product_id" => $disciplina_row->listar_gympass_product_id,
                 "listar_nombre" => $disciplina_row->listar_nombre,
                 "listar_sucursal" => $disciplina_row->listar_sucursal,
                 "listar_es_ilimitado" => $disciplina_row->es_ilimitado,
@@ -74,6 +75,7 @@ class Disciplinas extends MY_Controller
         $this->form_validation->set_rules('mostrar_app', 'mostrar_app', 'required');
         $this->form_validation->set_rules('mostrar_web', 'mostrar_web', 'required');
         $this->form_validation->set_rules('estatus', 'estatus', 'required');
+        $this->form_validation->set_rules('gympass_gym_id', 'gympass_gym_id', 'required');
 
         // Inicializar vista, scripts
         $data['menu_disciplinas_activo'] = true;
@@ -105,6 +107,7 @@ class Disciplinas extends MY_Controller
                 'mostrar_en_app' => $this->input->post('mostrar_app'),
                 'mostrar_en_web' => $this->input->post('mostrar_web'),
                 'estatus' => $this->input->post('estatus'),
+                'gympass_product_id' => $this->input->post('gympass_product_id'),
             );
 
             if ($this->disciplinas_model->crear($data)) {
@@ -129,6 +132,7 @@ class Disciplinas extends MY_Controller
         $this->form_validation->set_rules('mostrar_app', 'mostrar_app', 'required');
         $this->form_validation->set_rules('mostrar_web', 'mostrar_web', 'required');
         $this->form_validation->set_rules('estatus', 'estatus', 'required');
+        $this->form_validation->set_rules('gympass_product_id', 'gympass_product_id', 'required');
 
         // Inicializar vista, scripts y catálogos
         $data['menu_disciplinas_activo'] = true;
@@ -173,6 +177,7 @@ class Disciplinas extends MY_Controller
                 'mostrar_en_app' => $this->input->post('mostrar_app'),
                 'mostrar_en_web' => $this->input->post('mostrar_web'),
                 'estatus' => $this->input->post('estatus'),
+                'gympass_product_id' => $this->input->post('gympass_product_id'),
 
             );
 

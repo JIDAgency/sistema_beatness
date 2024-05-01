@@ -25,6 +25,7 @@ $(function () {
         },
         "columns": [
             { "data": "listar_id" },
+            { "data": "listar_gympass_product_id" },
             { "data": "listar_nombre" },
             { "data": "listar_sucursal" },
             { "data": "listar_es_ilimitado" },
