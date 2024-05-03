@@ -30,7 +30,7 @@ class Historial_reservaciones extends MY_Controller
             array('es_rel' => true, 'src' => 'historial_reservaciones/index.js'),
         );
 
-        $start = (new DateTime('2019-01-01'))->modify('first day of this month');
+        $start = (new DateTime('2024-04-04'))->modify('first day of this month');
         $end = (new DateTime(date('Y-m-d')))->modify('first day of next month');
         $interval = DateInterval::createFromDateString('1 month');
 
