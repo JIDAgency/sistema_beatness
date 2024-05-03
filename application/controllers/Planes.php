@@ -11,6 +11,7 @@ class Planes extends MY_Controller
         $this->load->model('codigos_model');
         $this->load->model('planes_model');
         $this->load->model('disciplinas_model');
+        $this->load->model('planes_categorias_model');
     }
 
     public function subir_imagen($id = null)
@@ -233,6 +234,7 @@ class Planes extends MY_Controller
 
 
         $data['disciplinas'] = $this->disciplinas_model->obtener_todas()->result();
+        $data['categorias'] = $this->planes_categorias_model->obtener_todas()->result();
 
         $codigos_list = $this->codigos_model->get_codigos_activos();
         $data['codigos_list'] = $codigos_list;
@@ -281,6 +283,10 @@ class Planes extends MY_Controller
                 $dominio_id = 2;
             }
 
+            $fecha_registro = date("Y-m-d H:i:s");
+            $key_1 = "planes_categorias-" . date("Y-m-d-H-i-s", strtotime($fecha_registro));
+            $identificador = hash("crc32b", $key_1);
+
             // Preparar datos para hacer el insert en la bd
             $data = array(
                 'nombre' => $this->input->post('nombre'),
@@ -304,6 +310,11 @@ class Planes extends MY_Controller
                 // Añadir las disciplinas seleccionadas
                 foreach ($this->input->post('disciplinas') as $k => $v) {
                     $this->planes_model->agregar_disciplina(array('plan_id' => $plan_id, 'disciplina_id' => $v));
+                }
+
+                // Añadir las categorias seleccionadas
+                foreach ($this->input->post('categorias') as $k => $v) {
+                    $this->planes_model->agregar_categoria(array('identificador' => $identificador, 'planes_id' => $plan_id, 'categorias_id' => $v));
                 }
 
                 $this->session->set_flashdata('MENSAJE_EXITO', 'El plan se ha creado correctamente.');
@@ -355,6 +366,7 @@ class Planes extends MY_Controller
         $this->form_validation->set_rules('descripcion', 'descripción', 'trim');
 
         $data['disciplinas'] = $this->disciplinas_model->obtener_todas()->result();
+        $data['categorias'] = $this->planes_categorias_model->obtener_todas()->result();
 
         // Verificar que el plan a editar exista, obtener sus datos y pasarlos a la vista
         $plan_a_editar = $this->planes_model->obtener_por_id($id)->row();
@@ -369,6 +381,7 @@ class Planes extends MY_Controller
         $data['codigos_list'] = $codigos_list;
         $data['plan_a_editar'] = $plan_a_editar;
         $data['disciplinas_seleccionadas'] = $this->planes_model->obtener_disciplinas_por_plan_id($id)->result();
+        $data['categorias_seleccionadas'] = $this->planes_model->obtener_categorias_por_plan_id($id)->result();
 
         if ($this->form_validation->run() == false) {
 

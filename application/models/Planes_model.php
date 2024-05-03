@@ -77,6 +77,11 @@ class Planes_model extends CI_Model
         return $this->db->insert('planes_disciplinas', $data);
     }
 
+    public function agregar_categoria($data)
+    {
+        return $this->db->insert('rel_planes_categorias', $data);
+    }
+
     public function eliminar_disciplinas($plan_id)
     {
         $this->db->where('plan_id', intval($plan_id));
@@ -87,6 +92,13 @@ class Planes_model extends CI_Model
     {
         $this->db->where('plan_id', intval($plan_id));
         return $this->db->get('planes_disciplinas');
+
+    }
+
+    public function obtener_categorias_por_plan_id($plan_id)
+    {
+        $this->db->where('planes_id', intval($plan_id));
+        return $this->db->get('rel_planes_categorias');
 
     }
 

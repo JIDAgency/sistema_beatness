@@ -104,6 +104,19 @@
 															</select>
 														</div>
 													</div>
+
+													<div class="form-group row col-lg-12 col-md-12 col-sm-12">
+														<label for="categorias" class="col-md-12">Seleccione las categorias&nbsp;<span class="red">*</span></label>
+														<div class="col-md-12">
+															<select class="select2-disciplinas form-control" name="categorias[]" multiple>
+
+																<?php foreach ($categorias as $amenidades_key => $categoria) : ?>
+																	<option value="<?php echo $categoria->id; ?>" <?php foreach ($categorias_seleccionadas as $categoria_seleccionada) {echo $categoria->id == $categoria_seleccionada->categoria_id ? 'selected' : '';} ?>><?php echo trim(mb_strtoupper($categoria->nombre)); ?></option>
+																<?php endforeach; ?>
+															</select>
+														</div>
+													</div>
+
 													<div class="form-group row col-lg-12 col-md-12 col-sm-12">
 														<label for="terminos_condiciones" class="col-md-12">Términos y condiciones</label>
 														<div class="col-md-12">
@@ -125,7 +138,7 @@
 														<label class="col-sm-12"><b>Imagen</b></label>
 
 														<div class="col-sm-6">
-															<?php if ($plan_a_editar->url_infoventa != 'https://beatness.com.mx/almacenamiento/planes/default.jpg'):?>
+															<?php if ($plan_a_editar->url_infoventa != 'https://beatness.com.mx/almacenamiento/planes/default.jpg') : ?>
 																<img class="img-fluid border" name="preview_url_infoventa" id="preview_url_infoventa" src="<?php echo $plan_a_editar->url_infoventa; ?>" style="width: 100%;">
 															<?php endif; ?>
 														</div>

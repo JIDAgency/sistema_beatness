@@ -76,6 +76,11 @@ class Planes_categorias_model extends CI_Model
         return $query;
     }
 
+    public function obtener_todas()
+    {
+        return $this->db->get('planes_categorias');
+    }
+
     public function obtener_por_id($id)
     {
         return $this->db->where('id', intval($id))->get('planes_categorias');

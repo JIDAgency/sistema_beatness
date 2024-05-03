@@ -116,6 +116,20 @@
 														</select>
 													</div>
 												</div>
+
+												<div class="form-group row">
+													<label for="categorias" class="col-md-12">Seleccione las categorias</label>
+													<div class="col-md-12">
+														<select class="select2-disciplinas form-control" name="categorias[]" multiple readonly>
+															<?php foreach ($categorias as $categoria) : ?>
+																<option value="<?php echo $categoria->id; ?>" selected="selected">
+																	<?php echo $categoria->nombre; ?>
+																</option>
+															<?php endforeach; ?>
+														</select>
+													</div>
+												</div>
+
 												<div class="form-group row">
 													<label for="terminos_condiciones" class="col-md-12">Términos y condiciones</label>
 													<div class="col-md-12">
