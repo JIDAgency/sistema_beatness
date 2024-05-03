@@ -111,7 +111,7 @@
 															<select class="select2-disciplinas form-control" name="categorias[]" multiple>
 
 																<?php foreach ($categorias as $amenidades_key => $categoria) : ?>
-																	<option value="<?php echo $categoria->id; ?>" <?php foreach ($categorias_seleccionadas as $categoria_seleccionada) {echo $categoria->id == $categoria_seleccionada->categoria_id ? 'selected' : '';} ?>><?php echo trim(mb_strtoupper($categoria->nombre)); ?></option>
+																	<option value="<?php echo $categoria->id; ?>" <?php foreach ($categorias_seleccionadas as $categoria_seleccionada) {echo $categoria->id == $categoria_seleccionada->categorias_id ? 'selected' : '';} ?>><?php echo trim(mb_strtoupper($categoria->nombre)); ?></option>
 																<?php endforeach; ?>
 															</select>
 														</div>

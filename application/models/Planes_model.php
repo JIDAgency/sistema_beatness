@@ -88,6 +88,12 @@ class Planes_model extends CI_Model
         return $this->db->delete('planes_disciplinas');
     }
 
+    public function eliminar_categorias($plan_id)
+    {
+        $this->db->where('planes_id', intval($plan_id));
+        return $this->db->delete('rel_planes_categorias');
+    }
+
     public function obtener_disciplinas_por_plan_id($plan_id)
     {
         $this->db->where('plan_id', intval($plan_id));

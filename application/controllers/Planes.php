@@ -425,6 +425,10 @@ class Planes extends MY_Controller
                 $url_infoventa = $plan_a_editar->url_infoventa;
             }
 
+            $fecha_registro = date("Y-m-d H:i:s");
+            $key_1 = "planes_categorias-" . date("Y-m-d-H-i-s", strtotime($fecha_registro));
+            $identificador = hash("crc32b", $key_1);
+
             $data = array(
                 'url_infoventa' => $url_infoventa,
                 'nombre' => $this->input->post('nombre'),
@@ -444,6 +448,13 @@ class Planes extends MY_Controller
                 if ($this->planes_model->eliminar_disciplinas($id)) {
                     foreach ($this->input->post('disciplinas') as $k => $v) {
                         $this->planes_model->agregar_disciplina(array('plan_id' => $id, 'disciplina_id' => $v));
+                    }
+                }
+
+                // Añadir las categorias seleccionadas
+                if ($this->planes_model->eliminar_categorias($id)) {
+                    foreach ($this->input->post('categorias') as $k => $v) {
+                        $this->planes_model->agregar_categoria(array('identificador' => $identificador, 'planes_id' => $id, 'categorias_id' => $v));
                     }
                 }
 
