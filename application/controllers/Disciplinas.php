@@ -11,13 +11,6 @@ class Disciplinas extends MY_Controller
         $this->load->model('sucursales_model');
     }
 
-    function test()
-    {
-        $this->load->library('gympass_lib');
-        $response = $this->gympass_lib->get_list_classes();
-        echo $response; // Opcional: Procesa la respuesta según sea necesario
-    }
-
     public function index()
     {
         // Cargar estilos y scripts
