@@ -167,10 +167,11 @@ class Planes_categorias extends MY_Controller
         // Inicializar vista, scripts y catálogos
         $data['menu_clases_activo'] = true;
         $data['pagina_titulo'] = 'Editar categorias';
+        $data['controlador'] = 'planes_categorias/editar/' . $id;
         $data['scripts'] = array(
             array('es_rel' => false, 'src' => 'https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js'),
             array('es_rel' => false, 'src' => 'https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/additional-methods.js'),
-            array('es_rel' => true, 'src' => 'categorias/editar.js'),
+            array('es_rel' => true, 'src' => 'planes_categorias/editar.js'),
 
         );
 
@@ -250,7 +251,7 @@ class Planes_categorias extends MY_Controller
 
             if ($this->planes_categorias_model->editar($id, $data)) {
                 $this->session->set_flashdata('MENSAJE_EXITO', 'La categoria se ha editado correctamente.');
-                redirect('/planes_categorias/index');
+                redirect('/planes_categorias');
             }
 
             $this->construir_private_site_ui('planes_categorias/editar', $data);

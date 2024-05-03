@@ -28,6 +28,8 @@ class Endpoint extends REST_Controller
         $this->load->model("tarjetas_model");
         $this->load->model("codigos_model");
         $this->load->model("codigos_canjeados_model");
+        $this->load->model("planes_categorias_model");
+        $this->load->model("rel_planes_categorias_model");
     }
 
     /** ============ Módulo de compras (INICIO) ============ */
@@ -1176,6 +1178,28 @@ class Endpoint extends REST_Controller
         $disciplinas = $this->sucursales_model->get_sucursales_disponibles()->result();
 
         $this->response($disciplinas);
+    }
+
+    public function obtener_categorias_planes_por_sucursal_get()
+    {
+        $datos_get = $this->get();
+
+        $usuario_valido = $this->_autenticar_usuario($datos_get['token'], $datos_get['usuario_id']);
+
+        $planes_categorias = $this->planes_categorias_model->get_categorias_activos()->result();
+
+        $this->response($planes_categorias);
+    }
+
+    public function obtener_rel_planes_categorias_por_rel_plan_categoria()
+    {
+        $datos_get = $this->get();
+
+        $usuario_valido = $this->_autenticar_usuario($datos_get['token'], $datos_get['usuario_id']);
+
+        $planes_categorias = $this->rel_planes_categorias_model->obtener_rel_planes_categorias()->result();
+
+        $this->response($planes_categorias);
     }
 
     /**
