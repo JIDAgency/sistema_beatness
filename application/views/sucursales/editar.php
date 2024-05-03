@@ -1,37 +1,37 @@
 <div class="app-content container center-layout mt-2">
 
-	<div class="content-header-left col-md-6 col-12 mb-2">
-		<div class="row breadcrumbs-top">
-			<div class="breadcrumb-wrapper col-12">
-				<ol class="breadcrumb">
-					<li class="breadcrumb-item"><a href="<?php echo site_url('inicio/index') ?>">Inicio</a>
-					</li>
-					<li class="breadcrumb-item"><a href="<?php echo site_url('sucursales/index') ?>">Sucursales</a>
-					</li>
-					<li class="breadcrumb-item active">Editar sucursal
-					</li>
-				</ol>
-			</div>
-		</div>
-	</div>
+    <div class="content-header-left col-md-6 col-12 mb-2">
+        <div class="row breadcrumbs-top">
+            <div class="breadcrumb-wrapper col-12">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="<?php echo site_url('inicio/index') ?>">Inicio</a>
+                    </li>
+                    <li class="breadcrumb-item"><a href="<?php echo site_url('sucursales/index') ?>">Sucursales</a>
+                    </li>
+                    <li class="breadcrumb-item active">Editar sucursal
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
 
-	<div class="content-wrapper">
-		<div class="content-body">
-			<section>
-				<div class="row">
-					<div class="col-12">
-						<div class="card">
-							<div class="card-header">
-								<h4 class="card-title">Editar información de sucursal</h4>
-							</div>
-							<div class="card-content">
-								<div class="card-body">
+    <div class="content-wrapper">
+        <div class="content-body">
+            <section>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Editar información de sucursal</h4>
+                            </div>
+                            <div class="card-content">
+                                <div class="card-body">
 
-									<?php echo form_open('sucursales/editar', array('class' => 'form form-horizontal', 'id' => 'forma-editar-sucursales')); ?>
+                                    <?php echo form_open('sucursales/editar', array('class' => 'form form-horizontal', 'id' => 'forma-editar-sucursales')); ?>
 
-									<div class="form-body">
+                                    <div class="form-body">
 
-										<?php if (validation_errors()): ?>
+                                        <?php if (validation_errors()) : ?>
                                             <div class="alert bg-danger alert-icon-left alert-dismissible mb-2 font-small-3" role="alert">
                                                 <span class="alert-icon"><i class="fa fa-thumbs-o-down"></i></span>
                                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -39,9 +39,9 @@
                                                 </button>
                                                 <?php echo validation_errors(); ?>
                                             </div>
-										<?php endif?>
+                                        <?php endif ?>
 
-										<h4 class="form-section">Datos de la sucursal</h4>
+                                        <h4 class="form-section">Datos de la sucursal</h4>
 
                                         <div class="row">
                                             <div class="col-md-6 mb-3">
@@ -116,11 +116,23 @@
 
                                         <div class="row">
                                             <div class="col-md-6 mb-3">
+                                                <label for="visible_app">Visible en app </label>
+                                                <select name="visible_app" id="visible_app" class="form-control">
+                                                    <option value="" <?php echo set_select('visible_app', '', set_value('visible_app') ? false : '' == (!empty($this->session->flashdata('visible_app')) ? $this->session->flashdata('visible_app') : (!empty($sucursal_a_editar_row->visible_app) ? $sucursal_a_editar_row->visible_app : set_value('visible_app')))); ?>>Seleccione una opcion…</option>
+                                                    <?php foreach (select_mostrar() as $key => $mostrar_row) : ?>
+                                                        <option value="<?php echo $mostrar_row->valor; ?>" <?php echo set_select('visible_app', $mostrar_row->valor, set_value('visible_app') ? false : $mostrar_row->valor == (!empty($this->session->flashdata('visible_app')) ? $this->session->flashdata('visible_app') : (!empty($sucursal_a_editar_row->visible_app) ? $sucursal_a_editar_row->visible_app : set_value('visible_app')))); ?>><?php echo trim($mostrar_row->nombre); ?></option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
                                                 <label for="estatus">Estatus de la sucursal</label>
                                                 <select name="estatus" id="estatus" class="form-control">
-                                                    <option value="" <?php echo set_select('estatus', '' ); ?>>Seleccione un estatus…</option>
-                                                    <option value="activo" <?php echo set_select('estatus', "activo" , set_value('estatus') ? false : "activo"==$sucursal_a_editar_row->estatus);?>>Activo</option>
-                                                    <option value="inactivo"<?php echo set_select('estatus', "inactivo" , set_value('estatus') ? false : "inactivo"==$sucursal_a_editar_row->estatus);?>>Inactivo</option>
+                                                    <option value="" <?php echo set_select('estatus', ''); ?>>Seleccione un estatus…</option>
+                                                    <option value="activo" <?php echo set_select('estatus', "activo", set_value('estatus') ? false : "activo" == $sucursal_a_editar_row->estatus); ?>>Activo</option>
+                                                    <option value="inactivo" <?php echo set_select('estatus', "inactivo", set_value('estatus') ? false : "inactivo" == $sucursal_a_editar_row->estatus); ?>>Inactivo</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -134,21 +146,21 @@
 
                                         <hr class="mb-4">
 
-										<div class="form-actions right">
-											<a href="<?php echo site_url('sucursales/index'); ?>" class="btn btn-secondary btn-sm">Cancelar</a>
-											<button type="submit" class="btn btn-secondary btn-sm">Guardar</button>
-										</div>
+                                        <div class="form-actions right">
+                                            <a href="<?php echo site_url('sucursales/index'); ?>" class="btn btn-secondary btn-sm">Cancelar</a>
+                                            <button type="submit" class="btn btn-secondary btn-sm">Guardar</button>
+                                        </div>
 
-									</div>
+                                    </div>
 
-									<?php echo form_close(); ?>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</section>
-		</div>
-	</div>
+                                    <?php echo form_close(); ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
 
 </div>

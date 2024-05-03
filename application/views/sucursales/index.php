@@ -55,6 +55,7 @@
 														<th>GYMPASS GYM ID</th>
 														<th>Sucursal</th>
 														<th>Mostrar</th>
+														<th>Visible en app</th>
 														<th>Estatus</th>
 														<th>Opciones</th>
 													</tr>

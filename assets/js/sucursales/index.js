@@ -28,6 +28,7 @@ $(function () {
             { "data": "listar_gympass_gym_id" },
             { "data": "listar_nombre" },
             { "data": "listar_orden_mostrar" },
+            { "data": "listar_visible_app" },
             { "data": "listar_estatus" },
             { "data": "listar_opciones" },
         ],
