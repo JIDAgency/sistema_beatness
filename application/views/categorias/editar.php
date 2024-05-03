@@ -35,7 +35,7 @@
 												<?php echo validation_errors(); ?>
 											</div>
 										<?php endif ?>
-										<h4 class="form-section">Datos de la disciplina</h4>
+										<h4 class="form-section">Datos de la categoria</h4>
 
 										<div class="row">
 											<div class="col-md-6 mb-3">
@@ -107,7 +107,7 @@
                                         </div>
 
 										<div class="form-actions right">
-											<a href="<?php echo site_url('disciplinas/index'); ?>" class="btn btn-secondary btn-sm">Cancelar</a>
+											<a href="<?php echo site_url('categorias/index'); ?>" class="btn btn-secondary btn-sm">Cancelar</a>
 											<button type="submit" class="btn btn-secondary btn-sm">Guardar</button>
 										</div>
 

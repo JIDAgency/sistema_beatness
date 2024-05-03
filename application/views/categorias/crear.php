@@ -24,7 +24,7 @@
                             </div>
                             <div class="card-content">
                                 <div class="card-body">
-                                    <?php echo form_open('categorias/crear', array('class' => 'form form-horizontal', 'id' => 'forma-crear-disciplina')); ?>
+                                    <?php echo form_open('categorias/crear', array('class' => 'form form-horizontal', 'id' => 'forma-crear-categoria')); ?>
                                     <div class="form-body">
                                         <?php if (validation_errors()) : ?>
                                             <div class="alert bg-danger alert-icon-left alert-dismissible mb-2 font-small-3" role="alert">
@@ -105,7 +105,7 @@
                                         </div>
 
                                         <div class="form-actions right">
-                                            <a href="<?php echo site_url('disciplinas/index'); ?>" class="btn btn-secondary btn-sm">Cancelar</a>
+                                            <a href="<?php echo site_url('categorias/index'); ?>" class="btn btn-secondary btn-sm">Cancelar</a>
                                             <button type="submit" class="btn btn-secondary btn-sm">Guardar</button>
                                         </div>
 
