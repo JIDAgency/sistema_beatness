@@ -114,7 +114,8 @@
                         <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link <?php echo isset($menu_historial_reservaciones_activo) ? 'active' : ''; ?> <?php echo isset($menu_reportes_clases_activo) ? 'active' : ''; ?> <?php echo isset($menu_asignaciones_activo) ? 'active' : ''; ?> <?php echo isset($menu_reservaciones_activo) ? 'active' : ''; ?> <?php echo isset($menu_clases_activo) ? 'active' : ''; ?> <?php echo isset($pagina_menu_reportes) ? 'active' : ''; ?>" href="#" data-toggle="dropdown"><i class="icon-notebook"></i><span data-i18n="nav.dash.main">Gestión <i class="ft-chevron-down"></i></span></a>
                             <ul class="dropdown-menu">
                                 <li data-menu=""><a class="dropdown-item" href="<?php echo site_url('clases'); ?>" data-toggle="dropdown">Clases presenciales</a></li>
-                                <li data-menu=""><a class="dropdown-item" href="<?php echo site_url('categorias'); ?>" data-toggle="dropdown">Categorias</a></li>
+                                <li data-menu=""><a class="dropdown-item" href="<?php echo site_url('categorias'); ?>" data-toggle="dropdown">Disciplinas - Categorias</a></li>
+                                <!-- <li data-menu=""><a class="dropdown-item" href="<?php echo site_url('categorias'); ?>" data-toggle="dropdown">Planes - Categorias</a></li> -->
                                 <li data-menu=""><a class="dropdown-item" href="<?php echo site_url('notificaciones'); ?>" data-toggle="dropdown">Notificaciones</a></li>
                                 <li data-menu=""><a class="dropdown-item" href="<?php echo site_url('reservaciones'); ?>" data-toggle="dropdown">Reservaciones activas</a></li>
                                 <li data-menu=""><a class="dropdown-item" href="<?php echo site_url('asignaciones'); ?>" data-toggle="dropdown">Planes de clientes</a></li>

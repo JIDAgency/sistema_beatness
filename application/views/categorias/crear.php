@@ -104,6 +104,25 @@
                                             </div>
                                         </div>
 
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <div class="form-group">
+                                                    <label for="diciplina_id">Disciplina
+                                                        para la clase <span class="red">*</span> </label>
+                                                    <select id="mySelect" name="disciplina_id" class="form-control">
+                                                        <option value="">Seleccione la disciplina</option>
+                                                        <?php foreach ($disciplinas->result() as $disciplina) : ?>
+                                                            <?php if ($disciplina->id != 1) : ?>
+                                                                <option value="<?php echo $disciplina->id; ?>" <?php echo set_select('disciplina_id', $disciplina->id); ?>>
+                                                                    <?php echo $disciplina->nombre; ?>
+                                                                </option>
+                                                            <?php endif; ?>
+                                                        <?php endforeach; ?>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                         <div class="form-actions right">
                                             <a href="<?php echo site_url('categorias/index'); ?>" class="btn btn-secondary btn-sm">Cancelar</a>
                                             <button type="submit" class="btn btn-secondary btn-sm">Guardar</button>

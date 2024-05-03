@@ -6,7 +6,7 @@
 					<div class="breadcrumb-wrapper col-12">
 						<ol class="breadcrumb">
 							<li class="breadcrumb-item"><a href="<?php echo site_url('inicio/index') ?>">Inicio</a></li>
-							<li class="breadcrumb-item active">Categorias</li>
+							<li class="breadcrumb-item active">Disciplinas-Categorias</li>
 						</ol>
 					</div>
 				</div>

@@ -20,7 +20,7 @@ class Categorias extends MY_Controller
     public function index()
     {
         $data['menu_clases_activo'] = true;
-        $data['pagina_titulo'] = 'Lista de categorias';
+        $data['pagina_titulo'] = 'Lista de disciplinas-categorias';
 
         $data['mensaje_exito'] = $this->session->flashdata('MENSAJE_EXITO');
         $data['mensaje_info'] = $this->session->flashdata('MENSAJE_INFO');
@@ -62,7 +62,7 @@ class Categorias extends MY_Controller
                 'nombre' => !empty($categoria->nombre) ? ucfirst($categoria->nombre) : '',
                 'descripcion' => !empty($categoria->descripcion) ? $categoria->descripcion : '',
                 'notas' => !empty($categoria->notas) ? ucfirst($categoria->notas) : '',
-                'reservable' => !empty($categoria->reservable) ? ucwords($categoria->reservable) : '',
+                'reservable' => !empty($categoria->reservable) ? mb_strtoupper($categoria->reservable) : '',
                 'visible' => !empty($categoria->visible) ? mb_strtoupper($categoria->visible) : '',
                 'virtual' => !empty($categoria->virtual) ? mb_strtoupper($categoria->virtual) : '',
                 'fecha_registro' => (!empty($categoria->fecha_registro) ? date('Y/m/d H:i:s', strtotime($categoria->fecha_registro)) : ''),
@@ -90,6 +90,7 @@ class Categorias extends MY_Controller
         $this->form_validation->set_rules('reservable', 'reservable', 'required');
         $this->form_validation->set_rules('visible', 'visible', 'required');
         $this->form_validation->set_rules('virtual', 'virtual', 'required');
+        $this->form_validation->set_rules('disciplina_id', 'Disciplina', 'required');
 
         // Inicializar vista, scripts
         $data['menu_clases_activo'] = true;
@@ -102,16 +103,26 @@ class Categorias extends MY_Controller
 
         );
 
+        // Validar que existan disciplinas disponibles
+        $disciplinas = $this->disciplinas_model->get_lista_de_disciplinas_para_crear_y_editar_clases();
+
+        if ($disciplinas->num_rows() == 0) {
+            $this->session->set_flashdata('MENSAJE_INFO', 'Es necesario que exista por lo menos alguna disciplina disponible para poder crear la clase.');
+            redirect('clases/index');
+        }
+
+        $data['disciplinas'] = $disciplinas;
+
         if ($this->form_validation->run() == false) {
 
             $this->construir_private_site_ui('categorias/crear', $data);
         } else {
             // Preparar datos para hacer el insert en la bd
             $data = array(
-                'gympass_id' => '1000000000001',
-                'gympass_product_id' => '2',
+                'gympass_id' => 1000000000001,
+                'gympass_product_id' => $this->input->post('disciplina_id'),
                 'gympass_gym_id' => '60',
-                'disciplina_id' => '1',
+                'disciplina_id' => $this->input->post('disciplina_id'),
                 'nombre' => $this->input->post('nombre'),
                 'descripcion' => $this->input->post('descripcion'),
                 'notas' => $this->input->post('notas'),
@@ -138,6 +149,7 @@ class Categorias extends MY_Controller
          $this->form_validation->set_rules('reservable', 'reservable', 'required');
          $this->form_validation->set_rules('visible', 'visible', 'required');
          $this->form_validation->set_rules('virtual', 'virtual', 'required');
+        $this->form_validation->set_rules('disciplina_id', 'Disciplina', 'required');
 
         // Inicializar vista, scripts y catálogos
         $data['menu_clases_activo'] = true;
@@ -148,6 +160,15 @@ class Categorias extends MY_Controller
             array('es_rel' => true, 'src' => 'categorias/editar.js'),
 
         );
+
+        $disciplinas = $this->disciplinas_model->get_lista_de_disciplinas_para_crear_y_editar_clases();
+
+        if ($disciplinas->num_rows() == 0) {
+            $this->session->set_flashdata('MENSAJE_INFO', 'Es necesario que exista por lo menos alguna disciplina disponible para poder crear la clase.');
+            redirect('clases/index');
+        }
+
+        $data['disciplinas'] = $disciplinas;
 
         if ($this->input->post()) {
             $id = $this->input->post('id');
@@ -173,6 +194,8 @@ class Categorias extends MY_Controller
         } else {
 
             $data = array(
+                'gympass_product_id' => $this->input->post('disciplina_id'),
+                'disciplina_id' => $this->input->post('disciplina_id'),
                 'nombre' => $this->input->post('nombre'),
                 'descripcion' => $this->input->post('descripcion'),
                 'notas' => $this->input->post('notas'),

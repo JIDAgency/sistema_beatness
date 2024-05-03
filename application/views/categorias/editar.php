@@ -68,43 +68,69 @@
 										</div>
 
 										<div class="row">
-                                            <div class="col-md-6 mb-3">
+											<div class="col-md-6 mb-3">
 												<div class="form-group">
 													<label for="reservable">Reservable <span class="red">*</span></label>
 													<select name="reservable" id="reservable" class="form-control">
 														<option value="" <?php echo set_select('reservable', ''); ?>>Seleccione una sucursal</option>
-														<option value="true"<?php echo set_select('reservable', "true", set_value('reservable') ? false : "true" == $categoria_a_editar_row->reservable); ?>>Si</option>
-														<option value="false"<?php echo set_select('reservable', "false", set_value('reservable') ? false : "false" == $categoria_a_editar_row->reservable); ?>>No</option>
+														<option value="true" <?php echo set_select('reservable', "true", set_value('reservable') ? false : "true" == $categoria_a_editar_row->reservable); ?>>Si</option>
+														<option value="false" <?php echo set_select('reservable', "false", set_value('reservable') ? false : "false" == $categoria_a_editar_row->reservable); ?>>No</option>
 													</select>
-												</div>	
-                                            </div>
-                                        </div>
+												</div>
+											</div>
+										</div>
 
-                                        <div class="row">
-                                            <div class="col-md-6 mb-3">
+										<div class="row">
+											<div class="col-md-6 mb-3">
 												<div class="form-group">
 													<label for="visible">Visible <span class="red">*</span></label>
 													<select name="visible" id="visible" class="form-control">
 														<option value="" <?php echo set_select('visible', ''); ?>>Seleccione una sucursal</option>
-														<option value="true"<?php echo set_select('visible', "true", set_value('visible') ? false : "true" == $categoria_a_editar_row->visible); ?>>Si</option>
-														<option value="false"<?php echo set_select('visible', "false", set_value('visible') ? false : "false" == $categoria_a_editar_row->visible); ?>>No</option>
+														<option value="true" <?php echo set_select('visible', "true", set_value('visible') ? false : "true" == $categoria_a_editar_row->visible); ?>>Si</option>
+														<option value="false" <?php echo set_select('visible', "false", set_value('visible') ? false : "false" == $categoria_a_editar_row->visible); ?>>No</option>
 													</select>
-												</div>	
-                                            </div>
-                                        </div>
+												</div>
+											</div>
+										</div>
 
-                                        <div class="row">
-                                            <div class="col-md-6 mb-3">
+										<div class="row">
+											<div class="col-md-6 mb-3">
 												<div class="form-group">
 													<label for="virtual">Visrtual <span class="red">*</span></label>
 													<select name="virtual" id="virtual" class="form-control">
 														<option value="" <?php echo set_select('virtual', ''); ?>>Seleccione una sucursal</option>
-														<option value="true"<?php echo set_select('virtual', "true", set_value('virtual') ? false : "true" == $categoria_a_editar_row->virtual); ?>>Si</option>
-														<option value="false"<?php echo set_select('virtual', "false", set_value('virtual') ? false : "false" == $categoria_a_editar_row->virtual); ?>>No</option>
+														<option value="true" <?php echo set_select('virtual', "true", set_value('virtual') ? false : "true" == $categoria_a_editar_row->virtual); ?>>Si</option>
+														<option value="false" <?php echo set_select('virtual', "false", set_value('virtual') ? false : "false" == $categoria_a_editar_row->virtual); ?>>No</option>
 													</select>
-												</div>	
-                                            </div>
-                                        </div>
+												</div>
+											</div>
+										</div>
+
+										<div class="row">
+											<div class="col-md-6 mb-3">
+												<div class="form-group">
+													<label for="disciplina_id"> Disciplina
+														para la clase<span class="red">*</span></label>
+													<select id="mySelect" name="disciplina_id" class="form-control">
+														<option value="">Seleccione la disciplina</option>
+														<?php foreach ($disciplinas->result() as $disciplina) : ?>
+															<?php
+															if ($categoria_a_editar_row->disciplina_id > 0) {
+																$disciplina_que_se_editara = $categoria_a_editar_row->disciplina_id;
+															} else {
+																$disciplina_que_se_editara = $categoria_a_editar_row->disciplina_id;
+															}
+															?>
+															<?php if ($disciplina->id != 1) : ?>
+																<option value="<?php echo $disciplina->id; ?>" <?php echo set_select('disciplina_id', $disciplina_que_se_editara, set_value('disciplina_id') ? false : $disciplina->id == $disciplina_que_se_editara); ?>>
+																	<?php echo $disciplina->nombre; ?>
+																</option>
+															<?php endif; ?>
+														<?php endforeach; ?>
+													</select>
+												</div>
+											</div>
+										</div>
 
 										<div class="form-actions right">
 											<a href="<?php echo site_url('categorias/index'); ?>" class="btn btn-secondary btn-sm">Cancelar</a>
