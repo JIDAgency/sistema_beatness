@@ -136,13 +136,6 @@
                                             </div>
                                         </div>
 
-                                        <div class="row">
-                                            <div class="col-md-4 mb-3">
-                                                <label for="gympass_gym_id">GYMPASS GYM ID</label>
-                                                <input type="number" class="form-control" name="gympass_gym_id" id="gympass_gym_id" placeholder="Gympass Gym ID" value="<?php echo set_value('gympass_gym_id'); ?>">
-                                            </div>
-                                        </div>
-
                                         <hr class="mb-4">
 
                                         <div class="form-actions right">

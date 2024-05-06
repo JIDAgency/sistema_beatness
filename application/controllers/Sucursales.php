@@ -84,7 +84,6 @@ class Sucursales extends MY_Controller
         $this->form_validation->set_rules('orden_mostrar', 'orden', 'required');
         $this->form_validation->set_rules('visible_app', 'visible_app', 'required');
         $this->form_validation->set_rules('estatus', 'seleccione un estatus', 'required');
-        $this->form_validation->set_rules('gympass_gym_id', 'GYM ID', 'required');
 
 
         if ($this->form_validation->run() == false) {
@@ -105,7 +104,6 @@ class Sucursales extends MY_Controller
                 'orden_mostrar' => $this->input->post('orden_mostrar'),
                 'visible_app' => $this->input->post('visible_app'),
                 'estatus' => $this->input->post('estatus'),
-                'gympass_gym_id' => $this->input->post('gympass_gym_id'),
 
             );
 
@@ -144,7 +142,6 @@ class Sucursales extends MY_Controller
         $this->form_validation->set_rules('orden_mostrar', 'orden', 'required');
         $this->form_validation->set_rules('visible_app', 'visible_app', 'required');
         $this->form_validation->set_rules('estatus', 'seleccione un estatus', 'required');
-        $this->form_validation->set_rules('gympass_gym_id', 'GYM ID', 'required');
 
         if ($this->input->post()) {
             $id = $this->input->post('id');
@@ -178,7 +175,6 @@ class Sucursales extends MY_Controller
                 'orden_mostrar' => $this->input->post('orden_mostrar'),
                 'visible_app' => $this->input->post('visible_app'),
                 'estatus' => $this->input->post('estatus'),
-                'gympass_gym_id' => $this->input->post('gympass_gym_id'),
 
             );
 
