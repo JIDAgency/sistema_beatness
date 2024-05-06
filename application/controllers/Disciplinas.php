@@ -74,7 +74,7 @@ class Disciplinas extends MY_Controller
         $this->form_validation->set_rules('mostrar_app', 'mostrar_app', 'required');
         $this->form_validation->set_rules('mostrar_web', 'mostrar_web', 'required');
         $this->form_validation->set_rules('estatus', 'estatus', 'required');
-        $this->form_validation->set_rules('gympass_gym_id', 'gympass_gym_id', 'required');
+        $this->form_validation->set_rules('gympass_gym_id', 'gympass_gym_id');
 
         // Inicializar vista, scripts
         $data['menu_disciplinas_activo'] = true;
@@ -131,7 +131,7 @@ class Disciplinas extends MY_Controller
         $this->form_validation->set_rules('mostrar_app', 'mostrar_app', 'required');
         $this->form_validation->set_rules('mostrar_web', 'mostrar_web', 'required');
         $this->form_validation->set_rules('estatus', 'estatus', 'required');
-        $this->form_validation->set_rules('gympass_product_id', 'gympass_product_id', 'required');
+        $this->form_validation->set_rules('gympass_product_id', 'gympass_product_id');
 
         // Inicializar vista, scripts y catálogos
         $data['menu_disciplinas_activo'] = true;

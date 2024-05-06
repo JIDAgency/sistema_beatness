@@ -165,7 +165,7 @@
 										<div class="row">
 											<div class="col-md-6 mb-3">
 												<div class="form-group">
-													<label for="gympass_product_id" class="label-control">Gympass Product id <span class="red">*</span></label>
+													<label for="gympass_product_id" class="label-control">Gympass Product id </label>
 													<input type="number" class="form-control" id="gympass_product_id" name="gympass_product_id" placeholder="Gympass Product id" value="<?php echo set_value('gympass_product_id') == false ? $disciplina_a_editar_row->gympass_product_id : set_value('gympass_product_id'); ?>">
 												</div>
 											</div>
