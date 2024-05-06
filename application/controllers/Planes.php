@@ -183,7 +183,7 @@ class Planes extends MY_Controller
 
             $result[] = array(
                 "listar_id" => $plan_row->listar_id,
-                "listar_nombre_completo" => $plan_row->listar_nombre_completo,
+                "listar_nombre_completo" => mb_strtoupper($plan_row->listar_nombre_completo),
                 "listar_orden_venta" => $plan_row->listar_orden_venta,
                 "listar_clases_incluidas" => $plan_row->listar_clases_incluidas,
                 "listar_vigencia_en_dias" => $plan_row->listar_vigencia_en_dias,
