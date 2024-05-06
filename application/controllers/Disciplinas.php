@@ -24,7 +24,7 @@ class Disciplinas extends MY_Controller
             array('es_rel' => true, 'src' => 'disciplinas/index.js'),
         );
 
-        $data['menu_disciplinas_activo'] = true;
+        $data['menu_wrokflow_activo'] = true;
         $data['pagina_titulo'] = 'Disciplinas';
 
         $data['mensaje_exito'] = $this->session->flashdata('MENSAJE_EXITO');
@@ -77,7 +77,7 @@ class Disciplinas extends MY_Controller
         $this->form_validation->set_rules('gympass_gym_id', 'gympass_gym_id');
 
         // Inicializar vista, scripts
-        $data['menu_disciplinas_activo'] = true;
+        $data['menu_wrokflow_activo'] = true;
         $data['pagina_titulo'] = 'Crear disciplina';
 
         $data['scripts'] = array(
@@ -134,7 +134,7 @@ class Disciplinas extends MY_Controller
         $this->form_validation->set_rules('gympass_product_id', 'gympass_product_id');
 
         // Inicializar vista, scripts y catálogos
-        $data['menu_disciplinas_activo'] = true;
+        $data['menu_wrokflow_activo'] = true;
         $data['pagina_titulo'] = 'Editar disciplina';
         $data['scripts'] = array(
             array('es_rel' => false, 'src' => 'https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js'),

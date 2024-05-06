@@ -20,7 +20,7 @@ class Planes_categorias extends MY_Controller
 
     public function index()
     {
-        $data['menu_discplinas_activo'] = true;
+        $data['menu_wrokflow_activo'] = true;
         $data['pagina_titulo'] = 'Lista de planes-categorias';
 
         $data['mensaje_exito'] = $this->session->flashdata('MENSAJE_EXITO');
@@ -82,7 +82,7 @@ class Planes_categorias extends MY_Controller
         $this->form_validation->set_rules('orden', 'orden', 'required');
 
         // Inicializar vista, scripts
-        $data['menu_clases_activo'] = true;
+        $data['menu_wrokflow_activo'] = true;
         $data['pagina_titulo'] = 'Crear plan-categoria';
 
         $data['scripts'] = array(
@@ -165,7 +165,7 @@ class Planes_categorias extends MY_Controller
         $this->form_validation->set_rules('orden', 'orden', 'required');
 
         // Inicializar vista, scripts y catálogos
-        $data['menu_clases_activo'] = true;
+        $data['menu_wrokflow_activo'] = true;
         $data['pagina_titulo'] = 'Editar categorias';
         $data['controlador'] = 'planes_categorias/editar/' . $id;
         $data['scripts'] = array(

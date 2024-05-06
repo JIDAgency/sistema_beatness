@@ -24,7 +24,7 @@ class Sucursales extends MY_Controller
             array('es_rel' => true, 'src' => 'sucursales/index.js'),
         );
 
-        $data['menu_sucursales_activo'] = true;
+        $data['menu_wrokflow_activo'] = true;
         $data['pagina_titulo'] = 'Sucursales';
 
         $data['mensaje_exito'] = $this->session->flashdata('MENSAJE_EXITO');
@@ -62,7 +62,7 @@ class Sucursales extends MY_Controller
     public function crear()
     {
         // Inicializar vista, scripts y catálogos
-        $data['menu_sucursales_activo'] = true;
+        $data['menu_wrokflow_activo'] = true;
         $data['pagina_titulo'] = 'Crear sucursal';
 
         $data['scripts'] = array(
@@ -120,7 +120,7 @@ class Sucursales extends MY_Controller
     public function editar($id = null)
     {
         // Inicializar vista, scripts y catálogos
-        $data['menu_sucursales_activo'] = true;
+        $data['menu_wrokflow_activo'] = true;
         $data['pagina_titulo'] = 'Editar sucursal';
 
         $data['scripts'] = array(

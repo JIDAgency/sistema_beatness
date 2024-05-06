@@ -20,7 +20,7 @@ class Planes extends MY_Controller
             $id = $this->input->post('id');
         }
 
-        $data['pagina_menu_inicio'] = true;
+        $data['menu_wrokflow_activo'] = true;
         $data['pagina_titulo'] = 'Locales';
 
         //revisar
@@ -143,7 +143,7 @@ class Planes extends MY_Controller
             array('es_rel' => true, 'src' => 'planes/index.js'),
         );
 
-        $data['menu_planes_activo'] = true;
+        $data['menu_wrokflow_activo'] = true;
         $data['pagina_titulo'] = 'Planes';
 
         $data['mensaje_exito'] = $this->session->flashdata('MENSAJE_EXITO');
@@ -217,7 +217,7 @@ class Planes extends MY_Controller
 
         // Inicializar vista, scripts y catálogos
         $data['controlador'] = 'planes/crear';
-        $data['menu_planes_activo'] = true;
+        $data['menu_wrokflow_activo'] = true;
         $data['pagina_titulo'] = 'Nuevo plan';
         $data['styles'] = array(
             array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/extensions/datedropper.min.css'),
@@ -333,7 +333,7 @@ class Planes extends MY_Controller
         }
 
         // Inicializar vista, scripts y catálogos
-        $data['menu_planes_activo'] = true;
+        $data['menu_wrokflow_activo'] = true;
         $data['pagina_titulo'] = 'Editar plan';
 
         $data['controlador'] = 'planes/editar/' . $id;
