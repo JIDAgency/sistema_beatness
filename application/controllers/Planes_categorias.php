@@ -109,7 +109,7 @@ class Planes_categorias extends MY_Controller
 
             if (isset($_FILES) && $_FILES['url_banner']['error'] == '0') {
 
-                $config['upload_path']   = './almacenamiento/categoria_planes/';
+                $config['upload_path']   = './almacenamiento/planes_categorias/';
                 $config['allowed_types'] = 'jpg';
                 // $config['max_width'] = 1200;
                 // $config['max_height'] = 1200;
@@ -208,7 +208,7 @@ class Planes_categorias extends MY_Controller
 
             if (isset($_FILES) && $_FILES['url_banner']['error'] == '0') {
 
-                $config['upload_path']   = './almacenamiento/categoria_planes/';
+                $config['upload_path']   = './almacenamiento/planes_categorias/';
                 $config['allowed_types'] = 'jpg';
                 // $config['max_width'] = 1200;
                 // $config['max_height'] = 1200;
@@ -229,7 +229,7 @@ class Planes_categorias extends MY_Controller
                 } else {
 
                     if ($plan_categoria_a_editar_row->url_banner and $plan_categoria_a_editar_row->url_banner != "default.jpg") {
-                        $url_imagen_a_borrar = "almacenamiento/categoria_planes" . $plan_categoria_a_editar_row->url_banner;
+                        $url_imagen_a_borrar = "almacenamiento/planes_categorias" . $plan_categoria_a_editar_row->url_banner;
                         $imagen_a_borrar = str_replace(base_url(), '', $url_imagen_a_borrar);
                         unlink($imagen_a_borrar);
                     }

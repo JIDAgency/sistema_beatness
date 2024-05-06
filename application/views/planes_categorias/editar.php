@@ -64,7 +64,7 @@
 												<h4 class="form-section">Foto</h4>
 												<div class="row">
 													<div class="col-lg-6 col-md-6 col-sm-12">
-														<img src="<?php echo site_url("almacenamiento/categoria_planes/" . $plan_categoria_a_editar_row->url_banner); ?>" name="preview" id="preview" style="width: 200px; height: 200px;">
+														<img src="<?php echo site_url("almacenamiento/planes_categorias/" . $plan_categoria_a_editar_row->url_banner); ?>" name="preview" id="preview" style="width: 200px; height: 200px;">
 													</div>
 													<div class="col-lg-6 col-md-6 col-sm-12">
 														<p><b>Formato: </b>JPG</p>
