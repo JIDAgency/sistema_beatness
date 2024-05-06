@@ -52,7 +52,6 @@
 												<thead>
 													<tr>
 														<th>ID</th>
-														<th>GYMPASS GYM ID</th>
 														<th>Sucursal</th>
 														<th>Mostrar</th>
 														<th>Visible en app</th>

@@ -48,11 +48,10 @@ class Sucursales extends MY_Controller
 
             $result[] = array(
                 "listar_id" => $sucursales_row->id,
-                "listar_gympass_gym_id" => $sucursales_row->gympass_gym_id,
                 "listar_nombre" => $sucursales_row->nombre . ' [' . $sucursales_row->locacion . ']',
                 "listar_orden_mostrar" => $sucursales_row->orden_mostrar . ' º',
-                "listar_estatus" => ucfirst($sucursales_row->estatus),
                 "listar_visible_app" => ucfirst($sucursales_row->visible_app),
+                "listar_estatus" => ucfirst($sucursales_row->estatus),
                 "listar_opciones" => $menu,
             );
         }
