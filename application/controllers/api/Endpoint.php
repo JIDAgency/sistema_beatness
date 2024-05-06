@@ -598,6 +598,8 @@ class Endpoint extends REST_Controller
                     $plan_con_disciplinas->disciplinas = $disciplinas_por_plan;
 
                     array_push($planes_con_disciplinas, $plan_con_disciplinas);
+
+                    $plan_con_disciplinas->disciplinas_sucursal_id = $plan->disciplinas_sucursal_id;
                 } elseif (!$reservaciones_list) {
 
                     $plan_con_disciplinas = new stdClass();
@@ -627,6 +629,8 @@ class Endpoint extends REST_Controller
                     $plan_con_disciplinas->disciplinas = $disciplinas_por_plan;
 
                     array_push($planes_con_disciplinas, $plan_con_disciplinas);
+
+                    $plan_con_disciplinas->disciplinas_sucursal_id = $plan->disciplinas_sucursal_id;
                 }
             }
         }
@@ -1175,9 +1179,20 @@ class Endpoint extends REST_Controller
 
         $usuario_valido = $this->_autenticar_usuario($datos_get['token'], $datos_get['usuario_id']);
 
-        $disciplinas = $this->sucursales_model->get_sucursales_disponibles()->result();
+        $sucursales_list = $this->sucursales_model->get_sucursales_disponibles()->result();
 
-        $this->response($disciplinas);
+        $this->response($sucursales_list);
+    }
+
+    public function obtener_sucurales_disponibles_para_app_get()
+    {
+        $datos_get = $this->get();
+
+        $usuario_valido = $this->_autenticar_usuario($datos_get['token'], $datos_get['usuario_id']);
+
+        $sucursales_list = $this->sucursales_model->obtener_sucurales_disponibles_para_app()->result();
+
+        $this->response($sucursales_list);
     }
 
     public function obtener_categorias_planes_por_sucursal_get()
@@ -1186,7 +1201,21 @@ class Endpoint extends REST_Controller
 
         $usuario_valido = $this->_autenticar_usuario($datos_get['token'], $datos_get['usuario_id']);
 
-        $planes_categorias = $this->planes_categorias_model->get_categorias_activos()->result();
+        if (!$usuario_valido) {
+            $this->response(array(
+                'error' => true,
+                'mensaje' => 'Sin acceso autorizado.',
+            ), REST_Controller::HTTP_NOT_FOUND);
+        }
+
+        $planes_categorias = $this->planes_categorias_model->obtener_categorias_planes_por_sucursal_get()->result();
+
+        if (!$planes_categorias) {
+            $this->response(array(
+                'error' => true,
+                'mensaje' => 'No hay categorías activas, por favor intentelo más tarde.',
+            ), REST_Controller::HTTP_NOT_FOUND);
+        }
 
         $this->response($planes_categorias);
     }

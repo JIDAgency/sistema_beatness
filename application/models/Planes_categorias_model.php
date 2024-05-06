@@ -19,7 +19,7 @@ class Planes_categorias_model extends CI_Model
         $query = $this->db
             ->where('id', intval($id))
             ->get('planes_categorias');
-        
+
         return $query;
     }
 
@@ -41,10 +41,29 @@ class Planes_categorias_model extends CI_Model
 
         return $query;
     }
-    
+
     /** Funciones personalizadas */
 
-    public function get_categorias_activos() {
+    public function obtener_categorias_planes_por_sucursal_get()
+    {
+        $query = $this->db
+            ->select('
+            t1.*,
+            t4.sucursal_id as disciplinas_sucursal_id,
+        ')
+            ->from('planes_categorias t1')
+            ->join('rel_planes_categorias t2', 't2.categorias_id = t1.id')
+            ->join('planes_disciplinas t3', 't3.plan_id = t2.planes_id')
+            ->join('disciplinas t4', 't4.id = t3.disciplina_id')
+            ->group_by('t4.sucursal_id')
+            ->order_by('t1.orden', 'asc')
+            ->get();
+
+        return $query;
+    }
+
+    public function get_categorias_activos()
+    {
         $query = $this->db
             ->where('estatus', 'activo')
             ->get('planes_categorias');
@@ -52,23 +71,26 @@ class Planes_categorias_model extends CI_Model
         return $query;
     }
 
-    public function obtener_categoria_por_codigo($codigo) {
+    public function obtener_categoria_por_codigo($codigo)
+    {
         $query = $this->db
             ->where('codigo', trim(strval(mb_strtolower($codigo))))
             ->get('planes_categorias');
-        
+
         return $query;
     }
 
-    public function obtener_categoria_por_identificador($identificador) {
+    public function obtener_categoria_por_identificador($identificador)
+    {
         $query = $this->db
             ->where('identificador', trim(strval($identificador)))
             ->get('planes_categorias');
-        
+
         return $query;
     }
 
-    public function eliminar_categoria_por_identificador($identificador) {
+    public function eliminar_categoria_por_identificador($identificador)
+    {
         $query = $this->db
             ->where('identificador', trim(strval($identificador)))
             ->delete('planes_categorias');

@@ -7,17 +7,19 @@ class Planes_model extends CI_Model
     /** Nuevos metodos */
 
     /** Obtener todos los registros de la tabla de usuarios */
-    public function get_lista_de_todos_los_planes(){
+    public function get_lista_de_todos_los_planes()
+    {
         $query = $this->db->get('planes');
         return $query;
     }
 
     /** Obtener todos los usuarios con el rol de cliente limitada a datos específicos*/
-    public function get_lista_de_todos_los_planes_limitada(){
-        $url = '<a href="'.site_url("inicio/index").'"><i class="ft-eye"></i> Detalles</a>';
+    public function get_lista_de_todos_los_planes_limitada()
+    {
+        $url = '<a href="' . site_url("inicio/index") . '"><i class="ft-eye"></i> Detalles</a>';
 
         $query = $this->db
-            ->order_by('t1.id','desc')
+            ->order_by('t1.id', 'desc')
             ->select("
                 t1.id as listar_id,
                 CONCAT(COALESCE(t1.sku, 'N/D'), ' - ', COALESCE(t1.nombre, 'N/D')) AS listar_nombre_completo,
@@ -29,7 +31,7 @@ class Planes_model extends CI_Model
                 t1.activado as listar_activo,
             ")
             ->from('planes t1')
-        ->get();
+            ->get();
 
         return $query;
     }
@@ -98,14 +100,12 @@ class Planes_model extends CI_Model
     {
         $this->db->where('plan_id', intval($plan_id));
         return $this->db->get('planes_disciplinas');
-
     }
 
     public function obtener_categorias_por_plan_id($plan_id)
     {
         $this->db->where('planes_id', intval($plan_id));
         return $this->db->get('rel_planes_categorias');
-
     }
 
     public function obtener_disciplinas_con_detalle_por_plan_id($plan_id)
@@ -118,18 +118,20 @@ class Planes_model extends CI_Model
         return $this->db->get();
     }
 
-    public function activar($id,$data)
+    public function activar($id, $data)
     {
         $this->db->where('id', $id);
-        $this->db->update('planes', $data);
-        {return true;}
+        $this->db->update('planes', $data); {
+            return true;
+        }
     }
 
-    public function desactivar($id,$data)
+    public function desactivar($id, $data)
     {
         $this->db->where('id', $id);
-        $this->db->update('planes', $data);
-        {return true;}
+        $this->db->update('planes', $data); {
+            return true;
+        }
     }
 
     /**
@@ -203,16 +205,24 @@ class Planes_model extends CI_Model
 
     public function get_planes_disponibles_para_venta_en_la_app()
     {
-        $query = $this->db->from('planes')
-            ->order_by("orden_venta", "asc")
-            ->where('nombre !=', 'Sin plan')
-            ->where_in('categoria', array('normal', 'godin'))
-            ->where('activado', '1')
+        $query = $this->db
+            ->where('t1.nombre !=', 'Sin plan')
+            ->where_in('t1.categoria', array('normal', 'godin'))
+            ->where('t1.activado', '1')
+            ->select('
+                t1.*,
+                t3.sucursal_id as disciplinas_sucursal_id,
+            ')
+            ->from('planes t1')
+            ->join('planes_disciplinas t2', 't2.plan_id = t1.id')
+            ->join('disciplinas t3', 't3.id = t2.disciplina_id')
+            ->group_by(array("t1.id", "t3.sucursal_id"))
+            ->order_by("t1.orden_venta", "asc")
             ->get();
 
         return $query;
     }
-    
+
     /** Insane plan */
     public function get_plan_row_disponible_para_venta_en_la_app()
     {
@@ -240,27 +250,30 @@ class Planes_model extends CI_Model
         return $query;
     }
 
-    public function obtener_planes_sin_codigo() {
+    public function obtener_planes_sin_codigo()
+    {
         $query = $this->db
             ->where('codigo', null)
             ->get('planes');
-            
+
         return $query;
     }
 
-    public function obtener_planes_por_codigo($codigo) {
+    public function obtener_planes_por_codigo($codigo)
+    {
         $query = $this->db
             ->where('codigo', $codigo)
             ->get('planes');
-            
+
         return $query;
     }
 
-    public function obtener_planes_con_codigo() {
+    public function obtener_planes_con_codigo()
+    {
         $query = $this->db
             ->where('codigo !=', null)
             ->get('planes');
-            
+
         return $query;
     }
 }
