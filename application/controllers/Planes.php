@@ -362,6 +362,7 @@ class Planes extends MY_Controller
         $this->form_validation->set_rules('orden_venta', 'Orden de venta', 'trim|required');
         $this->form_validation->set_rules('codigo', 'Código', 'trim');
         $this->form_validation->set_rules('disciplinas[]', 'disciplinas', 'trim');
+        $this->form_validation->set_rules('categorias[]', 'categorias', 'trim');
         $this->form_validation->set_rules('terminos_condiciones', 'términos y condiciones', 'trim');
         $this->form_validation->set_rules('descripcion', 'descripción', 'trim');
 
