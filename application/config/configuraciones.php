@@ -39,12 +39,12 @@ $config['db_activa'] = true;
 */
 
 $config['sistema_id'] = 'sistema_beatnes';
-$config['titulo'] = '';
-$config['nombre_comercial'] = '';
-$config['nombre_fiscal'] = '';
-$config['descripcion'] = '';
-$config['palabras_clave'] = '';
-$config['autor'] = 'jid.agency';
+$config['titulo'] = 'Beatness | Fitness Studio';
+$config['nombre_comercial'] = 'Beatness Studio';
+$config['nombre_fiscal'] = 'Beatness Studio';
+$config['descripcion'] = 'Descubre Beatness | Fitness Studio: tu destino de bienestar y ejercicio en Ciudad de México y Puebla. Experimenta nuestras emocionantes clases de bootcamp e indoor cycling y accede a nuestra aplicación exclusiva para llevar tu fitness al siguiente nivel.';
+$config['palabras_clave'] = 'Fitness, Studio, Ejercicio, Bootcamp, Indoor Cycling, Ciudad de México, Puebla, Bienestar, Salud, App, Entrenamiento, Comunidad.';
+$config['autor'] = 'Beatness Team';
 
 /*
 |--------------------------------------------------------------------------

@@ -6,14 +6,22 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
 
-    <meta name="description" content="<?php echo description(); ?>">
-    <meta name="keywords" content="<?php echo keywords(); ?>">
-    <meta name="author" content="<?php echo author(); ?>">
+    <meta name="description" content="<?php echo descripcion(); ?>">
+    <meta name="keywords" content="<?php echo palabras_clave(); ?>">
+    <meta name="author" content="<?php echo autor(); ?>">
+
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="<?php echo isset($pagina_titulo) ? $pagina_titulo . " | " : ""; ?><?php echo titulo() ? titulo() : ""; ?>">
+    <meta property="og:description" content="<?php echo descripcion(); ?>">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="<?php echo base_url(); ?>">
+    <meta property="og:image" content="<?php echo base_url(); ?>almacenamiento/logos/logo.jpg">
+    <!-- Fin de Open Graph Tags -->
 
     <title><?php echo isset($pagina_titulo) ? $pagina_titulo . " | " : ""; ?><?php echo titulo() ? titulo() : ""; ?></title>
 
-    <link rel="apple-touch-icon" href="<?php echo base_url(); ?>almacenamiento/logos/open-graph.jpg">
-    <link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url(); ?>almacenamiento/logos/logo.jpg">
+    <link rel="apple-touch-icon" href="<?php echo base_url(); ?>almacenamiento/logos/logo.jpg">
+    <link rel=" shortcut icon" type="image/x-icon" href="<?php echo base_url(); ?>almacenamiento/logos/logo.jpg">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i%7CMuli:300,400,500,700" rel="stylesheet">
     <!-- BEGIN VENDOR CSS-->
     <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>app-assets/css/vendors.css">

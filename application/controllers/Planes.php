@@ -314,7 +314,7 @@ class Planes extends MY_Controller
 
                 // Añadir las categorias seleccionadas
                 foreach ($this->input->post('categorias') as $k => $v) {
-                    $this->planes_model->agregar_categoria(array('identificador' => $identificador, 'planes_id' => $plan_id, 'categorias_id' => $v));
+                    $this->planes_model->agregar_categoria(array('identificador' => $identificador, 'plan_id' => $plan_id, 'categoria_id' => $v));
                 }
 
                 $this->session->set_flashdata('MENSAJE_EXITO', 'El plan se ha creado correctamente.');
@@ -454,7 +454,7 @@ class Planes extends MY_Controller
                 // Añadir las categorias seleccionadas
                 if ($this->planes_model->eliminar_categorias($id)) {
                     foreach ($this->input->post('categorias') as $k => $v) {
-                        $this->planes_model->agregar_categoria(array('identificador' => $identificador, 'planes_id' => $id, 'categorias_id' => $v));
+                        $this->planes_model->agregar_categoria(array('identificador' => $identificador, 'plan_id' => $id, 'categoria_id' => $v));
                     }
                 }
 

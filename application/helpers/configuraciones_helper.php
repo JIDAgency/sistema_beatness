@@ -16,12 +16,12 @@ if (!function_exists('branding')) {
 }
 
 if (!function_exists('titulo')) {
-
     function titulo()
     {
-        return get_instance()->config->item('titulo', 'b3studio');
+        return get_instance()->config->item('titulo');
     }
 }
+
 
 if (!function_exists('lema')) {
 
@@ -36,6 +36,83 @@ if (!function_exists('pagina')) {
     function pagina()
     {
         return get_instance()->config->item('pagina', 'b3studio');
+    }
+}
+
+if (!function_exists('sistema_id')) {
+    function sistema_id()
+    {
+        return get_instance()->config->item('sistema_id');
+    }
+}
+
+if (!function_exists('nombre_comercial')) {
+    function nombre_comercial()
+    {
+        return get_instance()->config->item('nombre_comercial');
+    }
+}
+
+if (!function_exists('nombre_fiscal')) {
+    function nombre_fiscal()
+    {
+        return get_instance()->config->item('nombre_fiscal');
+    }
+}
+
+if (!function_exists('descripcion')) {
+    function descripcion()
+    {
+        return get_instance()->config->item('descripcion');
+    }
+}
+
+if (!function_exists('palabras_clave')) {
+    function palabras_clave()
+    {
+        return get_instance()->config->item('palabras_clave');
+    }
+}
+
+if (!function_exists('autor')) {
+    function autor()
+    {
+        return get_instance()->config->item('autor');
+    }
+}
+
+if (!function_exists('whatsapp')) {
+    function whatsapp()
+    {
+        return get_instance()->config->item('whatsapp');
+    }
+}
+
+if (!function_exists('facebook')) {
+    function facebook()
+    {
+        return get_instance()->config->item('facebook');
+    }
+}
+
+if (!function_exists('instagram')) {
+    function instagram()
+    {
+        return get_instance()->config->item('instagram');
+    }
+}
+
+if (!function_exists('linkedin')) {
+    function linkedin()
+    {
+        return get_instance()->config->item('linkedin');
+    }
+}
+
+if (!function_exists('twitter')) {
+    function twitter()
+    {
+        return get_instance()->config->item('twitter');
     }
 }
 
