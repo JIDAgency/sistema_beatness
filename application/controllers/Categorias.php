@@ -19,7 +19,7 @@ class Categorias extends MY_Controller
 
     public function index()
     {
-        $data['menu_clases_activo'] = true;
+        $data['menu_instructores_activo'] = true;
         $data['pagina_titulo'] = 'Lista de disciplinas-categorias';
 
         $data['mensaje_exito'] = $this->session->flashdata('MENSAJE_EXITO');
@@ -93,7 +93,7 @@ class Categorias extends MY_Controller
         $this->form_validation->set_rules('disciplina_id', 'Disciplina', 'required');
 
         // Inicializar vista, scripts
-        $data['menu_clases_activo'] = true;
+        $data['menu_instructores_activo'] = true;
         $data['pagina_titulo'] = 'Crear categoria';
 
         $data['scripts'] = array(
@@ -152,7 +152,7 @@ class Categorias extends MY_Controller
         $this->form_validation->set_rules('disciplina_id', 'Disciplina', 'required');
 
         // Inicializar vista, scripts y catálogos
-        $data['menu_clases_activo'] = true;
+        $data['menu_instructores_activo'] = true;
         $data['pagina_titulo'] = 'Editar categorias';
         $data['scripts'] = array(
             array('es_rel' => false, 'src' => 'https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js'),

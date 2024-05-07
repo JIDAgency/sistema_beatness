@@ -15,7 +15,7 @@
 		<?php $this->load->view('_comun/mensajes_alerta'); ?>
 		<div class="content-wrapper">
 			<div class="content-body">
-				<section>
+				<!-- <section>
 					<div class="row">
 						<div class="col-12">
 							<div class="card">
@@ -25,10 +25,6 @@
 										<a href="<?php echo site_url('categorias/crear') ?>" class="btn btn-outline-secondary btn-min-width">
 											<i class="ft-plus"></i> Nueva categoria
 										</a>
-										<!--a href="<?php //echo site_url('clases/generar_horarios_ionic') 
-													?>" class="btn btn-secondary btn-sm">
-										<i class="ft-plus white"></i> Generar horas bonitas
-									</a-->
 									</div>
 								</div>
 								<div class="card-content p_dt">
@@ -59,7 +55,7 @@
 							</div>
 						</div>
 					</div>
-				</section>
+				</section> -->
 			</div>
 		</div>
 	</div>

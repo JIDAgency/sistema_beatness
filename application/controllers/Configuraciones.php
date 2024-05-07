@@ -12,7 +12,7 @@ class Configuraciones extends MY_Controller {
     public function index()
     {
         /** Carga los datos del menu */
-        $data['menu_configuraciones_activo'] = true;
+        $data['menu_instructores_activo'] = true;
         $data['pagina_titulo'] = 'Configuraciones de sistema';
 
         /** Carga los mensajes de validaciones para ser usados por los controladores */

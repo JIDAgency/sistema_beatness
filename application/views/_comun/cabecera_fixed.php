@@ -235,6 +235,9 @@
                             <li data-menu=""><a class="dropdown-item" href="<?php echo site_url('configuraciones'); ?>" data-toggle="dropdown">Configuraciones</a></li>
                             <li data-menu=""><a class="dropdown-item" href="<?php echo site_url('instructores'); ?>" data-toggle="dropdown">Instructores</a></li>
                             <li data-menu=""><a class="dropdown-item" href="<?php echo site_url('usuarios'); ?>" data-toggle="dropdown">Administradores</a></li>
+                            <hr>
+                            <H4 class="dropdown-header" style="color: #F46152;"><b>GYMPASS</b></H4>
+                            <li data-menu=""><a class="dropdown-item" href="<?php echo site_url('categorias'); ?>" data-toggle="dropdown">Disciplinas - Categorias</a></li>
                         </ul>
                     </li>
                     <!--
@@ -312,7 +315,12 @@
 
                     <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link <?php echo isset($menu_instructores_activo) ? 'active' : ''; ?> <?php echo isset($menu_usuarios_activo) ? 'active' : ''; ?>" href="#" data-toggle="dropdown"><i class="icon-star"></i><span data-i18n="nav.dash.main">Sistema <i class="ft-chevron-down"></i></span></a>
                         <ul class="dropdown-menu">
+                            <li data-menu=""><a class="dropdown-item" href="<?php echo site_url('configuraciones'); ?>" data-toggle="dropdown">Configuraciones</a></li>
                             <li data-menu=""><a class="dropdown-item" href="<?php echo site_url('instructores'); ?>" data-toggle="dropdown">Instructores</a></li>
+                            <li data-menu=""><a class="dropdown-item" href="<?php echo site_url('usuarios'); ?>" data-toggle="dropdown">Administradores</a></li>
+                            <hr>
+                            <H4 class="dropdown-header" style="color: #F46152;"><b>GYMPASS</b></H4>
+                            <li data-menu=""><a class="dropdown-item" href="<?php echo site_url('categorias'); ?>" data-toggle="dropdown">Disciplinas - Categorias</a></li>
                         </ul>
                     </li>
                 <?php endif; ?>
