@@ -1,15 +1,17 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class MY_Controller extends CI_Controller {
+class MY_Controller extends CI_Controller
+{
 
-    public function __construct() {
-        
+    public function __construct()
+    {
+
         parent::__construct();
-        
+
         date_default_timezone_set('America/Mexico_City');
         setlocale(LC_ALL, 'es_MX.UTF-8', 'es_MX');
-        setlocale(LC_TIME, 'es_VE.UTF-8','esp');  
+        setlocale(LC_TIME, 'es_VE.UTF-8', 'esp');
 
         $this->config->load('b3studio', true);
 
@@ -17,14 +19,14 @@ class MY_Controller extends CI_Controller {
         $this->load->library('session');
         $this->load->library('form_validation');
         // Cargando helpers comunes a utilizar
-        $this->load->helper(array('url','identidad','form'));
+        $this->load->helper(array('url', 'identidad', 'form'));
         // Cargando el manejador de la base de datos
         $this->load->database();
     }
 
     protected function construir_public_ui($contenido, $data = null)
-    {        
-		$this->load->view('_layout/public/header', $data);
+    {
+        $this->load->view('_layout/public/header', $data);
         $this->load->view($contenido, $data);
         $this->load->view('_layout/public/footer', $data);
     }
@@ -35,19 +37,23 @@ class MY_Controller extends CI_Controller {
         if (!$this->session->userdata['en_sesion'] == true) {
             redirect('cuenta/iniciar_sesion');
         }
-        
+
         $this->verificar_token_web();
 
         //Validar rol de la sesión
-        if (es_cliente()){
+        if (es_cliente()) {
             redirect('usuario/inicio');
         }
-        if (es_instructor()){
+        if (es_instructor()) {
             redirect('usuario/inicio');
-        } 
+        }
         if ($this->session->userdata("id") == "5409") {
             redirect('instructor/inicio');
         }
+
+        $data['mensaje_exito'] = $this->session->flashdata('MENSAJE_EXITO');
+        $data['mensaje_info'] = $this->session->flashdata('MENSAJE_INFO');
+        $data['mensaje_error'] = $this->session->flashdata('MENSAJE_ERROR');
 
         // Cargar datos del usuario en sesión
         $data['nombre_completo'] = $this->session->userdata['nombre_completo'];
@@ -62,17 +68,17 @@ class MY_Controller extends CI_Controller {
         if (!$this->session->userdata['en_sesion'] == true) {
             redirect('cuenta/iniciar_sesion');
         }
-        
+
         $this->verificar_token_web();
 
         //Validar rol de la sesión
-        if (es_superadministrador()){
+        if (es_superadministrador()) {
             redirect('inicio');
         }
-        if (es_administrador()){
+        if (es_administrador()) {
             redirect('inicio');
         }
-        if (es_frontdesk()){
+        if (es_frontdesk()) {
             redirect('inicio');
         }
         if ($this->session->userdata("id") == "5409") {
@@ -85,7 +91,7 @@ class MY_Controller extends CI_Controller {
         $this->load->model('asignaciones_model');
 
         $plan_online = $this->asignaciones_model->get_asignaciones_para_clases_online_activas_por_usuario_id($this->session->userdata('id'))->row();
-        
+
         if (!$plan_online) {
             $data['tiene_suscripcion_activa'] = 'cancelado';
             $data['plan_online_text'] = '¡Activar mi plan!';
@@ -119,23 +125,23 @@ class MY_Controller extends CI_Controller {
         if (!$this->session->userdata['en_sesion'] == true) {
             redirect('cuenta/iniciar_sesion');
         }
-        
+
         $this->verificar_token_web();
 
-        if (!es_instructor()){
+        if (!es_instructor()) {
             redirect('usuario/inicio');
         }
         //Validar rol de la sesión
-        if (es_superadministrador()){
+        if (es_superadministrador()) {
             redirect('inicio');
         }
-        if (es_administrador()){
+        if (es_administrador()) {
             redirect('inicio');
         }
-        if (es_frontdesk()){
+        if (es_frontdesk()) {
             redirect('inicio');
         }
-        if (es_cliente()){
+        if (es_cliente()) {
             redirect('usuario/inicio');
         }
 
@@ -146,7 +152,6 @@ class MY_Controller extends CI_Controller {
         $this->load->view($content, $data);
         $this->load->view('_comun/instructor/footer', $data);
     }
-
 
     public function verificar_token_web()
     {
@@ -161,7 +166,7 @@ class MY_Controller extends CI_Controller {
 
     public function mensaje_del_sistema($tipo = null, $mensaje = null, $redirect = null)
     {
-        $this->session->set_flashdata(''.$tipo.'', ''.$mensaje.'');
+        $this->session->set_flashdata('' . $tipo . '', '' . $mensaje . '');
         redirect($redirect);
     }
 }

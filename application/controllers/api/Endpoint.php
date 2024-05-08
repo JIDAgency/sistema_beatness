@@ -575,6 +575,10 @@ class Endpoint extends REST_Controller
                 continue; // Esto saltará la iteración actual y pasará a la siguiente
             }
 
+            if ($usuario_valido->es_estudiante == 'no' and $plan->es_estudiante == 'si') {
+                continue;
+            }
+
             if (in_array($plan->codigo, $codigos_canjeados_array) or !$plan->codigo) {
                 if ($reservaciones_list and !in_array($plan->id, array(1))) {
 

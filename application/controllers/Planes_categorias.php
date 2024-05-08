@@ -20,15 +20,15 @@ class Planes_categorias extends MY_Controller
 
     public function index()
     {
-        $data['menu_wrokflow_activo'] = true;
-        $data['pagina_titulo'] = 'Lista de planes-categorias';
+        $data['pagina_titulo'] = 'Categorías de planes';
+        $data['pagina_subtitulo'] = 'Registro de categorías de planes';
+        $data['pagina_menu_planes_categorias'] = true;
 
-        $data['mensaje_exito'] = $this->session->flashdata('MENSAJE_EXITO');
-        $data['mensaje_info'] = $this->session->flashdata('MENSAJE_INFO');
-        $data['mensaje_error'] = $this->session->flashdata('MENSAJE_ERROR');
-        $controlador_js = "planes_categorias/index";
+        $data['controlador'] = 'planes_categorias';
+        $data['ir_a'] = 'planes_categorias/crear';
+        $data['regresar_a'] = 'inicio';
+        $controlador_js = 'planes_categorias/index';
 
-        // Cargar estilos y scripts
         $data['styles'] = array(
             array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/tables/datatable/datatables.min.css'),
         );
@@ -77,33 +77,29 @@ class Planes_categorias extends MY_Controller
 
     public function crear()
     {
-        // Establecer validaciones
-        $this->form_validation->set_rules('nombre', 'nombre de la categoria', 'required');
-        $this->form_validation->set_rules('orden', 'orden', 'required');
+        $data['pagina_titulo'] = 'Agregar';
+        $data['pagina_subtitulo'] = 'Agregar categoría de panes';
+        $data['pagina_menu_planes_categorias'] = true;
 
-        // Inicializar vista, scripts
+        $data['controlador'] = 'planes_categorias/crear';
+        $data['ir_a'] = 'planes_categoriass';
+        $data['regresar_a'] = 'planes_categorias';
+        $controlador_js = 'planes_categorias/crear';
+
         $data['menu_wrokflow_activo'] = true;
         $data['pagina_titulo'] = 'Crear plan-categoria';
 
+        $data['styles'] = array();
         $data['scripts'] = array(
             array('es_rel' => false, 'src' => 'https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js'),
             array('es_rel' => false, 'src' => 'https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/additional-methods.js'),
-            array('es_rel' => true, 'src' => 'planes_categorias/crear.js'),
-
+            array('es_rel' => true, 'src' => '' . $controlador_js . '.js'),
         );
 
-        // Validar que existan disciplinas disponibles
-        // $disciplinas = $this->disciplinas_model->get_lista_de_disciplinas_para_crear_y_editar_clases();
-
-        // if ($disciplinas->num_rows() == 0) {
-        //     $this->session->set_flashdata('MENSAJE_INFO', 'Es necesario que exista por lo menos alguna disciplina disponible para poder crear la clase.');
-        //     redirect('planes_categorias/index');
-        // }
-
-        // $data['disciplinas'] = $disciplinas;
+        $this->form_validation->set_rules('nombre', 'nombre de la categoria', 'required');
+        $this->form_validation->set_rules('orden', 'orden', 'required');
 
         if ($this->form_validation->run() == false) {
-
             $this->construir_private_site_ui('planes_categorias/crear', $data);
         } else {
 
@@ -111,22 +107,22 @@ class Planes_categorias extends MY_Controller
 
                 $config['upload_path']   = './almacenamiento/planes_categorias/';
                 $config['allowed_types'] = 'jpg';
-                // $config['max_width'] = 1200;
-                // $config['max_height'] = 1200;
-                // $config['max_size'] = '600';
+                $config['max_width'] = 1200;
+                $config['max_height'] = 1200;
+                $config['max_size'] = '600';
                 $config['overwrite']     = true;
                 $config['encrypt_name']  = true;
                 $config['remove_spaces'] = true;
 
                 if (!is_dir($config['upload_path'])) {
-                    $this->mensaje_del_sistema("MENSAJE_ERROR", "La carpeta de carga no existe", site_url($data['planes_categorias/index']));
+                    $this->mensaje_del_sistema('MENSAJE_ERROR', 'La carpeta de carga no existe.&nbsp(1)', $data['controlador']);
                 }
 
                 $this->load->library('upload', $config);
 
                 if (!$this->upload->do_upload('url_banner')) {
 
-                    $this->mensaje_del_sistema("MENSAJE_ERROR", $this->upload->display_errors(), site_url($data['planes_categorias/index']));
+                    $this->mensaje_del_sistema('MENSAJE_ERROR', $this->upload->display_errors() . '&nbsp(2)', $data['controlador']);
                 } else {
                     $data_imagen = $this->upload->data();
                     $nombre_img_plan = $data_imagen['file_name'];
@@ -136,22 +132,20 @@ class Planes_categorias extends MY_Controller
                 $nombre_img_plan = 'default.jpg';
             }
 
-            $fecha_registro = date("Y-m-d H:i:s");
-            $key_1 = "planes_categorias-" . date("Y-m-d-H-i-s", strtotime($fecha_registro));
-            $identificador = hash("crc32b", $key_1);
+            $fecha_registro = date('Y-m-d H:i:s');
+            $key_1 = 'planes_categorias-' . date('Y-m-d-H-i-s', strtotime($fecha_registro));
+            $identificador_1 = hash('crc32b', $key_1);
 
-            // Preparar datos para hacer el insert en la bd
-            $data = array(
-                'identificador' => $identificador,
+            $data_1 = array(
+                'identificador' => $identificador_1,
                 'nombre' => $this->input->post('nombre'),
                 'url_banner' => $nombre_img_plan,
                 'orden' => $this->input->post('orden'),
                 'fecha_registro' => $fecha_registro,
             );
 
-            if ($this->planes_categorias_model->crear($data)) {
-                $this->session->set_flashdata('MENSAJE_EXITO', 'El plan - categoria se ha creado correctamente.');
-                redirect('planes_categorias/index');
+            if ($this->planes_categorias_model->crear($data_1)) {
+                $this->mensaje_del_sistema('MENSAJE_EXITO', 'La categoría de planes se ha agregado correctamente.', $data['ir_a']);
             }
 
             $this->construir_private_site_ui('planes_categorias/crear', $data);
@@ -160,14 +154,23 @@ class Planes_categorias extends MY_Controller
 
     public function editar($id = null)
     {
-        // Establecer validaciones
+        if ($this->input->post()) {
+            $id = $this->input->post('id');
+        }
+
+        $data['pagina_titulo'] = 'Agregar';
+        $data['pagina_subtitulo'] = 'Agregar categoría de panes';
+        $data['pagina_menu_planes_categorias'] = true;
+        $data['menu_wrokflow_activo'] = true;
+
+        $data['controlador'] = 'planes_categorias/editar/' . $id;
+        $data['ir_a'] = 'planes_categorias/editar/' . $id;
+        $data['regresar_a'] = 'planes_categorias';
+        $controlador_js = 'planes_categorias/editar';
+
         $this->form_validation->set_rules('nombre', 'nombre de la categoria', 'required');
         $this->form_validation->set_rules('orden', 'orden', 'required');
 
-        // Inicializar vista, scripts y catálogos
-        $data['menu_wrokflow_activo'] = true;
-        $data['pagina_titulo'] = 'Editar categorias';
-        $data['controlador'] = 'planes_categorias/editar/' . $id;
         $data['scripts'] = array(
             array('es_rel' => false, 'src' => 'https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js'),
             array('es_rel' => false, 'src' => 'https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/additional-methods.js'),
@@ -175,34 +178,18 @@ class Planes_categorias extends MY_Controller
 
         );
 
-        // $disciplinas = $this->disciplinas_model->get_lista_de_disciplinas_para_crear_y_editar_clases();
-
-        // if ($disciplinas->num_rows() == 0) {
-        //     $this->session->set_flashdata('MENSAJE_INFO', 'Es necesario que exista por lo menos alguna disciplina disponible para poder crear la clase.');
-        //     redirect('planes_categorias/index');
-        // }
-
-        // $data['disciplinas'] = $disciplinas;
-
-        if ($this->input->post()) {
-            $id = $this->input->post('id');
-        }
-
         $plan_categoria_a_editar_row = $this->planes_categorias_model->obtener_por_id($id)->row();
+
+        if (!$plan_categoria_a_editar_row) {
+            $this->mensaje_del_sistema('MENSAJE_ERROR', 'La carpeta de carga no existe&nbsp(1)', $data['regresar_a']);
+        }
 
         $sucursales_list = $this->sucursales_model->get_todas_las_sucursales()->result();
 
         $data['sucursales_list'] = $sucursales_list;
-
-        if (!$plan_categoria_a_editar_row) {
-            $this->session->set_flashdata('MENSAJE_INFO', 'La categoria que intenta editar no existe.');
-            redirect('/planes_categorias/index');
-        }
-
         $data['plan_categoria_a_editar_row'] = $plan_categoria_a_editar_row;
 
         if ($this->form_validation->run() == false) {
-
             $this->construir_private_site_ui('planes_categorias/editar', $data);
         } else {
 
@@ -210,26 +197,26 @@ class Planes_categorias extends MY_Controller
 
                 $config['upload_path']   = './almacenamiento/planes_categorias/';
                 $config['allowed_types'] = 'jpg';
-                // $config['max_width'] = 1200;
-                // $config['max_height'] = 1200;
-                // $config['max_size'] = '600';
+                $config['max_width'] = 1200;
+                $config['max_height'] = 1200;
+                $config['max_size'] = '600';
                 $config['overwrite']     = true;
                 $config['encrypt_name']  = true;
                 $config['remove_spaces'] = true;
 
                 if (!is_dir($config['upload_path'])) {
-                    $this->mensaje_del_sistema("MENSAJE_ERROR", "La carpeta de carga no existe", site_url($data['controlador']));
+                    $this->mensaje_del_sistema('MENSAJE_ERROR', 'La carpeta de carga no existe.&nbsp(2)', $data['controlador']);
                 }
 
                 $this->load->library('upload', $config);
 
                 if (!$this->upload->do_upload('url_banner')) {
 
-                    $this->mensaje_del_sistema("MENSAJE_ERROR", $this->upload->display_errors(), site_url($data['controlador']));
+                    $this->mensaje_del_sistema('MENSAJE_ERROR', $this->upload->display_errors() . '&nbsp(3)', $data['controlador']);
                 } else {
 
-                    if ($plan_categoria_a_editar_row->url_banner and $plan_categoria_a_editar_row->url_banner != "default.jpg") {
-                        $url_imagen_a_borrar = "almacenamiento/planes_categorias" . $plan_categoria_a_editar_row->url_banner;
+                    if ($plan_categoria_a_editar_row->url_banner and $plan_categoria_a_editar_row->url_banner != 'default.jpg') {
+                        $url_imagen_a_borrar = 'almacenamiento/planes_categorias' . $plan_categoria_a_editar_row->url_banner;
                         $imagen_a_borrar = str_replace(base_url(), '', $url_imagen_a_borrar);
                         unlink($imagen_a_borrar);
                     }
@@ -242,41 +229,18 @@ class Planes_categorias extends MY_Controller
                 $nombre_img_perfil = $plan_categoria_a_editar_row->url_banner;
             }
 
-            $data = array(
+            $data_1 = array(
                 'nombre' => $this->input->post('nombre'),
                 'orden' => $this->input->post('orden'),
                 'url_banner' => $nombre_img_perfil,
             );
 
 
-            if ($this->planes_categorias_model->editar($id, $data)) {
-                $this->session->set_flashdata('MENSAJE_EXITO', 'La categoria se ha editado correctamente.');
-                redirect('/planes_categorias');
+            if ($this->planes_categorias_model->editar($id, $data_1)) {
+                $this->mensaje_del_sistema('MENSAJE_EXITO', 'La categoría de planes se ha editado correctamente.', $data['ir_a']);
             }
 
             $this->construir_private_site_ui('planes_categorias/editar', $data);
         }
-    }
-
-    public function borrar($id = null)
-    {
-        $clase = $this->clases_model->obtener_por_id($id)->row();
-
-        if (!$clase) {
-            $this->session->set_flashdata('MENSAJE_ERROR', 'No se han podido encontrar todas las clases que desea borrar.');
-            redirect('clases/index');
-        }
-
-        if ($clase->reservado > 0) {
-            $this->session->set_flashdata('MENSAJE_ERROR', 'La clase que intenta borrar ya tiene reservaciones hechas.');
-            redirect('clases/index');
-        }
-
-        if ($this->clases_model->borrar($id)) {
-            redirect('clases/index');
-        }
-
-        $this->session->set_flashdata('MENSAJE_ERROR', 'La clase ' . $id . ' no ha podido ser borrada.');
-        redirect('clases/index');
     }
 }

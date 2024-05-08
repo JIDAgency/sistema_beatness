@@ -12,7 +12,7 @@
 				</div>
 			</div>
 		</div>
-		<?php $this->load->view('_comun/mensajes_alerta'); ?>
+		<?php $this->load->view('_templates/mensajes_alerta.tpl.php'); ?>
 		<div class="content-wrapper">
 			<div class="content-body">
 				<section>
@@ -23,12 +23,8 @@
 									<h4 class="card-title">Categorias disponibles</h4>
 									<div class="heading-elements">
 										<a href="<?php echo site_url('planes_categorias/crear') ?>" class="btn btn-outline-secondary btn-min-width">
-											<i class="ft-plus"></i> Nuevo plan - categoria
+											<i class="ft-plus"></i> Agregar
 										</a>
-										<!--a href="<?php //echo site_url('clases/generar_horarios_ionic') 
-													?>" class="btn btn-secondary btn-sm">
-										<i class="ft-plus white"></i> Generar horas bonitas
-									</a-->
 									</div>
 								</div>
 								<div class="card-content p_dt">
