@@ -245,7 +245,7 @@ class Planes extends MY_Controller
 
             if (isset($_FILES) && $_FILES['url_infoventa']['error'] == '0') {
 
-				$config['upload_path'] = './almacenamiento/planes/';
+                $config['upload_path'] = './almacenamiento/planes/';
                 $config['allowed_types'] = 'jpg';
                 //$config['max_width'] = 810;
                 //$config['max_height'] = 810;
@@ -254,26 +254,23 @@ class Planes extends MY_Controller
                 $config['encrypt_name'] = true;
                 $config['remove_spaces'] = true;
 
-				if (!is_dir($config['upload_path'])) {
-					$this->mensaje_del_sistema("MENSAJE_ERROR", "La carpeta de carga no existe", site_url($data['controlador']));
-				}
+                if (!is_dir($config['upload_path'])) {
+                    $this->mensaje_del_sistema("MENSAJE_ERROR", "La carpeta de carga no existe", site_url($data['controlador']));
+                }
 
-				$this->load->library('upload', $config);
+                $this->load->library('upload', $config);
 
-				if (!$this->upload->do_upload('url_infoventa')) {
+                if (!$this->upload->do_upload('url_infoventa')) {
 
-					$this->mensaje_del_sistema("MENSAJE_ERROR", $this->upload->display_errors(), site_url($data['controlador']));
+                    $this->mensaje_del_sistema("MENSAJE_ERROR", $this->upload->display_errors(), site_url($data['controlador']));
+                } else {
 
-				} else {
-
-					$data_imagen = $this->upload->data();
-					$url_infoventa = base_url('almacenamiento/planes/' . $data_imagen['file_name']);
-
-				}
-
-			} else {
-				$url_infoventa = base_url('almacenamiento/planes/default.jpg');
-			}
+                    $data_imagen = $this->upload->data();
+                    $url_infoventa = base_url('almacenamiento/planes/' . $data_imagen['file_name']);
+                }
+            } else {
+                $url_infoventa = base_url('almacenamiento/planes/default.jpg');
+            }
 
             $this->session->set_flashdata('codigo', $this->input->post('codigo'));
 

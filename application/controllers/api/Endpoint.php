@@ -14,22 +14,22 @@ class Endpoint extends REST_Controller
         parent::__construct();
         $this->load->database();
 
-        $this->load->model("anuncios_model");
-        $this->load->model('usuarios_model');
-        $this->load->model('planes_model');
-        $this->load->model('clases_model');
-        $this->load->model('asignaciones_model');
-        $this->load->model('reservaciones_model');
-        $this->load->model('ventas_model');
-        $this->load->model('disciplinas_model');
-        $this->load->model('sucursales_model');
-        $this->load->model("configuraciones_model");
         $this->load->model("app_secciones_model");
-        $this->load->model("tarjetas_model");
-        $this->load->model("codigos_model");
+        $this->load->model("asignaciones_model");
+        $this->load->model("anuncios_model");
+        $this->load->model("clases_model");
         $this->load->model("codigos_canjeados_model");
+        $this->load->model("codigos_model");
+        $this->load->model("configuraciones_model");
+        $this->load->model("disciplinas_model");
         $this->load->model("planes_categorias_model");
+        $this->load->model("planes_model");
         $this->load->model("rel_planes_categorias_model");
+        $this->load->model("reservaciones_model");
+        $this->load->model("sucursales_model");
+        $this->load->model("tarjetas_model");
+        $this->load->model("usuarios_model");
+        $this->load->model("ventas_model");
     }
 
     /** ============ Módulo de compras (INICIO) ============ */
@@ -552,9 +552,11 @@ class Endpoint extends REST_Controller
 
         $usuario_valido = $this->_autenticar_usuario($datos_get['token'], $datos_get['usuario_id']);
 
+        $asignaciones_list = $this->asignaciones_model->obtener_asignaciones_por_usuario_id($usuario_valido->id)->result();
+
         $reservaciones_list = $this->reservaciones_model->obtener_reservacion_para_cliente($usuario_valido->id)->result();
 
-        $validar_canje_list = $this->codigos_canjeados_model->obtener_codigo_canjeado_por_usuario_id($datos_get['usuario_id'])->result();
+        $validar_canje_list = $this->codigos_canjeados_model->obtener_codigo_canjeado_por_usuario_id($usuario_valido->id)->result();
 
         $codigos_canjeados_array = array();
 
@@ -568,6 +570,11 @@ class Endpoint extends REST_Controller
         $planes_con_disciplinas = array();
 
         foreach ($planes as $plan) {
+
+            if (!empty($asignaciones_list) and $plan->es_primera == 'si') {
+                continue; // Esto saltará la iteración actual y pasará a la siguiente
+            }
+
             if (in_array($plan->codigo, $codigos_canjeados_array) or !$plan->codigo) {
                 if ($reservaciones_list and !in_array($plan->id, array(1))) {
 
@@ -600,6 +607,7 @@ class Endpoint extends REST_Controller
                     array_push($planes_con_disciplinas, $plan_con_disciplinas);
 
                     $plan_con_disciplinas->disciplinas_sucursal_id = $plan->disciplinas_sucursal_id;
+                    $plan_con_disciplinas->rel_planes_categorias_categoria_id = $plan->rel_planes_categorias_categoria_id;
                 } elseif (!$reservaciones_list) {
 
                     $plan_con_disciplinas = new stdClass();
@@ -631,6 +639,7 @@ class Endpoint extends REST_Controller
                     array_push($planes_con_disciplinas, $plan_con_disciplinas);
 
                     $plan_con_disciplinas->disciplinas_sucursal_id = $plan->disciplinas_sucursal_id;
+                    $plan_con_disciplinas->rel_planes_categorias_categoria_id = $plan->rel_planes_categorias_categoria_id;
                 }
             }
         }
@@ -1208,7 +1217,7 @@ class Endpoint extends REST_Controller
             ), REST_Controller::HTTP_NOT_FOUND);
         }
 
-        $planes_categorias = $this->planes_categorias_model->obtener_categorias_planes_por_sucursal_get()->result();
+        $planes_categorias = $this->planes_categorias_model->obtener_categorias_planes_por_sucursal()->result();
 
         if (!$planes_categorias) {
             $this->response(array(

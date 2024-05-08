@@ -58,6 +58,7 @@ class Planes_model extends CI_Model
     {
         return $this->db->where('id', intval($id))->get('planes');
     }
+
     public function obtener_asignaciones_por_id($id)
     {
         return $this->db->where('usuario_id', intval($id))->get('asignaciones');
@@ -212,11 +213,13 @@ class Planes_model extends CI_Model
             ->select('
                 t1.*,
                 t3.sucursal_id as disciplinas_sucursal_id,
+                t4.categoria_id as rel_planes_categorias_categoria_id
             ')
             ->from('planes t1')
             ->join('planes_disciplinas t2', 't2.plan_id = t1.id')
             ->join('disciplinas t3', 't3.id = t2.disciplina_id')
-            ->group_by(array("t1.id", "t3.sucursal_id"))
+            ->join('rel_planes_categorias t4', 't4.plan_id = t1.id')
+            ->group_by(array("t1.id", "t3.sucursal_id", "t4.categoria_id"))
             ->order_by("t1.orden_venta", "asc")
             ->get();
 

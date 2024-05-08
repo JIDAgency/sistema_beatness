@@ -44,7 +44,7 @@ class Planes_categorias_model extends CI_Model
 
     /** Funciones personalizadas */
 
-    public function obtener_categorias_planes_por_sucursal_get()
+    public function obtener_categorias_planes_por_sucursal()
     {
         $query = $this->db
             ->select('
@@ -55,7 +55,7 @@ class Planes_categorias_model extends CI_Model
             ->join('rel_planes_categorias t2', 't2.categoria_id = t1.id')
             ->join('planes_disciplinas t3', 't3.plan_id = t2.plan_id')
             ->join('disciplinas t4', 't4.id = t3.disciplina_id')
-            ->group_by('t4.sucursal_id')
+            ->group_by(array("t1.id", "t4.sucursal_id"))
             ->order_by('t1.orden', 'asc')
             ->get();
 
