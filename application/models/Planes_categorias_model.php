@@ -47,6 +47,7 @@ class Planes_categorias_model extends CI_Model
     public function obtener_categorias_planes_por_sucursal()
     {
         $query = $this->db
+            ->where('t1.estatus', 'activo')
             ->select('
             t1.*,
             t4.sucursal_id as disciplinas_sucursal_id,

@@ -82,7 +82,7 @@ class Planes_categorias extends MY_Controller
         $data['pagina_menu_planes_categorias'] = true;
 
         $data['controlador'] = 'planes_categorias/crear';
-        $data['ir_a'] = 'planes_categoriass';
+        $data['ir_a'] = 'planes_categorias';
         $data['regresar_a'] = 'planes_categorias';
         $controlador_js = 'planes_categorias/crear';
 

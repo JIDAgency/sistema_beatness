@@ -108,7 +108,7 @@
 														<select class="select2-disciplinas form-control" name="disciplinas[]" multiple readonly>
 															<?php foreach ($disciplinas as $disciplina) : ?>
 																<?php if ($disciplina->id != 1) : ?>
-																	<option value="<?php echo $disciplina->id; ?>" selected="selected">
+																	<option value="<?php echo $disciplina->id; ?>">
 																		<?php echo $disciplina->nombre; ?>
 																	</option>
 																<?php endif; ?>
@@ -122,7 +122,7 @@
 													<div class="col-md-12">
 														<select class="select2-disciplinas form-control" name="categorias[]" multiple readonly>
 															<?php foreach ($categorias as $categoria) : ?>
-																<option value="<?php echo $categoria->id; ?>" selected="selected">
+																<option value="<?php echo $categoria->id; ?>">
 																	<?php echo $categoria->nombre; ?>
 																</option>
 															<?php endforeach; ?>

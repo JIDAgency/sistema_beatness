@@ -32,6 +32,157 @@ class Endpoint extends REST_Controller
         $this->load->model("ventas_model");
     }
 
+    /* ====== Métodos para la nueva funcionalidad de compras en la app con categorías Mayo 2024 (Inicio) ====== */
+    public function obtener_sucurales_disponibles_para_app_get()
+    {
+        $datos_get = $this->get();
+
+        $usuario_valido = $this->_autenticar_usuario($datos_get['token'], $datos_get['usuario_id']);
+
+        $sucursales_list = $this->sucursales_model->obtener_sucurales_disponibles_para_app()->result();
+
+        $this->response($sucursales_list);
+    }
+
+    public function obtener_categorias_planes_por_sucursal_get()
+    {
+        $datos_get = $this->get();
+
+        $usuario_valido = $this->_autenticar_usuario($datos_get['token'], $datos_get['usuario_id']);
+
+        if (!$usuario_valido) {
+            $this->response(array(
+                'error' => true,
+                'mensaje' => 'Sin acceso autorizado.',
+            ), REST_Controller::HTTP_NOT_FOUND);
+        }
+
+        $planes_categorias = $this->planes_categorias_model->obtener_categorias_planes_por_sucursal()->result();
+
+        if (!$planes_categorias) {
+            $this->response(array(
+                'error' => true,
+                'mensaje' => 'No hay categorías activas, por favor intentelo más tarde.',
+            ), REST_Controller::HTTP_NOT_FOUND);
+        }
+
+        $this->response($planes_categorias);
+    }
+
+    public function planes_disponibles_get()
+    {
+        /** Esto se bloqueó por el cierre de operaciones de Sensoria. */
+        /*
+        $this->response(array(
+            'mensaje' => 'Por el momento no es posible realizar la esta operación.',
+        ), REST_Controller::HTTP_OK);
+        */
+        // Validar que el cliente que realiza la petición esté autenticado
+        $datos_get = $this->get();
+
+        $usuario_valido = $this->_autenticar_usuario($datos_get['token'], $datos_get['usuario_id']);
+
+        $asignaciones_list = $this->asignaciones_model->obtener_asignaciones_por_usuario_id($usuario_valido->id)->result();
+
+        $reservaciones_list = $this->reservaciones_model->obtener_reservacion_para_cliente($usuario_valido->id)->result();
+
+        $validar_canje_list = $this->codigos_canjeados_model->obtener_codigo_canjeado_por_usuario_id($usuario_valido->id)->result();
+
+        $codigos_canjeados_array = array();
+
+        foreach ($validar_canje_list as $key => $value) {
+            array_push($codigos_canjeados_array, $value->codigo);
+        }
+
+        //$planes = $this->planes_model->obtener_todos()->result();
+        $planes = $this->planes_model->get_planes_disponibles_para_venta_en_la_app()->result();
+
+        $planes_con_disciplinas = array();
+
+        foreach ($planes as $plan) {
+
+            if (!empty($asignaciones_list) and $plan->es_primera == 'si') {
+                continue; // Esto saltará la iteración actual y pasará a la siguiente
+            }
+
+            if ($usuario_valido->es_estudiante == 'no' and $plan->es_estudiante == 'si') {
+                continue;
+            }
+
+            if (in_array($plan->codigo, $codigos_canjeados_array) or !$plan->codigo) {
+                if ($reservaciones_list and !in_array($plan->id, array(1))) {
+
+                    $plan_con_disciplinas = new stdClass();
+                    $plan_con_disciplinas->id = $plan->id;
+                    $plan_con_disciplinas->dominio_id = $plan->dominio_id;
+                    $plan_con_disciplinas->sku = $plan->sku;
+                    $plan_con_disciplinas->nombre = $plan->nombre;
+                    $plan_con_disciplinas->descripcion = $plan->descripcion;
+                    $plan_con_disciplinas->clases_incluidas = $plan->clases_incluidas;
+                    $plan_con_disciplinas->vigencia_en_dias = $plan->vigencia_en_dias;
+                    $plan_con_disciplinas->costo = $plan->costo;
+                    $plan_con_disciplinas->subscripcion = $plan->subscripcion;
+                    $plan_con_disciplinas->terminos_condiciones = $plan->terminos_condiciones;
+                    $plan_con_disciplinas->url_infoventa = $plan->url_infoventa;
+
+                    $disciplinas = $this->planes_model->obtener_disciplinas_con_detalle_por_plan_id($plan->id)->result();
+
+                    $disciplinas_por_plan = array();
+
+                    foreach ($disciplinas as $disciplina) {
+                        $disciplina_por_plan = new stdClass();
+                        $disciplina_por_plan->id = $disciplina->id;
+                        $disciplina_por_plan->nombre = $disciplina->nombre;
+                        array_push($disciplinas_por_plan, $disciplina_por_plan);
+                    }
+
+                    $plan_con_disciplinas->disciplinas = $disciplinas_por_plan;
+
+                    array_push($planes_con_disciplinas, $plan_con_disciplinas);
+
+                    $plan_con_disciplinas->disciplinas_sucursal_id = $plan->disciplinas_sucursal_id;
+                    $plan_con_disciplinas->rel_planes_categorias_categoria_id = $plan->rel_planes_categorias_categoria_id;
+                } elseif (!$reservaciones_list) {
+
+                    $plan_con_disciplinas = new stdClass();
+                    $plan_con_disciplinas->id = $plan->id;
+                    $plan_con_disciplinas->dominio_id = $plan->dominio_id;
+                    $plan_con_disciplinas->sku = $plan->sku;
+                    $plan_con_disciplinas->nombre = $plan->nombre;
+                    $plan_con_disciplinas->descripcion = $plan->descripcion;
+                    $plan_con_disciplinas->clases_incluidas = $plan->clases_incluidas;
+                    $plan_con_disciplinas->vigencia_en_dias = $plan->vigencia_en_dias;
+                    $plan_con_disciplinas->costo = $plan->costo;
+                    $plan_con_disciplinas->subscripcion = $plan->subscripcion;
+                    $plan_con_disciplinas->terminos_condiciones = $plan->terminos_condiciones;
+                    $plan_con_disciplinas->url_infoventa = $plan->url_infoventa;
+
+                    $disciplinas = $this->planes_model->obtener_disciplinas_con_detalle_por_plan_id($plan->id)->result();
+
+                    $disciplinas_por_plan = array();
+
+                    foreach ($disciplinas as $disciplina) {
+                        $disciplina_por_plan = new stdClass();
+                        $disciplina_por_plan->id = $disciplina->id;
+                        $disciplina_por_plan->nombre = $disciplina->nombre;
+                        array_push($disciplinas_por_plan, $disciplina_por_plan);
+                    }
+
+                    $plan_con_disciplinas->disciplinas = $disciplinas_por_plan;
+
+                    array_push($planes_con_disciplinas, $plan_con_disciplinas);
+
+                    $plan_con_disciplinas->disciplinas_sucursal_id = $plan->disciplinas_sucursal_id;
+                    $plan_con_disciplinas->rel_planes_categorias_categoria_id = $plan->rel_planes_categorias_categoria_id;
+                }
+            }
+        }
+
+        $this->response($planes_con_disciplinas);
+    }
+
+    /* ====== Métodos para la nueva funcionalidad de compras en la app con categorías Mayo 2024 (Inicio) ====== */
+
     /** ============ Módulo de compras (INICIO) ============ */
     public function registrar_usuario_en_openpay_post()
     {
@@ -534,121 +685,6 @@ class Endpoint extends REST_Controller
         $descubre_row = $this->app_secciones_model->get_app_seccion_por_seccion("publicidad")->row();
 
         $this->response($descubre_row);
-    }
-
-    /**
-     * Retorna la lista de los planes disponibles en el sistema y que un usuario puede adquirir
-     */
-    public function planes_disponibles_get()
-    {
-        /** Esto se bloqueó por el cierre de operaciones de Sensoria. */
-        /*
-        $this->response(array(
-            'mensaje' => 'Por el momento no es posible realizar la esta operación.',
-        ), REST_Controller::HTTP_OK);
-        */
-        // Validar que el cliente que realiza la petición esté autenticado
-        $datos_get = $this->get();
-
-        $usuario_valido = $this->_autenticar_usuario($datos_get['token'], $datos_get['usuario_id']);
-
-        $asignaciones_list = $this->asignaciones_model->obtener_asignaciones_por_usuario_id($usuario_valido->id)->result();
-
-        $reservaciones_list = $this->reservaciones_model->obtener_reservacion_para_cliente($usuario_valido->id)->result();
-
-        $validar_canje_list = $this->codigos_canjeados_model->obtener_codigo_canjeado_por_usuario_id($usuario_valido->id)->result();
-
-        $codigos_canjeados_array = array();
-
-        foreach ($validar_canje_list as $key => $value) {
-            array_push($codigos_canjeados_array, $value->codigo);
-        }
-
-        //$planes = $this->planes_model->obtener_todos()->result();
-        $planes = $this->planes_model->get_planes_disponibles_para_venta_en_la_app()->result();
-
-        $planes_con_disciplinas = array();
-
-        foreach ($planes as $plan) {
-
-            if (!empty($asignaciones_list) and $plan->es_primera == 'si') {
-                continue; // Esto saltará la iteración actual y pasará a la siguiente
-            }
-
-            if ($usuario_valido->es_estudiante == 'no' and $plan->es_estudiante == 'si') {
-                continue;
-            }
-
-            if (in_array($plan->codigo, $codigos_canjeados_array) or !$plan->codigo) {
-                if ($reservaciones_list and !in_array($plan->id, array(1))) {
-
-                    $plan_con_disciplinas = new stdClass();
-                    $plan_con_disciplinas->id = $plan->id;
-                    $plan_con_disciplinas->dominio_id = $plan->dominio_id;
-                    $plan_con_disciplinas->sku = $plan->sku;
-                    $plan_con_disciplinas->nombre = $plan->nombre;
-                    $plan_con_disciplinas->descripcion = $plan->descripcion;
-                    $plan_con_disciplinas->clases_incluidas = $plan->clases_incluidas;
-                    $plan_con_disciplinas->vigencia_en_dias = $plan->vigencia_en_dias;
-                    $plan_con_disciplinas->costo = $plan->costo;
-                    $plan_con_disciplinas->subscripcion = $plan->subscripcion;
-                    $plan_con_disciplinas->terminos_condiciones = $plan->terminos_condiciones;
-                    $plan_con_disciplinas->url_infoventa = $plan->url_infoventa;
-
-                    $disciplinas = $this->planes_model->obtener_disciplinas_con_detalle_por_plan_id($plan->id)->result();
-
-                    $disciplinas_por_plan = array();
-
-                    foreach ($disciplinas as $disciplina) {
-                        $disciplina_por_plan = new stdClass();
-                        $disciplina_por_plan->id = $disciplina->id;
-                        $disciplina_por_plan->nombre = $disciplina->nombre;
-                        array_push($disciplinas_por_plan, $disciplina_por_plan);
-                    }
-
-                    $plan_con_disciplinas->disciplinas = $disciplinas_por_plan;
-
-                    array_push($planes_con_disciplinas, $plan_con_disciplinas);
-
-                    $plan_con_disciplinas->disciplinas_sucursal_id = $plan->disciplinas_sucursal_id;
-                    $plan_con_disciplinas->rel_planes_categorias_categoria_id = $plan->rel_planes_categorias_categoria_id;
-                } elseif (!$reservaciones_list) {
-
-                    $plan_con_disciplinas = new stdClass();
-                    $plan_con_disciplinas->id = $plan->id;
-                    $plan_con_disciplinas->dominio_id = $plan->dominio_id;
-                    $plan_con_disciplinas->sku = $plan->sku;
-                    $plan_con_disciplinas->nombre = $plan->nombre;
-                    $plan_con_disciplinas->descripcion = $plan->descripcion;
-                    $plan_con_disciplinas->clases_incluidas = $plan->clases_incluidas;
-                    $plan_con_disciplinas->vigencia_en_dias = $plan->vigencia_en_dias;
-                    $plan_con_disciplinas->costo = $plan->costo;
-                    $plan_con_disciplinas->subscripcion = $plan->subscripcion;
-                    $plan_con_disciplinas->terminos_condiciones = $plan->terminos_condiciones;
-                    $plan_con_disciplinas->url_infoventa = $plan->url_infoventa;
-
-                    $disciplinas = $this->planes_model->obtener_disciplinas_con_detalle_por_plan_id($plan->id)->result();
-
-                    $disciplinas_por_plan = array();
-
-                    foreach ($disciplinas as $disciplina) {
-                        $disciplina_por_plan = new stdClass();
-                        $disciplina_por_plan->id = $disciplina->id;
-                        $disciplina_por_plan->nombre = $disciplina->nombre;
-                        array_push($disciplinas_por_plan, $disciplina_por_plan);
-                    }
-
-                    $plan_con_disciplinas->disciplinas = $disciplinas_por_plan;
-
-                    array_push($planes_con_disciplinas, $plan_con_disciplinas);
-
-                    $plan_con_disciplinas->disciplinas_sucursal_id = $plan->disciplinas_sucursal_id;
-                    $plan_con_disciplinas->rel_planes_categorias_categoria_id = $plan->rel_planes_categorias_categoria_id;
-                }
-            }
-        }
-
-        $this->response($planes_con_disciplinas);
     }
 
     public function plan_row_disponible_get()
@@ -1195,42 +1231,6 @@ class Endpoint extends REST_Controller
         $sucursales_list = $this->sucursales_model->get_sucursales_disponibles()->result();
 
         $this->response($sucursales_list);
-    }
-
-    public function obtener_sucurales_disponibles_para_app_get()
-    {
-        $datos_get = $this->get();
-
-        $usuario_valido = $this->_autenticar_usuario($datos_get['token'], $datos_get['usuario_id']);
-
-        $sucursales_list = $this->sucursales_model->obtener_sucurales_disponibles_para_app()->result();
-
-        $this->response($sucursales_list);
-    }
-
-    public function obtener_categorias_planes_por_sucursal_get()
-    {
-        $datos_get = $this->get();
-
-        $usuario_valido = $this->_autenticar_usuario($datos_get['token'], $datos_get['usuario_id']);
-
-        if (!$usuario_valido) {
-            $this->response(array(
-                'error' => true,
-                'mensaje' => 'Sin acceso autorizado.',
-            ), REST_Controller::HTTP_NOT_FOUND);
-        }
-
-        $planes_categorias = $this->planes_categorias_model->obtener_categorias_planes_por_sucursal()->result();
-
-        if (!$planes_categorias) {
-            $this->response(array(
-                'error' => true,
-                'mensaje' => 'No hay categorías activas, por favor intentelo más tarde.',
-            ), REST_Controller::HTTP_NOT_FOUND);
-        }
-
-        $this->response($planes_categorias);
     }
 
     public function obtener_rel_planes_categorias_por_rel_plan_categoria()
