@@ -50,7 +50,6 @@
 													<th>Cupo original</th>
 													<th>Cupos reservados</th>
 													<th>Inasistencias</th>
-													<th>Lugares</th>
 													<th>Sucursal</th>
 													<th>Opciones</th>
 												</tr>

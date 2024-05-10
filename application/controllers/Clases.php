@@ -26,19 +26,15 @@ class Clases extends MY_Controller
 
     public function index()
     {
+        $data['pagina_titulo'] = 'Clases';
+        $data['pagina_subtitulo'] = 'Registro de clases';
         $data['menu_clases_activo'] = true;
-        $data['pagina_titulo'] = 'Lista de clases';
 
-        $data['mensaje_exito'] = $this->session->flashdata('MENSAJE_EXITO');
-        $data['mensaje_info'] = $this->session->flashdata('MENSAJE_INFO');
-        $data['mensaje_error'] = $this->session->flashdata('MENSAJE_ERROR');
-        $controlador_js = "clases/index";
+        $data['controlador'] = 'clases';
+        $data['ir_a'] = 'clases/crear';
+        $data['regresar_a'] = 'inicio';
+        $controlador_js = 'clases/index';
 
-        //$data['clases'] = $this->clases_model->obtener_todas_con_detalle();
-        // $data['clases'] = $this->clases_model->obtener_todas_para_front_con_detalle();
-        // $data['usuarios'] = $this->usuarios_model->obtener_todos();
-
-        // Cargar estilos y scripts
         $data['styles'] = array(
             array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/tables/datatable/datatables.min.css'),
         );
@@ -57,13 +53,10 @@ class Clases extends MY_Controller
         $length = intval($this->input->post('length'));
 
         $clases_list = $this->clases_model->obtener_todas_para_front_con_detalle();
-        $usuarios_list = $this->usuarios_model->obtener_todos();
 
         $data = [];
 
         foreach ($clases_list->result() as $clase) {
-            $i = 0;
-
             $fecha = strtotime($clase->inicia);
             $fecha_espaniol = strftime("%d de %B del %Y<br>%T", $fecha);
 
@@ -71,23 +64,6 @@ class Clases extends MY_Controller
                 $intervalo_horas = $clase->intervalo_horas . " hrs.";
             } else {
                 $intervalo_horas = $clase->intervalo_horas . " hr.";
-            }
-
-            $lugares = '';
-            $cupo_lugares = $clase->cupo_lugares;
-            $cupo_lugares = json_decode($cupo_lugares);
-            foreach ($cupo_lugares as $lugar) {
-                if ($lugar->nombre_usuario) {
-                    $i++;
-                    foreach ($usuarios_list->result() as $usuario) {
-                        if ($lugar->nombre_usuario == $usuario->id) {
-                            $lugares = $i . ' - Lugar: ' . $lugar->no_lugar . ' |  Cliente: ' . $lugar->nombre_usuario . ' - ' . $usuario->nombre_completo . ' ' . $usuario->apellido_paterno . ' ' . $usuario->apellido_materno . '<br>';
-                        }
-                    }
-                    if (!is_numeric($lugar->nombre_usuario)) {
-                        $lugares = $i . ' - Lugar: ' . $lugar->no_lugar . ' |  Cliente: ' . $lugar->nombre_usuario . '<br>';
-                    }
-                }
             }
 
             $opciones = '';
@@ -137,7 +113,6 @@ class Clases extends MY_Controller
                 'cupo_original' => !empty($clase->cupo) ? ucfirst($clase->cupo) : '',
                 'cupo_reservado' => !empty($clase->reservado) ? ucfirst($clase->reservado) : 0,
                 'inasistencias' => !empty($clase->inasistencias) ? ucfirst($clase->inasistencias) : 0,
-                'lugares' => !empty($lugares) ? ucfirst($lugares) : '',
                 'sucursal' => !empty($clase->sucursal_nombre . ' [' . $clase->sucursal_locacion . ']') ? $clase->sucursal_nombre . ' [' . $clase->sucursal_locacion . ']' : '',
                 'opciones' => $opciones,
             );
@@ -279,7 +254,7 @@ class Clases extends MY_Controller
 
         echo json_encode($data);
         exit();
-        
+
         // echo json_encode(select_disciplina());
         // exit();
     }

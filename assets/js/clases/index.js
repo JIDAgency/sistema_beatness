@@ -44,7 +44,6 @@ $(document).ready(function () {
             { "data": "cupo_original" },
             { "data": "cupo_reservado" },
             { "data": "inasistencias" },
-            { "data": "lugares" },
             { "data": "sucursal" },
             { "data": "opciones" },
         ],
