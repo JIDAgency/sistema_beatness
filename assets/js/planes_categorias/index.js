@@ -27,6 +27,7 @@ $(document).ready(function () {
             { "data": "identificador" },
             { "data": "nombre" },
             { "data": "orden" },
+            { "data": "estatus" },
             { "data": "fecha_registro" },
             { "data": "opciones" },
         ],

@@ -59,6 +59,7 @@ class Planes_categorias extends MY_Controller
                 'identificador' => !empty($plan_categoria->identificador) ? $plan_categoria->identificador : '',
                 'nombre' => !empty($plan_categoria->nombre) ? ucfirst($plan_categoria->nombre) : '',
                 'orden' => !empty($plan_categoria->orden) ? $plan_categoria->orden : '',
+                'estatus' => !empty($plan_categoria->estatus) ? $plan_categoria->estatus : '',
                 'fecha_registro' => (!empty($plan_categoria->fecha_registro) ? date('Y/m/d H:i:s', strtotime($plan_categoria->fecha_registro)) : ''),
                 'opciones' => $opciones,
             );
@@ -141,6 +142,7 @@ class Planes_categorias extends MY_Controller
                 'nombre' => $this->input->post('nombre'),
                 'url_banner' => $nombre_img_plan,
                 'orden' => $this->input->post('orden'),
+                'estatus' => $this->input->post('estatus'),
                 'fecha_registro' => $fecha_registro,
             );
 
@@ -232,6 +234,7 @@ class Planes_categorias extends MY_Controller
             $data_1 = array(
                 'nombre' => $this->input->post('nombre'),
                 'orden' => $this->input->post('orden'),
+                'estatus' => $this->input->post('estatus'),
                 'url_banner' => $nombre_img_perfil,
             );
 

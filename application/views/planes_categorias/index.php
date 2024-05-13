@@ -36,6 +36,7 @@
 													<th>Identificador</th>
 													<th>Nombre</th>
 													<th>Orden</th>
+													<th>Estatus</th>
 													<th>Fecha de registro</th>
 													<th>Opciones</th>
 												</tr>

@@ -53,6 +53,21 @@
 														</div>
 													</div>
 												</div>
+
+												<div class="row">
+													<div class="col-md-12 mb-2">
+														<div class="form-group">
+															<label for="estatus" class="label-control">Estatus</label>
+															<select id="estatus" name="estatus" class="form-control" required>
+																<option value="">Seleccione un estatus...</option>
+																<option value="activo" <?php echo set_select('estatus', 'activo', set_value('estatus') ? false : 'activo' == $plan_categoria_a_editar_row->estatus); ?>>Activo
+																</option>
+																<option value="suspendido" <?php echo set_select('estatus', 'suspendido', set_value('estatus') ? false : 'suspendido' == $plan_categoria_a_editar_row->estatus); ?>>Suspendido
+																</option>
+															</select>
+														</div>
+													</div>
+												</div>
 											</div>
 
 											<div class="col-lg-6 col-md-6 col-sm-12">

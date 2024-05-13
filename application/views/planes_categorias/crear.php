@@ -52,6 +52,17 @@
                                                         </div>
                                                     </div>
                                                 </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-12 mb-2">
+                                                        <label for="estatus">Estatus de la sucursal</label>
+                                                        <select name="estatus" id="estatus" class="form-control">
+                                                            <option value="" <?php echo set_select('estatus', ''); ?>>Seleccione un estatus…</option>
+                                                            <option value="activo" <?php echo set_select('estatus', 'activo'); ?>>Activo</option>
+                                                            <option value="suspendido" <?php echo set_select('estatus', 'suspendido'); ?>>Suspendido</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
                                             </div>
 
                                             <div class="col-lg-6 col-md-6 col-sm-12">
