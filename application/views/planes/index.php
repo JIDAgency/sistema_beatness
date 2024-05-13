@@ -59,9 +59,9 @@
 													<th>Vigencia</th>
 													<th>Código</th>
 													<th>Costo</th>
-													<th>Ilimitado</th>
-													<th>Primera</th>
-													<th>Estudiante</th>
+													<th>Reservaciones ilimitadas</th>
+													<th>Primera compra</th>
+													<th>Solo estudiantes</th>
 													<th>Activo</th>
 													<th>Opciones</th>
 												</tr>
