@@ -108,6 +108,23 @@ $select_mostrar = array(
 
 $config['select_mostrar'] = $select_mostrar;
 
+/* ====== Activo boolean ====== */
+
+$select_activo = array(
+    (object) array(
+        'nombre'    => 'Si',
+        'valor'     => '1',
+        'activo'    => false,
+    ),
+    (object) array(
+        'nombre'    => 'No',
+        'valor'     => '0',
+        'activo'    => false,
+    )
+);
+
+$config['select_activo'] = $select_activo;
+
 /* ====== disciplina ====== */
 
 $select_disciplina = array(

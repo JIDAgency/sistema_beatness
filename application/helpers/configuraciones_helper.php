@@ -242,3 +242,10 @@ if (!function_exists('select_mostrar')) {
         return get_instance()->config->item('select_mostrar');
     }
 }
+
+if (!function_exists('select_activo')) {
+    function select_activo()
+    {
+        return get_instance()->config->item('select_activo');
+    }
+}

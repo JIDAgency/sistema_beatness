@@ -59,6 +59,9 @@
 													<th>Vigencia</th>
 													<th>Código</th>
 													<th>Costo</th>
+													<th>Ilimitado</th>
+													<th>Primera</th>
+													<th>Estudiante</th>
 													<th>Activo</th>
 													<th>Opciones</th>
 												</tr>

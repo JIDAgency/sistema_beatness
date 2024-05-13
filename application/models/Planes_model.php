@@ -28,6 +28,9 @@ class Planes_model extends CI_Model
                 t1.vigencia_en_dias as listar_vigencia_en_dias,
                 t1.codigo as codigo,
                 t1.costo as listar_costo,
+                t1.es_ilimitado,
+                t1.es_primera,
+                t1.es_estudiante,
                 t1.activado as listar_activo,
             ")
             ->from('planes t1')

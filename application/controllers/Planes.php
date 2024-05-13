@@ -189,6 +189,9 @@ class Planes extends MY_Controller
                 "listar_vigencia_en_dias" => $plan_row->listar_vigencia_en_dias,
                 'codigo' => mb_strtoupper($plan_row->codigo),
                 "listar_costo" => $plan_row->listar_costo,
+                "es_ilimitado" => $plan_row->es_ilimitado,
+                "es_primera" => $plan_row->es_primera,
+                "es_estudiante" => $plan_row->es_estudiante,
                 "listar_activo" => $plan_row->listar_activo == 1 ? 'Activo' : 'Suspendido',
                 "listar_opciones" => $menu,
             );
@@ -212,6 +215,9 @@ class Planes extends MY_Controller
         $this->form_validation->set_rules('costo', 'costo', 'trim|required');
         $this->form_validation->set_rules('orden_venta', 'Orden de venta', 'trim|required');
         $this->form_validation->set_rules('ilimitado', 'ilimitado', 'required');
+        $this->form_validation->set_rules('es_primera', 'es_primera', 'required');
+        $this->form_validation->set_rules('es_estudiante', 'es_estudiante', 'required');
+        $this->form_validation->set_rules('activado', 'activado', 'required');
         $this->form_validation->set_rules('codigo', 'Código', 'trim');
         $this->form_validation->set_rules('url_infoventa', 'Imagen de información', 'trim');
 
@@ -294,6 +300,9 @@ class Planes extends MY_Controller
                 'es_ilimitado' => $this->input->post('ilimitado'),
                 'costo' => $this->input->post('costo'),
                 'orden_venta' => $this->input->post('orden_venta'),
+                'es_primera' => $this->input->post('es_primera'),
+                'es_estudiante' => $this->input->post('es_estudiante'),
+                'activado' => $this->input->post('activado'),
                 'codigo' => $this->input->post('codigo'),
                 'terminos_condiciones' => $this->input->post('terminos_condiciones'),
                 'url_infoventa' => $url_infoventa,
@@ -357,6 +366,10 @@ class Planes extends MY_Controller
         $this->form_validation->set_rules('vigencia_en_dias', 'vigencia en días ', 'trim|required');
         $this->form_validation->set_rules('costo', 'costo', 'trim|required');
         $this->form_validation->set_rules('orden_venta', 'Orden de venta', 'trim|required');
+        $this->form_validation->set_rules('ilimitado', 'Ilimitado', 'trim|required');
+        $this->form_validation->set_rules('es_primera', 'Es primera', 'trim|required');
+        $this->form_validation->set_rules('es_estudiante', 'Es estudiante', 'trim|required');
+        $this->form_validation->set_rules('activado', 'Activado', 'trim|required');
         $this->form_validation->set_rules('codigo', 'Código', 'trim');
         $this->form_validation->set_rules('disciplinas[]', 'disciplinas', 'trim');
         $this->form_validation->set_rules('categorias[]', 'categorias', 'trim');
@@ -435,6 +448,10 @@ class Planes extends MY_Controller
                 'vigencia_en_dias' => $this->input->post('vigencia_en_dias'),
                 'costo' => $this->input->post('costo'),
                 'orden_venta' => $this->input->post('orden_venta'),
+                'es_ilimitado' => $this->input->post('ilimitado'),
+                'es_primera' => $this->input->post('es_primera'),
+                'es_estudiante' => $this->input->post('es_estudiante'),
+                'activado' => $this->input->post('activado'),
                 'codigo' => $this->input->post('codigo'),
                 'terminos_condiciones' => $this->input->post('terminos_condiciones'),
                 'descripcion' => $this->input->post('descripcion'),

@@ -86,6 +86,36 @@
 														<?php endforeach; ?>
 													</select>
 												</div>
+
+												<div class="form-group">
+													<label for="es_primera">Es primera <span class="red">*</span></label>
+													<select name="es_primera" id="es_primera" class="form-control">
+														<option value="" <?php echo set_select('es_primera', '', set_value('es_primera') ? false : '' == $this->session->flashdata('es_primera')); ?>>Seleccione una opcion…</option>
+														<?php foreach (select_mostrar() as $mostrar_key => $mostrar_row) : ?>
+															<option value="<?php echo $mostrar_row->valor; ?>" <?php echo $mostrar_row->activo == false ? '' : 'selected'; ?> <?php echo set_select('es_primera', $mostrar_row->valor, set_value('es_primera') ? false : $mostrar_row->valor == $this->session->flashdata('es_primera')); ?>><?php echo trim($mostrar_row->nombre); ?></option>
+														<?php endforeach; ?>
+													</select>
+												</div>
+
+												<div class="form-group">
+													<label for="es_estudiante">Es estudiante <span class="red">*</span></label>
+													<select name="es_estudiante" id="es_estudiante" class="form-control">
+														<option value="" <?php echo set_select('es_estudiante', '', set_value('es_estudiante') ? false : '' == $this->session->flashdata('es_estudiante')); ?>>Seleccione una opcion…</option>
+														<?php foreach (select_mostrar() as $mostrar_key => $mostrar_row) : ?>
+															<option value="<?php echo $mostrar_row->valor; ?>" <?php echo $mostrar_row->activo == false ? '' : 'selected'; ?> <?php echo set_select('es_estudiante', $mostrar_row->valor, set_value('es_estudiante') ? false : $mostrar_row->valor == $this->session->flashdata('es_estudiante')); ?>><?php echo trim($mostrar_row->nombre); ?></option>
+														<?php endforeach; ?>
+													</select>
+												</div>
+
+												<div class="form-group">
+													<label for="activado">Activado <span class="red">*</span></label>
+													<select name="activado" id="activado" class="form-control">
+														<option value="" <?php echo set_select('activado', '', set_value('activado') ? false : '' == $this->session->flashdata('activado')); ?>>Seleccione una opcion…</option>
+														<?php foreach (select_activo() as $mostrar_key => $mostrar_row) : ?>
+															<option value="<?php echo $mostrar_row->valor; ?>" <?php echo $mostrar_row->activado == false ? '' : 'selected'; ?> <?php echo set_select('activado', $mostrar_row->valor, set_value('activado') ? false : $mostrar_row->valor == $this->session->flashdata('activado')); ?>><?php echo trim($mostrar_row->nombre); ?></option>
+														<?php endforeach; ?>
+													</select>
+												</div>
 												<div class="form-group">
 													<div class="row">
 														<label class="col-lg-12">Vincular a código</label>
