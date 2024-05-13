@@ -55,7 +55,7 @@
 
                                                 <div class="row">
                                                     <div class="col-md-12 mb-2">
-                                                        <label for="estatus">Estatus de la sucursal</label>
+                                                        <label for="estatus">Estatus </label>
                                                         <select name="estatus" id="estatus" class="form-control">
                                                             <option value="" <?php echo set_select('estatus', ''); ?>>Seleccione un estatus…</option>
                                                             <option value="activo" <?php echo set_select('estatus', 'activo'); ?>>Activo</option>
