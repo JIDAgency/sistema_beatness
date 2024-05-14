@@ -181,7 +181,133 @@ class Endpoint extends REST_Controller
         $this->response($planes_con_disciplinas);
     }
 
-    /* ====== Métodos para la nueva funcionalidad de compras en la app con categorías Mayo 2024 (Inicio) ====== */
+    /* ====== Métodos para la nueva funcionalidad de compras en la app con categorías Mayo 2024 (Fin) ====== */
+
+    /* ====== Métodos para la nueva funcionalidad de reservar en la app Mayo 2024 (Inicio) ====== */
+
+    public function reservar_clase_post()
+    {
+        $datos_post = $this->post();
+
+        try {
+            // Validar que el cliente que realiza la petición esté autenticado
+            $usuario_valido = $this->_autenticar_usuario($datos_post['token'], $datos_post['usuario_id']);
+
+            // Verificar existencia de parámetros
+            if (!isset($datos_post['asignacion_id'])) {
+                throw new Exception('Se requiere el id del plan del usuario que se utilizará para hacer la reservación');
+            }
+
+            // Verificar existencia del plan del cliente
+            $plan_cliente = $this->asignaciones_model->obtener_por_id($datos_post['asignacion_id'])->row();
+
+            if (!$plan_cliente) {
+                throw new Exception('El plan para el cliente que busca no existe');
+            }
+
+            // Verificar existencia de clase y lugar
+            if (!isset($datos_post['clase_id']) || (!isset($datos_post['no_lugar']) || $datos_post['no_lugar'] == 0)) {
+                throw new Exception('Se requiere el id de la clase y el num del lugar de la clase a reservar');
+            }
+            $clase_a_reservar = $this->clases_model->obtener_por_id($datos_post['clase_id'])->row();
+            if (!$clase_a_reservar) {
+                throw new Exception('La clase que busca no existe');
+            }
+
+            // Validar tiempo de la clase
+            $fecha_de_clase = $clase_a_reservar->inicia;
+            $fecha_limite_de_clase = strtotime('+15 minutes', strtotime($fecha_de_clase));
+            if (strtotime('now') > $fecha_limite_de_clase) {
+                throw new Exception('Lo sentimos, la clase que desea reservar está por comenzar, por favor seleccione otro horario.');
+            }
+
+            // Verificar límite de reservaciones
+            $reservacion_existente = $this->reservaciones_model->obtener_reservacion_por_cliente_y_clase($datos_post['usuario_id'], $datos_post['clase_id']);
+
+            $verificacion_de_reservaciones_hoy = $this->reservaciones_model->obtener_verificacion_de_reservaciones_hoy($datos_post['usuario_id'], date('Y-m-d', strtotime($fecha_de_clase)));
+
+            if ($reservacion_existente->num_rows() >= 1) {
+                throw new Exception('Has alcanzado el límite de reservaciones para esta clase.<br>' . date('d/m/Y H:i a', strtotime($fecha_de_clase)) . '');
+            }
+
+            if ($plan_cliente->es_ilimitado != 'si') {
+                if ($verificacion_de_reservaciones_hoy) {
+                    throw new Exception('Has alcanzado el límite de reservaciones para este día.<br>' . date('d/m/Y', strtotime($fecha_de_clase)) . '');
+                }
+            }
+
+            // Validar plan del cliente
+            if (($plan_cliente->clases_incluidas - $plan_cliente->clases_usadas) < $clase_a_reservar->intervalo_horas) {
+                throw new Exception('No cuenta con las clases suficientes en su plan');
+            }
+
+            $disciplinas_ids_asignacion = explode('|', $plan_cliente->disciplinas);
+
+            if (
+                !is_array($disciplinas_ids_asignacion) ||
+                (!in_array($clase_a_reservar->disciplina_id, $disciplinas_ids_asignacion) &&
+                    !in_array($clase_a_reservar->subdisciplina_id, $disciplinas_ids_asignacion))
+            ) {
+                throw new Exception('El plan seleccionado no puede ser usado para la disciplina a la que pertenece la clase a reservar');
+            }
+
+            // Verificar estado del plan
+            if ($plan_cliente->esta_activo) {
+                $fecha_vigencia = strtotime($plan_cliente->fecha_activacion . ' + ' . $plan_cliente->vigencia_en_dias . ' days');
+                if (strtotime('now') > $fecha_vigencia) {
+                    throw new Exception('El plan ha expirado, por favor utilice otro');
+                }
+            } else {
+                $this->asignaciones_model->activar_plan($plan_cliente->id);
+            }
+
+            // Establecer como ocupado/reservado el lugar que se seleccionó
+            $cupo_lugares = json_decode($clase_a_reservar->cupo_lugares);
+            foreach ($cupo_lugares as $lugar) {
+                if ($lugar->no_lugar == $datos_post['no_lugar']) {
+                    if ($lugar->esta_reservado) {
+                        throw new Exception('El lugar seleccionado ya se encuentra reservado');
+                    }
+                    $lugar->esta_reservado = true;
+                    $lugar->nombre_usuario = $usuario_valido->id;
+                }
+            }
+
+            // Actualizar el plan del cliente y la clase
+            $clases_usadas = $plan_cliente->clases_usadas + $clase_a_reservar->intervalo_horas;
+            $reservado = $clase_a_reservar->reservado + 1;
+            if (
+                !$this->asignaciones_model->editar($plan_cliente->id, array('clases_usadas' => $clases_usadas)) ||
+                !$this->clases_model->editar($clase_a_reservar->id, array('reservado' => $reservado, 'cupo_lugares' => json_encode($cupo_lugares)))
+            ) {
+                throw new Exception('La reservación no pudo ser creada');
+            }
+
+            // Crear reservación
+            $reservacion = $this->reservaciones_model->crear(array(
+                'usuario_id' => $usuario_valido->id,
+                'clase_id' => $clase_a_reservar->id,
+                'asignaciones_id' => $plan_cliente->id,
+                'no_lugar' => $datos_post['no_lugar'],
+            ));
+
+            if (!$reservacion) {
+                throw new Exception('La reservación no pudo ser creada');
+            }
+
+            // Obtener la reservación recién creada
+            $reservacion_creada = $this->reservaciones_model->obtener_por_id($this->db->insert_id())->row();
+
+            $this->response($reservacion_creada);
+        } catch (Exception $e) {
+            $this->response(array(
+                'error' => true,
+                'mensaje' => $e->getMessage(),
+            ), REST_Controller::HTTP_BAD_REQUEST);
+        }
+    }
+
+    /* ====== Métodos para la nueva funcionalidad de reservar en la app Mayo 2024 (Fin) ====== */
 
     /** ============ Módulo de compras (INICIO) ============ */
     public function registrar_usuario_en_openpay_post()
@@ -895,177 +1021,6 @@ class Endpoint extends REST_Controller
     }
 
     /**
-     * Permite a un cliente reservar una clase
-     */
-    public function reservar_clase_post()
-    {
-        /** Esto se bloqueó por el cierre de operaciones de Sensoria. */
-        /*
-        $this->response(array(
-            'error' => true,
-            'mensaje' => 'Por el momento no es posible realizar la reservación.',
-        ), REST_Controller::HTTP_BAD_REQUEST);
-        */
-        // Validar que el cliente que realiza la petición esté autenticado
-        $datos_post = $this->post();
-
-        $usuario_valido = $this->_autenticar_usuario($datos_post['token'], $datos_post['usuario_id']);
-
-        if (!isset($datos_post['asignacion_id'])) {
-            $this->response(array(
-                'error' => true,
-                'mensaje' => 'Se requiere el id del plan del usuario que se utilizará para hacer la reservación',
-            ), REST_Controller::HTTP_BAD_REQUEST);
-        }
-
-        // Verificar que se haya enviado un id del plan a utilizar y un id de clase válidos
-        $plan_cliente = $this->asignaciones_model->obtener_por_id($datos_post['asignacion_id'])->row();
-
-        if (!$plan_cliente) {
-            $this->response(array(
-                'error' => true,
-                'mensaje' => 'El plan para el cliente que busca no existe',
-            ), REST_Controller::HTTP_NOT_FOUND);
-        }
-
-        // Validar que se haya enviado la clase a reservar y el lugar seleccionado
-        if (!isset($datos_post['clase_id']) || (!isset($datos_post['no_lugar']) || $datos_post['no_lugar'] == 0)) {
-            $this->response(array(
-                'error' => true,
-                'mensaje' => 'Se requiere el id de la clase y el num del lugar de la clase a reservar',
-            ), REST_Controller::HTTP_BAD_REQUEST);
-        }
-
-        $clase_a_reservar = $this->clases_model->obtener_por_id($datos_post['clase_id'])->row();
-
-        if (!$clase_a_reservar) {
-            $this->response(array(
-                'error' => true,
-                'mensaje' => 'La clase que busca no existe',
-            ), REST_Controller::HTTP_NOT_FOUND);
-        }
-        $fecha_de_clase = $clase_a_reservar->inicia;
-        $fecha_limite_de_clase = strtotime('+15 minutes', strtotime($fecha_de_clase));
-        //$fecha_limite_de_clase = strtotime($fecha_de_clase);
-
-        if (strtotime('now') > $fecha_limite_de_clase) {
-            $this->response(array(
-                'error' => true,
-                'mensaje' => 'Lo sentimos, la clase que desea reservar esta por comenzar, por favor seleccione otro horario.',
-            ), REST_Controller::HTTP_BAD_REQUEST);
-        }
-
-        // Validar que el usuario no haya reservado ya un lugar en esta clase
-        $reservacion_existente = $this->reservaciones_model->obtener_reservacion_por_cliente_y_clase($datos_post['usuario_id'], $datos_post['clase_id']);
-
-        //if ($reservacion_existente) {
-        if ($reservacion_existente->num_rows() >= 1) {
-            $this->response(array(
-                'error' => true,
-                'mensaje' => 'Haz alcanzado el limite de reservaciones por clase.',
-            ), REST_Controller::HTTP_BAD_REQUEST);
-        }
-
-        // Verificar el plan; que tenga clases disponibles, que esté activo, que sea vigente y que la disciplina corresponda
-        // a la de la clase que se quiere reservar (igual esto se podría hacer desde que el plan es seleccionado en el dispositivo
-        // móvil, aunque no estaría de más otra verificación en el lado del servidor)
-        if (($plan_cliente->clases_incluidas - $plan_cliente->clases_usadas) < $clase_a_reservar->intervalo_horas) {
-            $this->response(array(
-                'error' => true,
-                'mensaje' => 'No cuenta con las clases suficientes en su plan',
-            ), REST_Controller::HTTP_BAD_REQUEST);
-        }
-
-        $disciplinas_ids_asignacion = explode('|', $plan_cliente->disciplinas);
-
-        if (!is_array($disciplinas_ids_asignacion)) {
-            $this->response(array(
-                'error' => true,
-                'mensaje' => 'El plan seleccionado no puede ser usado para la disciplina a la que pertenece la clase a reservar',
-            ), REST_Controller::HTTP_BAD_REQUEST);
-        }
-
-        if (!in_array($clase_a_reservar->disciplina_id, $disciplinas_ids_asignacion) and !in_array($clase_a_reservar->subdisciplina_id, $disciplinas_ids_asignacion)) {
-            $this->response(array(
-                'error' => true,
-                'mensaje' => 'El plan seleccionado no puede ser usado para la disciplina a la que pertenece la clase a reservar',
-            ), REST_Controller::HTTP_BAD_REQUEST);
-        }
-
-        if ($plan_cliente->esta_activo) {
-
-            $fecha_activacion = $plan_cliente->fecha_activacion;
-            log_message('debug', $fecha_activacion);
-
-            $fecha_vigencia = strtotime($fecha_activacion . ' + ' . $plan_cliente->vigencia_en_dias . ' days');
-            log_message('debug', $fecha_vigencia);
-            log_message('debug', strtotime('now'));
-
-            if (strtotime('now') > $fecha_vigencia) {
-                $this->response(array(
-                    'error' => true,
-                    'mensaje' => 'El plan ha expirado, por favor utilice otro',
-                ), REST_Controller::HTTP_BAD_REQUEST);
-            }
-        } else { // Si no está activo entonces activarlo
-            $this->asignaciones_model->activar_plan($plan_cliente->id);
-        }
-
-        // Establecer como ocupado/reservado el lugar que se seleccionó
-        $cupo_lugares = $clase_a_reservar->cupo_lugares;
-        $cupo_lugares = json_decode($cupo_lugares);
-
-        foreach ($cupo_lugares as $lugar) {
-            if ($lugar->no_lugar == $datos_post['no_lugar']) {
-                if ($lugar->esta_reservado) {
-                    $this->response(array(
-                        'error' => true,
-                        'mensaje' => 'El lugar seleccionado ya se encuentra reservado',
-                    ), REST_Controller::HTTP_BAD_REQUEST);
-                }
-                $lugar->esta_reservado = true;
-                $lugar->nombre_usuario = $usuario_valido->id;
-            }
-        }
-
-        $cupo_lugares_json = json_encode($cupo_lugares);
-
-        $clases_usadas = $plan_cliente->clases_usadas + $clase_a_reservar->intervalo_horas;
-        $reservado = $clase_a_reservar->reservado + 1;
-
-        // Actualizar el plan del cliente y la clase para que se establezca que una clase ha sido usada
-        if (
-            !$this->asignaciones_model->editar($plan_cliente->id, array('clases_usadas' => $clases_usadas)) ||
-            !$this->clases_model->editar($clase_a_reservar->id, array('reservado' => $reservado, 'cupo_lugares' => $cupo_lugares_json))
-        ) {
-            $this->response(array(
-                'error' => true,
-                'mensaje' => 'La reservación no pudo ser creada',
-            ), REST_Controller::HTTP_BAD_REQUEST);
-        }
-
-        // Crear reservación
-        $reservacion = $this->reservaciones_model->crear(array(
-            'usuario_id' => $usuario_valido->id,
-            'clase_id' => $clase_a_reservar->id,
-            'asignaciones_id' => $plan_cliente->id,
-            'no_lugar' => $datos_post['no_lugar'],
-        ));
-
-        if (!$reservacion) {
-            $this->response(array(
-                'error' => true,
-                'mensaje' => 'La reservación no pudo ser creada',
-            ), REST_Controller::HTTP_BAD_REQUEST);
-        }
-
-        // Obtener la reservación recién creada
-        $reservacion_creada = $this->reservaciones_model->obtener_por_id($this->db->insert_id())->row();
-
-        $this->response($reservacion_creada);
-    }
-
-    /**
      * Cancela las reservaciones del usuario
      */
     public function cancelar_reservacion_por_id_post()
@@ -1730,5 +1685,178 @@ class Endpoint extends REST_Controller
         }
 
         return $usuario_valido;
+    }
+
+    /* ====== Deprecated ====== */
+
+    /**
+     * Permite a un cliente reservar una clase
+     */
+    public function reservar_clase_post_Deprecated()
+    {
+        /** Esto se bloqueó por el cierre de operaciones de Sensoria. */
+        /*
+        $this->response(array(
+            'error' => true,
+            'mensaje' => 'Por el momento no es posible realizar la reservación.',
+        ), REST_Controller::HTTP_BAD_REQUEST);
+        */
+        // Validar que el cliente que realiza la petición esté autenticado
+        $datos_post = $this->post();
+
+        $usuario_valido = $this->_autenticar_usuario($datos_post['token'], $datos_post['usuario_id']);
+
+        if (!isset($datos_post['asignacion_id'])) {
+            $this->response(array(
+                'error' => true,
+                'mensaje' => 'Se requiere el id del plan del usuario que se utilizará para hacer la reservación',
+            ), REST_Controller::HTTP_BAD_REQUEST);
+        }
+
+        // Verificar que se haya enviado un id del plan a utilizar y un id de clase válidos
+        $plan_cliente = $this->asignaciones_model->obtener_por_id($datos_post['asignacion_id'])->row();
+
+        if (!$plan_cliente) {
+            $this->response(array(
+                'error' => true,
+                'mensaje' => 'El plan para el cliente que busca no existe',
+            ), REST_Controller::HTTP_NOT_FOUND);
+        }
+
+        // Validar que se haya enviado la clase a reservar y el lugar seleccionado
+        if (!isset($datos_post['clase_id']) || (!isset($datos_post['no_lugar']) || $datos_post['no_lugar'] == 0)) {
+            $this->response(array(
+                'error' => true,
+                'mensaje' => 'Se requiere el id de la clase y el num del lugar de la clase a reservar',
+            ), REST_Controller::HTTP_BAD_REQUEST);
+        }
+
+        $clase_a_reservar = $this->clases_model->obtener_por_id($datos_post['clase_id'])->row();
+
+        if (!$clase_a_reservar) {
+            $this->response(array(
+                'error' => true,
+                'mensaje' => 'La clase que busca no existe',
+            ), REST_Controller::HTTP_NOT_FOUND);
+        }
+
+        $fecha_de_clase = $clase_a_reservar->inicia;
+        $fecha_limite_de_clase = strtotime('+15 minutes', strtotime($fecha_de_clase));
+
+        if (strtotime('now') > $fecha_limite_de_clase) {
+            $this->response(array(
+                'error' => true,
+                'mensaje' => 'Lo sentimos, la clase que desea reservar esta por comenzar, por favor seleccione otro horario.',
+            ), REST_Controller::HTTP_BAD_REQUEST);
+        }
+
+        // Validar que el usuario no haya reservado ya un lugar en esta clase
+        $reservacion_existente = $this->reservaciones_model->obtener_reservacion_por_cliente_y_clase($datos_post['usuario_id'], $datos_post['clase_id']);
+
+        //if ($reservacion_existente) {
+        if ($reservacion_existente->num_rows() >= 1) {
+            $this->response(array(
+                'error' => true,
+                'mensaje' => 'Haz alcanzado el limite de reservaciones por clase.',
+            ), REST_Controller::HTTP_BAD_REQUEST);
+        }
+
+        // Verificar el plan; que tenga clases disponibles, que esté activo, que sea vigente y que la disciplina corresponda
+        // a la de la clase que se quiere reservar (igual esto se podría hacer desde que el plan es seleccionado en el dispositivo
+        // móvil, aunque no estaría de más otra verificación en el lado del servidor)
+        if (($plan_cliente->clases_incluidas - $plan_cliente->clases_usadas) < $clase_a_reservar->intervalo_horas) {
+            $this->response(array(
+                'error' => true,
+                'mensaje' => 'No cuenta con las clases suficientes en su plan',
+            ), REST_Controller::HTTP_BAD_REQUEST);
+        }
+
+        $disciplinas_ids_asignacion = explode('|', $plan_cliente->disciplinas);
+
+        if (!is_array($disciplinas_ids_asignacion)) {
+            $this->response(array(
+                'error' => true,
+                'mensaje' => 'El plan seleccionado no puede ser usado para la disciplina a la que pertenece la clase a reservar',
+            ), REST_Controller::HTTP_BAD_REQUEST);
+        }
+
+        if (!in_array($clase_a_reservar->disciplina_id, $disciplinas_ids_asignacion) and !in_array($clase_a_reservar->subdisciplina_id, $disciplinas_ids_asignacion)) {
+            $this->response(array(
+                'error' => true,
+                'mensaje' => 'El plan seleccionado no puede ser usado para la disciplina a la que pertenece la clase a reservar',
+            ), REST_Controller::HTTP_BAD_REQUEST);
+        }
+
+        if ($plan_cliente->esta_activo) {
+
+            $fecha_activacion = $plan_cliente->fecha_activacion;
+            log_message('debug', $fecha_activacion);
+
+            $fecha_vigencia = strtotime($fecha_activacion . ' + ' . $plan_cliente->vigencia_en_dias . ' days');
+            log_message('debug', $fecha_vigencia);
+            log_message('debug', strtotime('now'));
+
+            if (strtotime('now') > $fecha_vigencia) {
+                $this->response(array(
+                    'error' => true,
+                    'mensaje' => 'El plan ha expirado, por favor utilice otro',
+                ), REST_Controller::HTTP_BAD_REQUEST);
+            }
+        } else { // Si no está activo entonces activarlo
+            $this->asignaciones_model->activar_plan($plan_cliente->id);
+        }
+
+        // Establecer como ocupado/reservado el lugar que se seleccionó
+        $cupo_lugares = $clase_a_reservar->cupo_lugares;
+        $cupo_lugares = json_decode($cupo_lugares);
+
+        foreach ($cupo_lugares as $lugar) {
+            if ($lugar->no_lugar == $datos_post['no_lugar']) {
+                if ($lugar->esta_reservado) {
+                    $this->response(array(
+                        'error' => true,
+                        'mensaje' => 'El lugar seleccionado ya se encuentra reservado',
+                    ), REST_Controller::HTTP_BAD_REQUEST);
+                }
+                $lugar->esta_reservado = true;
+                $lugar->nombre_usuario = $usuario_valido->id;
+            }
+        }
+
+        $cupo_lugares_json = json_encode($cupo_lugares);
+
+        $clases_usadas = $plan_cliente->clases_usadas + $clase_a_reservar->intervalo_horas;
+        $reservado = $clase_a_reservar->reservado + 1;
+
+        // Actualizar el plan del cliente y la clase para que se establezca que una clase ha sido usada
+        if (
+            !$this->asignaciones_model->editar($plan_cliente->id, array('clases_usadas' => $clases_usadas)) ||
+            !$this->clases_model->editar($clase_a_reservar->id, array('reservado' => $reservado, 'cupo_lugares' => $cupo_lugares_json))
+        ) {
+            $this->response(array(
+                'error' => true,
+                'mensaje' => 'La reservación no pudo ser creada',
+            ), REST_Controller::HTTP_BAD_REQUEST);
+        }
+
+        // Crear reservación
+        $reservacion = $this->reservaciones_model->crear(array(
+            'usuario_id' => $usuario_valido->id,
+            'clase_id' => $clase_a_reservar->id,
+            'asignaciones_id' => $plan_cliente->id,
+            'no_lugar' => $datos_post['no_lugar'],
+        ));
+
+        if (!$reservacion) {
+            $this->response(array(
+                'error' => true,
+                'mensaje' => 'La reservación no pudo ser creada',
+            ), REST_Controller::HTTP_BAD_REQUEST);
+        }
+
+        // Obtener la reservación recién creada
+        $reservacion_creada = $this->reservaciones_model->obtener_por_id($this->db->insert_id())->row();
+
+        $this->response($reservacion_creada);
     }
 }

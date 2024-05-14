@@ -42,7 +42,7 @@ class Reservaciones_model extends CI_Model
 
         if (!$sucursal_id) {
             $query = $this->db
-                ->where('t1.estatus','Activa')
+                ->where('t1.estatus', 'Activa')
                 ->select("
                     t1.*,
                     CONCAT(COALESCE(t2.nombre_completo, 'N/D'), ' ', COALESCE(t2.apellido_paterno, 'N/D'), ' ', COALESCE(t2.apellido_materno, 'N/D')) as cliente_nombre,
@@ -60,10 +60,10 @@ class Reservaciones_model extends CI_Model
                 ->join("disciplinas t4", "t3.disciplina_id = t4.id")
                 ->join("asignaciones t5", "t1.asignaciones_id = t5.id")
                 ->join("sucursales t6", "t4.sucursal_id = t6.id")
-            ->get();
+                ->get();
         } else {
             $query = $this->db
-                ->where('t1.estatus','Activa')
+                ->where('t1.estatus', 'Activa')
                 ->where('t6.id', $sucursal_id)
                 ->select("
                     t1.*,
@@ -82,7 +82,7 @@ class Reservaciones_model extends CI_Model
                 ->join("disciplinas t4", "t3.disciplina_id = t4.id")
                 ->join("asignaciones t5", "t1.asignaciones_id = t5.id")
                 ->join("sucursales t6", "t4.sucursal_id = t6.id")
-            ->get();
+                ->get();
         }
         return $query;
     }
@@ -194,50 +194,48 @@ class Reservaciones_model extends CI_Model
         $date = new DateTime("now");
         $curr_date = $date->format('Y-m');
 
-        if($mes_a_consultar == null){
+        if ($mes_a_consultar == null) {
             $mes_a_consultar = $curr_date;
         }
-        
+
         if ($this->session->userdata('sucursal_asignada') != null) {
             $sucursal_id = $this->session->userdata('sucursal_asignada');
         }
 
-                if (!$sucursal_id) {
-                    $query = $this->db
-                    ->select("
+        if (!$sucursal_id) {
+            $query = $this->db
+                ->select("
                         t1.*,
                         CONCAT(COALESCE(t2.nombre_completo, 'N/D'), ' ', COALESCE(t2.apellido_paterno, 'N/D'), ' ', COALESCE(t2.apellido_materno, 'N/D')) as usuario,
                         t3.identificador AS clase,
                         t3.inicia AS horario,
                         t4.nombre AS disciplina
                     ")
-                    ->from('reservaciones t1')
-                    ->join("usuarios t2", "t1.usuario_id = t2.id")
-                    ->join("clases t3", "t1.clase_id = t3.id")
-                    ->join("disciplinas t4", "t3.disciplina_id = t4.id")
-                    ->join("sucursales t5", "t4.sucursal_id = t5.id")
-                    ->where("DATE_FORMAT(t3.inicia,'%Y-%m')", $mes_a_consultar)
-                    ->get();
-    
-
-                } else {
-                    $query = $this->db
-                    ->where('t5.id', $sucursal_id)
-                    ->select("
+                ->from('reservaciones t1')
+                ->join("usuarios t2", "t1.usuario_id = t2.id")
+                ->join("clases t3", "t1.clase_id = t3.id")
+                ->join("disciplinas t4", "t3.disciplina_id = t4.id")
+                ->join("sucursales t5", "t4.sucursal_id = t5.id")
+                ->where("DATE_FORMAT(t3.inicia,'%Y-%m')", $mes_a_consultar)
+                ->get();
+        } else {
+            $query = $this->db
+                ->where('t5.id', $sucursal_id)
+                ->select("
                         t1.*,
                         CONCAT(COALESCE(t2.nombre_completo, 'N/D'), ' ', COALESCE(t2.apellido_paterno, 'N/D'), ' ', COALESCE(t2.apellido_materno, 'N/D')) as usuario,
                         t3.identificador AS clase,
                         t3.inicia AS horario,
                         t4.nombre AS disciplina
                     ")
-                    ->from('reservaciones t1')
-                    ->join("usuarios t2", "t1.usuario_id = t2.id")
-                    ->join("clases t3", "t1.clase_id = t3.id")
-                    ->join("disciplinas t4", "t3.disciplina_id = t4.id")
-                    ->join("sucursales t5", "t4.sucursal_id = t5.id")
-                    ->where("DATE_FORMAT(t3.inicia,'%Y-%m')", $mes_a_consultar)
-                    ->get();
-                }
+                ->from('reservaciones t1')
+                ->join("usuarios t2", "t1.usuario_id = t2.id")
+                ->join("clases t3", "t1.clase_id = t3.id")
+                ->join("disciplinas t4", "t3.disciplina_id = t4.id")
+                ->join("sucursales t5", "t4.sucursal_id = t5.id")
+                ->where("DATE_FORMAT(t3.inicia,'%Y-%m')", $mes_a_consultar)
+                ->get();
+        }
 
         return $query;
     }
@@ -290,7 +288,7 @@ class Reservaciones_model extends CI_Model
 
         $count_index = 1;
         $count_repeated = 1;
-        
+
         $date = new DateTime("now");
         $curr_date = $date->format('Y-m');
 
@@ -306,13 +304,13 @@ class Reservaciones_model extends CI_Model
             ->get()->result();
 
         $list = array();
-        foreach($query as $row){
-            
-            if(isset($list[$row->usuario_id])){
+        foreach ($query as $row) {
+
+            if (isset($list[$row->usuario_id])) {
                 $list[$row->usuario_id]['top_points'] += 1;
-            } else{
+            } else {
                 $list[$row->usuario_id] = array(
-				    "top_points" => '1',                    
+                    "top_points" => '1',
                     "usuario_id" => $row->usuario_id,
                 );
             }
@@ -322,20 +320,41 @@ class Reservaciones_model extends CI_Model
         $i = 1;
         $points = 0;
 
-        foreach($list as $value => $key){
+        foreach ($list as $value => $key) {
 
-            if($points != $key['top_points']){
+            if ($points != $key['top_points']) {
                 $i += 1;
             }
 
-            if($key['usuario_id'] == $id){
+            if ($key['usuario_id'] == $id) {
                 $result = $i - 1;
             }
-            
-            $points = $key['top_points']; 
+
+            $points = $key['top_points'];
         }
 
         return $result;
     }
 
+    public function obtener_verificacion_de_reservaciones_hoy($usuario_id, $fecha_a_reservar)
+    {
+        // Consultar la base de datos para buscar reservaciones activas para el usuario y para hoy
+        $query = $this->db
+            ->where('t1.estatus', 'Activa')
+            ->where('t1.usuario_id', $usuario_id)
+            ->where('DATE_FORMAT(t2.inicia,"%Y-%m-%d")', $fecha_a_reservar)
+            ->select("
+                t1.*
+            ")
+            ->from("reservaciones t1")
+            ->join("clases t2", "t2.id = t1.clase_id")
+            ->get();
+
+        // Verificar si se encontraron reservaciones para hoy
+        if ($query->num_rows() > 0) {
+            return true; // El usuario tiene al menos una reservación para hoy
+        } else {
+            return false; // El usuario no tiene reservaciones para hoy
+        }
+    }
 }
