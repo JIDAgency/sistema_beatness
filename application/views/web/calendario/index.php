@@ -74,7 +74,7 @@
                                     <div class="col-lg-12">
                                         <select class="form-control select2 custom-select tp-select" name="disciplina_seleccionada" id="disciplina_seleccionada" required>
                                             <?php foreach ($disciplinas_list as $disciplina_key => $disciplina_value) : ?>
-                                                <?php if ($disciplina_key != 0 and in_array($disciplina_value->id, array(10, 19))) : ?>
+                                                <?php if ($disciplina_key != 0 and $disciplina_value->estatus == 'activo' and $disciplina_value->mostrar_en_app == 'si') : ?>
                                                     <option value="<?php echo $disciplina_value->id; ?>" <?php echo ($disciplina_key == 1) ? 'selected' : ''; ?> <?php echo set_select('disciplina_seleccionada', $disciplina_value->id, set_value('disciplina_seleccionada') ? false : $disciplina_value->id == $this->session->flashdata('disciplina_seleccionada')); ?>>
                                                         <?php echo trim(ucfirst($disciplina_value->nombre)); ?>
                                                     </option>

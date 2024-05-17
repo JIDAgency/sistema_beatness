@@ -1,7 +1,7 @@
 var body = document.querySelector('body');
 var select = document.getElementById('disciplina_seleccionada');
 
-var disciplina_seleccionada = 10;
+var disciplina_seleccionada = 0;
 
 document.getElementById('disciplina_titulo').innerHTML = select.options[select.selectedIndex].innerText;
 document.getElementById('disciplina_titulo_siguiente').innerHTML = select.options[select.selectedIndex].innerText;
