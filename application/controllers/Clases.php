@@ -13,6 +13,7 @@ class Clases extends MY_Controller
         $this->load->model('asignaciones_model');
         $this->load->model('reservaciones_model');
         $this->load->model('clases_en_linea_model');
+        $this->load->model('filtros_model');
     }
 
     function search_reservar()
@@ -37,11 +38,18 @@ class Clases extends MY_Controller
 
         $data['styles'] = array(
             array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/tables/datatable/datatables.min.css'),
+            array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/forms/selects/select2.min.css'),
         );
         $data['scripts'] = array(
             array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/tables/datatable/datatables.min.js'),
+            array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/forms/select/select2.full.min.js'),
+            array('es_rel' => false, 'src' => base_url() . 'app-assets/js/scripts/forms/select/form-select2.js'),
             array('es_rel' => true, 'src' => '' . $controlador_js . '.js'),
         );
+
+        $sucursales_list = $this->filtros_model->obtener_sucursales()->result();
+
+        $data['sucursales_list'] = $sucursales_list;
 
         $this->construir_private_site_ui('clases/index', $data);
     }
@@ -52,7 +60,7 @@ class Clases extends MY_Controller
         $start = intval($this->input->post('start'));
         $length = intval($this->input->post('length'));
 
-        $clases_list = $this->clases_model->obtener_todas_para_front_con_detalle();
+        $clases_list = $this->clases_model->obtener_todas_para_front_con_detalle_por_sucursal($this->session->userdata('sucursal'));
 
         $data = [];
 
@@ -127,6 +135,20 @@ class Clases extends MY_Controller
 
         echo json_encode($result);
         exit();
+    }
+
+    public function guardar_seleccion()
+    {
+        if ($this->input->is_ajax_request()) {
+            $sucursal_seleccionada = $this->input->post('filtro_clase_sucursal');
+            $this->session->set_userdata('filtro_clase_sucursal', $sucursal_seleccionada);
+            echo json_encode(['status' => 'success']);
+
+            $this->construir_private_site_ui('clases/index');
+        } else {
+            show_error('Acceso no permitido', 403);
+        }
+
     }
 
     public function duplicar_clase($id = null)

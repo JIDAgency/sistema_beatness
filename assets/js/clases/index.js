@@ -209,6 +209,24 @@ $(document).ready(function () {
             }
         });
     }
+
+    $('#filtro_clase_sucursal').change(function() {
+        var sucursalSeleccionada = $(this).val();
+        $.ajax({
+            url: method_call + "guardar_seleccion",
+            method: 'POST',
+            data: {
+                filtro_clase_sucursal: sucursalSeleccionada
+            },
+            success: function(response) {
+                console.log(sucursalSeleccionada + ' Guardado en la sesión');
+                table.ajax.reload();
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.error('Error al guardar la sucursal: ' + textStatus, errorThrown);
+            }
+        });
+    });
 });
 
 // Función para obtener opciones del select 'disciplina'
