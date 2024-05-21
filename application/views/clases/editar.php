@@ -114,6 +114,7 @@
 														<select name="dificultad" class="form-control">
 															<option value="">Seleccione la dificultad</option>
 															<option value="Básico" <?php echo set_select('dificultad', 'Básico', set_value('dificultad') ? false : 'Básico' == $clase_a_editar->dificultad); ?>>Básico</option>
+															<option value="Booty" <?php echo set_select('dificultad', 'Booty', set_value('dificultad') ? false : 'Booty' == $clase_a_editar->dificultad); ?>>Booty</option>
 															<option value="Intermedio" <?php echo set_select('dificultad', 'Intermedio', set_value('dificultad') ? false : 'Intermedio' == $clase_a_editar->dificultad); ?>>Intermedio</option>
 															<option value="Avanzado" <?php echo set_select('dificultad', 'Avanzado', set_value('dificultad') ? false : 'Avanzado' == $clase_a_editar->dificultad); ?>>Avanzado</option>
 															<option value="Full Body" <?php echo set_select('dificultad', 'Full Body', set_value('dificultad') ? false : 'Full Body' == $clase_a_editar->dificultad); ?>>Full Body</option>

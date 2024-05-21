@@ -24,25 +24,31 @@
 
 									<?php if ($this->session->userdata('rol_id') != '5') : ?>
 										<div class="row mt-2">
-											<div class="col-xl-3 col-lg-12">
+											<div class="col-lg-3 col-md-3 col-sm-12">
 												<div class="form-group">
 													<h5 class="card-titlel"><i class="ft-filter"></i> Sucursal:</h5>
-
 													<select id="filtro_clase_sucursal" name="filtro_clase_sucursal" class="select2 form-control">
-														<option value="0">
-															<?php
-															if ($this->session->userdata('filtro_clase_sucursal')) {
-																echo 'Seleccione una sucursal…';
-															}
-															?>
-														</option>
+														<option value="0">Seleccione una sucursal...</option>
 														<?php foreach ($sucursales_list as $key => $sucursal_row) : ?>
 															<option value="<?= $sucursal_row->id; ?>" <?= ($this->session->userdata('filtro_clase_sucursal') == $sucursal_row->id) ? 'selected' : '' ?>>
 																<?= $sucursal_row->locacion; ?>
 															</option>
 														<?php endforeach; ?>
 													</select>
+												</div>
+											</div>
 
+											<div class="col-lg-3 col-md-3 col-sm-12">
+												<div class="form-group">
+													<h5 class="card-titlel"><i class="ft-filter"></i> Diciplina:</h5>
+													<select id="filtro_clase_disciplina" name="filtro_clase_disciplina" class="select2 form-control">
+														<option value="0">Seleccione una descicplina...</option>
+														<?php foreach ($disciplinas_list as $key => $disciplina_row) : ?>
+															<option value="<?= $disciplina_row->id; ?>" <?= ($this->session->userdata('filtro_clase_disciplina') == $disciplina_row->id) ? 'selected' : '' ?>>
+																<?= $disciplina_row->nombre; ?>
+															</option>
+														<?php endforeach; ?>
+													</select>
 												</div>
 											</div>
 										</div>

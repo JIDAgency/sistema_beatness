@@ -63,7 +63,64 @@ class Clases_model extends CI_Model
             $sucursal_id = $this->session->userdata('filtro_clase_sucursal');
         }
 
-        if (!$sucursal_id) {
+        $query = $this->db
+            ->where("DATE_FORMAT(t1.inicia,'%Y-%m-%d') >=", date('Y-m-d', strtotime('-15 days')))
+            ->where('t3.id', $sucursal_id)
+            ->select("
+                        t1.*,
+                        t2.nombre as disciplina_nombre,
+                        t3.nombre as sucursal_nombre,
+                        t3.locacion as sucursal_locacion,
+                        CONCAT(COALESCE(t4.nombre_completo, 'N/D'), ' ', COALESCE(t4.apellido_paterno, 'N/D')) as instructor_nombre
+                    ")
+            ->from('clases t1')
+            ->join("disciplinas t2", "t1.disciplina_id = t2.id")
+            ->join("sucursales t3", "t2.sucursal_id = t3.id")
+            ->join("usuarios t4", "t1.instructor_id = t4.id")
+            ->get();
+
+        return $query;
+    }
+
+    public function obtener_todas_para_front_con_detalle_por_sucursal_disciplina($sucursal_id = null, $disciplina_id = null)
+    {
+        $date = new DateTime("now");
+        $curr_date = $date->format('Y-m');
+
+        if ($this->session->userdata('filtro_clase_sucursal') != null) {
+            $sucursal_id = $this->session->userdata('filtro_clase_sucursal');
+            $disciplina_id = $this->session->userdata('filtro_clase_disciplina');
+        }
+        $query = $this->db
+            ->where("DATE_FORMAT(t1.inicia,'%Y-%m-%d') >=", date('Y-m-d', strtotime('-15 days')))
+            ->where('t2.sucursal_id', $sucursal_id)
+            ->where('t2.id', $disciplina_id)
+            ->select("
+                        t1.*,
+                        t2.nombre as disciplina_nombre,
+                        t3.nombre as sucursal_nombre,
+                        t3.locacion as sucursal_locacion,
+                        CONCAT(COALESCE(t4.nombre_completo, 'N/D'), ' ', COALESCE(t4.apellido_paterno, 'N/D')) as instructor_nombre
+                    ")
+            ->from('clases t1')
+            ->join("disciplinas t2", "t1.disciplina_id = t2.id")
+            ->join("sucursales t3", "t2.sucursal_id = t3.id")
+            ->join("usuarios t4", "t1.instructor_id = t4.id")
+            ->get();
+
+        return $query;
+    }
+
+    public function obtener_todas_para_front_con_detalle_por_disciplina($disciplina_id = null)
+    {
+        $date = new DateTime("now");
+        $curr_date = $date->format('Y-m');
+
+        if ($this->session->userdata('filtro_clase_disciplina') != null) {
+            $disciplina_id = $this->session->userdata('filtro_clase_disciplina');
+        }
+
+        if (!$disciplina_id) {
             $query = $this->db
                 ->where("DATE_FORMAT(t1.inicia,'%Y-%m-%d') >=", date('Y-m-d', strtotime('-15 days')))
                 ->select("
@@ -81,7 +138,7 @@ class Clases_model extends CI_Model
         } else {
             $query = $this->db
                 ->where("DATE_FORMAT(t1.inicia,'%Y-%m-%d') >=", date('Y-m-d', strtotime('-15 days')))
-                ->where('t3.id', $sucursal_id)
+                ->where('t2.id', $disciplina_id)
                 ->select("
                         t1.*,
                         t2.nombre as disciplina_nombre,

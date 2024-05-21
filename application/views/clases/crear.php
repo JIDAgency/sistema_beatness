@@ -94,6 +94,7 @@
 														<select name="dificultad" class="form-control">
 															<option value="">Seleccione la dificultad</option>
 															<option value="Básico" selected>Básico</option>
+															<option value="Booty">Booty</option>
 															<option value="Intermedio">Intermedio</option>
 															<option value="Avanzado">Avanzado</option>
 															<option value="Full Body">Full Body</option>

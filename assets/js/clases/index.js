@@ -210,7 +210,7 @@ $(document).ready(function () {
         });
     }
 
-    $('#filtro_clase_sucursal').change(function() {
+    $('#filtro_clase_sucursal').change(function () {
         var sucursalSeleccionada = $(this).val();
         $.ajax({
             url: method_call + "guardar_seleccion",
@@ -218,12 +218,63 @@ $(document).ready(function () {
             data: {
                 filtro_clase_sucursal: sucursalSeleccionada
             },
-            success: function(response) {
-                console.log(sucursalSeleccionada + ' Guardado en la sesión');
+            success: function (response) {
+                console.log(sucursalSeleccionada + ' Sucursal guardada en la sesión');
+                table.ajax.reload();
+
+                // Nueva solicitud AJAX para obtener las disciplinas de la sucursal seleccionada
+                $.ajax({
+                    url: method_call + "obtener_disciplinas",
+                    method: 'GET',
+                    data: {
+                        sucursal_id: sucursalSeleccionada // enviar el ID de la sucursal seleccionada
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        var disciplinas = data; // Asumiendo que response.disciplinas contiene las disciplinas
+                        var $disciplinaSelect = $('#filtro_clase_disciplina');
+
+                        // Limpiar el select de disciplinas
+                        $disciplinaSelect.empty();
+                        $disciplinaSelect.append('<option value="0">Seleccione una disciplina...</option>');
+
+                        // Agregar las nuevas opciones
+                        if (Array.isArray(disciplinas)) {
+                            $.each(disciplinas, function (index, disciplina) {
+                                $disciplinaSelect.append('<option value="' + disciplina.id + '">' + disciplina.nombre + '</option>');
+                            });
+                        } else {
+                            console.error('La respuesta no es un array');
+                        }
+
+                        // Actualizar el select2
+                        $disciplinaSelect.select2();
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.error('Error al obtener disciplinas: ' + textStatus, errorThrown);
+                    }
+                });
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.error('Error al guardar la sucursal: ' + textStatus, errorThrown);
+            }
+        });
+    });
+
+    $('#filtro_clase_disciplina').change(function () {
+        var disciplinaSeleccionada = $(this).val();
+        $.ajax({
+            url: method_call + "guardar_seleccion_disciplina",
+            method: 'POST',
+            data: {
+                filtro_clase_disciplina: disciplinaSeleccionada
+            },
+            success: function (response) {
+                console.log(disciplinaSeleccionada + ' Disciplina guardada en la sesión');
                 table.ajax.reload();
             },
-            error: function(jqXHR, textStatus, errorThrown) {
-                console.error('Error al guardar la sucursal: ' + textStatus, errorThrown);
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.error('Error al guardar la disciplina: ' + textStatus, errorThrown);
             }
         });
     });

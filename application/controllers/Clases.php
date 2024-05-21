@@ -48,8 +48,10 @@ class Clases extends MY_Controller
         );
 
         $sucursales_list = $this->filtros_model->obtener_sucursales()->result();
+        $disciplinas_list = $this->filtros_model->obtener_disciplinas()->result();
 
         $data['sucursales_list'] = $sucursales_list;
+        $data['disciplinas_list'] = $disciplinas_list;
 
         $this->construir_private_site_ui('clases/index', $data);
     }
@@ -60,7 +62,15 @@ class Clases extends MY_Controller
         $start = intval($this->input->post('start'));
         $length = intval($this->input->post('length'));
 
-        $clases_list = $this->clases_model->obtener_todas_para_front_con_detalle_por_sucursal($this->session->userdata('sucursal'));
+        if (($this->session->userdata('filtro_clase_sucursal') != 0) AND ($this->session->userdata('filtro_clase_disciplina') == 0)) {
+            $clases_list = $this->clases_model->obtener_todas_para_front_con_detalle_por_sucursal($this->session->userdata('filtro_clase_disciplina'));   
+        } else if ((($this->session->userdata('filtro_clase_sucursal') == null) AND ($this->session->userdata('filtro_clase_disciplina') != null)) || (($this->session->userdata('filtro_clase_sucursal') == 0) AND ($this->session->userdata('filtro_clase_disciplina') != 0))) {
+            $clases_list = $this->clases_model->obtener_todas_para_front_con_detalle_por_disciplina($this->session->userdata('filtro_clase_disciplina'));   
+        } else if (($this->session->userdata('filtro_clase_sucursal') != null) AND ($this->session->userdata('filtro_clase_disciplina') != null) AND ($this->session->userdata('filtro_clase_sucursal') != 0) AND ($this->session->userdata('filtro_clase_disciplina') != 0)) {
+            $clases_list = $this->clases_model->obtener_todas_para_front_con_detalle_por_sucursal_disciplina($this->session->userdata('filtro_clase_disciplina'), $this->session->userdata('filtro_clase_sucursal'));   
+        } else if ((($this->session->userdata('filtro_clase_sucursal') == null) AND ($this->session->userdata('filtro_clase_disciplina') == null)) || (($this->session->userdata('filtro_clase_sucursal') == 0) AND ($this->session->userdata('filtro_clase_disciplina') == 0))) {
+            $clases_list = $this->clases_model->obtener_todas_para_front_con_detalle();
+        }
 
         $data = [];
 
@@ -137,18 +147,56 @@ class Clases extends MY_Controller
         exit();
     }
 
+    public function obtener_disciplinas(){
+        $sucursal_id = $this->input->post('sucursal_id');
+
+        $disciplinas = $this->filtros_model->obtener_disciplinas($sucursal_id);
+
+        $data = [];
+        foreach ($disciplinas->result() as $disciplina) {
+            $data[] = array(
+                'id' => $disciplina->id,
+                'nombre' => $disciplina->nombre
+            );
+        }
+
+        echo json_encode($data);
+        exit();
+    }
+
     public function guardar_seleccion()
     {
         if ($this->input->is_ajax_request()) {
+
             $sucursal_seleccionada = $this->input->post('filtro_clase_sucursal');
             $this->session->set_userdata('filtro_clase_sucursal', $sucursal_seleccionada);
+
+            $this->session->set_userdata('filtro_clase_disciplina', 0);
+
+            // $disciplina_seleccionada = $this->input->post('filtro_clase_disciplina');
+            // $this->session->set_userdata('filtro_clase_disciplina', $disciplina_seleccionada);
+
             echo json_encode(['status' => 'success']);
 
             $this->construir_private_site_ui('clases/index');
         } else {
             show_error('Acceso no permitido', 403);
         }
+    }
 
+    public function guardar_seleccion_disciplina()
+    {
+        if ($this->input->is_ajax_request()) {
+
+            $disciplina_seleccionada = $this->input->post('filtro_clase_disciplina');
+            $this->session->set_userdata('filtro_clase_disciplina', $disciplina_seleccionada);
+
+            echo json_encode(['status' => 'success']);
+
+            $this->construir_private_site_ui('clases/index');
+        } else {
+            show_error('Acceso no permitido', 403);
+        }
     }
 
     public function duplicar_clase($id = null)
