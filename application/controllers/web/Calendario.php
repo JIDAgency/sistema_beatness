@@ -65,30 +65,7 @@ class Calendario extends CI_Controller
             <tbody>
         ';
 
-        if ($disciplina_id == 3) {
-            $contenido .= '
-                <tr>
-                    <td class=""><small></small></td>
-                    <td class=""><small><span class="blue lighten-3">LEGS &<br>BOOTY</span></small></td>
-                    <td class=""><small><span class="blue lighten-3">UPPER<br>BODY</span></small></td>
-                    <td class=""><small><span class="blue lighten-3">KILLER<br>ABS</span></small></td>
-                    <td class=""><small><span class="blue lighten-3">ARMS &<br>BOOTY</span></small></td>
-                    <td class=""><small><span class="blue lighten-3">FULL<br>BODY</span></small></td>
-                </tr>
-            ';
-        }
-        if ($disciplina_id == 10) {
-            $contenido .= '
-                <tr>
-                    <td class=""><small></small></td>
-                    <td class=""><small><span class="blue lighten-3">LEGS &<br>BOOTY</span></small></td>
-                    <td class=""><small><span class="blue lighten-3">UPPER<br>BODY</span></small></td>
-                    <td class=""><small><span class="blue lighten-3">KILLER<br>ABS</span></small></td>
-                    <td class=""><small><span class="blue lighten-3">ARMS &<br>BOOTY</span></small></td>
-                    <td class=""><small><span class="blue lighten-3">FULL<br>BODY</span></small></td>
-                </tr>
-            ';
-        }
+        $contenido .= $this->obtener_titulos_semana($disciplina_id);
 
         $ciclo_es_tarde = false;
 
@@ -153,24 +130,7 @@ class Calendario extends CI_Controller
             <tbody>
         ';
 
-        if ($disciplina_id == 3) {
-            $contenido .= '
-                <tr>
-                    <td class=""><small></small></td>
-                    <td class=""><small><span class="blue lighten-3">ABS &<br>BOOTY</span></small></td>
-                    <td class=""><small><span class="blue lighten-3">FULL<br>BODY</span></small></td>
-                </tr>
-            ';
-        }
-        if ($disciplina_id == 10) {
-            $contenido .= '
-                <tr>
-                    <td class=""><small></small></td>
-                    <td class=""><small><span class="blue lighten-3">ABS &<br>BOOTY</span></small></td>
-                    <td class=""><small><span class="blue lighten-3">FULL<br>BODY</span></small></td>
-                </tr>
-            ';
-        }
+        $contenido .= $this->obtener_titulos_fin_de_semana($disciplina_id);
 
         $ciclo_es_tarde = false;
 
@@ -236,30 +196,7 @@ class Calendario extends CI_Controller
             <tbody>
         ';
 
-        if ($disciplina_id == 3) {
-            $contenido .= '
-                <tr>
-                    <td class=""><small></small></td>
-                    <td class=""><small><span class="blue lighten-3">LEGS &<br>BOOTY</span></small></td>
-                    <td class=""><small><span class="blue lighten-3">UPPER<br>BODY</span></small></td>
-                    <td class=""><small><span class="blue lighten-3">KILLER<br>ABS</span></small></td>
-                    <td class=""><small><span class="blue lighten-3">ARMS &<br>BOOTY</span></small></td>
-                    <td class=""><small><span class="blue lighten-3">FULL<br>BODY</span></small></td>
-                </tr>
-            ';
-        }
-        if ($disciplina_id == 10) {
-            $contenido .= '
-                <tr>
-                    <td class=""><small></small></td>
-                    <td class=""><small><span class="blue lighten-3">LEGS &<br>BOOTY</span></small></td>
-                    <td class=""><small><span class="blue lighten-3">UPPER<br>BODY</span></small></td>
-                    <td class=""><small><span class="blue lighten-3">KILLER<br>ABS</span></small></td>
-                    <td class=""><small><span class="blue lighten-3">ARMS &<br>BOOTY</span></small></td>
-                    <td class=""><small><span class="blue lighten-3">FULL<br>BODY</span></small></td>
-                </tr>
-            ';
-        }
+        $contenido .= $this->obtener_titulos_semana($disciplina_id);
 
         $ciclo_es_tarde = false;
 
@@ -322,24 +259,7 @@ class Calendario extends CI_Controller
             <tbody>
         ';
 
-        if ($disciplina_id == 3) {
-            $contenido .= '
-                <tr>
-                    <td class=""><small></small></td>
-                    <td class=""><small><span class="blue lighten-3">ABS &<br>BOOTY</span></small></td>
-                    <td class=""><small><span class="blue lighten-3">FULL<br>BODY</span></small></td>
-                </tr>
-            ';
-        }
-        if ($disciplina_id == 10) {
-            $contenido .= '
-                <tr>
-                    <td class=""><small></small></td>
-                    <td class=""><small><span class="blue lighten-3">ABS &<br>BOOTY</span></small></td>
-                    <td class=""><small><span class="blue lighten-3">FULL<br>BODY</span></small></td>
-                </tr>
-            ';
-        }
+        $contenido .= $this->obtener_titulos_fin_de_semana($disciplina_id);
 
         $ciclo_es_tarde = false;
 
@@ -376,5 +296,57 @@ class Calendario extends CI_Controller
         $this->output
             ->set_content_type('application/json')
             ->set_output(json_encode($response));
+    }
+
+    public function obtener_titulos_semana($disciplina_id)
+    {
+        if ($disciplina_id) {
+            $response = '
+            <tr>
+                <td class=""><small></small></td>
+                <td class=""><small><span class="blue lighten-3">LEGS &<br>BOOTY</span></small></td>
+                <td class=""><small><span class="blue lighten-3">UPPER<br>BODY</span></small></td>
+                <td class=""><small><span class="blue lighten-3">KILLER<br>ABS</span></small></td>
+                <td class=""><small><span class="blue lighten-3">ARMS &<br>BOOTY</span></small></td>
+                <td class=""><small><span class="blue lighten-3">FULL<br>BODY</span></small></td>
+            </tr>
+            ';
+        } else {
+            $response = '
+            <tr>
+                <td class=""><small></small></td>
+                <td class=""><small><span class="blue lighten-3">LEGS &<br>BOOTY</span></small></td>
+                <td class=""><small><span class="blue lighten-3">UPPER<br>BODY</span></small></td>
+                <td class=""><small><span class="blue lighten-3">KILLER<br>ABS</span></small></td>
+                <td class=""><small><span class="blue lighten-3">ARMS &<br>BOOTY</span></small></td>
+                <td class=""><small><span class="blue lighten-3">FULL<br>BODY</span></small></td>
+            </tr>
+            ';
+        }
+
+        return $response;
+    }
+
+    public function obtener_titulos_fin_de_semana($disciplina_id)
+    {
+        if ($disciplina_id) {
+            $response = '
+                <tr>
+                    <td class=""><small></small></td>
+                    <td class=""><small><span class="blue lighten-3">ABS &<br>BOOTY</span></small></td>
+                    <td class=""><small><span class="blue lighten-3">FULL<br>BODY</span></small></td>
+                </tr>
+            ';
+        } else {
+            $response = '
+                <tr>
+                    <td class=""><small></small></td>
+                    <td class=""><small><span class="blue lighten-3">ABS &<br>BOOTY</span></small></td>
+                    <td class=""><small><span class="blue lighten-3">FULL<br>BODY</span></small></td>
+                </tr>
+            ';
+        }
+
+        return $response;
     }
 }
