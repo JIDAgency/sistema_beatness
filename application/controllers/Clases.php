@@ -123,7 +123,7 @@ class Clases extends MY_Controller
                 'dificultad' => !empty($clase->dificultad) ? mb_strtoupper($clase->dificultad) : '',
                 'inicia' => (!empty($clase->inicia) ? date('Y/m/d H:i:s', strtotime($clase->inicia)) : ''),
                 'horario_esp' => !empty($fecha_espaniol) ? ucfirst($fecha_espaniol) : '',
-                'instructor_id' => !empty($clase->instructor_nombre) ? $clase->instructor_nombre : '',
+                'instructor_id' => !empty($clase->instructor_nombre) ? mb_strtoupper($clase->instructor_nombre) : '',
                 'cupo' => !empty($clase->cupo) ? ucfirst($clase->cupo) : '',
                 'estatus' => !empty($clase->estatus) ? ucwords($clase->estatus) : '',
                 'intervalo_horas' => !empty($intervalo_horas) ? mb_strtoupper($intervalo_horas) : '',
@@ -335,11 +335,11 @@ class Clases extends MY_Controller
 
         $data = [];
         foreach ($instructores->result() as $instructor) {
-            $nombre = trim("{$instructor->nombre_completo} {$instructor->apellido_paterno} {$instructor->apellido_materno}");
-            $nombre = preg_replace('/\s+/', ' ', $nombre);
+            // $nombre = trim("{$instructor->nombre_completo} {$instructor->apellido_paterno} {$instructor->apellido_materno}");
+            // $nombre = preg_replace('/\s+/', ' ', $nombre);
 
             $data[] = array(
-                'nombre' => $nombre,
+                'nombre' => $instructor->nombre_completo,
                 'valor' => $instructor->id
             );
         }

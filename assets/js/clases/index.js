@@ -174,9 +174,15 @@ $(document).ready(function () {
             console.log('Entre al if 1');
             for (var i = 0; i < select_instructor.length; i++) {
                 console.log(select_instructor[i].nombre)
+                console.log(valor_nuevo_de_celda.toUpperCase())
                 console.log(formatoNombrePropio(valor_nuevo_de_celda))
-                if (select_instructor[i].nombre === formatoNombrePropio(valor_nuevo_de_celda)) {
+                if (select_instructor[i].nombre === (valor_nuevo_de_celda.toUpperCase())) {
                     console.log('Entre al if 2');
+                    valor_nuevo_de_celda = select_instructor[i].valor;
+                    console.log(valor_nuevo_de_celda);
+                    break;
+                } else if (select_instructor[i].nombre === formatoNombrePropio(valor_nuevo_de_celda)) {
+                    console.log('Entre al if 3');
                     valor_nuevo_de_celda = select_instructor[i].valor;
                     console.log(valor_nuevo_de_celda);
                     break;
