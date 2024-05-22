@@ -27,7 +27,7 @@
 									<?php echo form_open('clases/editar', array('class' => 'form form-horizontal', 'id' => 'forma-editar-clase')); ?>
 									<input type="hidden" name="id" value="<?php echo $clase_a_editar->id; ?>">
 									<div class="form-body">
-										<?php if (validation_errors()): ?>
+										<?php if (validation_errors()) : ?>
 											<div class="alert bg-danger alert-icon-left alert-dismissible mb-2 font-small-3" role="alert">
 												<span class="alert-icon"><i class="fa fa-thumbs-o-down"></i></span>
 												<button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -35,7 +35,7 @@
 												</button>
 												<?php echo validation_errors(); ?>
 											</div>
-										<?php endif?>
+										<?php endif ?>
 										<?php $this->load->view('_comun/mensajes_alerta'); ?>
 										<h4 class="form-section">Datos de la clase</h4>
 										<div class="row">
@@ -54,20 +54,20 @@
 													<div class="col-md-9">
 														<select id="mySelect" name="disciplina_id" class="form-control">
 															<option value="">Seleccione la disciplina</option>
-															<?php foreach ($disciplinas->result() as $disciplina): ?>
+															<?php foreach ($disciplinas->result() as $disciplina) : ?>
 																<?php
-																	if($clase_a_editar->subdisciplina_id > 0){
-																		$disciplina_que_se_editara = $clase_a_editar->subdisciplina_id;
-																	} else{
-																		$disciplina_que_se_editara = $clase_a_editar->disciplina_id;
-																	}
+																if ($clase_a_editar->subdisciplina_id > 0) {
+																	$disciplina_que_se_editara = $clase_a_editar->subdisciplina_id;
+																} else {
+																	$disciplina_que_se_editara = $clase_a_editar->disciplina_id;
+																}
 																?>
-																<?php if ($disciplina->id != 1): ?>
+																<?php if ($disciplina->id != 1) : ?>
 																	<option value="<?php echo $disciplina->id; ?>" <?php echo set_select('disciplina_id', $disciplina_que_se_editara, set_value('disciplina_id') ? false : $disciplina->id == $disciplina_que_se_editara); ?>>
 																		<?php echo $disciplina->nombre; ?>
 																	</option>
-																<?php endif;?>
-															<?php endforeach;?>
+																<?php endif; ?>
+															<?php endforeach; ?>
 														</select>
 													</div>
 												</div>
@@ -81,12 +81,15 @@
 													<div class="col-md-9">
 														<select id="mySelect2" name="instructor_id" class="select2 form-control info">
 															<option value="">Seleccione el instructor de esta clase</option>
-															<?php foreach ($instructores->result() as $instructor): ?>
-																<option value="<?php echo $instructor->id; ?>" <?php echo set_select('instructor_id', $clase_a_editar->id,
-																	set_value('instructor_id') ? false : $instructor->id == $clase_a_editar->instructor_id); ?>>
-																	<?php echo $instructor->nombre_completo .' ' . $instructor->apellido_paterno .' ' . $instructor->apellido_materno; ?>
+															<?php foreach ($instructores->result() as $instructor) : ?>
+																<option value="<?php echo $instructor->id; ?>" <?php echo set_select(
+																													'instructor_id',
+																													$clase_a_editar->id,
+																													set_value('instructor_id') ? false : $instructor->id == $clase_a_editar->instructor_id
+																												); ?>>
+																	<?php echo $instructor->nombre_completo . ' ' . $instructor->apellido_paterno . ' ' . $instructor->apellido_materno; ?>
 																</option>
-															<?php endforeach;?>
+															<?php endforeach; ?>
 														</select>
 													</div>
 												</div>
@@ -95,8 +98,7 @@
 												<div class="form-group row">
 													<label for="inicia" class="col-md-3 label-control"><span class="red">*</span> Fecha y hora de inicio</label>
 													<div class="col-md-5">
-														<input type="date" id="mySelect3" name="inicia_date" class="form-control" placeholder="Indique la fecha"
-														 value="<?php echo set_value('inicia') == false ? date('Y-m-d', strtotime($clase_a_editar->inicia)) : date('Y-m-d', strtotime(set_value('inicia'))); ?>">
+														<input type="date" id="mySelect3" name="inicia_date" class="form-control" placeholder="Indique la fecha" value="<?php echo set_value('inicia') == false ? date('Y-m-d', strtotime($clase_a_editar->inicia)) : date('Y-m-d', strtotime(set_value('inicia'))); ?>">
 													</div>
 													<div class="col-md-4">
 														<input type="time" id="mySelect4" name="inicia_time" class="form-control" value="<?php echo set_value('inicia') == false ? date('H:i', strtotime($clase_a_editar->inicia)) : date('H:i', strtotime(set_value('inicia'))); ?>">
@@ -112,7 +114,7 @@
 														dificultad</label>
 													<div class="col-md-9">
 														<select name="dificultad" class="form-control">
-															<option value="">Seleccione la dificultad</option>
+															<!-- <option value="">Seleccione la dificultad</option>
 															<option value="Básico" <?php echo set_select('dificultad', 'Básico', set_value('dificultad') ? false : 'Básico' == $clase_a_editar->dificultad); ?>>Básico</option>
 															<option value="Booty" <?php echo set_select('dificultad', 'Booty', set_value('dificultad') ? false : 'Booty' == $clase_a_editar->dificultad); ?>>Booty</option>
 															<option value="Intermedio" <?php echo set_select('dificultad', 'Intermedio', set_value('dificultad') ? false : 'Intermedio' == $clase_a_editar->dificultad); ?>>Intermedio</option>
@@ -131,7 +133,12 @@
 															<option value="Back & Bicep" <?php echo set_select('dificultad', 'Back & Bicep', set_value('dificultad') ? false : 'Back & Bicep' == $clase_a_editar->dificultad); ?>>Back & Bicep</option>
 															<option value="Chest & Tricep" <?php echo set_select('dificultad', 'Chest & Tricep', set_value('dificultad') ? false : 'Chest & Tricep' == $clase_a_editar->dificultad); ?>>Chest & Tricep</option>
 															<option value="Legs & Booty" <?php echo set_select('dificultad', 'Legs & Booty', set_value('dificultad') ? false : 'Legs & Booty' == $clase_a_editar->dificultad); ?>>Legs & Booty</option>
-															<option value="Shoulder & Arms" <?php echo set_select('dificultad', 'Shoulder & Arms', set_value('dificultad') ? false : 'Shoulder & Arms' == $clase_a_editar->dificultad); ?>>Shoulder & Arms</option>
+															<option value="Shoulder & Arms" <?php echo set_select('dificultad', 'Shoulder & Arms', set_value('dificultad') ? false : 'Shoulder & Arms' == $clase_a_editar->dificultad); ?>>Shoulder & Arms</option> -->
+
+															<option value="" <?php echo set_select('dificultad', '', set_value('dificultad') ? false : '' == (!empty($this->session->flashdata('dificultad')) ? $this->session->flashdata('dificultad') : (!empty($clase_a_editar->dificultad) ? $clase_a_editar->dificultad : set_value('dificultad')))); ?>>Seleccione una opcion…</option>
+															<?php foreach (select_dificultad() as $key => $mostrar_row) : ?>
+																<option value="<?php echo $mostrar_row->valor; ?>" <?php echo set_select('dificultad', $mostrar_row->valor, set_value('dificultad') ? false : $mostrar_row->valor == (!empty($this->session->flashdata('dificultad')) ? $this->session->flashdata('dificultad') : (!empty($clase_a_editar->dificultad) ? $clase_a_editar->dificultad : set_value('dificultad')))); ?>><?php echo trim($mostrar_row->nombre); ?></option>
+															<?php endforeach; ?>
 														</select>
 													</div>
 												</div>
@@ -193,29 +200,29 @@
 												</div>
 											</div>
 											<div>
-												<?php 
-													$cupo_lugares = json_decode($clase_a_editar->cupo_lugares);
-													echo '<br>';
-													$i = 0;
-													foreach ($cupo_lugares as $lugar) {
-														$i++;
-														if ($lugar->nombre_usuario) {
-															
-															foreach ($usuarios->result() as $usuario){
-																if ($lugar->nombre_usuario == $usuario->id) {
-																	echo $i. ' - Lugar: '.$lugar->no_lugar.' |  Cliente: '.$lugar->nombre_usuario.' - '.$usuario->nombre_completo.' '.$usuario->apellido_paterno.' '.$usuario->apellido_materno;
-																	echo '<br>';
-																}
-															}
-															if (!is_numeric($lugar->nombre_usuario)) {
-																echo $i. ' - Lugar: '.$lugar->no_lugar.' |  Cliente: '.$lugar->nombre_usuario;
+												<?php
+												$cupo_lugares = json_decode($clase_a_editar->cupo_lugares);
+												echo '<br>';
+												$i = 0;
+												foreach ($cupo_lugares as $lugar) {
+													$i++;
+													if ($lugar->nombre_usuario) {
+
+														foreach ($usuarios->result() as $usuario) {
+															if ($lugar->nombre_usuario == $usuario->id) {
+																echo $i . ' - Lugar: ' . $lugar->no_lugar . ' |  Cliente: ' . $lugar->nombre_usuario . ' - ' . $usuario->nombre_completo . ' ' . $usuario->apellido_paterno . ' ' . $usuario->apellido_materno;
 																echo '<br>';
 															}
-														} else {
-															echo $i. ' - Lugar: '.$lugar->no_lugar.' |  Cliente: ';
-																echo '<br>';
 														}
-													} 
+														if (!is_numeric($lugar->nombre_usuario)) {
+															echo $i . ' - Lugar: ' . $lugar->no_lugar . ' |  Cliente: ' . $lugar->nombre_usuario;
+															echo '<br>';
+														}
+													} else {
+														echo $i . ' - Lugar: ' . $lugar->no_lugar . ' |  Cliente: ';
+														echo '<br>';
+													}
+												}
 												?>
 											</div>
 										</div>
@@ -224,7 +231,7 @@
 											<div class="col-md-6">
 											</div>
 											<div class="col-md-6">
-												<a href="<?php echo site_url('clases/agregar_cupo/'.$clase_a_editar->id); ?>" class="btn btn-secondary float-right btn-sm">Agregar un cupo</a>
+												<a href="<?php echo site_url('clases/agregar_cupo/' . $clase_a_editar->id); ?>" class="btn btn-secondary float-right btn-sm">Agregar un cupo</a>
 											</div>
 										</div>
 
@@ -236,56 +243,63 @@
 									</div>
 
 									<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-										<script>
+									<script>
 										var troll = "<?php echo $clase_a_editar->identificador ?>";
-										var valor = troll.substr(0,2);
-										var valor2 = troll.substr(2,3);
-										var valor3 = troll.substr(5,8);
+										var valor = troll.substr(0, 2);
+										var valor2 = troll.substr(2, 3);
+										var valor3 = troll.substr(5, 8);
 										var valor4 = troll.substr(13);
 										console.log(valor);
 										console.log(valor2);
 										console.log(valor3);
 										console.log(valor4);
 										var ids = "#";
-										$(function(){
-											$(document).on('keyup keypress blur change','#mySelect',function(){ //detectamos el evento change
-												valor = $(this).val();//sacamos el valor del select
+										$(function() {
+											$(document).on('keyup keypress blur change', '#mySelect', function() { //detectamos el evento change
+												valor = $(this).val(); //sacamos el valor del select
 												if (valor == "2") {
 													valor = "BK";
-												}if(valor == "3") {
+												}
+												if (valor == "3") {
 													valor = "BX";
-												}if(valor == "4") {
+												}
+												if (valor == "4") {
 													valor = "BD";
-												}if (valor == "5") {
+												}
+												if (valor == "5") {
 													valor = "BKG";
-												}if(valor == "6") {
+												}
+												if (valor == "6") {
 													valor = "BXG";
-												}if(valor == "7") {
+												}
+												if (valor == "7") {
 													valor = "BDG";
 												}
-												ids = valor+valor2+valor3+valor4;
-											$('#myInput').val(ids);//le agregamos el valor al input (notese que el input debe tener un ID para que le caiga el valor)
+												ids = valor + valor2 + valor3 + valor4;
+												$('#myInput').val(ids); //le agregamos el valor al input (notese que el input debe tener un ID para que le caiga el valor)
 											});
-											$(document).on('keyup keypress blur change','#mySelect2',function(){ //detectamos el evento change
-												valor2 = $(this).children("option").filter(":selected").text();//sacamos el valor del select
-												valor2 = valor2.replace(/(á|é|í|ó|ú|ñ|ä|ë|ï|ö|\.|ü)/gi,'');
-												valor2 = valor2.replace(/[A-Za-z]+/g, function(match){ return (match.trim()[0]);}).toUpperCase(); 
+											$(document).on('keyup keypress blur change', '#mySelect2', function() { //detectamos el evento change
+												valor2 = $(this).children("option").filter(":selected").text(); //sacamos el valor del select
+												valor2 = valor2.replace(/(á|é|í|ó|ú|ñ|ä|ë|ï|ö|\.|ü)/gi, '');
+												valor2 = valor2.replace(/[A-Za-z]+/g, function(match) {
+													return (match.trim()[0]);
+												}).toUpperCase();
 												valor2 = valor2.replace(/\s/g, '');
 
-											ids = valor+valor2+valor3+valor4;
-											$('#myInput').val(ids);//le agregamos el valor al input (notese que el input debe tener un ID para que le caiga el valor)
+												ids = valor + valor2 + valor3 + valor4;
+												$('#myInput').val(ids); //le agregamos el valor al input (notese que el input debe tener un ID para que le caiga el valor)
 											});
-											$(document).on('keyup keypress blur change','#mySelect3',function(){ //detectamos el evento change
-												valor3 = $(this).val();//sacamos el valor del select
-												valor3 = valor3.replace(/\D/g,'');
-												ids = valor+valor2+valor3+valor4;
-											$('#myInput').val(ids);//le agregamos el valor al input (notese que el input debe tener un ID para que le caiga el valor)
+											$(document).on('keyup keypress blur change', '#mySelect3', function() { //detectamos el evento change
+												valor3 = $(this).val(); //sacamos el valor del select
+												valor3 = valor3.replace(/\D/g, '');
+												ids = valor + valor2 + valor3 + valor4;
+												$('#myInput').val(ids); //le agregamos el valor al input (notese que el input debe tener un ID para que le caiga el valor)
 											});
-											$(document).on('keyup keypress blur change','#mySelect4',function(){ //detectamos el evento change
-												valor4 = $(this).val();//sacamos el valor del select
-												valor4 = valor4.replace(/\D/g,'');
-												ids = valor+valor2+valor3+valor4;
-											$('#myInput').val(ids);//le agregamos el valor al input (notese que el input debe tener un ID para que le caiga el valor)
+											$(document).on('keyup keypress blur change', '#mySelect4', function() { //detectamos el evento change
+												valor4 = $(this).val(); //sacamos el valor del select
+												valor4 = valor4.replace(/\D/g, '');
+												ids = valor + valor2 + valor3 + valor4;
+												$('#myInput').val(ids); //le agregamos el valor al input (notese que el input debe tener un ID para que le caiga el valor)
 											});
 										});
 									</script>

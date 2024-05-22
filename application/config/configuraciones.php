@@ -181,7 +181,7 @@ $select_dificultad = array(
     (object) array(
         'nombre'    => 'BÁSICO',
         'valor'     => 'BÁSICO',
-        'activo'    => false,
+        'activo'    => true,
     ),
     (object) array(
         'nombre'    => 'CHEST & TRICEP',

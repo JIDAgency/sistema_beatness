@@ -92,27 +92,10 @@
 														dificultad</label>
 													<div class="col-md-9">
 														<select name="dificultad" class="form-control">
-															<option value="">Seleccione la dificultad</option>
-															<option value="Básico" selected>Básico</option>
-															<option value="Booty">Booty</option>
-															<option value="Intermedio">Intermedio</option>
-															<option value="Avanzado">Avanzado</option>
-															<option value="Full Body">Full Body</option>
-															<option value="Killer Abs">Killer Abs</option>
-															<option value="Pierna y Gluteo">Pierna y Gluteo</option>
-															<option value="TRX Full Body">TRX Full Body</option>
-															<option value="AMRAP">AMRAP</option>
-															<option value="Upper Body">Upper Body</option>
-															<option value="Leg Day">Leg Day</option>
-															<option value="Pull Day">Pull Day</option>
-															<option value="Push Day">Push Day</option>
-															<option value="Pull & Push">Pull & Push</option>
-															<option value="Full Body">Full Body</option>
-															<option value="Back & Bicep">Back & Bicep</option>
-															<option value="Chest & Tricep">Chest & Tricep</option>
-															<option value="Legs & Booty">Legs & Booty</option>
-															<option value="Shoulder & Arms">Shoulder & Arms</option>
-
+															<option value="" <?php echo set_select('dificultad', '', set_value('dificultad') ? false : '' == $this->session->flashdata('dificultad')); ?>>Seleccione una dificultad…</option>
+															<?php foreach (select_dificultad() as $mostrar_key => $mostrar_row) : ?>
+																<option value="<?php echo $mostrar_row->valor; ?>" <?php echo $mostrar_row->activo == false ? '' : 'selected'; ?> <?php echo set_select('dificultad', $mostrar_row->valor, set_value('dificultad') ? false : $mostrar_row->valor == $this->session->flashdata('dificultad')); ?>><?php echo trim($mostrar_row->nombre); ?></option>
+															<?php endforeach; ?>
 														</select>
 													</div>
 												</div>
