@@ -120,7 +120,7 @@ class Clases extends MY_Controller
                 'id' => $clase->id,
                 'identificador' => !empty($clase->identificador) ? $clase->identificador : '',
                 'disciplina_id' => $clase->disciplina_nombre,
-                'dificultad' => !empty($clase->dificultad) ? ucwords($clase->dificultad) : '',
+                'dificultad' => !empty($clase->dificultad) ? mb_strtoupper($clase->dificultad) : '',
                 'inicia' => (!empty($clase->inicia) ? date('Y/m/d H:i:s', strtotime($clase->inicia)) : ''),
                 'horario_esp' => !empty($fecha_espaniol) ? ucfirst($fecha_espaniol) : '',
                 'instructor_id' => !empty($clase->instructor_nombre) ? $clase->instructor_nombre : '',
@@ -353,17 +353,20 @@ class Clases extends MY_Controller
 
     public function obtener_opciones_select_dificultad()
     {
-        $dificultades = $this->clases_model->obtener_dificultades();
+        // $dificultades = $this->clases_model->obtener_dificultades();
 
-        $data = [];
-        foreach ($dificultades->result() as $dificultad) {
-            $data[] = array(
-                'nombre' => $dificultad->dificultad,
-                'valor' => $dificultad->dificultad
-            );
-        }
+        // $data = [];
+        // foreach ($dificultades->result() as $dificultad) {
+        //     $data[] = array(
+        //         'nombre' => $dificultad->dificultad,
+        //         'valor' => $dificultad->dificultad
+        //     );
+        // }
 
-        echo json_encode($data);
+        // echo json_encode($data);
+        // exit();
+
+        echo json_encode(select_dificultad());
         exit();
     }
 

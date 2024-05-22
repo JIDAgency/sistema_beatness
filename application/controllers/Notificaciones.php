@@ -154,7 +154,7 @@ class Notificaciones extends MY_Controller
 		$img = '';
 
 		$app_id = '66454c58-6e0b-4489-ba82-524c05331a3b';
-		$app_key = 'YmNkMzhkMjYtM2U5NS00N2IyLThlNWEtYjg2NTE5YWFmNDg4';
+		$app_key = 'OGJhYWFlNGYtMDEwYi00NjMyLThiNzMtMDc0YTg4OTk3Yzkx'; 
 
 		$msg = $message;
 
@@ -213,7 +213,7 @@ class Notificaciones extends MY_Controller
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields, JSON_UNESCAPED_UNICODE));
+		curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
 
 		$result = curl_exec($ch);
 
@@ -345,7 +345,7 @@ class Notificaciones extends MY_Controller
 			curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-			curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields, JSON_UNESCAPED_UNICODE));
+			curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
 
 			$result = curl_exec($ch);
 

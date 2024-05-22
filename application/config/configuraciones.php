@@ -160,6 +160,99 @@ $select_disciplina = array(
     ),
 );
 
+/* ====== dificultad ====== */
+
+$select_dificultad = array(
+    (object) array(
+        'nombre'    => 'AMRAP',
+        'valor'     => 'AMRAP',
+        'activo'    => false,
+    ),
+    (object) array(
+        'nombre'    => 'AVANZADO',
+        'valor'     => 'AVANZADO',
+        'activo'    => false,
+    ),
+    (object) array(
+        'nombre'    => 'BACK & BICEP',
+        'valor'     => 'BACK & BICEP',
+        'activo'    => false,
+    ),
+    (object) array(
+        'nombre'    => 'BÁSICO',
+        'valor'     => 'BÁSICO',
+        'activo'    => false,
+    ),
+    (object) array(
+        'nombre'    => 'CHEST & TRICEP',
+        'valor'     => 'CHEST & TRICEP',
+        'activo'    => false,
+    ),
+    (object) array(
+        'nombre'    => 'FULL BODY',
+        'valor'     => 'FULL BODY',
+        'activo'    => false,
+    ),
+    (object) array(
+        'nombre'    => 'INTERMEDIO',
+        'valor'     => 'INTERMEDIO',
+        'activo'    => false,
+    ),
+    (object) array(
+        'nombre'    => 'KILLER ABS',
+        'valor'     => 'KILLER ABS',
+        'activo'    => false,
+    ),
+    (object) array(
+        'nombre'    => 'LEG DAY',
+        'valor'     => 'LEG DAY',
+        'activo'    => false,
+    ),
+    (object) array(
+        'nombre'    => 'LEGS & BOOTY',
+        'valor'     => 'LEGS & BOOTY',
+        'activo'    => false,
+    ),
+    (object) array(
+        'nombre'    => 'PIERNA Y GLUTEO',
+        'valor'     => 'PIERNA Y GLUTEO',
+        'activo'    => false,
+    ),
+    (object) array(
+        'nombre'    => 'PULL & PUSH',
+        'valor'     => 'PULL & PUSH',
+        'activo'    => false,
+    ),
+    (object) array(
+        'nombre'    => 'PULL DAY',
+        'valor'     => 'PULL DAY',
+        'activo'    => false,
+    ),
+    (object) array(
+        'nombre'    => 'PUSH DAY',
+        'valor'     => 'PUSH DAY',
+        'activo'    => false,
+    ),
+    (object) array(
+        'nombre'    => 'SHOULDER & ARMS',
+        'valor'     => 'SHOULDER & ARMS',
+        'activo'    => false,
+    ),
+    (object) array(
+        'nombre'    => 'TRX FULL BODY',
+        'valor'     => 'TRX FULL BODY',
+        'activo'    => false,
+    ),
+    (object) array(
+        'nombre'    => 'UPPER BODY',
+        'valor'     => 'UPPER BODY',
+        'activo'    => false,
+    ),
+);
+
+$config['select_dificultad'] = $select_dificultad;
+
+/* ====== disciplina ====== */
 $config['select_disciplina'] = $select_disciplina;
 
 $select_instructor = array(
