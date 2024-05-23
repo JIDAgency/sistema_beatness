@@ -139,7 +139,7 @@ $(document).ready(function () {
         } else if (columna_nombre === "instructor_id") {
             valor_nuevo_de_celda = generar_salida_de_celda_editada('select', valor_nuevo_de_celda, celda_seleccionada);
         } else if (columna_nombre === "dificultad") {
-            valor_nuevo_de_celda = generar_salida_de_celda_editada('select', valor_nuevo_de_celda, celda_seleccionada);
+            valor_nuevo_de_celda = generar_salida_de_celda_editada('select mayusculas', valor_nuevo_de_celda, celda_seleccionada);
         } else if (columna_nombre === "inicia") {
             valor_nuevo_de_celda = generar_salida_de_celda_editada('fecha', valor_nuevo_de_celda, celda_seleccionada);
         } else if (columna_nombre === "cupo") {

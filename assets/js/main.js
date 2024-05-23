@@ -210,7 +210,7 @@ function generar_salida_de_celda_editada(tipo_celda, valor_nuevo_de_celda, celda
 
             actualizar_data_de_tabla(celda_seleccionada, valor_nuevo_de_celda);
             // Convertir el valor formateado a texto minúsculas antes de guardar en la base de datos
-            return valor_nuevo_de_celda.toLowerCase();
+            return valor_nuevo_de_celda.toUpperCase();
 
         default:
             break;

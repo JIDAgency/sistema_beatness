@@ -110,31 +110,10 @@
 										<div class="row">
 											<div class="col-md-6">
 												<div class="form-group row">
-													<label for="clases_incluidas" class="col-md-3 label-control"><span class="red">*</span> Seleccione la
+													<label for="dificultad" class="col-md-3 label-control"><span class="red">*</span> Seleccione la
 														dificultad</label>
 													<div class="col-md-9">
 														<select name="dificultad" class="form-control">
-															<!-- <option value="">Seleccione la dificultad</option>
-															<option value="Básico" <?php echo set_select('dificultad', 'Básico', set_value('dificultad') ? false : 'Básico' == $clase_a_editar->dificultad); ?>>Básico</option>
-															<option value="Booty" <?php echo set_select('dificultad', 'Booty', set_value('dificultad') ? false : 'Booty' == $clase_a_editar->dificultad); ?>>Booty</option>
-															<option value="Intermedio" <?php echo set_select('dificultad', 'Intermedio', set_value('dificultad') ? false : 'Intermedio' == $clase_a_editar->dificultad); ?>>Intermedio</option>
-															<option value="Avanzado" <?php echo set_select('dificultad', 'Avanzado', set_value('dificultad') ? false : 'Avanzado' == $clase_a_editar->dificultad); ?>>Avanzado</option>
-															<option value="Full Body" <?php echo set_select('dificultad', 'Full Body', set_value('dificultad') ? false : 'Full Body' == $clase_a_editar->dificultad); ?>>Full Body</option>
-															<option value="Killer Abs" <?php echo set_select('dificultad', 'Killer Abs', set_value('dificultad') ? false : 'Killer Abs' == $clase_a_editar->dificultad); ?>>Killer Abs</option>
-															<option value="Pierna y Gluteo" <?php echo set_select('dificultad', 'Pierna y Gluteo', set_value('dificultad') ? false : 'Pierna y Gluteo' == $clase_a_editar->dificultad); ?>>Pierna y Gluteo</option>
-															<option value="TRX Full Body" <?php echo set_select('dificultad', 'TRX Full Body', set_value('dificultad') ? false : 'TRX Full Body' == $clase_a_editar->dificultad); ?>>TRX Full Body</option>
-															<option value="AMRAP" <?php echo set_select('dificultad', 'AMRAP', set_value('dificultad') ? false : 'AMRAP' == $clase_a_editar->dificultad); ?>>AMRAP</option>
-															<option value="Upper Body" <?php echo set_select('dificultad', 'Upper Body', set_value('dificultad') ? false : 'Upper Body' == $clase_a_editar->dificultad); ?>>Upper Body</option>
-															<option value="Leg Day" <?php echo set_select('dificultad', 'Leg Day', set_value('dificultad') ? false : 'Leg Day' == $clase_a_editar->dificultad); ?>>Leg Day</option>
-															<option value="Pull Day" <?php echo set_select('dificultad', 'Pull Day', set_value('dificultad') ? false : 'Pull Day' == $clase_a_editar->dificultad); ?>>Pull Day</option>
-															<option value="Push Day" <?php echo set_select('dificultad', 'Push Day', set_value('dificultad') ? false : 'Push Day' == $clase_a_editar->dificultad); ?>>Push Day</option>
-															<option value="Pull & Push" <?php echo set_select('dificultad', 'Pull & Push', set_value('dificultad') ? false : 'Pull & Push' == $clase_a_editar->dificultad); ?>>Pull & Push</option>
-															<option value="Full Body" <?php echo set_select('dificultad', 'Full Body', set_value('dificultad') ? false : 'Full Body' == $clase_a_editar->dificultad); ?>>Full Body</option>
-															<option value="Back & Bicep" <?php echo set_select('dificultad', 'Back & Bicep', set_value('dificultad') ? false : 'Back & Bicep' == $clase_a_editar->dificultad); ?>>Back & Bicep</option>
-															<option value="Chest & Tricep" <?php echo set_select('dificultad', 'Chest & Tricep', set_value('dificultad') ? false : 'Chest & Tricep' == $clase_a_editar->dificultad); ?>>Chest & Tricep</option>
-															<option value="Legs & Booty" <?php echo set_select('dificultad', 'Legs & Booty', set_value('dificultad') ? false : 'Legs & Booty' == $clase_a_editar->dificultad); ?>>Legs & Booty</option>
-															<option value="Shoulder & Arms" <?php echo set_select('dificultad', 'Shoulder & Arms', set_value('dificultad') ? false : 'Shoulder & Arms' == $clase_a_editar->dificultad); ?>>Shoulder & Arms</option> -->
-
 															<option value="" <?php echo set_select('dificultad', '', set_value('dificultad') ? false : '' == (!empty($this->session->flashdata('dificultad')) ? $this->session->flashdata('dificultad') : (!empty($clase_a_editar->dificultad) ? $clase_a_editar->dificultad : set_value('dificultad')))); ?>>Seleccione una opcion…</option>
 															<?php foreach (select_dificultad() as $key => $mostrar_row) : ?>
 																<option value="<?php echo $mostrar_row->valor; ?>" <?php echo set_select('dificultad', $mostrar_row->valor, set_value('dificultad') ? false : $mostrar_row->valor == (!empty($this->session->flashdata('dificultad')) ? $this->session->flashdata('dificultad') : (!empty($clase_a_editar->dificultad) ? $clase_a_editar->dificultad : set_value('dificultad')))); ?>><?php echo trim($mostrar_row->nombre); ?></option>
