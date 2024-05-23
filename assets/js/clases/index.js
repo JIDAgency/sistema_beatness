@@ -242,7 +242,7 @@ $(document).ready(function () {
 
                         // Limpiar el select de disciplinas
                         $disciplinaSelect.empty();
-                        $disciplinaSelect.append('<option value="0">Seleccione una disciplina...</option>');
+                        $disciplinaSelect.append('<option value="0">Todas las disciplinas</option>');
 
                         // Agregar las nuevas opciones
                         if (Array.isArray(disciplinas)) {
