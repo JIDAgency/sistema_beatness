@@ -85,8 +85,7 @@ class Notificaciones extends MY_Controller
 		$data['regresar_a'] = 'notificaciones';
 		$controlador_js = 'notificaciones/agregar';
 
-		$data['styles'] = array(
-		);
+		$data['styles'] = array();
 
 		$data['scripts'] = array(
 			array('es_rel' => true, 'src' => '' . $controlador_js . '.js'),
@@ -125,42 +124,35 @@ class Notificaciones extends MY_Controller
 
 	public function enviar()
 	{
-
 		if ($this->input->post()) {
 			$id = $this->input->post('id');
-			if ($this->input->post('segmento') == 'Active Users') {
-				$mensaje_confirmacion = $this->input->post('segmento') . ' y Engaged Users';
-				$segmento = array($this->input->post('segmento'), 'Engaged Users');
-			} else {
-				$mensaje_confirmacion = $this->input->post('segmento');
-				$segmento = array($this->input->post('segmento'));
-			}
+			$segmento = $this->input->post('segmento');
+			$mensaje_confirmacion = $segmento == 'Active Users' ? "$segmento y Engaged Users" : $segmento;
+			$segmento = $segmento == 'Active Users' ? array($segmento, 'Engaged Users') : array($segmento);
 		} else {
 			$this->mensaje_del_sistema('MENSAJE_ERROR', 'Al parecer ha ocurrido un error, por favor intentelo más tarde.', 'notificaciones');
+			return;
 		}
 
 		$notificacion_row = $this->notificaciones_model->get_notificacion_por_id($id)->row();
 
 		if (!$notificacion_row) {
 			$this->mensaje_del_sistema('MENSAJE_ERROR', 'Al parecer ha ocurrido un error, por favor intentelo más tarde.', 'notificaciones');
+			return;
 		}
 
-		//$to = array('22', '271', '40', '883');
-		//$to = array('22');
+		$to = array('7');
 
 		$title = $notificacion_row->titulo;
 		$message = $notificacion_row->mensaje;
-
 		$img = '';
 
 		$app_id = '66454c58-6e0b-4489-ba82-524c05331a3b';
-		$app_key = 'OGJhYWFlNGYtMDEwYi00NjMyLThiNzMtMDc0YTg4OTk3Yzkx'; 
-
-		$msg = $message;
+		$app_key = 'OGJhYWFlNGYtMDEwYi00NjMyLThiNzMtMDc0YTg4OTk3Yzkx';
 
 		$content = array(
-			"es" => $msg,
-			"en" => $msg
+			"es" => $message,
+			"en" => $message
 		);
 
 		$headings = array(
@@ -168,42 +160,25 @@ class Notificaciones extends MY_Controller
 			"en" => $title
 		);
 
-		if ($img == '') {
+		$fields = array(
+			'app_id' => $app_id,
+			"headings" => $headings,
+			'include_external_user_ids' => $to,
+			'channel_for_external_user_ids' => 'push',
+			'contents' => $content,
+			'large_icon' => '',
+			'content_available' => true,
+		);
 
-			$fields = array(
-				'app_id' => $app_id,
-				"headings" => $headings,
-				//'include_external_user_ids' => $to,
-				'included_segments' => $segmento,
-				'contents' => $content,
-				'large_icon' => "",
-				'content_available' => true,
-			);
-
-		} else {
-
-			$ios_img = array(
-				"id1" => $img
-			);
-
-			$fields = array(
-				'app_id' => $app_id,
-				"headings" => $headings,
-				//'include_external_user_ids' => $to,
-				'included_segments' => $segmento,
-				'contents' => $content,
-				"big_picture" => $img,
-				'large_icon' => "",
-				'content_available' => true,
-				"ios_attachments" => $ios_img
-			);
-
+		if (!empty($img)) {
+			$fields["big_picture"] = $img;
+			$fields["ios_attachments"] = array("id1" => $img);
 		}
 
 		$headers = array(
-			'Authorization: Basic ' . $app_key . '',
-			'accept: application/json',
-			'content-type: application/json'
+			'Authorization: Basic ' . $app_key,
+			'Accept: application/json',
+			'Content-Type: application/json'
 		);
 
 		$ch = curl_init();
@@ -217,13 +192,26 @@ class Notificaciones extends MY_Controller
 
 		$result = curl_exec($ch);
 
+		if ($result === FALSE) {
+			$this->mensaje_del_sistema('MENSAJE_ERROR', 'Error al enviar la notificación: ' . curl_error($ch), 'notificaciones');
+			curl_close($ch);
+			return;
+		}
+
 		curl_close($ch);
 
-		//return $result;
+		$response = json_decode($result, true);
+
+		if (isset($response['errors'])) {
+			// Manejar los errores de OneSignal
+			$error_message = implode('. ', $response['errors']);
+			$this->mensaje_del_sistema('MENSAJE_ERROR', 'Error al enviar la notificación: ' . $error_message, 'notificaciones');
+			return;
+		}
 
 		$this->notificaciones_model->update_notificacion($id, array('no_envios' => $notificacion_row->no_envios + 1, 'fecha_actualizacion' => date('Y-m-d H:i:s')));
 
-		$this->mensaje_del_sistema('MENSAJE_EXITO', 'Notificación enviada con éxito: ' . $title, 'notificaciones');
+		$this->mensaje_del_sistema('MENSAJE_EXITO', 'Notificación enviada con éxito: ' . $title . ': ' . $result, 'notificaciones');
 	}
 
 	public function segmentos()
@@ -235,8 +223,7 @@ class Notificaciones extends MY_Controller
 		$data['regresar_a'] = 'inicio';
 		$controlador_js = 'notificaciones/segmentos';
 
-		$data['styles'] = array(
-		);
+		$data['styles'] = array();
 
 		$data['scripts'] = array(
 			array('es_rel' => true, 'src' => '' . $controlador_js . '.js'),
@@ -288,7 +275,7 @@ class Notificaciones extends MY_Controller
 			$img = '';
 
 			$app_id = '66454c58-6e0b-4489-ba82-524c05331a3b';
-			$app_key = 'YmNkMzhkMjYtM2U5NS00N2IyLThlNWEtYjg2NTE5YWFmNDg4';
+			$app_key = 'OGJhYWFlNGYtMDEwYi00NjMyLThiNzMtMDc0YTg4OTk3Yzkx';
 
 			$msg = $message;
 
@@ -312,7 +299,6 @@ class Notificaciones extends MY_Controller
 					'large_icon' => "",
 					'content_available' => true,
 				);
-
 			} else {
 
 				$ios_img = array(
@@ -329,7 +315,6 @@ class Notificaciones extends MY_Controller
 					'content_available' => true,
 					"ios_attachments" => $ios_img
 				);
-
 			}
 
 			$headers = array(
@@ -427,8 +412,7 @@ class Notificaciones extends MY_Controller
 		$data['regresar_a'] = 'notificaciones';
 		$controlador_js = 'notificaciones/agregar';
 
-		$data['styles'] = array(
-		);
+		$data['styles'] = array();
 
 		$data['scripts'] = array(
 			array('es_rel' => true, 'src' => '' . $controlador_js . '.js'),
@@ -488,7 +472,7 @@ class Notificaciones extends MY_Controller
 		$img = '';
 
 		$app_id = '66454c58-6e0b-4489-ba82-524c05331a3b';
-		$app_key = 'YmNkMzhkMjYtM2U5NS00N2IyLThlNWEtYjg2NTE5YWFmNDg4';
+		$app_key = 'OGJhYWFlNGYtMDEwYi00NjMyLThiNzMtMDc0YTg4OTk3Yzkx';
 
 		$msg = $message;
 
@@ -525,7 +509,7 @@ class Notificaciones extends MY_Controller
 		$img = '';
 
 		$app_id = '66454c58-6e0b-4489-ba82-524c05331a3b';
-		$app_key = 'YmNkMzhkMjYtM2U5NS00N2IyLThlNWEtYjg2NTE5YWFmNDg4';
+		$app_key = 'OGJhYWFlNGYtMDEwYi00NjMyLThiNzMtMDc0YTg4OTk3Yzkx';
 
 		$msg = $message;
 
@@ -549,7 +533,6 @@ class Notificaciones extends MY_Controller
 				'large_icon' => "",
 				'content_available' => true,
 			);
-
 		} else {
 
 			$ios_img = array(
@@ -566,7 +549,6 @@ class Notificaciones extends MY_Controller
 				'content_available' => true,
 				"ios_attachments" => $ios_img
 			);
-
 		}
 
 		$headers = array(
@@ -611,8 +593,7 @@ class Notificaciones extends MY_Controller
 		$this->form_validation->set_rules('titulo', 'Título', 'trim|required|min_length[1]|max_length[120]');
 		$this->form_validation->set_rules('mensaje', 'Mensaje', 'trim|required|min_length[1]|max_length[240]');
 
-		$data['styles'] = array(
-		);
+		$data['styles'] = array();
 
 		$data['scripts'] = array(
 			array('es_rel' => true, 'src' => '' . $controlador_js . '.js'),
@@ -638,7 +619,6 @@ class Notificaciones extends MY_Controller
 		if ($this->form_validation->run() == false) {
 
 			$this->construir_private_site_ui('notificaciones/notificacion_clase', $data);
-
 		} else {
 
 			$to = $usuarios_ids;
@@ -649,7 +629,7 @@ class Notificaciones extends MY_Controller
 			$img = '';
 
 			$app_id = '66454c58-6e0b-4489-ba82-524c05331a3b';
-			$app_key = 'YmNkMzhkMjYtM2U5NS00N2IyLThlNWEtYjg2NTE5YWFmNDg4';
+			$app_key = 'OGJhYWFlNGYtMDEwYi00NjMyLThiNzMtMDc0YTg4OTk3Yzkx';
 
 			$msg = $message;
 
@@ -673,7 +653,6 @@ class Notificaciones extends MY_Controller
 					'large_icon' => "",
 					'content_available' => true,
 				);
-
 			} else {
 
 				$ios_img = array(
@@ -690,7 +669,6 @@ class Notificaciones extends MY_Controller
 					'content_available' => true,
 					"ios_attachments" => $ios_img
 				);
-
 			}
 
 			$headers = array(
@@ -715,8 +693,6 @@ class Notificaciones extends MY_Controller
 			$this->mensaje_del_sistema('MENSAJE_EXITO', 'Notificación enviada con exito', $data['regresar_a']);
 
 			$this->construir_private_site_ui('notificaciones/notificacion_clase', $data);
-
 		}
 	}
-
 }

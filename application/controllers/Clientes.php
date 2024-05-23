@@ -1,198 +1,195 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Clientes extends MY_Controller {
-    public function __construct() {
+class Clientes extends MY_Controller
+{
+    public function __construct()
+    {
         parent::__construct();
         $this->load->model('usuarios_model');
     }
 
     /** Index - Vista principal de clientes para mostrar la lista de usuarios del tipo cliente (INICIO) */
 
-        public function index()
-        {
-            $data['menu_clientes_activo'] = true;
-            $data['pagina_titulo'] = 'Lista de clientes';
+    public function index()
+    {
+        $data['menu_clientes_activo'] = true;
+        $data['pagina_titulo'] = 'Lista de clientes';
 
-            $data['controlador'] = 'clientes';
-            $data['regresar_a'] = 'inicio';
-            $controlador_js = "clientes/index";
+        $data['controlador'] = 'clientes';
+        $data['regresar_a'] = 'inicio';
+        $controlador_js = "clientes/index";
 
-            $data['mensaje_exito'] = $this->session->flashdata('MENSAJE_EXITO');
-            $data['mensaje_info'] = $this->session->flashdata('MENSAJE_INFO');
-            $data['mensaje_error'] = $this->session->flashdata('MENSAJE_ERROR');
+        $data['mensaje_exito'] = $this->session->flashdata('MENSAJE_EXITO');
+        $data['mensaje_info'] = $this->session->flashdata('MENSAJE_INFO');
+        $data['mensaje_error'] = $this->session->flashdata('MENSAJE_ERROR');
 
-            // Cargar estilos y scripts
-            $data['styles'] = array(
-                array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/tables/datatable/datatables.min.css'),
-                array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/tables/extensions/responsive.dataTables.min.css'),
-            );
-            $data['scripts'] = array(
-                array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/tables/datatable/datatables.min.js'),
-                array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js'),
-                array('es_rel' => true, 'src' => ''.$controlador_js.'.js'),
-            );
+        // Cargar estilos y scripts
+        $data['styles'] = array(
+            array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/tables/datatable/datatables.min.css'),
+            array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/tables/extensions/responsive.dataTables.min.css'),
+        );
+        $data['scripts'] = array(
+            array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/tables/datatable/datatables.min.js'),
+            array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js'),
+            array('es_rel' => true, 'src' => '' . $controlador_js . '.js'),
+        );
 
-            $this->construir_private_site_ui('clientes/index', $data);
-        }
+        $this->construir_private_site_ui('clientes/index', $data);
+    }
 
-        /** Función para clientes/index, esta función carga los datos de los clientes en la tabla de clientes. */
-        public function get_lista_de_clientes() {
+    /** Función para clientes/index, esta función carga los datos de los clientes en la tabla de clientes. */
+    public function get_lista_de_clientes()
+    {
 
-            $usuarios_list = $this->usuarios_model->get_lista_de_clientes_activos_con_limitacion_de_datos()->result();
+        $usuarios_list = $this->usuarios_model->get_lista_de_clientes_activos_con_limitacion_de_datos()->result();
 
-            /*
-            if (!$usuarios_list) {
-                $this->session->set_flashdata('MENSAJE_ERROR', 'Ha ocurrido un error, por favor inténtalo más tarde. (1)');
-                redirect('inicio');
-            }
-            */
+        $result = array();
 
-            $result = array();
-            
-            foreach ($usuarios_list as $usuario_row) {
-                
-                $menu = '
-                    <a href="'.site_url("clientes/editar/").$usuario_row->id.'">Editar</a>    
+        foreach ($usuarios_list as $usuario_row) {
+
+            $menu = '
+                    <a href="' . site_url("clientes/editar/") . $usuario_row->id . '">Editar</a>    
                     |
-                    <a href="'.site_url("sistema/change_password/").$usuario_row->id.'">Cambiar contraseña</a>
+                    <a href="' . site_url("sistema/change_password/") . $usuario_row->id . '">Cambiar contraseña</a>
                     |
-                    <a href="#" onclick="suspender('.$usuario_row->id.');return false;">Suspender</a>
+                    <a href="#" onclick="suspender(' . $usuario_row->id . ');return false;">Suspender</a>
                 ';
 
-                $result[] = array(
-                    "id" => $usuario_row->id,
-                    "nombre_completo" => $usuario_row->nombre_completo,
-                    "correo" => $usuario_row->correo,
-                    "no_telefono" => $usuario_row->no_telefono,
-                    "dominio" => ucfirst($usuario_row->dominio),
-                    "estatus" => ucfirst($usuario_row->estatus),
-                    "fecha_registro" => $usuario_row->fecha_registro,
-                    "notificacion_insan3" => ucfirst($usuario_row->notificacion_insan3),
-                    "opciones" => $menu,
-                );
-
-            }
-
-            echo json_encode(array("data" => $result));
+            $result[] = array(
+                "id" => $usuario_row->id,
+                "nombre_completo" => $usuario_row->nombre_completo,
+                "correo" => $usuario_row->correo,
+                "no_telefono" => $usuario_row->no_telefono,
+                "dominio" => ucfirst($usuario_row->dominio),
+                "estatus" => ucfirst($usuario_row->estatus),
+                "fecha_registro" => $usuario_row->fecha_registro,
+                "notificacion_insan3" => ucfirst($usuario_row->notificacion_insan3),
+                "opciones" => $menu,
+            );
         }
 
-        /** Utilidades y botones (INICIO) */
-        
-            public function suspender($id = null) {
-        
-                $data = array(
-                    'estatus' => 'suspendido',
-                );
-        
-                /*
+        echo json_encode(array("data" => $result));
+    }
+
+    /** Utilidades y botones (INICIO) */
+
+    public function suspender($id = null)
+    {
+
+        $data = array(
+            'estatus' => 'suspendido',
+        );
+
+        /*
                 if (!$this->usuarios_model->editar_cliente($id, $data)) {
                     $this->session->set_flashdata('MENSAJE_ERROR', 'Ha ocurrido un error, por favor inténtalo más tarde. (1)');
                     redirect('clientes');
                 }
                 */
-        
-                //$this->session->set_flashdata('MENSAJE_EXITO', 'Cliente <a href="'.site_url("clientes/editar/".$id).'" class="white"><b><u>#'.$id.'</u></b></a> suspendido correctamente.');
-                //redirect('clientes');
 
-                if (!$this->usuarios_model->editar_cliente($id, $data)) {
-                    echo json_encode(array("status" => false));
-                } else{
-                    echo json_encode(array("status" => true));
-                }
-            }
+        //$this->session->set_flashdata('MENSAJE_EXITO', 'Cliente <a href="'.site_url("clientes/editar/".$id).'" class="white"><b><u>#'.$id.'</u></b></a> suspendido correctamente.');
+        //redirect('clientes');
 
-        /** Utilidades y botones (FIN) */
+        if (!$this->usuarios_model->editar_cliente($id, $data)) {
+            echo json_encode(array("status" => false));
+        } else {
+            echo json_encode(array("status" => true));
+        }
+    }
+
+    /** Utilidades y botones (FIN) */
 
     /** Index - Vista principal de clientes para mostrar la lista de usuarios del tipo cliente (FIN) */
 
     /** Suspendidos - Vista principal de clientes para mostrar la lista de usuarios suspendidos del tipo cliente (INICIO) */
 
-        public function suspendidos()
-        {
-            $data['menu_clientes_activo'] = true;
-            $data['pagina_titulo'] = 'Lista de clientes suspendidos';
+    public function suspendidos()
+    {
+        $data['menu_clientes_activo'] = true;
+        $data['pagina_titulo'] = 'Lista de clientes suspendidos';
 
-            $data['controlador'] = 'clientes/suspendidos';
-            $data['regresar_a'] = 'clientes';
-            $controlador_js = "clientes/suspendidos";
+        $data['controlador'] = 'clientes/suspendidos';
+        $data['regresar_a'] = 'clientes';
+        $controlador_js = "clientes/suspendidos";
 
-            $data['mensaje_exito'] = $this->session->flashdata('MENSAJE_EXITO');
-            $data['mensaje_info'] = $this->session->flashdata('MENSAJE_INFO');
-            $data['mensaje_error'] = $this->session->flashdata('MENSAJE_ERROR');
+        $data['mensaje_exito'] = $this->session->flashdata('MENSAJE_EXITO');
+        $data['mensaje_info'] = $this->session->flashdata('MENSAJE_INFO');
+        $data['mensaje_error'] = $this->session->flashdata('MENSAJE_ERROR');
 
-            // Cargar estilos y scripts
-            $data['styles'] = array(
-                array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/tables/datatable/datatables.min.css'),
-                array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/tables/extensions/responsive.dataTables.min.css'),
-            );
-            $data['scripts'] = array(
-                array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/tables/datatable/datatables.min.js'),
-                array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js'),
-                array('es_rel' => true, 'src' => ''.$controlador_js.'.js'),
-            );
+        // Cargar estilos y scripts
+        $data['styles'] = array(
+            array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/tables/datatable/datatables.min.css'),
+            array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/tables/extensions/responsive.dataTables.min.css'),
+        );
+        $data['scripts'] = array(
+            array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/tables/datatable/datatables.min.js'),
+            array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js'),
+            array('es_rel' => true, 'src' => '' . $controlador_js . '.js'),
+        );
 
-            $this->construir_private_site_ui('clientes/suspendidos', $data);
-        }
+        $this->construir_private_site_ui('clientes/suspendidos', $data);
+    }
 
-        /** Función para clientes/suspendidos, esta función carga los datos de los clientes en la tabla de clientes suspendidos. */
-        public function get_lista_de_clientes_suspendidos(){
+    /** Función para clientes/suspendidos, esta función carga los datos de los clientes en la tabla de clientes suspendidos. */
+    public function get_lista_de_clientes_suspendidos()
+    {
 
-            $usuarios_list = $this->usuarios_model->get_lista_de_clientes_suspendidos_con_limitacion_de_datos()->result();
+        $usuarios_list = $this->usuarios_model->get_lista_de_clientes_suspendidos_con_limitacion_de_datos()->result();
 
-            /*
+        /*
             if (!$usuarios_list) {
                 $this->session->set_flashdata('MENSAJE_ERROR', 'Ha ocurrido un error, por favor inténtalo más tarde. (1)');
                 redirect('inicio');
             }
             */
 
-            $result = array();
-            
-            foreach ($usuarios_list as $usuario_row) {
-                
-                $menu = '
-                    <a href="'.site_url("clientes/editar/").$usuario_row->id.'">Editar</a>    
+        $result = array();
+
+        foreach ($usuarios_list as $usuario_row) {
+
+            $menu = '
+                    <a href="' . site_url("clientes/editar/") . $usuario_row->id . '">Editar</a>    
                     |
-                    <a href="'.site_url("sistema/change_password/").$usuario_row->id.'">Cambiar contraseña</a>
+                    <a href="' . site_url("sistema/change_password/") . $usuario_row->id . '">Cambiar contraseña</a>
                     |
-                    <a href="#" onclick="activar('.$usuario_row->id.');return false;">Activar</a>
+                    <a href="#" onclick="activar(' . $usuario_row->id . ');return false;">Activar</a>
 
                 ';
 
-                $result[] = array(
-                    "id" => $usuario_row->id,
-                    "nombre_completo" => $usuario_row->nombre_completo,
-                    "correo" => $usuario_row->correo,
-                    "no_telefono" => $usuario_row->no_telefono,
-                    "dominio" => ucfirst($usuario_row->dominio),
-                    "estatus" => ucfirst($usuario_row->estatus),
-                    "fecha_registro" => $usuario_row->fecha_registro,
-                    "notificacion_insan3" => ucfirst($usuario_row->notificacion_insan3),
-                    "opciones" => $menu,
-                );
-
-            }
-
-            echo json_encode(array("data" => $result));
+            $result[] = array(
+                "id" => $usuario_row->id,
+                "nombre_completo" => $usuario_row->nombre_completo,
+                "correo" => $usuario_row->correo,
+                "no_telefono" => $usuario_row->no_telefono,
+                "dominio" => ucfirst($usuario_row->dominio),
+                "estatus" => ucfirst($usuario_row->estatus),
+                "fecha_registro" => $usuario_row->fecha_registro,
+                "notificacion_insan3" => ucfirst($usuario_row->notificacion_insan3),
+                "opciones" => $menu,
+            );
         }
 
-        /** Utilidades y botones (INICIO) */
+        echo json_encode(array("data" => $result));
+    }
 
-            public function activar($id = null) {
+    /** Utilidades y botones (INICIO) */
 
-                $data = array(
-                    'estatus' => 'activo',
-                );
-        
-                if (!$this->usuarios_model->editar_cliente($id, $data)) {
-                    echo json_encode(array("status" => false));
-                } else{
-                    echo json_encode(array("status" => true));
-                }
-            }
+    public function activar($id = null)
+    {
 
-        /** Utilidades y botones (FIN) */
+        $data = array(
+            'estatus' => 'activo',
+        );
+
+        if (!$this->usuarios_model->editar_cliente($id, $data)) {
+            echo json_encode(array("status" => false));
+        } else {
+            echo json_encode(array("status" => true));
+        }
+    }
+
+    /** Utilidades y botones (FIN) */
 
     /** Suspendidos - Vista principal de clientes para mostrar la lista de usuarios suspendidos del tipo cliente (FIN) */
 
@@ -201,11 +198,11 @@ class Clientes extends MY_Controller {
         // Cargar estilos y scripts
         $data['styles'] = array(
             array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/tables/datatable/datatables.min.css'),
-			array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/tables/extensions/responsive.dataTables.min.css'),
+            array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/tables/extensions/responsive.dataTables.min.css'),
         );
         $data['scripts'] = array(
             array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/tables/datatable/datatables.min.js'),
-			array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js'),
+            array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js'),
             array('es_rel' => true, 'src' => 'clientes/reporte_activos.js'),
         );
 
@@ -222,22 +219,23 @@ class Clientes extends MY_Controller {
         $this->construir_private_site_ui('clientes/reporte_activos', $data);
     }
 
-    public function guardar_foto() {
+    public function guardar_foto()
+    {
         // if ($this->form_validation->run() == false) {
         //     // $this->construir_private_site_ui('clientes/crear');
         // } else {
-            // Aquí puedes guardar la imagen en el servidor o realizar cualquier otro procesamiento
-            // Por ejemplo, puedes usar la función file_put_contents para guardar la imagen en un archivo
-            $imagenData = $this->input->post('imagen_data');
-            // $imagenData = $this->input->post('nombre_foto');
-            $imagen_decodificada = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $imagenData));
-            $nombre_archivo = time() . '.jpg';
-            // $nombre_archivo1 = $imagenData . '.jpg';
-            // $this->load->helper('file');
-            // write_file('./almacenamiento/usuarios/identificaciones/' .  $nombre_archivo,  $imagen_decodificada);
-            file_put_contents('./subidas/perfil/' .  $nombre_archivo,  $imagen_decodificada);
-            // write_file('./almacenamiento/usuarios/identificaciones/' .  $nombre_archivo1,  $imagen_decodificada);
-            // return $nombre_archivo;
+        // Aquí puedes guardar la imagen en el servidor o realizar cualquier otro procesamiento
+        // Por ejemplo, puedes usar la función file_put_contents para guardar la imagen en un archivo
+        $imagenData = $this->input->post('imagen_data');
+        // $imagenData = $this->input->post('nombre_foto');
+        $imagen_decodificada = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $imagenData));
+        $nombre_archivo = time() . '.jpg';
+        // $nombre_archivo1 = $imagenData . '.jpg';
+        // $this->load->helper('file');
+        // write_file('./almacenamiento/usuarios/identificaciones/' .  $nombre_archivo,  $imagen_decodificada);
+        file_put_contents('./subidas/perfil/' .  $nombre_archivo,  $imagen_decodificada);
+        // write_file('./almacenamiento/usuarios/identificaciones/' .  $nombre_archivo1,  $imagen_decodificada);
+        // return $nombre_archivo;
         // }
     }
 
@@ -264,7 +262,7 @@ class Clientes extends MY_Controller {
         $data['scripts'] = array(
             array('es_rel' => false, 'src' => 'https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js'),
             array('es_rel' => false, 'src' => 'https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/additional-methods.js'),
-            array('es_rel' => false, 'src' => base_url().'app-assets/vendors/js/forms/extended/inputmask/jquery.inputmask.bundle.min.js'),
+            array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/forms/extended/inputmask/jquery.inputmask.bundle.min.js'),
             array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/extensions/datedropper.min.js'),
             array('es_rel' => true, 'src' => 'clientes/crear.js'),
 
@@ -284,35 +282,32 @@ class Clientes extends MY_Controller {
 
             if (isset($_FILES) && $_FILES['nombre_imagen_avatar']['error'] == '0') {
 
-				$config['upload_path']   =  './subidas/perfil/';
+                $config['upload_path']   =  './subidas/perfil/';
                 $config['allowed_types'] = 'jpg';
                 $config['max_width'] = 1200;
                 $config['max_height'] = 1200;
-				$config['max_size'] = '600';
-				$config['overwrite']     = true;
-				$config['encrypt_name']  = true;
-				$config['remove_spaces'] = true;
+                $config['max_size'] = '600';
+                $config['overwrite']     = true;
+                $config['encrypt_name']  = true;
+                $config['remove_spaces'] = true;
 
-				if (!is_dir($config['upload_path'])) {
-					$this->mensaje_del_sistema("MENSAJE_ERROR", "La carpeta de carga no existe", site_url($data['controlador']));
-				}
+                if (!is_dir($config['upload_path'])) {
+                    $this->mensaje_del_sistema("MENSAJE_ERROR", "La carpeta de carga no existe", site_url($data['controlador']));
+                }
 
-				$this->load->library('upload', $config);
+                $this->load->library('upload', $config);
 
-				if (!$this->upload->do_upload('nombre_imagen_avatar')) {
+                if (!$this->upload->do_upload('nombre_imagen_avatar')) {
 
-					$this->mensaje_del_sistema("MENSAJE_ERROR", $this->upload->display_errors(), site_url($data['controlador']));
+                    $this->mensaje_del_sistema("MENSAJE_ERROR", $this->upload->display_errors(), site_url($data['controlador']));
+                } else {
 
-				} else {
-
-					$data_imagen = $this->upload->data();
-					$nombre_foto = $data_imagen['file_name'];
-
-				}
-
-			} else {
-				$nombre_foto = "default.jpg";
-			}
+                    $data_imagen = $this->upload->data();
+                    $nombre_foto = $data_imagen['file_name'];
+                }
+            } else {
+                $nombre_foto = "default.jpg";
+            }
 
             // guardar nombre de la foto capturada por webcam en la base de datos
             // $this->guardar_foto();
@@ -336,8 +331,8 @@ class Clientes extends MY_Controller {
                 'ciudad' => $this->input->post('ciudad'),
                 'estado' => $this->input->post('estado'),
                 'pais' => $this->input->post('pais'),
-				'nombre_imagen_avatar' => $nombre_foto,
-				// 'url_ine' => $nombre_archivo,
+                'nombre_imagen_avatar' => $nombre_foto,
+                // 'url_ine' => $nombre_archivo,
                 'dominio' => $dominio
             );
 
@@ -353,10 +348,10 @@ class Clientes extends MY_Controller {
 
             $this->construir_private_site_ui('clientes/crear', $data);
         }
-
     }
 
-    public function editar($id = null) {
+    public function editar($id = null)
+    {
         if ($this->input->post()) {
             $id = $this->input->post('id');
         }
@@ -375,7 +370,7 @@ class Clientes extends MY_Controller {
         $data['menu_clientes_activo_activo'] = true;
         $data['pagina_titulo'] = 'Editar cliente';
 
-        $data['controlador'] = 'clientes/editar/'.$id;
+        $data['controlador'] = 'clientes/editar/' . $id;
         $data['regresar_a'] = 'clientes';
         $controlador_js = "clientes/editar";
 
@@ -385,7 +380,7 @@ class Clientes extends MY_Controller {
         $data['scripts'] = array(
             array('es_rel' => false, 'src' => 'https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js'),
             array('es_rel' => false, 'src' => 'https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/additional-methods.js'),
-            array('es_rel' => false, 'src' => base_url().'app-assets/vendors/js/forms/extended/inputmask/jquery.inputmask.bundle.min.js'),
+            array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/forms/extended/inputmask/jquery.inputmask.bundle.min.js'),
             array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/extensions/datedropper.min.js'),
             array('es_rel' => true, 'src' => 'clientes/editar.js')
         );
@@ -398,53 +393,49 @@ class Clientes extends MY_Controller {
             redirect('/clientes/index');
         }
         $data['cliente_a_editar'] = $cliente_a_editar;
-        
+
         if ($this->form_validation->run() == false) {
 
             $this->construir_private_site_ui('clientes/editar', $data);
-
         } else {
 
             if (isset($_FILES) && $_FILES['nombre_imagen_avatar']['error'] == '0') {
 
-				$config['upload_path']   = './subidas/perfil/';
+                $config['upload_path']   = './subidas/perfil/';
                 $config['allowed_types'] = 'jpg';
                 $config['max_width'] = 1200;
                 $config['max_height'] = 1200;
-				$config['max_size'] = '600';
-				$config['overwrite']     = true;
-				$config['encrypt_name']  = true;
-				$config['remove_spaces'] = true;
+                $config['max_size'] = '600';
+                $config['overwrite']     = true;
+                $config['encrypt_name']  = true;
+                $config['remove_spaces'] = true;
 
-				if (!is_dir($config['upload_path'])) {
-					$this->mensaje_del_sistema("MENSAJE_ERROR", "La carpeta de carga no existe", site_url($data['controlador']));
-				}
+                if (!is_dir($config['upload_path'])) {
+                    $this->mensaje_del_sistema("MENSAJE_ERROR", "La carpeta de carga no existe", site_url($data['controlador']));
+                }
 
-				$this->load->library('upload', $config);
+                $this->load->library('upload', $config);
 
-				if (!$this->upload->do_upload('nombre_imagen_avatar')) {
+                if (!$this->upload->do_upload('nombre_imagen_avatar')) {
 
-					$this->mensaje_del_sistema("MENSAJE_ERROR", $this->upload->display_errors(), site_url($data['controlador']));
+                    $this->mensaje_del_sistema("MENSAJE_ERROR", $this->upload->display_errors(), site_url($data['controlador']));
+                } else {
 
-				} else {
+                    if ($cliente_a_editar->nombre_imagen_avatar and $cliente_a_editar->nombre_imagen_avatar != "default.jpg") {
+                        $url_imagen_a_borrar = "subidas/perfil/" . $cliente_a_editar->nombre_imagen_avatar;
+                        $imagen_a_borrar = str_replace(base_url(), '', $url_imagen_a_borrar);
+                        unlink($imagen_a_borrar);
+                    }
 
-					if ($cliente_a_editar->nombre_imagen_avatar AND $cliente_a_editar->nombre_imagen_avatar != "default.jpg") {
-						$url_imagen_a_borrar = "subidas/perfil/".$cliente_a_editar->nombre_imagen_avatar;
-						$imagen_a_borrar = str_replace(base_url(), '', $url_imagen_a_borrar);
-						unlink($imagen_a_borrar);
-					}
+                    $data_imagen = $this->upload->data();
+                    $nombre_foto = $data_imagen['file_name'];
+                }
+            } else {
+                $nombre_foto = $cliente_a_editar->nombre_imagen_avatar;
+            }
 
-					$data_imagen = $this->upload->data();
-					$nombre_foto = $data_imagen['file_name'];
-
-				}
-
-			} else {
-				$nombre_foto = $cliente_a_editar->nombre_imagen_avatar;
-			}
-
-            if ($cliente_a_editar->nombre_imagen_avatar AND $cliente_a_editar->nombre_imagen_avatar != "default.jpg") {
-                $url_imagen_a_borrar = "subidas/perfil/".$cliente_a_editar->nombre_imagen_avatar;
+            if ($cliente_a_editar->nombre_imagen_avatar and $cliente_a_editar->nombre_imagen_avatar != "default.jpg") {
+                $url_imagen_a_borrar = "subidas/perfil/" . $cliente_a_editar->nombre_imagen_avatar;
                 $imagen_a_borrar = str_replace(base_url(), '', $url_imagen_a_borrar);
                 unlink($imagen_a_borrar);
             }
@@ -472,22 +463,21 @@ class Clientes extends MY_Controller {
                 'estatus' => $this->input->post('estatus')
             );
 
-            
+
             if ($this->usuarios_model->editar($id, $data)) {
                 $this->session->set_flashdata('MENSAJE_EXITO', 'El cliente se ha editado correctamente.');
                 redirect('/clientes/index');
             }
 
             $this->construir_private_site_ui('clientes/editar', $data);
-
         }
-
     }
 
-    function debug_to_console($data = null) {
+    function debug_to_console($data = null)
+    {
         $output = $data;
-        if(is_array($output)){
-            $output = implode( ',', $output);
+        if (is_array($output)) {
+            $output = implode(',', $output);
         }
         echo "<script>console.log( 'Que vas a probar: " . $output . "' );</script>";
     }
