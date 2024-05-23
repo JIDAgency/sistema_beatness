@@ -71,12 +71,13 @@
                             <div class="form-group">
                                 <div class="row">
                                     <label class="col-lg-12 text-white"><b>+ DISCIPLINAS</b></label>
-                                    <div class="col-lg-12">
+                                    <div class="col-lg-8">
                                         <select class="form-control select2 custom-select tp-select" name="disciplina_seleccionada" id="disciplina_seleccionada" required>
                                             <option value="" <?php echo set_select('disciplina_seleccionada', '', set_value('disciplina_seleccionada') ? false : '' == $this->session->flashdata('disciplina_seleccionada')); ?>>Seleccione una disciplina…</option>
                                             <?php foreach ($disciplinas_list as $disciplina_key => $disciplina_value) : ?>
                                                 <?php if ($disciplina_key != 0 and $disciplina_value->estatus == 'activo' and $disciplina_value->mostrar_en_app == 'si') : ?>
-                                                    <option value="<?php echo $disciplina_value->id; ?>" <?php // echo ($disciplina_key == 1) ? 'selected' : ''; ?> <?php echo set_select('disciplina_seleccionada', $disciplina_value->id, set_value('disciplina_seleccionada') ? false : $disciplina_value->id == $this->session->flashdata('disciplina_seleccionada')); ?>>
+                                                    <option value="<?php echo $disciplina_value->id; ?>" <?php // echo ($disciplina_key == 1) ? 'selected' : ''; 
+                                                                                                            ?> <?php echo set_select('disciplina_seleccionada', $disciplina_value->id, set_value('disciplina_seleccionada') ? false : $disciplina_value->id == $this->session->flashdata('disciplina_seleccionada')); ?>>
                                                         <?php echo trim(ucfirst($disciplina_value->nombre)); ?>
                                                     </option>
                                                 <?php endif; ?>
@@ -85,6 +86,11 @@
                                         <div class="invalid-feedback">
                                             Se requiere seleccionar una disciplina válida.
                                         </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 col-sm-12 d-flex align-items-center">
+                                        <a id="reload">
+                                            <h3 class="white"><i class="ft-refresh-cw" id="loading"></i></h3>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
