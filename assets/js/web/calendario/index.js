@@ -27,76 +27,110 @@ select.onchange = function () {
     cambiarFondo();
 };
 
-function obtener_clases_semana_actual_por_disciplina_id(disciplina_id) {
-    fetch('../web/calendario/obtener_clases_semana_actual_por_disciplina_id/' + disciplina_id)
-        .then(response => response.json())
-        .then(data => {
-            if (data.error) {
-                console.error('Error backoffice');
-                return false;
-            }
-            console.log("Data:", data);
+const reload = document.getElementById("reload");
+const loading = document.getElementById("loading");
 
-            document.getElementById('contenido_semana').innerHTML = data.data;
-        })
-        .catch(error => {
-            console.error('Error: ' + error);
-            return;
-        });
+reload.addEventListener("click", async (_) => {
+    loading.classList.add('spinner'); // Mostrar el indicador de carga
+
+    try {
+        await obtener_clases_semana_actual_por_disciplina_id(disciplina_seleccionada);
+        await obtener_clases_fin_de_semana_actual_por_disciplina_id(disciplina_seleccionada);
+        await obtener_clases_semana_siguiente_por_disciplina_id(disciplina_seleccionada);
+        await obtener_clases_fin_de_semana_siguiente_por_disciplina_id(disciplina_seleccionada);
+    } catch (error) {
+        console.error('Error al actualizar las clases:', error);
+    } finally {
+        loading.classList.remove('spinner'); // Ocultar el indicador de carga
+    }
+});
+
+function obtener_clases_semana_actual_por_disciplina_id(disciplina_id) {
+    return new Promise((resolve, reject) => {
+        fetch('../web/calendario/obtener_clases_semana_actual_por_disciplina_id/' + disciplina_id)
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    console.error('Error backoffice');
+                    return false;
+                }
+                console.log("Data:", data);
+
+                document.getElementById('contenido_semana').innerHTML = data.data;
+                resolve(data); // Resuelve la promesa con los datos obtenidos
+            })
+            .catch(error => {
+                console.error('Error: ' + error);
+                reject(error); // Rechaza la promesa en caso de error
+                // return;
+            });
+    });
 }
 
 function obtener_clases_fin_de_semana_actual_por_disciplina_id(disciplina_id) {
-    fetch('../web/calendario/obtener_clases_fin_de_semana_actual_por_disciplina_id/' + disciplina_id)
-        .then(response => response.json())
-        .then(data => {
-            if (data.error) {
-                console.error('Error backoffice');
-                return false;
-            }
-            console.log("Data:", data);
+    return new Promise((resolve, reject) => {
+        fetch('../web/calendario/obtener_clases_fin_de_semana_actual_por_disciplina_id/' + disciplina_id)
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    console.error('Error backoffice');
+                    return false;
+                }
+                console.log("Data:", data);
 
-            document.getElementById('contenido_fin_de_semana').innerHTML = data.data;
-        })
-        .catch(error => {
-            console.error('Error: ' + error);
-            return;
-        });
+                document.getElementById('contenido_fin_de_semana').innerHTML = data.data;
+                resolve(data); // Resuelve la promesa con los datos obtenidos
+            })
+            .catch(error => {
+                console.error('Error: ' + error);
+                reject(error); // Rechaza la promesa en caso de error
+                // return;
+            });
+    });
 }
 
 function obtener_clases_semana_siguiente_por_disciplina_id(disciplina_id) {
-    fetch('../web/calendario/obtener_clases_semana_siguiente_por_disciplina_id/' + disciplina_id)
-        .then(response => response.json())
-        .then(data => {
-            if (data.error) {
-                console.error('Error backoffice');
-                return false;
-            }
-            console.log("Data:", data);
+    return new Promise((resolve, reject) => {
+        fetch('../web/calendario/obtener_clases_semana_siguiente_por_disciplina_id/' + disciplina_id)
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    console.error('Error backoffice');
+                    return false;
+                }
+                console.log("Data:", data);
 
-            document.getElementById('contenido_semana_siguiente').innerHTML = data.data;
-        })
-        .catch(error => {
-            console.error('Error: ' + error);
-            return;
-        });
+                document.getElementById('contenido_semana_siguiente').innerHTML = data.data;
+                resolve(data); // Resuelve la promesa con los datos obtenidos
+            })
+            .catch(error => {
+                console.error('Error: ' + error);
+                reject(error); // Rechaza la promesa en caso de error
+                // return;
+            });
+    });
 }
 
 function obtener_clases_fin_de_semana_siguiente_por_disciplina_id(disciplina_id) {
-    fetch('../web/calendario/obtener_clases_fin_de_semana_siguiente_por_disciplina_id/' + disciplina_id)
-        .then(response => response.json())
-        .then(data => {
-            if (data.error) {
-                console.error('Error backoffice');
-                return false;
-            }
-            console.log("Data:", data);
+    return new Promise((resolve, reject) => {
+        fetch('../web/calendario/obtener_clases_fin_de_semana_siguiente_por_disciplina_id/' + disciplina_id)
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    console.error('Error backoffice');
+                    return false;
+                }
+                console.log("Data:", data);
 
-            document.getElementById('contenido_fin_de_semana_siguiente').innerHTML = data.data;
-        })
-        .catch(error => {
-            console.error('Error: ' + error);
-            return;
-        });
+                document.getElementById('contenido_fin_de_semana_siguiente').innerHTML = data.data;
+                resolve(data); // Resuelve la promesa con los datos obtenidos
+            })
+            .catch(error => {
+                console.error('Error: ' + error);
+                reject(error); // Rechaza la promesa en caso de error
+                // return;
+            });
+    });
 }
 
 function cambiarFondo() {
