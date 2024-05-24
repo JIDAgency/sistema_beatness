@@ -329,7 +329,8 @@ $(document).ready(function () {
                     var newData = response.data.data;
                     console.log(newData);
                     console.log(newData.id);
-                    table.row.add({
+                    
+                    var newRow = table.row.add({
                         id: newData.id,
                         identificador: newData.identificador,
                         disciplina_id: newData.disciplina_id,
@@ -346,7 +347,13 @@ $(document).ready(function () {
                         inasistencias: newData.inasistencias,
                         sucursal: newData.sucursal,
                         opciones: generateOpciones(newData)
-                    }).draw(false);
+                    }).draw(false).node();
+
+                    // Ocultar la nueva fila inicialmente
+                    $(newRow).css('display', 'none');
+
+                    // Hacer que la nueva fila aparezca de forma gradual
+                    $(newRow).fadeIn(500);
                 } else {
                     alert('Error al clonar la clase. (1)');
                 }
