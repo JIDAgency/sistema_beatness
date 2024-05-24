@@ -102,8 +102,8 @@ class Clases extends MY_Controller
                 $opciones .= ' | ';
             }
             if ($clase->estatus == 'Activa') {
-                $opciones .= '<a href="' . site_url('clases/duplicar_clase/' . $clase->id) . '"><span>Duplicar</span></a>';
-                // $opciones .= '<a href="" class="clonar-row" data-id="' . $clase->id . '"><span>Duplicar</span></a>';
+                // $opciones .= '<a href="' . site_url('clases/duplicar_clase/' . $clase->id) . '"><span>Duplicar</span></a>';
+                $opciones .= '<a href="" class="clonar-row" data-id="' . $clase->id . '"><span>Duplicar</span></a>';
             }
             if ($clase->reservado == 0) {
                 if ($clase->estatus == 'Activa') {
@@ -248,7 +248,7 @@ class Clases extends MY_Controller
         $cupo_lugares_json = json_encode($cupo_lugares);
 
         // Crear la clase duplicada
-        $clase_a_clonar = $this->clases_model->crear(
+        $clase_a_clonar = $this->clases_model->crear_duplicado(
             array(
                 'identificador' => $identificador_nuevo,
                 'disciplina_id' => $clase->disciplina_id,
@@ -266,19 +266,52 @@ class Clases extends MY_Controller
         );
 
         // Redireccionar después de crear la clase duplicada
+        // if ($clase_a_clonar) {
+        //     redirect(site_url('clases'));
+        // }
+        // $draw = intval($this->input->post('draw'));
+
+        $fecha = strtotime($clase->inicia);
+        $fecha_espaniol = strftime("%d de %B del %Y<br>%T", $fecha);
+
         if ($clase_a_clonar) {
-            redirect(site_url('clases'));
+            $new_class = $this->clases_model->obtener_por_id($clase_a_clonar)->row();
+
+            if ($new_class->intervalo_horas != 1) {
+                $intervalo_horas = $clase->intervalo_horas . " hrs.";
+            } else {
+                $intervalo_horas = $clase->intervalo_horas . " hr.";
+            }
+
+            $data = array(
+                'id' => $new_class->id,
+                'identificador' => !empty($new_class->identificador) ? $new_class->identificador : '',
+                'disciplina_id' => $new_class->disciplina_nombre,
+                'dificultad' => !empty($new_class->dificultad) ? mb_strtoupper($new_class->dificultad) : '',
+                'inicia' => (!empty($new_class->inicia) ? date('Y/m/d H:i:s', strtotime($new_class->inicia)) : ''),
+                'horario_esp' => !empty($fecha_espaniol) ? ucfirst($fecha_espaniol) : '',
+                'instructor_id' => !empty($new_class->instructor) ? $new_class->instructor : '',
+                'cupo' => !empty($new_class->cupo) ? ucfirst($new_class->cupo) : '',
+                'estatus' => !empty($new_class->estatus) ? ucwords($new_class->estatus) : '',
+                'intervalo_horas' => !empty($intervalo_horas) ? mb_strtoupper($intervalo_horas) : '',
+                'cupo_restantes' => !empty($new_class->cupo - $new_class->reservado) ? $new_class->cupo - $new_class->reservado : '',
+                'cupo_original' => !empty($new_class->cupo) ? ucfirst($new_class->cupo) : '',
+                'cupo_reservado' => !empty($new_class->reservado) ? ucfirst($new_class->reservado) : 0,
+                'inasistencias' => !empty($new_class->inasistencias) ? ucfirst($new_class->inasistencias) : 0,
+                'sucursal' => !empty($clase->sucursal_nombre . ' [' . $clase->sucursal_locacion . ']') ? $clase->sucursal_nombre . ' [' . $clase->sucursal_locacion . ']' : '',
+                'opciones' => ''
+            );
+
+            $result = array(
+                'data' => $data
+            );
+
+            echo json_encode(['success' => true, 'data' => $result]);
         }
 
-        // if ($clase_a_clonar) {
-        //     echo json_encode(['success' => true, 'data' => $clase_a_clonar]);
-        // } else {
-        //     echo json_encode(['success' => false]);
-        // }
-
         // Redireccionar si falla la creación de la clase duplicada
-        $this->session->set_flashdata('MENSAJE_ERROR', 'La clase ' . $id . ' no ha podido ser clonada.');
-        redirect(site_url('clases'));
+        // $this->session->set_flashdata('MENSAJE_ERROR', 'La clase ' . $id . ' no ha podido ser clonada.');
+        // redirect(site_url('clases'));
     }
 
     // Función para verificar si un identificador ya existe en la lista de clases
@@ -915,7 +948,7 @@ class Clases extends MY_Controller
         redirect('clases/index');
     }
 
-    public function borrar($id=null)
+    public function borrar($id = null)
     {
         $clase = $this->clases_model->obtener_por_id($id)->row();
 

@@ -318,7 +318,6 @@ $(document).ready(function () {
         var row = $(this).closest('tr');
         var id = $(this).data('id');
 
-        // if (confirm('¿Estás seguro de que deseas eliminar esta clase?')) {
         $.ajax({
             url: method_call + 'duplicar_clase/' + id,
             type: 'POST',
@@ -327,22 +326,25 @@ $(document).ready(function () {
                 console.log(response); // Agrega este línea para verificar la respuesta en la consola
                 if (response.success) {
                     // Agrega una nueva fila con los datos de la clase clonada
-                    var newData = response.data;
+                    var newData = response.data.data;
+                    console.log(newData);
+                    console.log(newData.id);
                     table.row.add({
+                        id: newData.id,
                         identificador: newData.identificador,
                         disciplina_id: newData.disciplina_id,
-                        dificultad: newData.instructor_id,
+                        dificultad: newData.dificultad,
                         inicia: newData.inicia,
                         horario_esp: newData.horario_esp,
-                        instructor_id: newData.instructor_nombre,
+                        instructor_id: newData.instructor_id,
                         cupo: newData.cupo,
                         estatus: newData.estatus,
                         intervalo_horas: newData.intervalo_horas,
-                        cupo_restantes: newData.cupo - newData.reservado,
-                        cupo_original: newData.cupo,
-                        cupo_reservado: newData.reservado,
+                        cupo_restantes: newData.cupo_restantes,
+                        cupo_original: newData.cupo_original,
+                        cupo_reservado: newData.cupo_reservado,
                         inasistencias: newData.inasistencias,
-                        sucursal: newData.sucursal_nombre + ' [' + newData.sucursal_locacion + ']',
+                        sucursal: newData.sucursal,
                         opciones: generateOpciones(newData)
                     }).draw(false);
                 } else {
@@ -353,7 +355,6 @@ $(document).ready(function () {
                 alert('Error al clonar la clase. (2)');
             }
         });
-        // }
     });
 
 });
@@ -374,17 +375,17 @@ function generateOpciones(clase) {
         opciones += ' | ';
     }
     if (clase.estatus == 'Activa') {
-        opciones += '<a href="' + method_call + 'clases/duplicar_clase/' + clase.id + '"><span>Duplicar</span></a>';
+        opciones += '<a href="" class="clonar-row" data-id="' + clase.id + '"><span>Duplicar</span></a>';
     }
-    if (clase.reservado == 0) {
+    if (clase.cupo_reservado == 0) {
         if (clase.estatus == 'Activa') {
             opciones += ' | ';
             opciones += '<a href="' + method_call + 'clases/cancelar/' + clase.id + '"><span class="red">Cancelar</span></a>';
             opciones += '  |  ';
-            opciones += '<a href="' + method_call + 'clases/borrar/' + clase.id + '"><span class="red">Borrar</span></a>';
+            opciones += '<a href="" class="delete-row" data-id="' + clase.id + '"><span class="red">Borrar</span></a>';
         }
-        if (clase.reservado == 0 && clase.estatus == 'Cancelada') {
-            opciones += '<a href="' + method_call + 'clases/borrar/' + clase.id + '"><span class="red">Borrar</span></a>';
+        if (clase.cupo_reservado == 0 && clase.estatus == 'Cancelada') {
+            opciones += '<a href="" class="delete-row" data-id="' + clase.id + '"><span class="red">Borrar</span></a>';
         }
     }
 

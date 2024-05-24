@@ -191,10 +191,15 @@ class Clases_model extends CI_Model
         return $this->db->select('
                 t1.*, 
                 CONCAT(COALESCE(t2.nombre_completo, \'N/D\'), \' \', COALESCE(t2.apellido_paterno, \'N/D\'), \' \', COALESCE(t2.apellido_materno, \'N/D\')) AS instructor,
-                t2.nombre_imagen_avatar as usuario_nombre_imagen_avatar
-            ')
+                t2.nombre_imagen_avatar as usuario_nombre_imagen_avatar,
+                t3.nombre as disciplina_nombre,
+                t4.nombre as sucursal_nombre,
+                t4.locacion as sucursal_locacion,
+                ')
             ->from('clases as t1')
             ->join('usuarios as t2', 't2.id = t1.instructor_id')
+            ->join("disciplinas t3", "t1.disciplina_id = t3.id")
+            ->join("sucursales t4", "t3.sucursal_id = t4.id")
             ->where('t1.id', intval($id))
             ->get();
     }
@@ -259,6 +264,12 @@ class Clases_model extends CI_Model
     public function crear($data)
     {
         return $this->db->insert('clases', $data);
+    }
+
+    public function crear_duplicado($data)
+    {
+        $this->db->insert('clases', $data);
+        return $this->db->insert_id();
     }
 
     public function editar($id, $data)
