@@ -33,10 +33,10 @@ class Usuarios_model extends CI_Model
                     CONCAT(COALESCE(t1.nombre_completo, 'N/D'), ' ', COALESCE(t1.apellido_paterno, 'N/D'), ' ', COALESCE(t1.apellido_materno, 'N/D')) AS nombre_completo,
                     t1.correo as correo,
                     t1.no_telefono as no_telefono,
+                    t1.es_estudiante as es_estudiante,
                     t1.dominio as dominio,
                     t1.estatus as estatus,
                     t1.fecha_registro as fecha_registro,
-                    t1.notificacion_insan3 as notificacion_insan3,
                 ")
             ->from('usuarios t1')
             ->join('roles t2', 't1.rol_id = t2.id')
@@ -58,10 +58,10 @@ class Usuarios_model extends CI_Model
                     CONCAT(COALESCE(t1.nombre_completo, 'N/D'), ' ', COALESCE(t1.apellido_paterno, 'N/D'), ' ', COALESCE(t1.apellido_materno, 'N/D')) AS nombre_completo,
                     t1.correo as correo,
                     t1.no_telefono as no_telefono,
+                    t1.es_estudiante as es_estudiante,
                     t1.dominio as dominio,
                     t1.estatus as estatus,
                     t1.fecha_registro as fecha_registro,
-                    t1.notificacion_insan3 as notificacion_insan3,
                 ")
             ->from('usuarios t1')
             ->join('roles t2', 't1.rol_id = t2.id')
@@ -365,7 +365,8 @@ class Usuarios_model extends CI_Model
         return $query;
     }
 
-    public function  obtener_instructor_por_id($id){
+    public function  obtener_instructor_por_id($id)
+    {
         $query = $this->db
             ->where('t1.id', $id)
             ->select("CONCAT(COALESCE(t1.nombre_completo, 'N/D'), ' ', COALESCE(t1.apellido_paterno, 'N/D'), ' ', COALESCE(t1.apellido_materno, 'N/D')) AS nombre")

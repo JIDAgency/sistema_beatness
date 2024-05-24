@@ -28,10 +28,10 @@ $(function () {
             { "data": "nombre_completo" },
             { "data": "correo" },
             { "data": "no_telefono" },
+            { "data": "es_estudiante" },
             { "data": "dominio" },
             { "data": "estatus" },
             { "data": "fecha_registro" },
-            { "data": "notificacion_insan3" },
             { "data": "opciones" },
         ],
         'language': {

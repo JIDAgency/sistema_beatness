@@ -29,25 +29,6 @@
 
 									<?php echo form_open_multipart(site_url('clientes/crear'), array('class' => 'needs-validation p-2', 'id' => 'forma-crear-cliente', 'method' => 'post')); ?>
 									<?php $this->load->view('_templates/mensajes_alerta.tpl.php'); ?>
-
-									<!-- <h4 class="form-section">Foto de perfil</h4>
-											<div class="row">
-												<div class="col-sm-3">
-													<input type="text" id="nombre-foto" placeholder="Nombre de la foto" style="display: none;">
-													<br>
-													<br>
-													<canvas id="canvas" width="300" height=200" style="display: none; clip-path: circle(120px at center);"></canvas>
-													<img id="captured-photo" width="300" height="200">
-												</div>
-												<div class="col-sm-9">
-    												<video id="video" height="254" style="clip-path: circle(120px at center);" autoplay></video>
-													<h2>Seleccionar webcam</h2>
-													<div class="row">
-														<select id="camera-select"></select>
-														<a id="capture-btn" class="btn btn-secondary white" style="font-size: 20px;"><i class="ft-camera"></i> Tomar foto</a>
-													</div>
-												</div>
-											</div> -->
 									<div class="row">
 
 										<div class="col-lg-6 col-md-6 col-sm-12">
@@ -55,7 +36,7 @@
 
 											<div class="col-lg-12 col-md-12 col-sm-12">
 												<div class="form-group row">
-													<label for="correo" class="col-md-3 label-control"><span class="red">*</span> Email</label>
+													<label for="correo" class="col-md-3 label-control">Email <span class="red">*</span></label>
 													<div class="col-md-9">
 														<input type="email" name="correo" id="correo" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toLowerCase()" class="form-control" placeholder="Email" value="<?php echo set_value('correo'); ?>">
 													</div>
@@ -63,7 +44,7 @@
 											</div>
 											<div class="col-lg-12 col-md-12 col-sm-12">
 												<div class="form-group row">
-													<label for="contrasena" class="col-md-3 label-control"><span class="red">*</span> Contraseña</label>
+													<label for="contrasena" class="col-md-3 label-control">Contraseña <span class="red">*</span></label>
 													<div class="col-md-9">
 														<input type="password" name="contrasena" class="form-control" placeholder="Contraseña">
 													</div>
@@ -75,7 +56,7 @@
 											<div class="row">
 												<div class="col-lg-12 col-md-12 col-sm-12">
 													<div class="form-group row">
-														<label for="nombre_completo" class="col-md-3 label-control"><span class="red">*</span> Nombre/s</label>
+														<label for="nombre_completo" class="col-md-3 label-control">Nombre/s <span class="red">*</span></label>
 														<div class="col-md-9">
 															<input type="text" name="nombre_completo" class="form-control" placeholder="Nombre/s" value="<?php echo set_value('nombre_completo'); ?>">
 														</div>
@@ -83,7 +64,7 @@
 												</div>
 												<div class="col-lg-12 col-md-12 col-sm-12">
 													<div class="form-group row">
-														<label for="apellido_paterno" class="col-md-3 label-control"><span class="red">*</span> Apellido paterno</label>
+														<label for="apellido_paterno" class="col-md-3 label-control">Apellido paterno <span class="red">*</span></label>
 														<div class="col-md-9">
 															<input type="text" name="apellido_paterno" class="form-control" placeholder="Apellido Paterno" value="<?php echo set_value('apellido_paterno'); ?>">
 														</div>
@@ -107,6 +88,29 @@
 															<input autocomplete="off" type="text" class="form-control" name="no_telefono" placeholder="No. de Teléfono" value="<?php echo set_value('no_telefono'); ?>">
 														</div>
 													</div>
+												</div>
+											</div>
+
+											<div class="row">
+												<div class="col-xl-12 col-md-12 col-sm-12">
+
+													<div class="form-group">
+														<div class="row">
+															<label class="col-md-3 label-control required-field" for="es_estudiante">¿Es estudiante? <span class="red">*</span></label>
+															<div class="col-md-9">
+																<select id="es_estudiante" name="es_estudiante" class="form-control select2 custom-select" required>
+																	<option value="" <?php echo set_select('es_estudiante', '', set_value('es_estudiante') ? false : '' == $this->session->flashdata('es_estudiante')); ?>>Seleccione si es estudiante…</option>
+																	<?php foreach (select_es_estudiante() as $es_estudiante_key => $es_estudiante_value) : ?>
+																		<option value="<?php echo $es_estudiante_value->valor; ?>" <?php echo $es_estudiante_value->activo == false ? '' : 'selected'; ?> <?php echo set_select('es_estudiante', $es_estudiante_value->valor, set_value('es_estudiante') ? false : $es_estudiante_value->valor == $this->session->flashdata('es_estudiante')); ?>><?php echo trim($es_estudiante_value->nombre); ?></option>
+																	<?php endforeach; ?>
+																</select>
+																<div class="invalid-feedback">
+																	Se requiere una opción válida.
+																</div>
+															</div>
+														</div>
+													</div>
+
 												</div>
 											</div>
 

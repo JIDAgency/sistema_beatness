@@ -57,14 +57,14 @@ class Clientes extends MY_Controller
                 ';
 
             $result[] = array(
-                "id" => $usuario_row->id,
-                "nombre_completo" => $usuario_row->nombre_completo,
-                "correo" => $usuario_row->correo,
-                "no_telefono" => $usuario_row->no_telefono,
-                "dominio" => ucfirst($usuario_row->dominio),
-                "estatus" => ucfirst($usuario_row->estatus),
-                "fecha_registro" => $usuario_row->fecha_registro,
-                "notificacion_insan3" => ucfirst($usuario_row->notificacion_insan3),
+                "id" => !empty($usuario_row->id) ? $usuario_row->id : null,
+                "nombre_completo" => !empty($usuario_row->nombre_completo) ? $usuario_row->nombre_completo : null,
+                "correo" => !empty($usuario_row->correo) ? $usuario_row->correo : null,
+                "no_telefono" => !empty($usuario_row->no_telefono) ? $usuario_row->no_telefono : null,
+                "es_estudiante" => !empty($usuario_row->es_estudiante) ? ucfirst($usuario_row->es_estudiante) : null,
+                "dominio" => !empty($usuario_row->dominio) ? ucfirst($usuario_row->dominio) : null,
+                "estatus" => !empty($usuario_row->estatus) ? ucfirst($usuario_row->estatus) : null,
+                "fecha_registro" => !empty($usuario_row->fecha_registro) ? $usuario_row->fecha_registro : null,
                 "opciones" => $menu,
             );
         }
@@ -137,13 +137,6 @@ class Clientes extends MY_Controller
 
         $usuarios_list = $this->usuarios_model->get_lista_de_clientes_suspendidos_con_limitacion_de_datos()->result();
 
-        /*
-            if (!$usuarios_list) {
-                $this->session->set_flashdata('MENSAJE_ERROR', 'Ha ocurrido un error, por favor inténtalo más tarde. (1)');
-                redirect('inicio');
-            }
-            */
-
         $result = array();
 
         foreach ($usuarios_list as $usuario_row) {
@@ -158,14 +151,14 @@ class Clientes extends MY_Controller
                 ';
 
             $result[] = array(
-                "id" => $usuario_row->id,
-                "nombre_completo" => $usuario_row->nombre_completo,
-                "correo" => $usuario_row->correo,
-                "no_telefono" => $usuario_row->no_telefono,
-                "dominio" => ucfirst($usuario_row->dominio),
-                "estatus" => ucfirst($usuario_row->estatus),
-                "fecha_registro" => $usuario_row->fecha_registro,
-                "notificacion_insan3" => ucfirst($usuario_row->notificacion_insan3),
+                "id" => !empty($usuario_row->id) ? $usuario_row->id : null,
+                "nombre_completo" => !empty($usuario_row->nombre_completo) ? $usuario_row->nombre_completo : null,
+                "correo" => !empty($usuario_row->correo) ? $usuario_row->correo : null,
+                "no_telefono" => !empty($usuario_row->no_telefono) ? $usuario_row->no_telefono : null,
+                "es_estudiante" => !empty($usuario_row->es_estudiante) ? ucfirst($usuario_row->es_estudiante) : null,
+                "dominio" => !empty($usuario_row->dominio) ? ucfirst($usuario_row->dominio) : null,
+                "estatus" => !empty($usuario_row->estatus) ? ucfirst($usuario_row->estatus) : null,
+                "fecha_registro" => !empty($usuario_row->fecha_registro) ? $usuario_row->fecha_registro : null,
                 "opciones" => $menu,
             );
         }
@@ -251,6 +244,7 @@ class Clientes extends MY_Controller
         $this->form_validation->set_rules('correo', 'correo electrónico', 'required|is_unique[usuarios.correo]');
         $this->form_validation->set_rules('nombre_completo', 'nombre completo', 'required');
         $this->form_validation->set_rules('apellido_paterno', 'apellido paterno', 'required');
+        $this->form_validation->set_rules('es_estudiante', '¿Es estudiante?', 'required');
 
         // Inicializar vista y scripts
         $data['controlador'] = 'clientes/crear';
@@ -322,6 +316,7 @@ class Clientes extends MY_Controller
                 'apellido_paterno' => $this->input->post('apellido_paterno'),
                 'apellido_materno' => $this->input->post('apellido_materno'),
                 'no_telefono' => $this->input->post('no_telefono'),
+                'es_estudiante' => $this->input->post('es_estudiante'),
                 'fecha_nacimiento' => date('Y-m-d', strtotime(str_replace('/', '-', $this->input->post('fecha_nacimiento')))),
                 'rfc' => $this->input->post('rfc'),
                 'genero' => $this->input->post('genero'),
@@ -365,6 +360,7 @@ class Clientes extends MY_Controller
         $this->form_validation->set_rules('correo', 'correo electrónico', 'required');
         $this->form_validation->set_rules('nombre_completo', 'nombre completo', 'required');
         $this->form_validation->set_rules('apellido_paterno', 'apellido paterno', 'required');
+        $this->form_validation->set_rules('es_estudiante', '¿Es estudiante?', 'required');
 
         // Inicializar vista, scripts
         $data['menu_clientes_activo_activo'] = true;
@@ -449,6 +445,7 @@ class Clientes extends MY_Controller
                 'apellido_paterno' => $this->input->post('apellido_paterno'),
                 'apellido_materno' => $this->input->post('apellido_materno'),
                 'no_telefono' => $this->input->post('no_telefono'),
+                'es_estudiante' => $this->input->post('es_estudiante'),
                 'nombre_imagen_avatar' => $nombre_archivo,
                 // 'url_ine' => $nombre_foto_ine,
                 'fecha_nacimiento' => date('Y-m-d', strtotime(str_replace('/', '-', $this->input->post('fecha_nacimiento')))),

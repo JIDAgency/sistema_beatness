@@ -249,3 +249,10 @@ if (!function_exists('select_activo')) {
         return get_instance()->config->item('select_activo');
     }
 }
+
+if (!function_exists('select_es_estudiante')) {
+    function select_es_estudiante()
+    {
+        return get_instance()->config->item('select_es_estudiante');
+    }
+}

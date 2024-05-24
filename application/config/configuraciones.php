@@ -108,7 +108,7 @@ $select_mostrar = array(
 
 $config['select_mostrar'] = $select_mostrar;
 
-/* ====== Activo boolean ====== */
+/* ====== activo ====== */
 
 $select_activo = array(
     (object) array(
@@ -124,6 +124,23 @@ $select_activo = array(
 );
 
 $config['select_activo'] = $select_activo;
+
+/* ====== es_estudiante ====== */
+
+$select_es_estudiante = array(
+    (object) array(
+        'nombre'    => 'Si',
+        'valor'     => 'si',
+        'activo'    => false,
+    ),
+    (object) array(
+        'nombre'    => 'No',
+        'valor'     => 'no',
+        'activo'    => true,
+    )
+);
+
+$config['select_es_estudiante'] = $select_es_estudiante;
 
 /* ====== disciplina ====== */
 
@@ -159,6 +176,8 @@ $select_disciplina = array(
         'activo'    => false,
     ),
 );
+
+$config['select_disciplina'] = $select_disciplina;
 
 /* ====== dificultad ====== */
 
@@ -252,9 +271,6 @@ $select_dificultad = array(
 
 $config['select_dificultad'] = $select_dificultad;
 
-/* ====== disciplina ====== */
-$config['select_disciplina'] = $select_disciplina;
-
 $select_instructor = array(
     (object) array(
         'nombre'    => 'Homero',
@@ -269,3 +285,20 @@ $select_instructor = array(
 );
 
 $config['select_instructor'] = $select_instructor;
+
+/* ====== Activo boolean ====== */
+
+$select_activo = array(
+    (object) array(
+        'nombre'    => 'Si',
+        'valor'     => '1',
+        'activo'    => false,
+    ),
+    (object) array(
+        'nombre'    => 'No',
+        'valor'     => '0',
+        'activo'    => false,
+    )
+);
+
+$config['select_activo'] = $select_activo;

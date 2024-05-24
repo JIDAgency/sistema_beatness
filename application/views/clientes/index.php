@@ -64,10 +64,10 @@
 													<th>Nombre completo</th>
 													<th>Correo electrónico</th>
 													<th>Teléfono</th>
+													<th>Estudiante</th>
 													<th>Registrado por</th>
 													<th>Estatus</th>
 													<th>Fecha de registro</th>
-													<th>Recibir notificaciones</th>
 													<th>Opciones</th>
 												</tr>
 											</thead>

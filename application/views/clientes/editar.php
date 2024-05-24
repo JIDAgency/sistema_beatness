@@ -83,7 +83,31 @@
 													</div>
 												</div>
 
+												<div class="row">
+													<div class="col-xl-12 col-md-12 col-sm-12">
+
+														<div class="form-group">
+															<div class="row">
+																<label class="col-md-3 label-control required-field" for="es_estudiante">¿Es estudiante? <span class="red">*</span></label>
+																<div class="col-md-9">
+																	<select id="es_estudiante" name="es_estudiante" class="form-control select2 custom-select" required>
+																		<option value="" <?php echo set_select('es_estudiante', '', set_value('es_estudiante') ? false : '' == (!empty($this->session->flashdata('es_estudiante')) ? $this->session->flashdata('es_estudiante') : (!empty($cliente_a_editar->es_estudiante) ? $cliente_a_editar->es_estudiante : set_value('es_estudiante')))); ?>>Seleccione si es estudiante…</option>
+																		<?php foreach (select_es_estudiante() as $es_estudiante_key => $es_estudiante_value) : ?>
+																			<option value="<?php echo $es_estudiante_value->valor; ?>" <?php echo set_select('es_estudiante', $es_estudiante_value->valor, set_value('es_estudiante') ? false : $es_estudiante_value->valor == (!empty($this->session->flashdata('es_estudiante')) ? $this->session->flashdata('es_estudiante') : (!empty($cliente_a_editar->es_estudiante) ? $cliente_a_editar->es_estudiante : set_value('es_estudiante')))); ?>><?php echo trim($es_estudiante_value->nombre); ?></option>
+																		<?php endforeach; ?>
+																	</select>
+																	<div class="invalid-feedback">
+																		Se requiere una opción válida.
+																	</div>
+																</div>
+															</div>
+														</div>
+
+													</div>
+												</div>
+
 												<h4 class="form-section">Datos personales</h4>
+
 												<div class="row">
 													<div class="col-lg-12 col-md-12 col-sm-12">
 														<div class="form-group row">
