@@ -284,7 +284,112 @@ $(document).ready(function () {
             }
         });
     });
+
+    $('#table').on('click', '.delete-row', function (e) {
+        e.preventDefault();
+        var row = $(this).closest('tr');
+        var id = $(this).data('id');
+
+        // if (confirm('¿Estás seguro de que deseas eliminar esta clase?')) {
+        $.ajax({
+            url: method_call + 'borrar/' + id,
+            type: 'POST',
+            dataType: 'json', // Asegúrate de que jQuery trate la respuesta como JSON
+            success: function (response) {
+                // Verifica que la respuesta contiene un campo `success` con valor `true`
+                console.log(response); // Agrega este línea para verificar la respuesta en la consola
+                if (response.success) {
+                    row.fadeOut(500, function () {
+                        table.row(row).remove().draw(false);
+                    });
+                } else {
+                    alert('Error al borrar la clase. (1)' + id);
+                }
+            },
+            error: function () {
+                alert('Error al borrar la clase.');
+            }
+        });
+        // }
+    });
+
+    $('#table').on('click', '.clonar-row', function (e) {
+        e.preventDefault();
+        var row = $(this).closest('tr');
+        var id = $(this).data('id');
+
+        // if (confirm('¿Estás seguro de que deseas eliminar esta clase?')) {
+        $.ajax({
+            url: method_call + 'duplicar_clase/' + id,
+            type: 'POST',
+            dataType: 'json', // Asegúrate de que jQuery trate la respuesta como JSON
+            success: function (response) { // Verifica que la respuesta contiene un campo `success` con valor `true`
+                console.log(response); // Agrega este línea para verificar la respuesta en la consola
+                if (response.success) {
+                    // Agrega una nueva fila con los datos de la clase clonada
+                    var newData = response.data;
+                    table.row.add({
+                        identificador: newData.identificador,
+                        disciplina_id: newData.disciplina_id,
+                        dificultad: newData.instructor_id,
+                        inicia: newData.inicia,
+                        horario_esp: newData.horario_esp,
+                        instructor_id: newData.instructor_nombre,
+                        cupo: newData.cupo,
+                        estatus: newData.estatus,
+                        intervalo_horas: newData.intervalo_horas,
+                        cupo_restantes: newData.cupo - newData.reservado,
+                        cupo_original: newData.cupo,
+                        cupo_reservado: newData.reservado,
+                        inasistencias: newData.inasistencias,
+                        sucursal: newData.sucursal_nombre + ' [' + newData.sucursal_locacion + ']',
+                        opciones: generateOpciones(newData)
+                    }).draw(false);
+                } else {
+                    alert('Error al clonar la clase. (1)');
+                }
+            },
+            error: function () {
+                alert('Error al clonar la clase. (2)');
+            }
+        });
+        // }
+    });
+
 });
+
+function generateOpciones(clase) {
+    var opciones = '';
+    if (clase.estatus != 'Cancelada') {
+        var fecha_de_clase = clase.inicia;
+        var fecha_limite_de_clase = new Date(fecha_de_clase);
+        fecha_limite_de_clase.setHours(fecha_limite_de_clase.getHours() + 48);
+
+        if (new Date() < fecha_limite_de_clase) {
+            opciones += '<a href="' + method_call + 'clases/reservar/' + clase.id + '">Reservar</a>';
+        }
+
+        opciones += ' | ';
+        opciones += '<a href="' + method_call + 'clases/editar/' + clase.id + '">Editar</a>';
+        opciones += ' | ';
+    }
+    if (clase.estatus == 'Activa') {
+        opciones += '<a href="' + method_call + 'clases/duplicar_clase/' + clase.id + '"><span>Duplicar</span></a>';
+    }
+    if (clase.reservado == 0) {
+        if (clase.estatus == 'Activa') {
+            opciones += ' | ';
+            opciones += '<a href="' + method_call + 'clases/cancelar/' + clase.id + '"><span class="red">Cancelar</span></a>';
+            opciones += '  |  ';
+            opciones += '<a href="' + method_call + 'clases/borrar/' + clase.id + '"><span class="red">Borrar</span></a>';
+        }
+        if (clase.reservado == 0 && clase.estatus == 'Cancelada') {
+            opciones += '<a href="' + method_call + 'clases/borrar/' + clase.id + '"><span class="red">Borrar</span></a>';
+        }
+    }
+
+    return opciones;
+}
 
 // Función para obtener opciones del select 'disciplina'
 async function obtener_opciones_select_disciplina() {

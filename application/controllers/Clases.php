@@ -62,13 +62,13 @@ class Clases extends MY_Controller
         $start = intval($this->input->post('start'));
         $length = intval($this->input->post('length'));
 
-        if (($this->session->userdata('filtro_clase_sucursal') != 0) AND ($this->session->userdata('filtro_clase_disciplina') == 0)) {
-            $clases_list = $this->clases_model->obtener_todas_para_front_con_detalle_por_sucursal($this->session->userdata('filtro_clase_disciplina'));   
-        } else if ((($this->session->userdata('filtro_clase_sucursal') == null) AND ($this->session->userdata('filtro_clase_disciplina') != null)) || (($this->session->userdata('filtro_clase_sucursal') == 0) AND ($this->session->userdata('filtro_clase_disciplina') != 0))) {
-            $clases_list = $this->clases_model->obtener_todas_para_front_con_detalle_por_disciplina($this->session->userdata('filtro_clase_disciplina'));   
-        } else if (($this->session->userdata('filtro_clase_sucursal') != null) AND ($this->session->userdata('filtro_clase_disciplina') != null) AND ($this->session->userdata('filtro_clase_sucursal') != 0) AND ($this->session->userdata('filtro_clase_disciplina') != 0)) {
-            $clases_list = $this->clases_model->obtener_todas_para_front_con_detalle_por_sucursal_disciplina($this->session->userdata('filtro_clase_disciplina'), $this->session->userdata('filtro_clase_sucursal'));   
-        } else if ((($this->session->userdata('filtro_clase_sucursal') == null) AND ($this->session->userdata('filtro_clase_disciplina') == null)) || (($this->session->userdata('filtro_clase_sucursal') == 0) AND ($this->session->userdata('filtro_clase_disciplina') == 0))) {
+        if (($this->session->userdata('filtro_clase_sucursal') != 0) and ($this->session->userdata('filtro_clase_disciplina') == 0)) {
+            $clases_list = $this->clases_model->obtener_todas_para_front_con_detalle_por_sucursal($this->session->userdata('filtro_clase_disciplina'));
+        } else if ((($this->session->userdata('filtro_clase_sucursal') == null) and ($this->session->userdata('filtro_clase_disciplina') != null)) || (($this->session->userdata('filtro_clase_sucursal') == 0) and ($this->session->userdata('filtro_clase_disciplina') != 0))) {
+            $clases_list = $this->clases_model->obtener_todas_para_front_con_detalle_por_disciplina($this->session->userdata('filtro_clase_disciplina'));
+        } else if (($this->session->userdata('filtro_clase_sucursal') != null) and ($this->session->userdata('filtro_clase_disciplina') != null) and ($this->session->userdata('filtro_clase_sucursal') != 0) and ($this->session->userdata('filtro_clase_disciplina') != 0)) {
+            $clases_list = $this->clases_model->obtener_todas_para_front_con_detalle_por_sucursal_disciplina($this->session->userdata('filtro_clase_disciplina'), $this->session->userdata('filtro_clase_sucursal'));
+        } else if ((($this->session->userdata('filtro_clase_sucursal') == null) and ($this->session->userdata('filtro_clase_disciplina') == null)) || (($this->session->userdata('filtro_clase_sucursal') == 0) and ($this->session->userdata('filtro_clase_disciplina') == 0))) {
             $clases_list = $this->clases_model->obtener_todas_para_front_con_detalle();
         }
 
@@ -103,16 +103,17 @@ class Clases extends MY_Controller
             }
             if ($clase->estatus == 'Activa') {
                 $opciones .= '<a href="' . site_url('clases/duplicar_clase/' . $clase->id) . '"><span>Duplicar</span></a>';
+                // $opciones .= '<a href="" class="clonar-row" data-id="' . $clase->id . '"><span>Duplicar</span></a>';
             }
             if ($clase->reservado == 0) {
                 if ($clase->estatus == 'Activa') {
                     $opciones .= ' | ';
                     $opciones .= '<a href="' . site_url('clases/cancelar/' . $clase->id) . '"><span class="red">Cancelar</span></a>';
                     $opciones .= '  |  ';
-                    $opciones .= '<a href="' . site_url('clases/borrar/' . $clase->id) . '"><span class="red">Borrar</span></a>';
+                    $opciones .= '<a href="" class="delete-row" data-id="' . $clase->id . '"><span class="red">Borrar</span></a>';
                 }
                 if ($clase->reservado == 0 and $clase->estatus == 'Cancelada') {
-                    $opciones .= '<a href="' . site_url('clases/borrar/' . $clase->id) . '"><span class="red">Borrar</span></a>';
+                    $opciones .= '<a href="" class="delete-row" data-id="' . $clase->id . '"><span class="red">Borrar</span></a>';
                 }
             }
 
@@ -147,7 +148,8 @@ class Clases extends MY_Controller
         exit();
     }
 
-    public function obtener_disciplinas(){
+    public function obtener_disciplinas()
+    {
         $sucursal_id = $this->input->post('sucursal_id');
 
         $disciplinas = $this->filtros_model->obtener_disciplinas($sucursal_id);
@@ -267,6 +269,12 @@ class Clases extends MY_Controller
         if ($clase_a_clonar) {
             redirect(site_url('clases'));
         }
+
+        // if ($clase_a_clonar) {
+        //     echo json_encode(['success' => true, 'data' => $clase_a_clonar]);
+        // } else {
+        //     echo json_encode(['success' => false]);
+        // }
 
         // Redireccionar si falla la creación de la clase duplicada
         $this->session->set_flashdata('MENSAJE_ERROR', 'La clase ' . $id . ' no ha podido ser clonada.');
@@ -907,7 +915,7 @@ class Clases extends MY_Controller
         redirect('clases/index');
     }
 
-    public function borrar($id = null)
+    public function borrar($id=null)
     {
         $clase = $this->clases_model->obtener_por_id($id)->row();
 
@@ -921,12 +929,16 @@ class Clases extends MY_Controller
             redirect('clases/index');
         }
 
-        if ($this->clases_model->borrar($id)) {
-            redirect('clases/index');
+        $result = $this->clases_model->borrar($id);
+
+        if ($result) {
+            echo json_encode(['success' => true]);
+        } else {
+            echo json_encode(['success' => false]);
         }
 
-        $this->session->set_flashdata('MENSAJE_ERROR', 'La clase ' . $id . ' no ha podido ser borrada.');
-        redirect('clases/index');
+        // $this->session->set_flashdata('MENSAJE_ERROR', 'La clase ' . $id . ' no ha podido ser borrada.');
+        // redirect('clases/index');
     }
 
     /** Módulo de Clases Online [Inicio] */
