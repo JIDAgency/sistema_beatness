@@ -94,6 +94,7 @@ $(document).ready(function () {
             } else if (columna_nombre === "dificultad") {
                 var input = generar_campo_de_celda_a_editar('select', valor_original_de_celda, select_dificultad);
             } else if (columna_nombre === "inicia") {
+                console.log(valor_original_de_celda)
                 var input = generar_campo_de_celda_a_editar('fecha', valor_original_de_celda);
             } else if (columna_nombre === "cupo") {
                 var input = generar_campo_de_celda_a_editar('numero', valor_original_de_celda);
@@ -201,7 +202,7 @@ $(document).ready(function () {
             },
             success: function (response) {
                 if (columna_nombre === 'inicia' || columna_nombre === 'cupo') {
-                    table.ajax.reload();
+                    // table.ajax.reload();
                 }
                 console.log('Dato actualizado en la base de datos');
                 console.log(response);
