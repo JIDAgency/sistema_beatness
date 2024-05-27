@@ -300,7 +300,7 @@ class Calendario extends CI_Controller
 
     public function obtener_titulos_semana($disciplina_id)
     {
-        if ($disciplina_id) {
+        if (in_array($disciplina_id, array(3))) {
             $response = '
             <tr>
                 <td class=""><small></small></td>
@@ -311,25 +311,24 @@ class Calendario extends CI_Controller
                 <td class=""><small><span class="blue lighten-3">BOOTY</span></small></td>
             </tr>
             ';
-        } else {
+        } elseif (in_array($disciplina_id, array(10))) {
             $response = '
             <tr>
                 <td class=""><small></small></td>
                 <td class=""><small><span class="blue lighten-3">LEGS &<br>BOOTY</span></small></td>
-                <td class=""><small><span class="blue lighten-3">PUSH<br>DAY</span></small></td>
-                <td class=""><small><span class="blue lighten-3">LEGS</span></small></td>
-                <td class=""><small><span class="blue lighten-3">PULL<br>DAY</span></small></td>
-                <td class=""><small><span class="blue lighten-3">BOOTY</span></small></td>
+                <td class=""><small><span class="blue lighten-3">UPPER<br>BODY</span></small></td>
+                <td class=""><small><span class="blue lighten-3">KILLER<br>ABS</span></small></td>
+                <td class=""><small><span class="blue lighten-3">ARMS<br>& BOOTY</span></small></td>
+                <td class=""><small><span class="blue lighten-3">FULL<br>BODY &#x1F525;</span></small></td>
             </tr>
             ';
         }
-
         return $response;
     }
 
     public function obtener_titulos_fin_de_semana($disciplina_id)
     {
-        if ($disciplina_id) {
+        if (in_array($disciplina_id, array(3))) {
             $response = '
                 <tr>
                     <td class=""><small></small></td>
@@ -337,16 +336,15 @@ class Calendario extends CI_Controller
                     <td class=""><small><span class="blue lighten-3">FULL<br>BODY</span></small></td>
                 </tr>
             ';
-        } else {
+        } elseif (in_array($disciplina_id, array(10))) {
             $response = '
                 <tr>
                     <td class=""><small></small></td>
-                    <td class=""><small><span class="blue lighten-3">UPPER<br>BODY</span></small></td>
+                    <td class=""><small><span class="blue lighten-3">ABS<br>& BOOTY &#x1F525;</span></small></td>
                     <td class=""><small><span class="blue lighten-3">FULL<br>BODY</span></small></td>
                 </tr>
             ';
         }
-
         return $response;
     }
 }
