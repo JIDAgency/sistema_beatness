@@ -329,7 +329,8 @@ $(document).ready(function () {
                     var newData = response.data.data;
                     console.log(newData);
                     console.log(newData.id);
-                    table.row.add({
+                    
+                    var newRow = table.row.add({
                         id: newData.id,
                         identificador: newData.identificador,
                         disciplina_id: newData.disciplina_id,
@@ -346,7 +347,13 @@ $(document).ready(function () {
                         inasistencias: newData.inasistencias,
                         sucursal: newData.sucursal,
                         opciones: generateOpciones(newData)
-                    }).draw(false);
+                    }).draw(false).node();
+
+                    // Ocultar la nueva fila inicialmente
+                    $(newRow).css('display', 'none');
+
+                    // Hacer que la nueva fila aparezca de forma gradual
+                    $(newRow).fadeIn(500);
                 } else {
                     alert('Error al clonar la clase. (1)');
                 }
@@ -367,11 +374,11 @@ function generateOpciones(clase) {
         fecha_limite_de_clase.setHours(fecha_limite_de_clase.getHours() + 48);
 
         if (new Date() < fecha_limite_de_clase) {
-            opciones += '<a href="' + method_call + 'clases/reservar/' + clase.id + '">Reservar</a>';
+            opciones += '<a href="' + method_call + 'reservar/' + clase.id + '">Reservar</a>';
         }
 
         opciones += ' | ';
-        opciones += '<a href="' + method_call + 'clases/editar/' + clase.id + '">Editar</a>';
+        opciones += '<a href="' + method_call + 'editar/' + clase.id + '">Editar</a>';
         opciones += ' | ';
     }
     if (clase.estatus == 'Activa') {
@@ -380,7 +387,7 @@ function generateOpciones(clase) {
     if (clase.cupo_reservado == 0) {
         if (clase.estatus == 'Activa') {
             opciones += ' | ';
-            opciones += '<a href="' + method_call + 'clases/cancelar/' + clase.id + '"><span class="red">Cancelar</span></a>';
+            opciones += '<a href="' + method_call + 'cancelar/' + clase.id + '"><span class="red">Cancelar</span></a>';
             opciones += '  |  ';
             opciones += '<a href="" class="delete-row" data-id="' + clase.id + '"><span class="red">Borrar</span></a>';
         }
