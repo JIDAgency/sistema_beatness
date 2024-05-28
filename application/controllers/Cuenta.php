@@ -367,7 +367,7 @@ class Cuenta extends CI_Controller
     public function olvido_contrasena()
     {
 
-        redirect('https://api.whatsapp.com/send?phone=5212225856870&text=Hola%20Soporte%20Beatness,%20quiero%20solicitar%20restablecer%20la%20contraseña%20de%20mi%20cuenta.');
+        redirect('https://api.whatsapp.com/send?phone=5212292653397&text=Hola%20Soporte%20Beatness,%20quiero%20solicitar%20restablecer%20la%20contraseña%20de%20mi%20cuenta.');
 
         $this->form_validation->set_rules('correo', 'Correo', 'required');
 
