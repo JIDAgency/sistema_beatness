@@ -93,11 +93,11 @@ class Clases extends MY_Controller
                 $fecha_de_clase = $clase->inicia;
                 $fecha_limite_de_clase = strtotime('+48 hours', strtotime($fecha_de_clase));
 
-                if (strtotime('now') < $fecha_limite_de_clase) {
+                if ((strtotime('now') < $fecha_limite_de_clase) and ($clase->reservado < $clase->cupo)) {
                     $opciones = anchor('clases/reservar/' . $clase->id, 'Reservar');
+                    $opciones .= ' | ';
                 }
 
-                $opciones .= ' | ';
                 $opciones .= anchor('clases/editar/' . $clase->id, 'Editar');
                 $opciones .= ' | ';
             }
@@ -235,7 +235,7 @@ class Clases extends MY_Controller
 
         $cupo_lugares = array();
         // Crear un arreglo de arreglos para llevar un registro más detallado del cupo
-        for ($i = 1; $i <= 20; $i++) {
+        for ($i = 1; $i <= $clase->cupo; $i++) {
             $lugar = array(
                 'no_lugar' => $i,
                 'esta_reservado' => false,
