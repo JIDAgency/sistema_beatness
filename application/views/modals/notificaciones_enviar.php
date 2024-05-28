@@ -13,9 +13,9 @@
                     <label>Seleccione el segmento al que se enviará la notificación: </label>
                     <div class="form-group">
                         <select id="segmento" name="segmento" class="form-control select2 custom-select" required>
-                            <option value="Subscribed Users" <?php echo set_select('segmento', 'Subscribed Users', set_value('segmento') ? false : 'Subscribed Users' == $this->session->flashdata('segmento')); ?> selected>Todos</option>
-                            <option value="Active Users" <?php echo set_select('segmento', 'Active Users', set_value('segmento') ? false : 'Active Users' == $this->session->flashdata('segmento')); ?>>Activos</option>
-                            <option value="Inactive Users" <?php echo set_select('segmento', 'Inactive Users', set_value('segmento') ? false : 'Inactive Users' == $this->session->flashdata('segmento')); ?>>Inactivos</option>
+                            <option value="Total Subscriptions" <?php echo set_select('segmento', 'Total Subscriptions', set_value('segmento') ? false : 'Total Subscriptions' == $this->session->flashdata('segmento')); ?> selected>Todos</option>
+                            <option value="Active Subscriptions" <?php echo set_select('segmento', 'Active Subscriptions', set_value('segmento') ? false : 'Active Subscriptions' == $this->session->flashdata('segmento')); ?>>Activos</option>
+                            <option value="Inactive Subscriptions" <?php echo set_select('segmento', 'Inactive Subscriptions', set_value('segmento') ? false : 'Inactive Subscriptions' == $this->session->flashdata('segmento')); ?>>Inactivos</option>
                         </select>
                         <input type="hidden" class="form-control" name="id" id="id" value="" readonly>
                     </div>

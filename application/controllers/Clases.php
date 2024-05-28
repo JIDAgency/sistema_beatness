@@ -1257,7 +1257,7 @@ class Clases extends MY_Controller
         }
 
         if ($clase_row->estatus != "Activa") {
-            $this->session->set_flashdata('MENSAJE_INFO', '¡Oops! Al parecer esta clase #' . $clase_row->id . ' ya no se encuentra activa y ha sido marcada como: ' . $clase_row->estatus . '. (2)');
+            $this->session->set_flashdata('MENSAJE_INFO', '¡Oops! Al parecer esta clase #' . $clase_row->id . ' ya no se encuentra activa y ha sido marcada como: ' . $clase_row->estatus . '. (3)');
             redirect('clases/editar/' . $clase_id);
         }
 
@@ -1275,12 +1275,13 @@ class Clases extends MY_Controller
         $max_lugar = max($no_lugar_array) + 1;
 
         if ($cupo_actualizado != $max_lugar or $cupo_actualizado > $max_lugar) {
-            $this->session->set_flashdata('MENSAJE_ERROR', '¡Oops! Al parecer ha ocurrido un error, por favor intentelo más tarde. (3)');
+            $this->session->set_flashdata('MENSAJE_ERROR', '¡Oops! Al parecer ha ocurrido un error, por favor intentelo más tarde. (4)');
             redirect('clases/editar/' . $clase_id);
-        } /*else {
-       $this->session->set_flashdata('MENSAJE_INFO', ''.$max_lugar.'');
-       redirect('clases/editar/'.$clase_id);
-   }*/
+        }
+        /*else {
+            $this->session->set_flashdata('MENSAJE_INFO', ''.$max_lugar.'');
+            redirect('clases/editar/'.$clase_id);
+        }*/
 
         $lugar = array(
             'no_lugar' => $cupo_actualizado,

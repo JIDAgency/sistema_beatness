@@ -127,8 +127,8 @@ class Notificaciones extends MY_Controller
 		if ($this->input->post()) {
 			$id = $this->input->post('id');
 			$segmento = $this->input->post('segmento');
-			$mensaje_confirmacion = $segmento == 'Active Users' ? "$segmento y Engaged Users" : $segmento;
-			$segmento = $segmento == 'Active Users' ? array($segmento, 'Engaged Users') : array($segmento);
+			$mensaje_confirmacion = $segmento == 'Active Subscriptions' ? "$segmento y Engaged Subscriptions" : $segmento;
+			$segmento = $segmento == 'Active Subscriptions' ? array($segmento, 'Engaged Subscriptions') : array($segmento);
 		} else {
 			$this->mensaje_del_sistema('MENSAJE_ERROR', 'Al parecer ha ocurrido un error, por favor intentelo más tarde.', 'notificaciones');
 			return;
@@ -163,11 +163,14 @@ class Notificaciones extends MY_Controller
 		$fields = array(
 			'app_id' => $app_id,
 			"headings" => $headings,
-			'include_external_user_ids' => $to,
+			//'include_external_user_ids' => $to,
+			'included_segments' => $segmento,
 			'channel_for_external_user_ids' => 'push',
 			'contents' => $content,
 			'large_icon' => '',
 			'content_available' => true,
+			'SetIsAndroid' => true,
+			'SetIsIos' => true,
 		);
 
 		if (!empty($img)) {
