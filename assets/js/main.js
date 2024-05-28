@@ -118,14 +118,32 @@ function generar_campo_de_celda_a_editar(tipo_celda, valor_original_de_celda, da
 
             var input = $('<select class="form-control"></select>');
 
+            // Asegúrate de que valor_original_de_celda está en mayúsculas para comparaciones coherentes
+            var valor_original_mayuscula = valor_original_de_celda.trim().toUpperCase();
+
             // Agregar opciones al select
             $.each(data_opciones, function (index, opcion) {
-                input.append('<option selected value="' + opcion.nombre + '">' + opcion.nombre + '</option>');
+                var opcion_nombre_mayuscula = opcion.nombre.trim().toUpperCase();
+                console.log('Valore: ' + valor_original_mayuscula);
+                console.log('instructor: ' + opcion_nombre_mayuscula);
+                var option = $('<option></option>')
+                    .val(opcion_nombre_mayuscula)
+                    .text(opcion_nombre_mayuscula);
+
+                // Marcar como seleccionada si coincide con el valor original
+                if (opcion_nombre_mayuscula === valor_original_mayuscula) {
+                    console.log('Entre al if de valores :)')
+                    option.prop('selected', true);
+                } else {
+                    console.log('No entre a nada :(')
+                }
+
+                input.append(option);
             });
 
+
             // Establecer el valor original seleccionado
-            input.val(valor_original_de_celda.toString());
-            // input.val(formatoNombrePropio(valor_original_de_celda));
+            input.val(valor_original_mayuscula);
 
             return input;
         default:
@@ -196,7 +214,7 @@ function generar_salida_de_celda_editada(tipo_celda, valor_nuevo_de_celda, celda
             celda_seleccionada.html(valor_nuevo_de_celda);
 
             actualizar_data_de_tabla(celda_seleccionada, valor_nuevo_de_celda);
-            // Convertir el valor formateado a texto minúsculas antes de guardar en la base de datos
+            // Convertir el valor formateado a texto mayusculas antes de guardar en la base de datos
             return valor_nuevo_de_celda.toUpperCase();
 
         default:

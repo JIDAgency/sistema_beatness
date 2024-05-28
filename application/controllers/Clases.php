@@ -376,11 +376,11 @@ class Clases extends MY_Controller
 
         $data = [];
         foreach ($instructores->result() as $instructor) {
-            // $nombre = trim("{$instructor->nombre_completo} {$instructor->apellido_paterno} {$instructor->apellido_materno}");
-            // $nombre = preg_replace('/\s+/', ' ', $nombre);
+            $nombre = trim("{$instructor->nombre_completo} {$instructor->apellido_paterno} {$instructor->apellido_materno}");
+            $nombre = preg_replace('/\s+/', ' ', $nombre);
 
             $data[] = array(
-                'nombre' => $instructor->nombre_completo,
+                'nombre' => mb_strtoupper($nombre),
                 'valor' => $instructor->id
             );
         }

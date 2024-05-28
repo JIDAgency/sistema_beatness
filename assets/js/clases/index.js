@@ -90,7 +90,8 @@ $(document).ready(function () {
             if (columna_nombre === "disciplina_id") {
                 var input = generar_campo_de_celda_a_editar('select_indice_disciplina', valor_original_de_celda, select_disciplina);
             } else if (columna_nombre === "instructor_id") {
-                var input = generar_campo_de_celda_a_editar('select_indice_instructor', valor_original_de_celda, select_instructor);
+                console.log('nombre: '+valor_original_de_celda.toUpperCase());
+                var input = generar_campo_de_celda_a_editar('select_indice_instructor', valor_original_de_celda.toUpperCase(), select_instructor);
             } else if (columna_nombre === "dificultad") {
                 var input = generar_campo_de_celda_a_editar('select', valor_original_de_celda, select_dificultad);
             } else if (columna_nombre === "inicia") {
@@ -174,9 +175,9 @@ $(document).ready(function () {
         } else if (columna_nombre === 'instructor_id') {
             console.log('Entre al if 1');
             for (var i = 0; i < select_instructor.length; i++) {
-                console.log(select_instructor[i].nombre)
-                console.log(valor_nuevo_de_celda.toUpperCase())
-                console.log(formatoNombrePropio(valor_nuevo_de_celda))
+                // console.log(select_instructor[i].nombre)
+                // console.log(valor_nuevo_de_celda.toUpperCase())
+                console.log((valor_nuevo_de_celda.toUpperCase()))
                 if (select_instructor[i].nombre === (valor_nuevo_de_celda.toUpperCase())) {
                     console.log('Entre al if 2');
                     valor_nuevo_de_celda = select_instructor[i].valor;
