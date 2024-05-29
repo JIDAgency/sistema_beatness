@@ -12,6 +12,7 @@
 				</div>
 			</div>
 		</div>
+		<div id="alert-container"></div>
 		<?php $this->load->view('_comun/mensajes_alerta'); ?>
 		<div class="content-wrapper">
 			<div class="content-body">

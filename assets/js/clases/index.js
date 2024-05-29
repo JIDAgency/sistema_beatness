@@ -90,7 +90,7 @@ $(document).ready(function () {
             if (columna_nombre === "disciplina_id") {
                 var input = generar_campo_de_celda_a_editar('select_indice_disciplina', valor_original_de_celda, select_disciplina);
             } else if (columna_nombre === "instructor_id") {
-                console.log('nombre: '+valor_original_de_celda.toUpperCase());
+                console.log('nombre: ' + valor_original_de_celda.toUpperCase());
                 var input = generar_campo_de_celda_a_editar('select_indice_instructor', valor_original_de_celda.toUpperCase(), select_instructor);
             } else if (columna_nombre === "dificultad") {
                 var input = generar_campo_de_celda_a_editar('select', valor_original_de_celda, select_dificultad);
@@ -154,6 +154,39 @@ $(document).ready(function () {
         var fila_tabla = table.row(celda_seleccionada.closest('tr'));
         var datos_fila_tabla = fila_tabla.data();
 
+        var identificador = datos_fila_tabla.identificador;
+
+        var partesIdentificador = identificador.split(' ');
+
+        // Verificar si el identificador contiene la palabra 'CANCELADO'
+        var contieneCancelado = partesIdentificador.includes('CANCELADO');
+
+        if (contieneCancelado) {
+            celda_seleccionada.html(celda_seleccionada.data('valor_original_guardado')); // Restaurar el valor en la celda
+            flag_editando = false; // Marcar como fuera de edición
+            var alertHtml = `
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    La clase fue cancelada.
+                </div>
+            `;
+            // Insertar la alerta en el contenedor
+            document.getElementById('alert-container').innerHTML = alertHtml;
+
+            // Eliminar la alerta después de 3 segundos
+            setTimeout(function () {
+                var alert = document.querySelector('.alert');
+                if (alert) {
+                    alert.classList.remove('show');
+                    alert.classList.add('fade');
+                    setTimeout(function () {
+                        alert.remove();
+                    }, 150); // Tiempo para la transición de salida
+                }
+            }, 5000);
+            console.log('La clase fue cancelada CANCELADO');
+            return;
+        }
+
         function formatoNombrePropio(nombre) {
             return nombre.toLowerCase().replace(/\b\w/g, function (char) {
                 return char.toUpperCase();
@@ -202,15 +235,49 @@ $(document).ready(function () {
                 nuevoValor: valor_nuevo_de_celda
             },
             success: function (response) {
-                if (columna_nombre === 'inicia' || columna_nombre === 'cupo') {
-                    // table.ajax.reload();
-                }
                 console.log('Dato actualizado en la base de datos');
+                console.log('valor nuevo: ' + valor_nuevo_de_celda);
+                console.log('valor identificador: ' + datos_fila_tabla.identificador);
                 console.log(response);
+
+                // Asumiendo que la respuesta contiene el nuevo identificador en response.nuevo_identificador
+                var nuevoIdentificador = response.nuevo_identificador;
+
+                // Encuentra la fila correspondiente usando el identificador antiguo
+                var row = table.rows().indexes().filter(function (idx) {
+                    return table.cell(idx, 1).data() == datos_fila_tabla.identificador;
+                });
+
+                // Actualiza la celda 'identificador' con el nuevo valor
+                table.cell(row, 1).data(nuevoIdentificador).draw();
+
                 flag_editando = false; // Marcar como fuera de edición
             },
             error: function (xhr, status, error) {
                 console.error('Error al actualizar el dato: ' + error);
+
+                // Crear una alerta de Bootstrap
+                var alertHtml = `
+                <div class="alert alert-info alert-dismissible fade show" role="alert">
+                    Los datos editados ya existen en otra clase.
+                </div>
+            `;
+
+                // Insertar la alerta en el contenedor
+                document.getElementById('alert-container').innerHTML = alertHtml;
+
+                // Eliminar la alerta después de 3 segundos
+                setTimeout(function () {
+                    var alert = document.querySelector('.alert');
+                    if (alert) {
+                        alert.classList.remove('show');
+                        alert.classList.add('fade');
+                        setTimeout(function () {
+                            alert.remove();
+                        }, 150); // Tiempo para la transición de salida
+                    }
+                }, 5000);
+
                 // Restaurar el valor original en caso de error
                 celda_seleccionada.html(celda_seleccionada.data('valor_original_guardado'));
                 flag_editando = false; // Marcar como fuera de edición
@@ -304,8 +371,53 @@ $(document).ready(function () {
                     row.fadeOut(500, function () {
                         table.row(row).remove().draw(false);
                     });
+
+                    // Crear una alerta de Bootstrap
+                    var alertHtml = `
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    La clase se borro con exito.
+                </div>
+            `;
+
+                    // Insertar la alerta en el contenedor
+                    document.getElementById('alert-container').innerHTML = alertHtml;
+
+                    // Eliminar la alerta después de 3 segundos
+                    setTimeout(function () {
+                        var alert = document.querySelector('.alert');
+                        if (alert) {
+                            alert.classList.remove('show');
+                            alert.classList.add('fade');
+                            setTimeout(function () {
+                                alert.remove();
+                            }, 150); // Tiempo para la transición de salida
+                        }
+                    }, 5000);
+
                 } else {
                     alert('Error al borrar la clase. (1)' + id);
+
+                    // Crear una alerta de Bootstrap
+                    var alertHtml = `
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    La clase no se pudo borrar.
+                </div>
+            `;
+
+                    // Insertar la alerta en el contenedor
+                    document.getElementById('alert-container').innerHTML = alertHtml;
+
+                    // Eliminar la alerta después de 3 segundos
+                    setTimeout(function () {
+                        var alert = document.querySelector('.alert');
+                        if (alert) {
+                            alert.classList.remove('show');
+                            alert.classList.add('fade');
+                            setTimeout(function () {
+                                alert.remove();
+                            }, 150); // Tiempo para la transición de salida
+                        }
+                    }, 5000);
                 }
             },
             error: function () {
@@ -331,7 +443,7 @@ $(document).ready(function () {
                     var newData = response.data.data;
                     console.log(newData);
                     console.log(newData.id);
-                    
+
                     var newRow = table.row.add({
                         id: newData.id,
                         identificador: newData.identificador,
@@ -356,7 +468,53 @@ $(document).ready(function () {
 
                     // Hacer que la nueva fila aparezca de forma gradual
                     $(newRow).fadeIn(500);
+
+                    // Crear una alerta de Bootstrap
+                    var alertHtml = `
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    La clase se clono con exito.
+                </div>
+            `;
+
+                    // Insertar la alerta en el contenedor
+                    document.getElementById('alert-container').innerHTML = alertHtml;
+
+                    // Eliminar la alerta después de 3 segundos
+                    setTimeout(function () {
+                        var alert = document.querySelector('.alert');
+                        if (alert) {
+                            alert.classList.remove('show');
+                            alert.classList.add('fade');
+                            setTimeout(function () {
+                                alert.remove();
+                            }, 150); // Tiempo para la transición de salida
+                        }
+                    }, 5000);
+
                 } else {
+
+                    // Crear una alerta de Bootstrap
+                    var alertHtml = `
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    Error al clonar la clase.
+                </div>
+            `;
+
+                    // Insertar la alerta en el contenedor
+                    document.getElementById('alert-container').innerHTML = alertHtml;
+
+                    // Eliminar la alerta después de 3 segundos
+                    setTimeout(function () {
+                        var alert = document.querySelector('.alert');
+                        if (alert) {
+                            alert.classList.remove('show');
+                            alert.classList.add('fade');
+                            setTimeout(function () {
+                                alert.remove();
+                            }, 150); // Tiempo para la transición de salida
+                        }
+                    }, 5000);
+
                     alert('Error al clonar la clase. (1)');
                 }
             },

@@ -39,14 +39,7 @@
 										<?php $this->load->view('_comun/mensajes_alerta'); ?>
 										<h4 class="form-section">Datos de la clase</h4>
 										<div class="row">
-											<div class="col-md-6">
-												<div class="form-group row">
-													<label for="identificador" class="col-md-3 label-control"><span class="red">*</span> Identificador único</label>
-													<div class="col-md-9">
-														<input type="text" id="myInput" readonly="true" class="form-control" name="identificador" placeholder="Identificador" value="<?php echo set_value('identificador') == false ? $clase_a_editar->identificador : set_value('identificador'); ?>">
-													</div>
-												</div>
-											</div>
+											<input type="hidden" readonly="true" id="identificador" class="form-control" name="identificador" placeholder="Identificador" value="<?php echo set_value('identificador'); ?>">
 											<div class="col-md-6">
 												<div class="form-group row">
 													<label for="terminos_condiciones" class="col-md-3 label-control"><span class="red">*</span> Disciplina

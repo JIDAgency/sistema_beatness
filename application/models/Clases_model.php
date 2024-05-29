@@ -217,6 +217,16 @@ class Clases_model extends CI_Model
             ->get();
     }
 
+    public function obtener_clase_por_identificador_para_sku($identificador)
+    {
+        return $this->db->select('
+                t1.*
+            ')
+            ->from('clases as t1')
+            ->where('t1.identificador', $identificador)
+            ->get();
+    }
+
     public function obtener_por_disciplina_id($disciplina_id)
     {
         return $this->db->query("SELECT t1.*,

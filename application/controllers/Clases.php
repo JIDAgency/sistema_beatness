@@ -332,21 +332,122 @@ class Clases extends MY_Controller
         $columna = $this->input->post('columna'); // Índice de la columna
         $nuevoValor = $this->input->post('nuevoValor');
 
-        if ($columna == 'inicia') {
-            $data_1 = array(
-                $columna => $nuevoValor,
-                'inicia_ionic' => $nuevoValor,
-            );
+        $clase = $this->clases_model->obtener_clase_por_identificador_para_sku($identificador)->row();
+
+        // Creacion de identificador con nomenclatura
+        if ($columna == 'disciplina_id') {
+            $disciplina = $this->disciplinas_model->obtener_por_id($nuevoValor)->row();
         } else {
-            $data_1 = array(
-                $columna => $nuevoValor,
-            );
+            $disciplina = $this->disciplinas_model->obtener_por_id($clase->disciplina_id)->row();
         }
 
-        $this->clases_model->actualizar_clase_por_identificador($identificador, $data_1);
+        if ($columna == 'instructor_id') {
+            $instructor = $this->usuarios_model->obtener_instructor_por_id($nuevoValor)->row();
+        } else {
+            $instructor = $this->usuarios_model->obtener_instructor_por_id($clase->instructor_id)->row();
+        }
 
-        // Devuelve una respuesta (puede ser JSON o lo que necesites)
-        echo json_encode(array('status' => 'success', 'message' => 'Dato actualizado'));
+        $valor = $disciplina->nombre;
+        // Separar la cadena en palabras
+        $palabras = explode(' ', $valor);
+
+        // Obtener la primera palabra
+        $primera_palabra = $palabras[0];
+
+        // Obtener las dos primeras letras de la primera palabra
+        $primeras_dos_letras = substr($primera_palabra, 0, 2);
+
+        // Obtener la última letra de la primera palabra
+        $ultima_letra = substr($primera_palabra, -1);
+
+        // Concatenar las letras para formar la nueva cadena
+        $cadena_resultante = $primeras_dos_letras . $ultima_letra;
+
+        $valor1 = $cadena_resultante;
+
+        $valor2 = $instructor->nombre; // Suponiendo que estás obteniendo el valor del select mediante un formulario POST
+        // Eliminar caracteres acentuados y especiales
+        $valor2 = preg_replace('/(á|é|í|ó|ú|ñ|ä|ë|ï|ö|\.|ü)/iu', '', $valor2);
+        // Conservar solo la primera letra de cada palabra y convertirla a mayúsculas
+        $valor2 = preg_replace_callback('/[A-Za-z]+/iu', function ($match) {
+            return strtoupper(trim($match[0])[0]);
+        }, $valor2);
+        // Eliminar espacios en blanco
+        $valor2 = preg_replace('/\s/', '', $valor2);
+
+        if ($columna == 'inicia') {
+
+            $dt = new DateTime($nuevoValor);
+            $formattedDateTime = $dt->format('YmdHis');
+
+            // Asignar el valor convertido a las variables correspondientes
+            $valor3 = $dt->format('Ymd'); // Resultado: '20240602'
+            $valor4 = $dt->format('His'); // Resultado: '180000'
+        } else {
+
+            $dt = new DateTime($clase->inicia);
+            $formattedDateTime = $dt->format('YmdHis');
+
+            // Asignar el valor convertido a las variables correspondientes
+            $valor3 = $dt->format('Ymd'); // Resultado: '20240602'
+            $valor4 = $dt->format('His'); // Resultado: '180000'
+        }
+
+        if ($columna == 'dificultad') {
+            $valor5 = $nuevoValor;
+            $valor5 = preg_replace('/(á|é|í|ó|ú|ñ|ä|ë|ï|ö|\.|ü)/iu', '', $valor5);
+            $valor5 = substr($valor5, 0, 2);
+
+            $valor5 = $nuevoValor;
+            $acentos = array('á', 'é', 'í', 'ó', 'ú', 'Á', 'É', 'Í', 'Ó', 'Ú');
+            $sin_acentos = array('a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U');
+            $valor5 = str_replace($acentos, $sin_acentos, $valor5);
+            $valor5 = strtoupper(substr($valor5, 0, 2));
+        } else {
+            $valor5 = $clase->dificultad;
+            $valor5 = preg_replace('/(á|é|í|ó|ú|ñ|ä|ë|ï|ö|\.|ü)/iu', '', $valor5);
+            $valor5 = substr($valor5, 0, 2);
+
+            $valor5 = $clase->dificultad;
+            $acentos = array('á', 'é', 'í', 'ó', 'ú', 'Á', 'É', 'Í', 'Ó', 'Ú');
+            $sin_acentos = array('a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U');
+            $valor5 = str_replace($acentos, $sin_acentos, $valor5);
+            $valor5 = strtoupper(substr($valor5, 0, 2));
+        }
+
+        $identificador_nuevo = $valor1 . $valor2 . $valor3 . $valor4 . $valor5;
+        // FIN de creacion de identificador
+
+        $clase_existente = $this->clases_model->obtener_clase_por_identificador_para_sku($identificador_nuevo)->row();
+
+        if ($clase_existente) {
+
+            $this->output
+                ->set_status_header(400)
+                ->set_content_type('application/json')
+                ->set_output(json_encode(array('status' => 'error', 'message' => 'Datos ya existentes')));
+        } else {
+
+            if ($columna == 'inicia') {
+                $data_1 = array(
+                    'identificador' => $identificador_nuevo,
+                    $columna => $nuevoValor,
+                    'inicia_ionic' => $nuevoValor,
+                );
+            } else {
+                $data_1 = array(
+                    'identificador' => $identificador_nuevo,
+                    $columna => $nuevoValor,
+                );
+            }
+
+            $this->clases_model->actualizar_clase_por_identificador($identificador, $data_1);
+
+            // Devolver una respuesta JSON con éxito
+            $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode(array('status' => 'success', 'message' => 'Dato actualizado', 'nuevo_identificador' => $identificador_nuevo)));
+        }
     }
 
     public function obtener_opciones_select_disciplina()
@@ -501,7 +602,22 @@ class Clases extends MY_Controller
             $instructor = $this->usuarios_model->obtener_instructor_por_id($this->input->post('instructor_id'))->row();
 
             $valor = $disciplina->nombre;
-            $valor1 = substr($valor, 0, 2);
+            // Separar la cadena en palabras
+            $palabras = explode(' ', $valor);
+
+            // Obtener la primera palabra
+            $primera_palabra = $palabras[0];
+
+            // Obtener las dos primeras letras de la primera palabra
+            $primeras_dos_letras = substr($primera_palabra, 0, 2);
+
+            // Obtener la última letra de la primera palabra
+            $ultima_letra = substr($primera_palabra, -1);
+
+            // Concatenar las letras para formar la nueva cadena
+            $cadena_resultante = $primeras_dos_letras . $ultima_letra;
+
+            $valor1 = $cadena_resultante;
 
             $valor2 = $instructor->nombre; // Suponiendo que estás obteniendo el valor del select mediante un formulario POST
             // Eliminar caracteres acentuados y especiales
@@ -625,7 +741,6 @@ class Clases extends MY_Controller
         );
 
         // Establecer validaciones
-        $this->form_validation->set_rules('identificador', 'Identificador', 'required');
         $this->form_validation->set_rules('disciplina_id', 'Disciplina', 'required');
         $this->form_validation->set_rules('instructor_id', 'Instructor', 'required');
         $this->form_validation->set_rules('cupo', 'Cupo', 'required');
@@ -655,57 +770,88 @@ class Clases extends MY_Controller
             // Preparar los datos a insertar
             // log_message('debug', print_r($this->input->post(), true));
 
-            $hora_de_incio = date('Y-m-d', strtotime(str_replace('/', '-', $this->input->post('inicia_date')))) . 'T' . $this->input->post('inicia_time');
-            $fecha_numerica_de_la_clase = date(DATE_ISO8601, strtotime($hora_de_incio));
+            $disciplina = $this->disciplinas_model->obtener_por_id($this->input->post('disciplina_id'))->row();
+            $instructor = $this->usuarios_model->obtener_instructor_por_id($this->input->post('instructor_id'))->row();
 
-            /**
-             * Comprobar si es una de las disciplinas godin para agregarla como sub-disciplina.
-             */
+            $valor = $disciplina->nombre;
+            // Separar la cadena en palabras
+            $palabras = explode(' ', $valor);
 
-            /*
-            $godin_bike = 5; $godin_box = 6; $godin_body = 7; $dorado_godin_bike = 9;
-            
-            if($this->input->post('disciplina_id') == $godin_bike){
-                $disciplina_id = 2;
-                $subdisciplina_id = $this->input->post('disciplina_id');
-            } elseif($this->input->post('disciplina_id') == $godin_box){
-                $disciplina_id = 3;
-                $subdisciplina_id = $this->input->post('disciplina_id');
-            } elseif($this->input->post('disciplina_id') == $godin_body){
-                $disciplina_id = 4;
-                $subdisciplina_id = $this->input->post('disciplina_id');
-            } elseif($this->input->post('disciplina_id') == $dorado_godin_bike){
-                $disciplina_id = 8;
-                $subdisciplina_id = $this->input->post('disciplina_id');
-            } else{
-                $disciplina_id = $this->input->post('disciplina_id');
-                $subdisciplina_id = 0;
-            }
-            */
+            // Obtener la primera palabra
+            $primera_palabra = $palabras[0];
 
-            $data = array(
-                'identificador' => $this->input->post('identificador'),
-                'disciplina_id' => $this->input->post('disciplina_id'),
-                //'disciplina_id' => $disciplina_id,
-                //'subdisciplina_id' => $subdisciplina_id,
-                'instructor_id' => $this->input->post('instructor_id'),
-                'cupo' => $this->input->post('cupo'),
-                'inicia' => date('Y-m-d', strtotime(str_replace('/', '-', $this->input->post('inicia_date')))) . 'T' . $this->input->post('inicia_time'),
-                'inicia_ionic' => $fecha_numerica_de_la_clase,
-                'intervalo_horas' => $this->input->post('intervalo_horas'),
-                'distribucion_imagen' => $this->input->post('distribucion_imagen'),
-                'distribucion_lugares' => $this->input->post('distribucion_lugares'),
-                'dificultad' => $this->input->post('dificultad'),
-            );
+            // Obtener las dos primeras letras de la primera palabra
+            $primeras_dos_letras = substr($primera_palabra, 0, 2);
 
-            // Insertar nueva disciplina
-            if ($this->clases_model->editar($id, $data)) {
-                $this->session->set_flashdata('MENSAJE_EXITO', 'La clase se ha editado correctamente.');
+            // Obtener la última letra de la primera palabra
+            $ultima_letra = substr($primera_palabra, -1);
+
+            // Concatenar las letras para formar la nueva cadena
+            $cadena_resultante = $primeras_dos_letras . $ultima_letra;
+
+            $valor1 = $cadena_resultante;
+
+            $valor2 = $instructor->nombre; // Suponiendo que estás obteniendo el valor del select mediante un formulario POST
+            // Eliminar caracteres acentuados y especiales
+            $valor2 = preg_replace('/(á|é|í|ó|ú|ñ|ä|ë|ï|ö|\.|ü)/iu', '', $valor2);
+            // Conservar solo la primera letra de cada palabra y convertirla a mayúsculas
+            $valor2 = preg_replace_callback('/[A-Za-z]+/iu', function ($match) {
+                return strtoupper(trim($match[0])[0]);
+            }, $valor2);
+            // Eliminar espacios en blanco
+            $valor2 = preg_replace('/\s/', '', $valor2);
+
+            $valor3 = $this->input->post('inicia_date');
+            $valor3 = preg_replace('/\D/', '', $valor3);
+
+            $valor4 = $this->input->post('inicia_time');
+            $valor4 = preg_replace('/\D/', '', $valor4);
+
+            $valor5 = $this->input->post('dificultad');
+            $valor5 = preg_replace('/(á|é|í|ó|ú|ñ|ä|ë|ï|ö|\.|ü)/iu', '', $valor5);
+            $valor5 = substr($valor5, 0, 2);
+
+            $valor5 = $this->input->post('dificultad');
+            $acentos = array('á', 'é', 'í', 'ó', 'ú', 'Á', 'É', 'Í', 'Ó', 'Ú');
+            $sin_acentos = array('a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U');
+            $valor5 = str_replace($acentos, $sin_acentos, $valor5);
+            $valor5 = strtoupper(substr($valor5, 0, 2));
+
+            $identificador = $valor1 . $valor2 . $valor3 . $valor4 . '00' . $valor5;
+
+            $clase_existente = $this->clases_model->obtener_clase_por_identificador_para_sku($identificador)->row();
+
+            if ($clase_existente) {
+                $this->session->set_flashdata('MENSAJE_INFO', 'La clase con los nuevos datos ya existe.');
                 redirect('clases/index');
-            }
+            } else {
+                $hora_de_incio = date('Y-m-d', strtotime(str_replace('/', '-', $this->input->post('inicia_date')))) . 'T' . $this->input->post('inicia_time');
+                $fecha_numerica_de_la_clase = date(DATE_ISO8601, strtotime($hora_de_incio));
 
-            // Si algo falla regresar a la vista de editar
-            $this->construir_private_site_ui('clases/editar', $data);
+                $data = array(
+                    'identificador' => $identificador,
+                    'disciplina_id' => $this->input->post('disciplina_id'),
+                    //'disciplina_id' => $disciplina_id,
+                    //'subdisciplina_id' => $subdisciplina_id,
+                    'instructor_id' => $this->input->post('instructor_id'),
+                    'cupo' => $this->input->post('cupo'),
+                    'inicia' => date('Y-m-d', strtotime(str_replace('/', '-', $this->input->post('inicia_date')))) . 'T' . $this->input->post('inicia_time'),
+                    'inicia_ionic' => $fecha_numerica_de_la_clase,
+                    'intervalo_horas' => $this->input->post('intervalo_horas'),
+                    'distribucion_imagen' => $this->input->post('distribucion_imagen'),
+                    'distribucion_lugares' => $this->input->post('distribucion_lugares'),
+                    'dificultad' => $this->input->post('dificultad'),
+                );
+
+                // Insertar nueva disciplina
+                if ($this->clases_model->editar($id, $data)) {
+                    $this->session->set_flashdata('MENSAJE_EXITO', 'La clase se ha editado correctamente.');
+                    redirect('clases/index');
+                }
+
+                // Si algo falla regresar a la vista de editar
+                $this->construir_private_site_ui('clases/editar', $data);
+            }
         }
     }
 
@@ -932,9 +1078,14 @@ class Clases extends MY_Controller
             redirect('clases/index');
         }
 
+        $identificador = $clase->identificador;
+
+        $identificador_cancelado = $identificador . ' CANCELADO';
+
         $clase_a_cancelar = $this->clases_model->editar(
             $id,
             array(
+                'identificador' => $identificador_cancelado,
                 'estatus' => 'Cancelada',
             )
         );
