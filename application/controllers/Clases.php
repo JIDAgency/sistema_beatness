@@ -99,10 +99,10 @@ class Clases extends MY_Controller
                 }
 
                 $opciones .= anchor('clases/editar/' . $clase->id, 'Editar');
-                $opciones .= ' | ';
             }
             if ($clase->estatus == 'Activa') {
                 // $opciones .= '<a href="' . site_url('clases/duplicar_clase/' . $clase->id) . '"><span>Duplicar</span></a>';
+                $opciones .= ' | ';
                 $opciones .= '<a href="" class="clonar-row" data-id="' . $clase->id . '"><span>Duplicar</span></a>';
             }
             if ($clase->reservado == 0) {

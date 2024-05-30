@@ -251,6 +251,24 @@ $(document).ready(function () {
                 // Actualiza la celda 'identificador' con el nuevo valor
                 table.cell(row, 1).data(nuevoIdentificador).draw();
 
+                if (columna_nombre === 'inicia') {
+                    var fecha = new Date(valor_nuevo_de_celda);
+
+                    // Obtener los componentes de la fecha y hora
+                    var dia = fecha.getDate().toString().padStart(2, '0');
+                    var mes = fecha.toLocaleString('en-EN', { month: 'long' });
+                    var año = fecha.getFullYear();
+                    var horas = fecha.getHours().toString().padStart(2, '0');
+                    var minutos = fecha.getMinutes().toString().padStart(2, '0');
+                    var segundos = fecha.getSeconds().toString().padStart(2, '0');
+
+                    // Formatear la fecha y hora en el formato deseado
+                    var valor_formateado = `${dia} de ${mes} del ${año} ${horas}:${minutos}:${segundos}`;
+
+                    table.cell(row, 5).data(valor_formateado).draw();
+
+                }
+
                 flag_editando = false; // Marcar como fuera de edición
             },
             error: function (xhr, status, error) {
@@ -258,7 +276,7 @@ $(document).ready(function () {
 
                 // Crear una alerta de Bootstrap
                 var alertHtml = `
-                <div class="alert alert-info alert-dismissible fade show" role="alert">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
                     Los datos editados ya existen en otra clase.
                 </div>
             `;
