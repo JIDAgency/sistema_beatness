@@ -40,6 +40,31 @@
 										<h4 class="form-section">Datos de la clase</h4>
 										<div class="row">
 											<input type="hidden" readonly="true" id="identificador" class="form-control" name="identificador" placeholder="Identificador" value="<?php echo set_value('identificador'); ?>">
+											<div class="col-md-6">
+												<div class="form-group row">
+													<label for="terminos_condiciones" class="col-md-3 label-control"><span class="red">*</span> Disciplina
+														para la clase</label>
+													<div class="col-md-9">
+														<select id="mySelect" name="disciplina_id" class="form-control">
+															<option value="">Seleccione la disciplina</option>
+															<?php foreach ($disciplinas->result() as $disciplina) : ?>
+																<?php
+																if ($clase_a_editar->subdisciplina_id > 0) {
+																	$disciplina_que_se_editara = $clase_a_editar->subdisciplina_id;
+																} else {
+																	$disciplina_que_se_editara = $clase_a_editar->disciplina_id;
+																}
+																?>
+																<?php if ($disciplina->id != 1) : ?>
+																	<option value="<?php echo $disciplina->id; ?>" <?php echo set_select('disciplina_id', $disciplina_que_se_editara, set_value('disciplina_id') ? false : $disciplina->id == $disciplina_que_se_editara); ?>>
+																		<?php echo $disciplina->nombre; ?>
+																	</option>
+																<?php endif; ?>
+															<?php endforeach; ?>
+														</select>
+													</div>
+												</div>
+											</div>
 										</div>
 										<div class="row">
 											<div class="col-md-6">
