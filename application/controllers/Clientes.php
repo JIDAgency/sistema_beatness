@@ -275,9 +275,9 @@ class Clientes extends MY_Controller
         } else {
 
             if ($this->session->userdata('sucursal_asignada') == 5) {
-                $dominio = 'sensoriastudio';
+                $dominio = 'beatness';
             } else {
-                $dominio = 'sensoriastudio';
+                $dominio = 'beatness';
             }
 
             // move_uploaded_file($_FILES['nombre_imagen_avatar']['error'])
