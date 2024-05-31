@@ -110,7 +110,7 @@ class Endpoint extends REST_Controller
             }
 
             if (in_array($plan->codigo, $codigos_canjeados_array) or !$plan->codigo) {
-                if ($reservaciones_list and !in_array($plan->id, array(1))) {
+                if ($reservaciones_list) {
 
                     $plan_con_disciplinas = new stdClass();
                     $plan_con_disciplinas->id = $plan->id;
