@@ -65,6 +65,7 @@
 													<th>Correo electrónico</th>
 													<th>Teléfono</th>
 													<th>Estudiante</th>
+													<th>Vigencia de estudiante</th>
 													<th>Registrado por</th>
 													<th>Estatus</th>
 													<th>Fecha de registro</th>

@@ -263,9 +263,12 @@ $(document).ready(function () {
                     var segundos = fecha.getSeconds().toString().padStart(2, '0');
 
                     // Formatear la fecha y hora en el formato deseado
-                    var valor_formateado = `${dia} de ${mes} del ${año} ${horas}:${minutos}:${segundos}`;
+                    var valor_formateado = `${dia} de ${mes} del ${año}\n${horas}:${minutos}:${segundos}`;
 
                     table.cell(row, 5).data(valor_formateado).draw();
+
+                    console.log('horario_esp actualizado en la DataTable');
+                    console.log('valor nuevo (horario_esp): ' + valor_formateado);
 
                 }
 

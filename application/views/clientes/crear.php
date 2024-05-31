@@ -93,7 +93,6 @@
 
 											<div class="row">
 												<div class="col-xl-12 col-md-12 col-sm-12">
-
 													<div class="form-group">
 														<div class="row">
 															<label class="col-md-3 label-control required-field" for="es_estudiante">¿Es estudiante? <span class="red">*</span></label>
@@ -110,7 +109,22 @@
 															</div>
 														</div>
 													</div>
+												</div>
+											</div>
 
+											<div class="row" id="vigencia_estudiante_row" style="display: none;">
+												<div class="col-xl-12 col-md-12 col-sm-12">
+													<div class="form-group">
+														<div class="row">
+															<label class="col-md-3 label-control required-field" for="es_estudiante_vigencia">Vigencia de estudiante <span class="red">*</span></label>
+															<div class="col-md-9">
+																<input type="date" id="es_estudiante_vigencia" name="es_estudiante_vigencia" class="form-control" placeholder="Indique la fecha" value="<?php echo set_value('es_estudiante_vigencia') == false ? date('Y-m-d') : set_value('es_estudiante_vigencia'); ?>">
+																<div class="invalid-feedback">
+																	Se requiere una opción válida.
+																</div>
+															</div>
+														</div>
+													</div>
 												</div>
 											</div>
 

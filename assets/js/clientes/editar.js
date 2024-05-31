@@ -1,3 +1,22 @@
+document.addEventListener('DOMContentLoaded', function() {
+	var estudianteSelect = document.getElementById('es_estudiante');
+	var vigenciaRow = document.getElementById('vigencia_estudiante_row');
+
+	estudianteSelect.addEventListener('change', function() {
+		console.log(this.value);
+		console.log(estudianteSelect.value);
+		if (estudianteSelect.value === 'si') { // Ajusta este valor según corresponda al valor de "si" en tu select
+			vigenciaRow.style.display = 'block';
+		} else {
+			vigenciaRow.style.display = 'none';
+		}
+	});
+
+	// Verificar el valor inicial al cargar la página
+	if (estudianteSelect.value === 'si') { // Ajusta este valor según corresponda al valor de "si" en tu select
+		vigenciaRow.style.display = 'block';
+	}
+});
 $(function () {
 
 	// Inicializar máscaras

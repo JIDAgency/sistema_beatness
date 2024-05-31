@@ -29,6 +29,7 @@ $(function () {
             { "data": "correo" },
             { "data": "no_telefono" },
             { "data": "es_estudiante" },
+            { "data": "es_estudiante_vigencia" },
             { "data": "dominio" },
             { "data": "estatus" },
             { "data": "fecha_registro" },
