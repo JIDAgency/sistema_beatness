@@ -48,6 +48,12 @@ class Clientes extends MY_Controller
 
         foreach ($usuarios_list as $usuario_row) {
 
+            if ($usuario_row->es_estudiante == 'si') {
+                $vigencia = (!empty($usuario_row->es_estudiante_vigencia) ? date('d/m/Y', strtotime($usuario_row->es_estudiante_vigencia)) : '');
+            } else {
+                $vigencia = '-';
+            }
+
             $menu = '
                     <a href="' . site_url("clientes/editar/") . $usuario_row->id . '">Editar</a>    
                     |
@@ -62,7 +68,7 @@ class Clientes extends MY_Controller
                 "correo" => !empty($usuario_row->correo) ? $usuario_row->correo : null,
                 "no_telefono" => !empty($usuario_row->no_telefono) ? $usuario_row->no_telefono : null,
                 "es_estudiante" => !empty($usuario_row->es_estudiante) ? ucfirst($usuario_row->es_estudiante) : null,
-                "es_estudiante_vigencia" => !empty($usuario_row->es_estudiante_vigencia) ? ucfirst($usuario_row->es_estudiante_vigencia) : null,
+                "es_estudiante_vigencia" => $vigencia,
                 "dominio" => !empty($usuario_row->dominio) ? ucfirst($usuario_row->dominio) : null,
                 "estatus" => !empty($usuario_row->estatus) ? ucfirst($usuario_row->estatus) : null,
                 "fecha_registro" => !empty($usuario_row->fecha_registro) ? $usuario_row->fecha_registro : null,
