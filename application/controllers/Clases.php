@@ -821,7 +821,7 @@ class Clases extends MY_Controller
 
             $clase_existente = $this->clases_model->obtener_clase_por_identificador_para_sku($identificador)->row();
 
-            if ($clase_existente) {
+            if ($clase_existente AND ($clase_existente->intervalo_horas == $this->input->post('intervalo_horas')) AND ($clase_existente->distribucion_imagen == $this->input->post('distribucion_imagen')) AND ($clase_existente->distribucion_lugares == $this->input->post('distribucion_lugares'))) {
                 $this->session->set_flashdata('MENSAJE_INFO', 'La clase con los nuevos datos ya existe.');
                 redirect('clases/index');
             } else {
