@@ -288,7 +288,7 @@ class Clases extends MY_Controller
                 'identificador' => !empty($new_class->identificador) ? $new_class->identificador : '',
                 'disciplina_id' => $new_class->disciplina_nombre,
                 'dificultad' => !empty($new_class->dificultad) ? mb_strtoupper($new_class->dificultad) : '',
-                'inicia' => (!empty($new_class->inicia) ? date('Y/m/d H:i:s', strtotime($new_class->inicia)) : ''),
+                'inicia' => (!empty($new_class->inicia) ? date('d/m/Y H:i:s', strtotime($new_class->inicia)) : ''),
                 'horario_esp' => !empty($fecha_espaniol) ? ucfirst($fecha_espaniol) : '',
                 'instructor_id' => !empty($new_class->instructor) ? $new_class->instructor : '',
                 'cupo' => !empty($new_class->cupo) ? ucfirst($new_class->cupo) : '',

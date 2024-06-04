@@ -124,13 +124,25 @@ $(document).ready(function () {
         }
     });
 
+    function convertirFechaFormatoISO(fecha) {
+        let [dia, mes, anio] = fecha.split(' ')[0].split('/');
+        let [hora, minuto, segundo] = fecha.split(' ')[1].split(':');
+        return `${anio}-${mes}-${dia}T${hora}:${minuto}`;
+    }
+
     // Función para guardar el valor de la celda
     function guardar_valor_de_celda(celda_seleccionada, columna_nombre, input) {
 
         var valor_nuevo_de_celda = input.val();
 
+        let valorOriginalConvertido = convertirFechaFormatoISO(celda_seleccionada.data('valor_original_guardado'));
+
         // Si no hay cambios, no realizar la solicitud AJAX
-        if (celda_seleccionada.data('valor_original_guardado') === valor_nuevo_de_celda) {
+        if (columna_nombre != "inicia" && celda_seleccionada.data('valor_original_guardado').trim() === valor_nuevo_de_celda.trim()) {
+            celda_seleccionada.html(celda_seleccionada.data('valor_original_guardado')); // Restaurar el valor en la celda
+            flag_editando = false; // Marcar como fuera de edición
+            return; // Salir de la función sin hacer nada
+        } else if (valorOriginalConvertido === valor_nuevo_de_celda) {
             celda_seleccionada.html(celda_seleccionada.data('valor_original_guardado')); // Restaurar el valor en la celda
             flag_editando = false; // Marcar como fuera de edición
             return; // Salir de la función sin hacer nada
