@@ -30,8 +30,14 @@ class Gympass extends MY_Controller
         );
 
         $list_products = json_decode($this->list_products(), true);
+        $list_classes = json_decode($this->list_classes(), true);
+        $list_slots = json_decode($this->list_slots('1713', '2024-01-09T00:00:00%2B03:00', '2024-09-09T23:59:59%2B03:00'), true);
+        $create_slot = $this->create_slot('1713');
 
         $data['list_products'] = $list_products;
+        $data['list_classes'] = $list_classes;
+        $data['list_slots'] = $list_slots;
+        $data['create_slot'] = $create_slot;
 
         $this->construir_private_site_ui('gympass/index', $data);
     }
@@ -117,19 +123,30 @@ class Gympass extends MY_Controller
 
     public function create_slot($class_id)
     {
+        // Fecha y hora del viernes a las 7 AM (hora local)
+        $occur_date = "2024-06-07T07:00:00.000Z";
+        // Fecha y hora de apertura de la ventana de reserva (por ejemplo, 5 días antes)
+        $booking_window_opens = "2024-06-02T07:00:00.000Z";
+        // Fecha y hora de cierre de la ventana de reserva (por ejemplo, 1 hora antes de la clase)
+        $booking_window_closes = "2024-06-07T06:00:00.000Z";
+        // Fecha y hora límite para cancelación (4 horas antes de la clase)
+        $cancellable_until = "2024-06-07T03:00:00.000Z";
+
+        $product_id = 119;
+
         $data = [
-            "occur_date" => "2022-09-29T22:00:50.000Z",
+            "occur_date" => $occur_date,
             "status" => 1,
             "room" => "Virtual test",
             "length_in_minutes" => 60,
             "total_capacity" => 15,
             "total_booked" => 5,
-            "product_id" => 100003,
+            "product_id" => $product_id,
             "booking_window" => [
-                "opens_at" => "2022-09-29T09:22:50.000Z",
-                "closes_at" => "2022-09-29T21:00:00.000Z"
+                "opens_at" => $booking_window_opens,
+                "closes_at" => $booking_window_closes
             ],
-            "cancellable_until" => "2022-09-29T18:05:00.000Z",
+            "cancellable_until" => $cancellable_until,
             "instructors" => [
                 [
                     "name" => "Virtual test",
@@ -141,11 +158,12 @@ class Gympass extends MY_Controller
 
         try {
             $response = $this->gympass_lib->post_create_slot($class_id, $data);
-            return $response;
+            return $response;  // Asegúrate de imprimir la respuesta para verla en la salida.
         } catch (Exception $e) {
-            return "Error: " . $e->getMessage();
+            return "Error: " . $e->getMessage();  // Asegúrate de imprimir los errores para verlos.
         }
     }
+
 
     public function slot_details($class_id, $slot_id)
     {

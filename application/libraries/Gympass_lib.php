@@ -37,26 +37,26 @@ class Gympass_lib
 
         if ($method !== 'GET') {
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+            if ($data !== null) {
+                curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+            }
         }
 
         $response = curl_exec($ch);
-
-        if ($response === false) {
-            $error_message = curl_error($ch);
-            curl_close($ch);
-            throw new Exception("Error al llamar a la API: $error_message");
-        }
-
         $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
 
+        if ($response === false) {
+            $error_message = curl_error($ch);
+            throw new Exception("Error al llamar a la API: $error_message");
+        }
+
         if ($http_status >= 200 && $http_status < 300) {
-            return $response;
+            return $response; // Success response
         } else {
             $error_response = json_decode($response, true);
             $error_message = isset($error_response['message']) ? $error_response['message'] : 'Error desconocido en la API';
-            throw new Exception("Error al llamar a la API: $error_message");
+            throw new Exception("API Error: $error_message (HTTP Status: $http_status)");
         }
     }
 
