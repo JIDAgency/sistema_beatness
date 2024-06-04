@@ -179,22 +179,14 @@ $(document).ready(function () {
             var alertHtml = `
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
                     La clase fue cancelada.
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
                 </div>
             `;
             // Insertar la alerta en el contenedor
             document.getElementById('alert-container').innerHTML = alertHtml;
 
-            // Eliminar la alerta después de 3 segundos
-            setTimeout(function () {
-                var alert = document.querySelector('.alert');
-                if (alert) {
-                    alert.classList.remove('show');
-                    alert.classList.add('fade');
-                    setTimeout(function () {
-                        alert.remove();
-                    }, 150); // Tiempo para la transición de salida
-                }
-            }, 5000);
             console.log('La clase fue cancelada CANCELADO');
             return;
         }
@@ -293,23 +285,14 @@ $(document).ready(function () {
                 var alertHtml = `
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
                     Los datos editados ya existen en otra clase.
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
                 </div>
             `;
 
                 // Insertar la alerta en el contenedor
                 document.getElementById('alert-container').innerHTML = alertHtml;
-
-                // Eliminar la alerta después de 3 segundos
-                setTimeout(function () {
-                    var alert = document.querySelector('.alert');
-                    if (alert) {
-                        alert.classList.remove('show');
-                        alert.classList.add('fade');
-                        setTimeout(function () {
-                            alert.remove();
-                        }, 150); // Tiempo para la transición de salida
-                    }
-                }, 5000);
 
                 // Restaurar el valor original en caso de error
                 celda_seleccionada.html(celda_seleccionada.data('valor_original_guardado'));
@@ -409,23 +392,14 @@ $(document).ready(function () {
                     var alertHtml = `
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                     La clase se borro con exito.
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
                 </div>
             `;
 
                     // Insertar la alerta en el contenedor
                     document.getElementById('alert-container').innerHTML = alertHtml;
-
-                    // Eliminar la alerta después de 3 segundos
-                    setTimeout(function () {
-                        var alert = document.querySelector('.alert');
-                        if (alert) {
-                            alert.classList.remove('show');
-                            alert.classList.add('fade');
-                            setTimeout(function () {
-                                alert.remove();
-                            }, 150); // Tiempo para la transición de salida
-                        }
-                    }, 5000);
 
                 } else {
                     alert('Error al borrar la clase. (1)' + id);
@@ -434,23 +408,14 @@ $(document).ready(function () {
                     var alertHtml = `
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
                     La clase no se pudo borrar.
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
                 </div>
             `;
 
                     // Insertar la alerta en el contenedor
                     document.getElementById('alert-container').innerHTML = alertHtml;
-
-                    // Eliminar la alerta después de 3 segundos
-                    setTimeout(function () {
-                        var alert = document.querySelector('.alert');
-                        if (alert) {
-                            alert.classList.remove('show');
-                            alert.classList.add('fade');
-                            setTimeout(function () {
-                                alert.remove();
-                            }, 150); // Tiempo para la transición de salida
-                        }
-                    }, 5000);
                 }
             },
             error: function () {
@@ -506,23 +471,14 @@ $(document).ready(function () {
                     var alertHtml = `
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                     La clase se clono con exito.
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
                 </div>
             `;
 
                     // Insertar la alerta en el contenedor
                     document.getElementById('alert-container').innerHTML = alertHtml;
-
-                    // Eliminar la alerta después de 3 segundos
-                    setTimeout(function () {
-                        var alert = document.querySelector('.alert');
-                        if (alert) {
-                            alert.classList.remove('show');
-                            alert.classList.add('fade');
-                            setTimeout(function () {
-                                alert.remove();
-                            }, 150); // Tiempo para la transición de salida
-                        }
-                    }, 5000);
 
                 } else {
 
@@ -530,23 +486,14 @@ $(document).ready(function () {
                     var alertHtml = `
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                     Error al clonar la clase.
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
                 </div>
             `;
 
                     // Insertar la alerta en el contenedor
                     document.getElementById('alert-container').innerHTML = alertHtml;
-
-                    // Eliminar la alerta después de 3 segundos
-                    setTimeout(function () {
-                        var alert = document.querySelector('.alert');
-                        if (alert) {
-                            alert.classList.remove('show');
-                            alert.classList.add('fade');
-                            setTimeout(function () {
-                                alert.remove();
-                            }, 150); // Tiempo para la transición de salida
-                        }
-                    }, 5000);
 
                     alert('Error al clonar la clase. (1)');
                 }
