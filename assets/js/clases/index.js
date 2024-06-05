@@ -177,12 +177,13 @@ $(document).ready(function () {
             celda_seleccionada.html(celda_seleccionada.data('valor_original_guardado')); // Restaurar el valor en la celda
             flag_editando = false; // Marcar como fuera de edición
             var alertHtml = `
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    La clase fue cancelada.
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
+            <div class="alert bg-danger alert-icon-left alert-dismissible mb-2 font-small-3" role="alert">
+                <span class="alert-icon"><i class="fa fa-thumbs-o-down"></i></span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                La clase fue cancelada
+            </div>
             `;
             // Insertar la alerta en el contenedor
             document.getElementById('alert-container').innerHTML = alertHtml;
@@ -283,11 +284,12 @@ $(document).ready(function () {
 
                 // Crear una alerta de Bootstrap
                 var alertHtml = `
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    Los datos editados ya existen en otra clase.
+                <div class="alert bg-danger alert-icon-left alert-dismissible mb-2 font-small-3" role="alert">
+                    <span class="alert-icon"><i class="fa fa-thumbs-o-down"></i></span>
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
+                    Los datos editados ya existen en otra clase
                 </div>
             `;
 
@@ -390,11 +392,12 @@ $(document).ready(function () {
 
                     // Crear una alerta de Bootstrap
                     var alertHtml = `
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    La clase se borro con exito.
+                    <div class="alert bg-success alert-icon-left alert-dismissible mb-2" role="alert">
+                    <span class="alert-icon"><i class="fa fa-thumbs-o-up"></i></span>
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
+                    La clase se borro con éxito.
                 </div>
             `;
 
@@ -406,11 +409,12 @@ $(document).ready(function () {
 
                     // Crear una alerta de Bootstrap
                     var alertHtml = `
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    La clase no se pudo borrar.
+                    <div class="alert bg-danger alert-icon-left alert-dismissible mb-2 font-small-3" role="alert">
+                    <span class="alert-icon"><i class="fa fa-thumbs-o-down"></i></span>
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
+                    La clase no se pudo borrar
                 </div>
             `;
 
@@ -469,11 +473,12 @@ $(document).ready(function () {
 
                     // Crear una alerta de Bootstrap
                     var alertHtml = `
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    La clase se clono con exito.
+                    <div class="alert bg-success alert-icon-left alert-dismissible mb-2" role="alert">
+                    <span class="alert-icon"><i class="fa fa-thumbs-o-up"></i></span>
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
+                    La clase se clono con éxito.
                 </div>
             `;
 
@@ -484,11 +489,12 @@ $(document).ready(function () {
 
                     // Crear una alerta de Bootstrap
                     var alertHtml = `
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    Error al clonar la clase.
+                    <div class="alert bg-danger alert-icon-left alert-dismissible mb-2 font-small-3" role="alert">
+                    <span class="alert-icon"><i class="fa fa-thumbs-o-down"></i></span>
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
+                    Error al clonar la clase.
                 </div>
             `;
 
