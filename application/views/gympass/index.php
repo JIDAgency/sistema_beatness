@@ -16,7 +16,7 @@
                 <div class="row breadcrumbs-top">
                     <div class="breadcrumb-wrapper col-12">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="<?php echo site_url('site/inicio'); ?>">Inicio</a></li>
+                            <li class="breadcrumb-item"><a href="<?php echo site_url('inicio'); ?>">Inicio</a></li>
                             <li class="breadcrumb-item active"><?php echo $pagina_titulo; ?></li>
                         </ol>
                     </div>
@@ -25,18 +25,6 @@
             </div>
 
             <div class="content-header-right col-md-6 col-12">
-
-                <!-- <div class="media float-right">
-
-                    <div class="form-group">
-                        <div class="btn-group" role="group" aria-label="Basic example">
-                            <a class="btn btn-outline-secondary" href="<?php // echo site_url('site/roles/agregar'); 
-                                                                        ?>"><i class="fa fa-plus-circle"></i>&nbsp;Agregar</a>
-                        </div>
-                    </div>
-
-                </div> -->
-
             </div>
         </div>
 
@@ -60,12 +48,14 @@
                                         <div class="col-12 mb-3">
                                             <p><?php echo "<pre>" . json_encode($create_slot, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . "</pre>"; ?></p>
 
+                                            <?php $array = json_decode('{"metadata":{"total":1,"errors":0},"results":[{"id":48545,"class_id":1713,"occur_date":"2024-06-07T08:10:00Z","status":1,"room":"Virtual test","length_in_minutes":60,"total_capacity":20,"total_booked":0,"product_id":119,"booking_window":{"opens_at":"2024-06-01T12:59:59Z","closes_at":"2024-06-07T07:10:00Z"},"cancellable_until":"2024-06-07T04:10:00Z","instructors":[{"name":"Freddy","substitute":false}],"virtual":false}]}'); ?>
+                                            <p><?php echo "<pre>" . json_encode($array, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . "</pre>"; ?></p>
+                                            <?php $array_results = $array->results[0]; ?>
+                                            <p><?php print_r($array_results->id); ?></p>
                                         </div>
                                         <div class="col-12 mb-3">
                                             <p><?php echo "<pre>" . json_encode($list_slots, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . "</pre>"; ?></p>
-
                                         </div>
-
                                         <div class="col-12 mb-3">
                                             <h3>Classes</h3>
                                             <!-- <p><?php echo "<pre>" . json_encode($list_classes, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . "</pre>"; ?></p> -->
