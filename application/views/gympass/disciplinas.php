@@ -42,7 +42,7 @@
 
                 <div class="col-xl-4 col-md-4 col-sm-12">
                     <h4>Disciplinas en Gympass</h4>
-                    <table name="table" id="table" class="table display nowrap table-striped table-bordered scroll-horizontal table-hover">
+                    <table name="table_2" id="table_2" class="table display nowrap table-striped table-bordered scroll-horizontal table-hover">
                         <thead>
                             <tr>
                                 <th>#</th>

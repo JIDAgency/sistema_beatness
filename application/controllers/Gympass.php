@@ -21,9 +21,12 @@ class Gympass extends MY_Controller
         $data['regresar_a'] = 'gympass';
         $controlador_js = "gympass/disciplinas";
 
-        $data['styles'] = array();
+        $data['styles'] = array(
+            array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/tables/datatable/datatables.min.css'),
+        );
 
         $data['scripts'] = array(
+            array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/tables/datatable/datatables.min.js'),
             array('es_rel' => true, 'src' => '' . $controlador_js . '.js'),
         );
 
@@ -75,29 +78,6 @@ class Gympass extends MY_Controller
         }
     }
 
-    public function clases()
-    {
-        $data['pagina_titulo'] = 'Clases';
-        $data['pagina_subtitulo'] = 'Clases | Gympass';
-        $data['pagina_gympass'] = true;
-
-        $data['controlador'] = 'gympass/clases';
-        $data['regresar_a'] = 'gympass';
-        $controlador_js = "gympass/clases";
-
-        $data['styles'] = array();
-
-        $data['scripts'] = array(
-            array('es_rel' => true, 'src' => '' . $controlador_js . '.js'),
-        );
-
-        $clases_list = $this->gympass_model->clases_obtener_activas()->result();
-
-        $data['clases_list'] = $clases_list;
-
-        $this->construir_private_site_ui('gympass/clases', $data);
-    }
-
     function categorias()
     {
         $data['pagina_titulo'] = 'Categorías';
@@ -108,9 +88,12 @@ class Gympass extends MY_Controller
         $data['regresar_a'] = 'gympass';
         $controlador_js = "gympass/categorias";
 
-        $data['styles'] = array();
+        $data['styles'] = array(
+            array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/tables/datatable/datatables.min.css'),
+        );
 
         $data['scripts'] = array(
+            array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/tables/datatable/datatables.min.js'),
             array('es_rel' => true, 'src' => '' . $controlador_js . '.js'),
         );
 
@@ -259,6 +242,120 @@ class Gympass extends MY_Controller
             $this->output_json(['status' => 'error', 'message' => 'Error al registrar la Categorías de Gympass: ' . $e->getMessage()]);
         }
     }
+
+    public function clases()
+    {
+        $data['pagina_titulo'] = 'Clases';
+        $data['pagina_subtitulo'] = 'Clases | Gympass';
+        $data['pagina_gympass'] = true;
+
+        $data['controlador'] = 'gympass/clases';
+        $data['regresar_a'] = 'gympass';
+        $controlador_js = "gympass/clases";
+
+        $data['styles'] = array(
+            array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/tables/datatable/datatables.min.css'),
+            array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/forms/selects/select2.min.css'),
+        );
+
+        $data['scripts'] = array(
+            array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/tables/datatable/datatables.min.js'),
+            array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/forms/select/select2.full.min.js'),
+            array('es_rel' => true, 'src' => '' . $controlador_js . '.js'),
+        );
+
+        $clases_list = $this->gympass_model->clases_obtener_activas()->result();
+        $categorias_list = $this->gympass_model->categorias_obtener()->result();
+
+        $data['clases_list'] = $clases_list;
+        $data['categorias_list'] = $categorias_list;
+
+        $this->construir_private_site_ui('gympass/clases', $data);
+    }
+
+    // public function registrar_clase()
+    // {
+    //     if ($this->input->post()) {
+    //         $id = $this->input->post('id');
+    //         $categoria = $this->input->post('categoria');
+    //     } else {
+    //         $this->mensaje_del_sistema('MENSAJE_ERROR', 'Al parecer ha ocurrido un error, por favor intentelo más tarde.', 'gympass/clases');
+    //         return;
+    //     }
+
+    //     // Supongamos que tienes una fecha y hora para la clase en formato Y-m-d H:i:s
+    //     $class_datetime = '2024-06-07 07:00:00';
+
+    //     // Crear un objeto DateTime a partir de la fecha de la clase
+    //     $class_date = new DateTime($class_datetime, new DateTimeZone('UTC'));
+
+    //     // Convertir la fecha de la clase al formato deseado
+    //     $occur_date = $class_date->format('Y-m-d\TH:i:s\Z[UTC]');
+
+    //     // Clonar el objeto DateTime para calcular las demás fechas sin modificar el original
+    //     $booking_window_opens_date = clone $class_date;
+    //     $booking_window_closes_date = clone $class_date;
+    //     $cancellable_until_date = clone $class_date;
+
+    //     // Calcular la fecha y hora de apertura de la ventana de reserva (5 días antes)
+    //     $booking_window_opens_date->sub(new DateInterval('P5D'));
+    //     $booking_window_opens = $booking_window_opens_date->format('Y-m-d\TH:i:s\Z[UTC]');
+
+    //     // Calcular la fecha y hora de cierre de la ventana de reserva (1 hora antes)
+    //     $booking_window_closes_date->sub(new DateInterval('PT1H'));
+    //     $booking_window_closes = $booking_window_closes_date->format('Y-m-d\TH:i:s\Z[UTC]');
+
+    //     // Calcular la fecha y hora límite para cancelación (4 horas antes)
+    //     $cancellable_until_date->sub(new DateInterval('PT4H'));
+    //     $cancellable_until = $cancellable_until_date->format('Y-m-d\TH:i:s\Z[UTC]');
+
+    //     $room = $datos_slot['room'];
+    //     $length_in_minutes = $datos_slot['length_in_minutes'];
+    //     $total_capacity = $datos_slot['total_capacity'];
+    //     $total_booked = $datos_slot['total_booked'];
+    //     $product_id = $datos_slot['product_id'];
+    //     $instructors_name = $datos_slot['instructors_name'];
+    //     $instructors_substitute = $datos_slot['instructors_substitute'];
+
+    //     $data = [
+    //         "occur_date" => $occur_date,
+    //         "status" => 1,
+    //         "room" => $room,
+    //         "length_in_minutes" => $length_in_minutes,
+    //         "total_capacity" => $total_capacity,
+    //         "total_booked" => $total_booked,
+    //         "product_id" => $product_id,
+    //         "booking_window" => [
+    //             "opens_at" => $booking_window_opens,
+    //             "closes_at" => $booking_window_closes
+    //         ],
+    //         "cancellable_until" => $cancellable_until,
+    //         "instructors" => [
+    //             [
+    //                 "name" => $instructors_name,
+    //                 "substitute" => $instructors_substitute
+    //             ]
+    //         ],
+    //         "rate" => 4.0
+    //     ];
+
+    //     $this->mensaje_del_sistema('MENSAJE_EXITO', '' . $categoria . '', 'gympass/clases');
+    // }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     private function output_json($data)
     {
