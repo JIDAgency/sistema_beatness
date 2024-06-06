@@ -31,6 +31,49 @@ class Gympass_model extends CI_Model
         return $query->num_rows() > 0;
     }
 
+    // ====== Categorías ======
+
+    public function categorias_obtener()
+    {
+        $query = $this->db
+            ->select('
+                t1.*,
+                t2.nombre as disciplinas_nombre,
+                t2.gympass_product_id as disciplinas_gympass_product_id,
+            ')
+            ->from('clases_categorias t1')
+            ->join("disciplinas t2", "t2.id = t1.disciplina_id")
+            ->get();
+
+        return $query;
+    }
+
+    public function categorias_obtener_por_id($id)
+    {
+        $query = $this->db
+            ->where('t1.id', $id)
+            ->select('
+            t1.*,
+            t2.nombre as disciplinas_nombre,
+            t2.gympass_product_id as disciplinas_gympass_product_id,
+        ')
+            ->from('clases_categorias t1')
+            ->join("disciplinas t2", "t2.id = t1.disciplina_id")
+            ->get();
+
+        return $query;
+    }
+
+    public function categoria_actualizar_por_id($id, $data)
+    {
+        $query = $this->db
+            ->where('id', intval($id))
+            ->update('clases_categorias', $data);
+
+        return $query;
+    }
+
+
     // ====== Clases ======
 
     public function clases_obtener_activas()

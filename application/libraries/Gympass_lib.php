@@ -55,7 +55,7 @@ class Gympass_lib
             return json_decode($response, true); // Success response
         } else {
             $error_response = json_decode($response, true);
-            return ['error' => true, 'message' => $error_response['Message'] ?? 'Error desconocido en la API'];
+            return ['error' => true, 'message' => $error_response['Message'] ?? $error_response['message'] ?? 'Error desconocido en la API'];
         }
     }
 
