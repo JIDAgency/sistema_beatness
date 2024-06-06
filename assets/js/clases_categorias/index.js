@@ -67,6 +67,63 @@ $(document).ready(function () {
 
     });
 
+    $('#table').on('click', '.delete-row', function (e) {
+        e.preventDefault();
+        var row = $(this).closest('tr');
+        var id = $(this).data('id');
+
+        // if (confirm('¿Estás seguro de que deseas eliminar esta clase?')) {
+        $.ajax({
+            url: method_call + 'borrar/' + id,
+            type: 'POST',
+            dataType: 'json', // Asegúrate de que jQuery trate la respuesta como JSON
+            success: function (response) {
+                // Verifica que la respuesta contiene un campo `success` con valor `true`
+                console.log(response); // Agrega este línea para verificar la respuesta en la consola
+                if (response.success) {
+                    row.fadeOut(500, function () {
+                        table.row(row).remove().draw(false);
+                    });
+
+                    // Crear una alerta de Bootstrap
+                    var alertHtml = `
+                    <div class="alert bg-success alert-icon-left alert-dismissible mb-2" role="alert">
+                    <span class="alert-icon"><i class="fa fa-thumbs-o-up"></i></span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    La clase se borro con éxito.
+                </div>
+            `;
+
+                    // Insertar la alerta en el contenedor
+                    document.getElementById('alert-container').innerHTML = alertHtml;
+
+                } else {
+                    alert('Error al borrar la clase. (1)' + id);
+
+                    // Crear una alerta de Bootstrap
+                    var alertHtml = `
+                    <div class="alert bg-danger alert-icon-left alert-dismissible mb-2 font-small-3" role="alert">
+                    <span class="alert-icon"><i class="fa fa-thumbs-o-down"></i></span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    La clase no se pudo borrar
+                </div>
+            `;
+
+                    // Insertar la alerta en el contenedor
+                    document.getElementById('alert-container').innerHTML = alertHtml;
+                }
+            },
+            error: function () {
+                alert('Error al borrar la clase.');
+            }
+        });
+        // }
+    });
+
     // Detectar doble clic en celda editable
     // $('#table').on('dblclick', 'td.editable-cell', function () {
     //     if (!flag_editando) {

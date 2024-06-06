@@ -111,7 +111,7 @@
                                         </div>
 
                                         <div class="form-actions right">
-                                            <a href="<?php echo site_url('clases/index'); ?>" class="btn btn-secondary btn-sm">Cancelar</a>
+                                            <a href="<?php echo site_url('clases_categorias/index'); ?>" class="btn btn-secondary btn-sm">Cancelar</a>
                                             <button type="submit" class="btn btn-secondary btn-sm">Guardar</button>
                                         </div>
 

@@ -134,7 +134,7 @@ class Clases_categorias extends MY_Controller
         } else {
 
             $fecha_registro = date("Y-m-d H:i:s");
-			$fecha = date("Y-m-d-H-i-s", strtotime($fecha_registro));
+            $fecha = date("Y-m-d-H-i-s", strtotime($fecha_registro));
 
             $cupo_lugares = array();
             // Crear un arreglo de arreglos para llevar un registro mas detallado del cupo
@@ -214,12 +214,10 @@ class Clases_categorias extends MY_Controller
 
         // Establecer validaciones
         $this->form_validation->set_rules('disciplina_id', 'Disciplina', 'required');
-        $this->form_validation->set_rules('instructor_id', 'Instructor', 'required');
-        $this->form_validation->set_rules('cupo', 'Cupo', 'required');
-        $this->form_validation->set_rules('inicia_date', 'Fecha', 'required');
-        $this->form_validation->set_rules('inicia_time', 'Hora', 'required');
-        $this->form_validation->set_rules('intervalo_horas', 'Intervalo en horas', 'required');
-        $this->form_validation->set_rules('distribucion_lugares', 'Distribución de lugares', 'required');
+        $this->form_validation->set_rules('nombre', 'Nombre', 'required');
+        $this->form_validation->set_rules('descripcion', 'Descripción', 'required');
+        $this->form_validation->set_rules('nota', 'Nota', 'required');
+        $this->form_validation->set_rules('estatus', 'Estatus', 'required');
         //$this->form_validation->set_rules('dificultad', 'Dificultad', 'required');
 
         if ($this->input->post()) {
@@ -232,7 +230,7 @@ class Clases_categorias extends MY_Controller
 
             if (!$clase_a_editar) {
                 $this->session->set_flashdata('MENSAJE_INFO', 'La clase que intenta editar no existe.');
-                redirect('clases/index');
+                redirect('clases_categorias/index');
             }
 
             $data['clase_a_editar'] = $clase_a_editar;
@@ -242,88 +240,48 @@ class Clases_categorias extends MY_Controller
             // Preparar los datos a insertar
             // log_message('debug', print_r($this->input->post(), true));
 
-            $disciplina = $this->disciplinas_model->obtener_por_id($this->input->post('disciplina_id'))->row();
-            $instructor = $this->usuarios_model->obtener_instructor_por_id($this->input->post('instructor_id'))->row();
+            $data = array(
+                'disciplina_id' => $this->input->post('disciplina_id'),
+                'nombre' => $this->input->post('nombre'),
+                'descripcion' => $this->input->post('descripcion'),
+                'nota' => $this->input->post('nota'),
+                'estatus' => $this->input->post('estatus'),
+            );
 
-            $valor = $disciplina->nombre;
-            // Separar la cadena en palabras
-            $palabras = explode(' ', $valor);
-
-            // Obtener la primera palabra
-            $primera_palabra = $palabras[0];
-
-            // Obtener las dos primeras letras de la primera palabra
-            $primeras_dos_letras = substr($primera_palabra, 0, 2);
-
-            // Obtener la última letra de la primera palabra
-            $ultima_letra = substr($primera_palabra, -1);
-
-            // Concatenar las letras para formar la nueva cadena
-            $cadena_resultante = $primeras_dos_letras . $ultima_letra;
-
-            $valor1 = $cadena_resultante;
-
-            $valor2 = $instructor->nombre; // Suponiendo que estás obteniendo el valor del select mediante un formulario POST
-            // Eliminar caracteres acentuados y especiales
-            $valor2 = preg_replace('/(á|é|í|ó|ú|ñ|ä|ë|ï|ö|\.|ü)/iu', '', $valor2);
-            // Conservar solo la primera letra de cada palabra y convertirla a mayúsculas
-            $valor2 = preg_replace_callback('/[A-Za-z]+/iu', function ($match) {
-                return strtoupper(trim($match[0])[0]);
-            }, $valor2);
-            // Eliminar espacios en blanco
-            $valor2 = preg_replace('/\s/', '', $valor2);
-
-            $valor3 = $this->input->post('inicia_date');
-            $valor3 = preg_replace('/\D/', '', $valor3);
-
-            $valor4 = $this->input->post('inicia_time');
-            $valor4 = preg_replace('/\D/', '', $valor4);
-
-            $valor5 = $this->input->post('dificultad');
-            $valor5 = preg_replace('/(á|é|í|ó|ú|ñ|ä|ë|ï|ö|\.|ü)/iu', '', $valor5);
-            $valor5 = substr($valor5, 0, 2);
-
-            $valor5 = $this->input->post('dificultad');
-            $acentos = array('á', 'é', 'í', 'ó', 'ú', 'Á', 'É', 'Í', 'Ó', 'Ú');
-            $sin_acentos = array('a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U');
-            $valor5 = str_replace($acentos, $sin_acentos, $valor5);
-            $valor5 = strtoupper(substr($valor5, 0, 2));
-
-            $identificador = $valor1 . $valor2 . $valor3 . $valor4 . '00' . $valor5;
-
-            $clase_existente = $this->clases_model->obtener_clase_por_identificador_para_sku($identificador)->row();
-
-            if ($clase_existente and ($clase_existente->intervalo_horas == $this->input->post('intervalo_horas')) and ($clase_existente->distribucion_imagen == $this->input->post('distribucion_imagen')) and ($clase_existente->distribucion_lugares == $this->input->post('distribucion_lugares'))) {
-                $this->session->set_flashdata('MENSAJE_INFO', 'La clase con los nuevos datos ya existe.');
-                redirect('clases/index');
-            } else {
-                $hora_de_incio = date('Y-m-d', strtotime(str_replace('/', '-', $this->input->post('inicia_date')))) . 'T' . $this->input->post('inicia_time');
-                $fecha_numerica_de_la_clase = date(DATE_ISO8601, strtotime($hora_de_incio));
-
-                $data = array(
-                    'identificador' => $identificador,
-                    'disciplina_id' => $this->input->post('disciplina_id'),
-                    //'disciplina_id' => $disciplina_id,
-                    //'subdisciplina_id' => $subdisciplina_id,
-                    'instructor_id' => $this->input->post('instructor_id'),
-                    'cupo' => $this->input->post('cupo'),
-                    'inicia' => date('Y-m-d', strtotime(str_replace('/', '-', $this->input->post('inicia_date')))) . 'T' . $this->input->post('inicia_time'),
-                    'inicia_ionic' => $fecha_numerica_de_la_clase,
-                    'intervalo_horas' => $this->input->post('intervalo_horas'),
-                    'distribucion_imagen' => $this->input->post('distribucion_imagen'),
-                    'distribucion_lugares' => $this->input->post('distribucion_lugares'),
-                    'dificultad' => $this->input->post('dificultad'),
-                );
-
-                // Insertar nueva disciplina
-                if ($this->clases_model->editar($id, $data)) {
-                    $this->session->set_flashdata('MENSAJE_EXITO', 'La clase se ha editado correctamente.');
-                    redirect('clases/index');
-                }
-
-                // Si algo falla regresar a la vista de editar
-                $this->construir_private_site_ui('clases/editar', $data);
+            // Insertar nueva disciplina
+            if ($this->clases_categorias_model->editar($id, $data)) {
+                $this->session->set_flashdata('MENSAJE_EXITO', 'La clase se ha editado correctamente.');
+                redirect('clases_categorias/index');
             }
+
+            // Si algo falla regresar a la vista de editar
+            $this->construir_private_site_ui('clases_categorias/editar', $data);
         }
+    }
+
+    public function borrar($id = null)
+    {
+        $clase = $this->clases_model->obtener_por_id($id)->row();
+
+        if (!$clase) {
+            $this->session->set_flashdata('MENSAJE_ERROR', 'No se han podido encontrar todas las clases que desea borrar.');
+            redirect('clases_categorias/index');
+        }
+
+        if ($clase->reservado > 0) {
+            $this->session->set_flashdata('MENSAJE_ERROR', 'La clase que intenta borrar ya tiene reservaciones hechas.');
+            redirect('clases_categorias/index');
+        }
+
+        $result = $this->clases_model->borrar($id);
+
+        if ($result) {
+            echo json_encode(['success' => true]);
+        } else {
+            echo json_encode(['success' => false]);
+        }
+
+        // $this->session->set_flashdata('MENSAJE_ERROR', 'La clase ' . $id . ' no ha podido ser borrada.');
+        // redirect('clases_categorias/index');
     }
 }

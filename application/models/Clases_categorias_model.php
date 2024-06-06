@@ -29,4 +29,10 @@ class Clases_categorias_model extends CI_Model
             ->where('t1.id', intval($id))
             ->get();
     }
+
+    public function editar($id, $data)
+    {
+        $this->db->where('id', $id);
+        return $this->db->update('clases_categorias', $data);
+    }
 }
