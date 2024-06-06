@@ -35,11 +35,11 @@
 											<thead>
 												<tr>
 													<th>ID</th>
-													<th>Disciplina</th>
-													<th>GYMPASS</th>
 													<th>Nombre</th>
+													<th>Disciplina</th>
 													<th>Descripción</th>
 													<th>Nota</th>
+													<th>GYMPASS</th>
 													<th>Estatus</th>
 													<th>Opciones</th>
 												</tr>

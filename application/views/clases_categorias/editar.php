@@ -38,74 +38,69 @@
                                         <?php endif ?>
                                         <?php $this->load->view('_comun/mensajes_alerta'); ?>
                                         <h4 class="form-section">Datos de la clase</h4>
-                                        <div class="row">
-                                            <input type="hidden" readonly="true" id="identificador" class="form-control" name="identificador" placeholder="Identificador" value="<?php echo set_value('identificador'); ?>">
-                                            <div class="col-md-8">
-                                                <div class="form-group row">
-                                                    <label for="disciplina_id" class="col-md-3 label-control"><span class="red">*</span> Disciplina
-                                                        para la clase</label>
-                                                    <div class="col-md-9">
-                                                        <select id="mySelect" name="disciplina_id" class="form-control">
-                                                            <option value="">Seleccione la disciplina</option>
-                                                            <?php foreach ($disciplinas->result() as $disciplina) : ?>
-                                                                <?php
-                                                                if ($clase_a_editar->subdisciplina_id > 0) {
-                                                                    $disciplina_que_se_editara = $clase_a_editar->subdisciplina_id;
-                                                                } else {
-                                                                    $disciplina_que_se_editara = $clase_a_editar->disciplina_id;
-                                                                }
-                                                                ?>
-                                                                <?php if ($disciplina->id != 1) : ?>
-                                                                    <option value="<?php echo $disciplina->id; ?>" <?php echo set_select('disciplina_id', $disciplina_que_se_editara, set_value('disciplina_id') ? false : $disciplina->id == $disciplina_que_se_editara); ?>>
-                                                                        <?php echo $disciplina->nombre; ?>
-                                                                    </option>
-                                                                <?php endif; ?>
-                                                            <?php endforeach; ?>
-                                                        </select>
-                                                    </div>
+                                        <input type="hidden" readonly="true" id="identificador" class="form-control" name="identificador" placeholder="Identificador" value="<?php echo set_value('identificador'); ?>">
+
+                                        <div class="col-lg-6 col-md-6 col-sm-12">
+                                            <div class="form-group row">
+                                                <label for="disciplina_id" class="col-lg-12"><span class="red">*</span> Disciplina
+                                                    para la clase</label>
+                                                <div class="col-lg-12">
+                                                    <select id="mySelect" name="disciplina_id" class="form-control">
+                                                        <option value="">Seleccione la disciplina</option>
+                                                        <?php foreach ($disciplinas->result() as $disciplina) : ?>
+                                                            <?php
+                                                            if ($clase_a_editar->subdisciplina_id > 0) {
+                                                                $disciplina_que_se_editara = $clase_a_editar->subdisciplina_id;
+                                                            } else {
+                                                                $disciplina_que_se_editara = $clase_a_editar->disciplina_id;
+                                                            }
+                                                            ?>
+                                                            <?php if ($disciplina->id != 1) : ?>
+                                                                <option value="<?php echo $disciplina->id; ?>" <?php echo set_select('disciplina_id', $disciplina_que_se_editara, set_value('disciplina_id') ? false : $disciplina->id == $disciplina_que_se_editara); ?>>
+                                                                    <?php echo $disciplina->nombre; ?>
+                                                                </option>
+                                                            <?php endif; ?>
+                                                        <?php endforeach; ?>
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-md-8">
-                                                <div class="form-group row">
-                                                    <label for="nombre" class="col-md-3 label-control"><span class="red">*</span> Nombre</label>
-                                                    <div class="col-md-5">
-                                                        <input type="text" id="nombre" name="nombre" class="form-control" placeholder="Nombre" value="<?php echo set_value('nombre') == false ? ($clase_a_editar->nombre) : (set_value('nombre')); ?>">
-                                                    </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-12">
+                                            <div class="form-group row">
+                                                <label for="nombre" class="col-lg-12"><span class="red">*</span> Nombre</label>
+                                                <div class="col-lg-12">
+                                                    <input type="text" id="nombre" name="nombre" class="form-control" placeholder="Nombre" value="<?php echo set_value('nombre') == false ? ($clase_a_editar->nombre) : (set_value('nombre')); ?>">
                                                 </div>
                                             </div>
-                                            <div class="col-md-8">
-                                                <div class="form-group row">
-                                                    <label for="descripcion" class="col-md-3 label-control"><span class="red">*</span> Descripción</label>
-                                                    <div class="col-md-5">
-                                                        <textarea id="descripcion" name="descripcion" class="form-control" rows="5" placeholder="Descripción" value=""><?php echo set_value('descripcion') == false ? ($clase_a_editar->descripcion) : set_value('descripcion'); ?></textarea>
-                                                    </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-12">
+                                            <div class="form-group row">
+                                                <label for="descripcion" class="col-lg-12"><span class="red">*</span> Descripción</label>
+                                                <div class="col-lg-12">
+                                                    <textarea id="descripcion" name="descripcion" class="form-control" rows="5" placeholder="Descripción" value=""><?php echo set_value('descripcion') == false ? ($clase_a_editar->descripcion) : set_value('descripcion'); ?></textarea>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <div class="row">
-                                            <div class="col-md-8">
-                                                <div class="form-group row">
-                                                    <label for="nota" class="col-md-3 label-control"><span class="red">*</span> Nota</label>
-                                                    <div class="col-md-5">
-                                                        <textarea id="nota" name="nota" class="form-control" rows="5" placeholder="Nota" value=""><?php echo set_value('nota') == false ? ($clase_a_editar->nota) : set_value('nota'); ?></textarea>
-                                                    </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-12">
+                                            <div class="form-group row">
+                                                <label for="nota" class="col-lg-12"><span class="red">*</span> Nota</label>
+                                                <div class="col-lg-12">
+                                                    <textarea id="nota" name="nota" class="form-control" rows="5" placeholder="Nota" value=""><?php echo set_value('nota') == false ? ($clase_a_editar->nota) : set_value('nota'); ?></textarea>
                                                 </div>
                                             </div>
-                                            <div class="col-md-8">
-                                                <div class="form-group row">
-                                                    <label for="estatus" class="col-md-3 label-control">Estatus</label>
-                                                    <div class="col-md-5">
-                                                        <select id="estatus" name="estatus" class="form-control" required>
-                                                            <option value="">Seleccione un estatus...</option>
-                                                            <option value="activo" <?php echo set_select('estatus', 'activo', set_value('estatus') ? false : 'activo' == $clase_a_editar->estatus); ?>>Activo
-                                                            </option>
-                                                            <option value="suspendido" <?php echo set_select('estatus', 'suspendido', set_value('estatus') ? false : 'suspendido' == $clase_a_editar->estatus); ?>>Suspendido
-                                                            </option>
-                                                        </select>
-                                                    </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-12">
+                                            <div class="form-group row">
+                                                <label for="estatus" class="col-lg-12">Estatus</label>
+                                                <div class="col-lg-12">
+                                                    <select id="estatus" name="estatus" class="form-control" required>
+                                                        <option value="">Seleccione un estatus...</option>
+                                                        <option value="activo" <?php echo set_select('estatus', 'activo', set_value('estatus') ? false : 'activo' == $clase_a_editar->estatus); ?>>Activo
+                                                        </option>
+                                                        <option value="suspendido" <?php echo set_select('estatus', 'suspendido', set_value('estatus') ? false : 'suspendido' == $clase_a_editar->estatus); ?>>Suspendido
+                                                        </option>
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>

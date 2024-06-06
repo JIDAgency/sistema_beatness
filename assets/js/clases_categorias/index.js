@@ -31,11 +31,11 @@ $(document).ready(function () {
         },
         "columns": [
             { "data": "id" },
-            { "data": "disciplina_id" },
-            { "data": "gympass_id" },
             { "data": "nombre" },
+            { "data": "disciplina_id" },
             { "data": "descripcion" },
             { "data": "nota" },
+            { "data": "gympass_id" },
             { "data": "estatus" },
             { "data": "opciones" },
         ],

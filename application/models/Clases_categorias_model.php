@@ -6,8 +6,10 @@ class Clases_categorias_model extends CI_Model
     public function obtener_todas()
     {
         $query = $this->db
-            ->select('t1.*')
+            ->select('t1.*,
+            t2.nombre as nombre_disciplina')
             ->from("clases_categorias t1")
+            ->join("disciplinas t2", "t2.id = t1.disciplina_id")
             ->get();
 
         return $query;

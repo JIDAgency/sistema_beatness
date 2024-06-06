@@ -52,19 +52,16 @@ class Clases_categorias extends MY_Controller
 
             $opciones = '';
             $opciones .= anchor('clases_categorias/editar/' . $clase->id, 'Editar');
-            // $opciones .= '<a href="' . site_url('clases/duplicar_clase/' . $clase->id) . '"><span>Duplicar</span></a>';
-            // $opciones .= ' | ';
-            // $opciones .= '<a href="" class="clonar-row" data-id="' . $clase->id . '"><span>Duplicar</span></a>';
             $opciones .= '  |  ';
             $opciones .= '<a href="" class="delete-row" data-id="' . $clase->id . '"><span class="red">Borrar</span></a>';
 
             $data[] = array(
                 'id' => $clase->id,
-                'disciplina_id' => $clase->disciplina_id,
-                'gympass_id' => !empty($clase->gympass_id) ? mb_strtoupper($clase->gympass_id) : '',
                 'nombre' => !empty($clase->nombre) ? mb_strtoupper($clase->nombre) : '',
+                'disciplina_id' => $clase->nombre_disciplina,
                 'descripcion' => !empty($clase->descripcion) ? ($clase->descripcion) : '',
                 'nota' => !empty($clase->nota) ? ucfirst($clase->nota) : '',
+                'gympass_id' => !empty($clase->gympass_id) ? mb_strtoupper($clase->gympass_id) : '',
                 'estatus' => !empty($clase->estatus) ? ucwords($clase->estatus) : '',
                 'opciones' => $opciones,
             );
