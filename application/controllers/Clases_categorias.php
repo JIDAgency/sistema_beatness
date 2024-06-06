@@ -139,24 +139,7 @@ class Clases_categorias extends MY_Controller
             $cupo_lugares = array();
             // Crear un arreglo de arreglos para llevar un registro mas detallado del cupo
             // {"id":1712,"name":"BÁSICO","slug":"basico","description":"Clase orientada a principiantes que cubre los fundamentos del ejercicio y el entrenamiento físico.","notes":"Perfecto para aquellos que están comenzando su viaje de fitness. Las clases son de 1 hora.","bookable":true,"visible":true,"product_id":120,"gym_id":60,"reference":"1","created_at":"2024-04-30T00:26:08Z[UTC]","system_id":81}
-            $gympass = array(
-                'id' => '',
-                'name' => $this->input->post('nombre'),
-                'slug' => strtolower($this->input->post('nombre')),
-                'description' => $this->input->post('descripcion'),
-                'notes' => $this->input->post('nota'),
-                'bookable' => true,
-                'visible' => true,
-                'product_id' => '120',
-                'gym_id' => '60',
-                'reference' => '',
-                'created_at' => strval($fecha_registro),
-                'system_id' => '81',
-            );
-
-            array_push($gympass);
-
-            $gympass_json = json_encode($gympass);
+            
             // Preparar los datos a insertar
             $data = array(
                 'disciplina_id' => $this->input->post('disciplina_id'),
@@ -164,7 +147,6 @@ class Clases_categorias extends MY_Controller
                 'nombre' => $this->input->post('nombre'),
                 'descripcion' => $this->input->post('descripcion'),
                 'nota' => $this->input->post('nota'),
-                'gympass_json' => $gympass_json,
                 'estatus' => $this->input->post('estatus'),
             );
 
@@ -241,31 +223,11 @@ class Clases_categorias extends MY_Controller
             // log_message('debug', print_r($this->input->post(), true));
             $fecha_registro = date("Y-m-d H:i:s");
 
-            $gympass = array(
-                'id' => '',
-                'name' => $this->input->post('nombre'),
-                'slug' => strtolower($this->input->post('nombre')),
-                'description' => $this->input->post('descripcion'),
-                'notes' => $this->input->post('nota'),
-                'bookable' => true,
-                'visible' => true,
-                'product_id' => '120',
-                'gym_id' => '60',
-                'reference' => '',
-                'created_at' => strval($fecha_registro),
-                'system_id' => '81',
-            );
-
-            array_push($gympass);
-
-            $gympass_json = json_encode($gympass);
-
             $data = array(
                 'disciplina_id' => $this->input->post('disciplina_id'),
                 'nombre' => $this->input->post('nombre'),
                 'descripcion' => $this->input->post('descripcion'),
                 'nota' => $this->input->post('nota'),
-                'gympass_json' => $gympass_json,
                 'estatus' => $this->input->post('estatus'),
             );
 
