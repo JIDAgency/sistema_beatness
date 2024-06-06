@@ -35,4 +35,12 @@ class Clases_categorias_model extends CI_Model
         $this->db->where('id', $id);
         return $this->db->update('clases_categorias', $data);
     }
+
+    public function borrar($id)
+    {
+        $this->db->where('id', $id);
+        $this->db->delete('clases_categorias'); {
+            return true;
+        }
+    }
 }

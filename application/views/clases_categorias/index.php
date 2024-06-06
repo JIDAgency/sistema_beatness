@@ -27,10 +27,6 @@
 										<a href="<?php echo site_url('clases_categorias/crear') ?>" class="btn btn-outline-secondary btn-min-width">
 											<i class="ft-plus"></i> Nueva clase
 										</a>
-										<!--a href="<?php //echo site_url('clases/generar_horarios_ionic') 
-													?>" class="btn btn-secondary btn-sm">
-										<i class="ft-plus white"></i> Generar horas bonitas
-									</a-->
 									</div>
 								</div>
 								<div class="card-content p_dt">

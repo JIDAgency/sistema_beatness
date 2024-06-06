@@ -239,12 +239,33 @@ class Clases_categorias extends MY_Controller
         } else {
             // Preparar los datos a insertar
             // log_message('debug', print_r($this->input->post(), true));
+            $fecha_registro = date("Y-m-d H:i:s");
+
+            $gympass = array(
+                'id' => '',
+                'name' => $this->input->post('nombre'),
+                'slug' => strtolower($this->input->post('nombre')),
+                'description' => $this->input->post('descripcion'),
+                'notes' => $this->input->post('nota'),
+                'bookable' => true,
+                'visible' => true,
+                'product_id' => '120',
+                'gym_id' => '60',
+                'reference' => '',
+                'created_at' => strval($fecha_registro),
+                'system_id' => '81',
+            );
+
+            array_push($gympass);
+
+            $gympass_json = json_encode($gympass);
 
             $data = array(
                 'disciplina_id' => $this->input->post('disciplina_id'),
                 'nombre' => $this->input->post('nombre'),
                 'descripcion' => $this->input->post('descripcion'),
                 'nota' => $this->input->post('nota'),
+                'gympass_json' => $gympass_json,
                 'estatus' => $this->input->post('estatus'),
             );
 
@@ -261,19 +282,14 @@ class Clases_categorias extends MY_Controller
 
     public function borrar($id = null)
     {
-        $clase = $this->clases_model->obtener_por_id($id)->row();
+        $clase = $this->clases_categorias_model->obtener_por_id($id)->row();
 
         if (!$clase) {
             $this->session->set_flashdata('MENSAJE_ERROR', 'No se han podido encontrar todas las clases que desea borrar.');
             redirect('clases_categorias/index');
         }
 
-        if ($clase->reservado > 0) {
-            $this->session->set_flashdata('MENSAJE_ERROR', 'La clase que intenta borrar ya tiene reservaciones hechas.');
-            redirect('clases_categorias/index');
-        }
-
-        $result = $this->clases_model->borrar($id);
+        $result = $this->clases_categorias_model->borrar($id);
 
         if ($result) {
             echo json_encode(['success' => true]);
