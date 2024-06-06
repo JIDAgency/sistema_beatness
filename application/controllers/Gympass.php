@@ -209,7 +209,7 @@ class Gympass extends MY_Controller
                 return;
             }
 
-            if (empty($categoria_row->gympass_id)) {
+            if (!empty($categoria_row->gympass_id)) {
                 $this->output_json(['status' => 'error', 'message' => 'Esta Categoría ya se encuentra registrada en Gympass.']);
                 return;
             }
@@ -273,76 +273,90 @@ class Gympass extends MY_Controller
         $this->construir_private_site_ui('gympass/clases', $data);
     }
 
-    // public function registrar_clase()
-    // {
-    //     if ($this->input->post()) {
-    //         $id = $this->input->post('id');
-    //         $categoria = $this->input->post('categoria');
-    //     } else {
-    //         $this->mensaje_del_sistema('MENSAJE_ERROR', 'Al parecer ha ocurrido un error, por favor intentelo más tarde.', 'gympass/clases');
-    //         return;
-    //     }
+    public function registrar_clase()
+    {
+        if ($this->input->post()) {
+            $id = $this->input->post('id');
+            $categoria = $this->input->post('categoria');
+        } else {
+            $this->mensaje_del_sistema('MENSAJE_ERROR', 'Al parecer ha ocurrido un error, por favor intentelo más tarde.', 'gympass/clases');
+            return;
+        }
 
-    //     // Supongamos que tienes una fecha y hora para la clase en formato Y-m-d H:i:s
-    //     $class_datetime = '2024-06-07 07:00:00';
+        $clase_row = $this->gympass_model->clases_obtener_por_id($id)->row();
 
-    //     // Crear un objeto DateTime a partir de la fecha de la clase
-    //     $class_date = new DateTime($class_datetime, new DateTimeZone('UTC'));
+        $categoria_row = $this->gympass_model->categorias_obtener_por_id($categoria)->row();
 
-    //     // Convertir la fecha de la clase al formato deseado
-    //     $occur_date = $class_date->format('Y-m-d\TH:i:s\Z[UTC]');
+        // Fecha y hora de la clase en la zona horaria local de Puebla, México (GMT-6)
+        $class_datetime = '2024-06-07 07:00:00';
 
-    //     // Clonar el objeto DateTime para calcular las demás fechas sin modificar el original
-    //     $booking_window_opens_date = clone $class_date;
-    //     $booking_window_closes_date = clone $class_date;
-    //     $cancellable_until_date = clone $class_date;
+        // Crear un objeto DateTime con la fecha y hora de la clase en la zona horaria local
+        $puebla_timezone = new DateTimeZone('America/Mexico_City'); // Puebla sigue el mismo huso horario
+        $class_date = new DateTime($class_datetime, $puebla_timezone);
 
-    //     // Calcular la fecha y hora de apertura de la ventana de reserva (5 días antes)
-    //     $booking_window_opens_date->sub(new DateInterval('P5D'));
-    //     $booking_window_opens = $booking_window_opens_date->format('Y-m-d\TH:i:s\Z[UTC]');
+        // Convertir la fecha y hora a UTC
+        $utc_timezone = new DateTimeZone('UTC');
+        $class_date->setTimezone($utc_timezone);
 
-    //     // Calcular la fecha y hora de cierre de la ventana de reserva (1 hora antes)
-    //     $booking_window_closes_date->sub(new DateInterval('PT1H'));
-    //     $booking_window_closes = $booking_window_closes_date->format('Y-m-d\TH:i:s\Z[UTC]');
+        // Convertir la fecha de la clase al formato deseado
+        $occur_date = $class_date->format('Y-m-d\TH:i:s\Z');
 
-    //     // Calcular la fecha y hora límite para cancelación (4 horas antes)
-    //     $cancellable_until_date->sub(new DateInterval('PT4H'));
-    //     $cancellable_until = $cancellable_until_date->format('Y-m-d\TH:i:s\Z[UTC]');
+        // Clonar el objeto DateTime para calcular las demás fechas sin modificar el original
+        $booking_window_opens_date = clone $class_date;
+        $booking_window_closes_date = clone $class_date;
+        $cancellable_until_date = clone $class_date;
 
-    //     $room = $datos_slot['room'];
-    //     $length_in_minutes = $datos_slot['length_in_minutes'];
-    //     $total_capacity = $datos_slot['total_capacity'];
-    //     $total_booked = $datos_slot['total_booked'];
-    //     $product_id = $datos_slot['product_id'];
-    //     $instructors_name = $datos_slot['instructors_name'];
-    //     $instructors_substitute = $datos_slot['instructors_substitute'];
+        // Calcular la fecha y hora de apertura de la ventana de reserva (5 días antes)
+        $booking_window_opens_date->sub(new DateInterval('P5D'));
+        $booking_window_opens = $booking_window_opens_date->format('Y-m-d\TH:i:s\Z');
 
-    //     $data = [
-    //         "occur_date" => $occur_date,
-    //         "status" => 1,
-    //         "room" => $room,
-    //         "length_in_minutes" => $length_in_minutes,
-    //         "total_capacity" => $total_capacity,
-    //         "total_booked" => $total_booked,
-    //         "product_id" => $product_id,
-    //         "booking_window" => [
-    //             "opens_at" => $booking_window_opens,
-    //             "closes_at" => $booking_window_closes
-    //         ],
-    //         "cancellable_until" => $cancellable_until,
-    //         "instructors" => [
-    //             [
-    //                 "name" => $instructors_name,
-    //                 "substitute" => $instructors_substitute
-    //             ]
-    //         ],
-    //         "rate" => 4.0
-    //     ];
+        // Calcular la fecha y hora de cierre de la ventana de reserva (1 hora antes)
+        $booking_window_closes_date->sub(new DateInterval('PT1H'));
+        $booking_window_closes = $booking_window_closes_date->format('Y-m-d\TH:i:s\Z');
 
-    //     $this->mensaje_del_sistema('MENSAJE_EXITO', '' . $categoria . '', 'gympass/clases');
-    // }
+        // Calcular la fecha y hora límite para cancelación (4 horas antes)
+        $cancellable_until_date->sub(new DateInterval('PT4H'));
+        $cancellable_until = $cancellable_until_date->format('Y-m-d\TH:i:s\Z');
 
+        $status = 1;
+        $room = 'Salon';
+        $length_in_minutes = $clase_row->intervalo_horas * 60;
+        $total_capacity = $clase_row->cupo;
+        $total_booked = $clase_row->reservado;
+        $product_id = $clase_row->disciplinas_gympass_product_id;
+        $instructors_name = $clase_row->instructores_nombre;
+        $instructors_substitute = false;
 
+        $data = array(
+            "occur_date" => $occur_date . '[UTC]',
+            "status" => $status,
+            "room" => $room,
+            "length_in_minutes" => $length_in_minutes,
+            "total_capacity" => $total_capacity,
+            "total_booked" => $total_booked,
+            "product_id" => $product_id,
+            "booking_window" => array(
+                "opens_at" => $booking_window_opens . '[UTC]',
+                "closes_at" => $booking_window_closes . '[UTC]'
+            ),
+            "cancellable_until" => $cancellable_until . '[UTC]',
+            "instructors" => [
+                array(
+                    "name" => $instructors_name,
+                    "substitute" => $instructors_substitute
+                )
+            ],
+            "rate" => 4.0
+        );
+        // $this->mensaje_del_sistema('MENSAJE_EXITO', '' .  json_encode($data) . '', 'gympass/clases');
+        // return;
+        try {
+            $response = $this->gympass_lib->post_create_slot($categoria_row->gympass_id, $data);
+            $this->mensaje_del_sistema('MENSAJE_EXITO', '' .  json_encode($response) . '', 'gympass/clases');
+        } catch (Exception $e) {
+            $this->mensaje_del_sistema('MENSAJE_ERROR', "Error: " . $e->getMessage(), 'gympass/clases');
+        }
+    }
 
 
 
