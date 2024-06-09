@@ -394,28 +394,66 @@ class Clases extends MY_Controller
         }
 
         if ($columna == 'dificultad') {
-            $valor5 = $nuevoValor;
-            $valor5 = preg_replace('/(á|é|í|ó|ú|ñ|ä|ë|ï|ö|\.|ü)/iu', '', $valor5);
-            $valor5 = substr($valor5, 0, 2);
+            // $valor5 = $nuevoValor;
+            // $valor5 = preg_replace('/(á|é|í|ó|ú|ñ|ä|ë|ï|ö|\.|ü)/iu', '', $valor5);
+            // $valor5 = substr($valor5, 0, 2);
 
-            $valor5 = $nuevoValor;
-            $acentos = array('á', 'é', 'í', 'ó', 'ú', 'Á', 'É', 'Í', 'Ó', 'Ú');
-            $sin_acentos = array('a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U');
-            $valor5 = str_replace($acentos, $sin_acentos, $valor5);
-            $valor5 = strtoupper(substr($valor5, 0, 2));
+            // $valor5 = $nuevoValor;
+            // $acentos = array('á', 'é', 'í', 'ó', 'ú', 'Á', 'É', 'Í', 'Ó', 'Ú');
+            // $sin_acentos = array('a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U');
+            // $valor5 = str_replace($acentos, $sin_acentos, $valor5);
+            // $valor5 = strtoupper(substr($valor5, 0, 2));
+
+            $valor = $nuevoValor;
+            // Separar la cadena en palabras
+            $palabras = explode(' ', $valor);
+
+            // Obtener la primera palabra
+            $primera_palabra = $palabras[0];
+            $segunda_palabra = $palabras[1];
+
+            // Obtener las dos primeras letras de la primera palabra
+            $primeras_dos_letras = substr($primera_palabra, 0, 2);
+
+            // Obtener la última letra de la primera palabra
+            $primera_letra = substr($segunda_palabra, 0, 1);
+
+            // Concatenar las letras para formar la nueva cadena
+            $cadena = $primeras_dos_letras . $primera_letra;
+
+            $valor5 = $cadena;
         } else {
-            $valor5 = $clase->dificultad;
-            $valor5 = preg_replace('/(á|é|í|ó|ú|ñ|ä|ë|ï|ö|\.|ü)/iu', '', $valor5);
-            $valor5 = substr($valor5, 0, 2);
+            // $valor5 = $clase->dificultad;
+            // $valor5 = preg_replace('/(á|é|í|ó|ú|ñ|ä|ë|ï|ö|\.|ü)/iu', '', $valor5);
+            // $valor5 = substr($valor5, 0, 2);
 
-            $valor5 = $clase->dificultad;
-            $acentos = array('á', 'é', 'í', 'ó', 'ú', 'Á', 'É', 'Í', 'Ó', 'Ú');
-            $sin_acentos = array('a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U');
-            $valor5 = str_replace($acentos, $sin_acentos, $valor5);
-            $valor5 = strtoupper(substr($valor5, 0, 2));
+            // $valor5 = $clase->dificultad;
+            // $acentos = array('á', 'é', 'í', 'ó', 'ú', 'Á', 'É', 'Í', 'Ó', 'Ú');
+            // $sin_acentos = array('a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U');
+            // $valor5 = str_replace($acentos, $sin_acentos, $valor5);
+            // $valor5 = strtoupper(substr($valor5, 0, 2));
+
+            $valor = $clase->dificultad;
+            // Separar la cadena en palabras
+            $palabras = explode(' ', $valor);
+
+            // Obtener la primera palabra
+            $primera_palabra = $palabras[0];
+            $segunda_palabra = $palabras[1];
+
+            // Obtener las dos primeras letras de la primera palabra
+            $primeras_dos_letras = substr($primera_palabra, 0, 2);
+
+            // Obtener la última letra de la primera palabra
+            $primera_letra = substr($segunda_palabra, 0, 1);
+
+            // Concatenar las letras para formar la nueva cadena
+            $cadena = $primeras_dos_letras . $primera_letra;
+
+            $valor5 = $cadena;
         }
 
-        $identificador_nuevo = $valor1 . $valor2 . $valor3 . $valor4;
+        $identificador_nuevo = $valor1 . $valor2 . $valor3 . $valor4 . $valor5;
         // FIN de creacion de identificador
 
         $clase_existente = $this->clases_model->obtener_clase_por_identificador_para_sku($identificador_nuevo)->row();
@@ -635,15 +673,34 @@ class Clases extends MY_Controller
             $valor4 = $this->input->post('inicia_time');
             $valor4 = preg_replace('/\D/', '', $valor4);
 
-            $valor5 = $this->input->post('dificultad');
-            $valor5 = preg_replace('/(á|é|í|ó|ú|ñ|ä|ë|ï|ö|\.|ü)/iu', '', $valor5);
-            $valor5 = substr($valor5, 0, 2);
+            // $valor5 = $this->input->post('dificultad');
+            // $valor5 = preg_replace('/(á|é|í|ó|ú|ñ|ä|ë|ï|ö|\.|ü)/iu', '', $valor5);
+            // $valor5 = substr($valor5, 0, 2);
 
-            $valor5 = $this->input->post('dificultad');
-            $acentos = array('á', 'é', 'í', 'ó', 'ú', 'Á', 'É', 'Í', 'Ó', 'Ú');
-            $sin_acentos = array('a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U');
-            $valor5 = str_replace($acentos, $sin_acentos, $valor5);
-            $valor5 = strtoupper(substr($valor5, 0, 2));
+            // $valor5 = $this->input->post('dificultad');
+            // $acentos = array('á', 'é', 'í', 'ó', 'ú', 'Á', 'É', 'Í', 'Ó', 'Ú');
+            // $sin_acentos = array('a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U');
+            // $valor5 = str_replace($acentos, $sin_acentos, $valor5);
+            // $valor5 = strtoupper(substr($valor5, 0, 2));
+
+            $valor = $this->input->post('dificultad');
+            // Separar la cadena en palabras
+            $palabras = explode(' ', $valor);
+
+            // Obtener la primera palabra
+            $primera_palabra = $palabras[0];
+            $segunda_palabra = $palabras[1];
+
+            // Obtener las dos primeras letras de la primera palabra
+            $primeras_dos_letras = substr($primera_palabra, 0, 2);
+
+            // Obtener la última letra de la primera palabra
+            $primera_letra = substr($segunda_palabra, 0, 1);
+
+            // Concatenar las letras para formar la nueva cadena
+            $cadena = $primeras_dos_letras . $primera_letra;
+
+            $valor5 = $cadena;
 
             $identificador = $valor1 . $valor2 . $valor3 . $valor4 . '00' . $valor5;
 
@@ -807,21 +864,40 @@ class Clases extends MY_Controller
             $valor4 = $this->input->post('inicia_time');
             $valor4 = preg_replace('/\D/', '', $valor4);
 
-            $valor5 = $this->input->post('dificultad');
-            $valor5 = preg_replace('/(á|é|í|ó|ú|ñ|ä|ë|ï|ö|\.|ü)/iu', '', $valor5);
-            $valor5 = substr($valor5, 0, 2);
+            // $valor5 = $this->input->post('dificultad');
+            // $valor5 = preg_replace('/(á|é|í|ó|ú|ñ|ä|ë|ï|ö|\.|ü)/iu', '', $valor5);
+            // $valor5 = substr($valor5, 0, 2);
 
-            $valor5 = $this->input->post('dificultad');
-            $acentos = array('á', 'é', 'í', 'ó', 'ú', 'Á', 'É', 'Í', 'Ó', 'Ú');
-            $sin_acentos = array('a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U');
-            $valor5 = str_replace($acentos, $sin_acentos, $valor5);
-            $valor5 = strtoupper(substr($valor5, 0, 2));
+            // $valor5 = $this->input->post('dificultad');
+            // $acentos = array('á', 'é', 'í', 'ó', 'ú', 'Á', 'É', 'Í', 'Ó', 'Ú');
+            // $sin_acentos = array('a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U');
+            // $valor5 = str_replace($acentos, $sin_acentos, $valor5);
+            // $valor5 = strtoupper(substr($valor5, 0, 2));
 
-            $identificador = $valor1 . $valor2 . $valor3 . $valor4 . '00';
+            $valor = $this->input->post('dificultad');
+            // Separar la cadena en palabras
+            $palabras = explode(' ', $valor);
+
+            // Obtener la primera palabra
+            $primera_palabra = $palabras[0];
+            $segunda_palabra = $palabras[1];
+
+            // Obtener las dos primeras letras de la primera palabra
+            $primeras_dos_letras = substr($primera_palabra, 0, 2);
+
+            // Obtener la última letra de la primera palabra
+            $primera_letra = substr($segunda_palabra, 0, 1);
+
+            // Concatenar las letras para formar la nueva cadena
+            $cadena = $primeras_dos_letras . $primera_letra;
+
+            $valor5 = $cadena;
+
+            $identificador = $valor1 . $valor2 . $valor3 . $valor4 . '00' . $valor5;
 
             $clase_existente = $this->clases_model->obtener_clase_por_identificador_para_sku($identificador)->row();
 
-            if ($clase_existente AND ($clase_existente->intervalo_horas == $this->input->post('intervalo_horas')) AND ($clase_existente->distribucion_imagen == $this->input->post('distribucion_imagen')) AND ($clase_existente->distribucion_lugares == $this->input->post('distribucion_lugares'))) {
+            if ($clase_existente and ($clase_existente->intervalo_horas == $this->input->post('intervalo_horas')) and ($clase_existente->distribucion_imagen == $this->input->post('distribucion_imagen')) and ($clase_existente->distribucion_lugares == $this->input->post('distribucion_lugares'))) {
                 $this->session->set_flashdata('MENSAJE_INFO', 'La clase con los nuevos datos ya existe.');
                 redirect('clases/index');
             } else {
