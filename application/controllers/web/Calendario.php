@@ -306,7 +306,7 @@ class Calendario extends CI_Controller
                 <td class=""><small></small></td>
                 <td class=""><small><span class="blue lighten-3">LEGS &<br>BOOTY</span></small></td>
                 <td class=""><small><span class="blue lighten-3">PUSH<br>DAY</span></small></td>
-                <td class=""><small><span class="blue lighten-3">LEGS</span></small></td>
+                <td class=""><small><span class="blue lighten-3">LEG DAY</span></small></td>
                 <td class=""><small><span class="blue lighten-3">PULL<br>DAY</span></small></td>
                 <td class=""><small><span class="blue lighten-3">BOOTY</span></small></td>
             </tr>
