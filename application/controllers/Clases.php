@@ -415,7 +415,7 @@ class Clases extends MY_Controller
             $valor5 = strtoupper(substr($valor5, 0, 2));
         }
 
-        $identificador_nuevo = $valor1 . $valor2 . $valor3 . $valor4 . $valor5;
+        $identificador_nuevo = $valor1 . $valor2 . $valor3 . $valor4;
         // FIN de creacion de identificador
 
         $clase_existente = $this->clases_model->obtener_clase_por_identificador_para_sku($identificador_nuevo)->row();
@@ -817,7 +817,7 @@ class Clases extends MY_Controller
             $valor5 = str_replace($acentos, $sin_acentos, $valor5);
             $valor5 = strtoupper(substr($valor5, 0, 2));
 
-            $identificador = $valor1 . $valor2 . $valor3 . $valor4 . '00' . $valor5;
+            $identificador = $valor1 . $valor2 . $valor3 . $valor4 . '00';
 
             $clase_existente = $this->clases_model->obtener_clase_por_identificador_para_sku($identificador)->row();
 
