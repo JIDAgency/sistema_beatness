@@ -24,7 +24,7 @@ $(document).ready(function () {
         },
         "columns": [
             { "data": "id" },
-            { "data": "gympass_id" },
+            { "data": "gympass_class_id" },
             { "data": "gympass_product_id" },
             { "data": "gympass_gym_id" },
             { "data": "disciplina" },

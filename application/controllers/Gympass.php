@@ -121,7 +121,7 @@ class Gympass extends MY_Controller
 
             $categoria_row = $this->gympass_model->categorias_obtener_por_id($id)->row();
 
-            if (empty($categoria_row->gympass_id)) {
+            if (empty($categoria_row->gympass_class_id)) {
                 $this->output_json(['status' => 'error', 'message' => 'Esta categoría de clase aún no está vinculada a Gympass.']);
                 return;
             }
@@ -146,7 +146,7 @@ class Gympass extends MY_Controller
                 'product_id' => $categoria_row->disciplinas_gympass_product_id ?: null,
             ];
 
-            $data_in = $this->gympass_lib->get_class_details($categoria_row->gympass_id);
+            $data_in = $this->gympass_lib->get_class_details($categoria_row->gympass_class_id);
             if (!empty($data_in['message'])) {
                 $this->output_json(['status' => 'error', 'message' => $data_in['message']]);
                 return;
@@ -167,7 +167,7 @@ class Gympass extends MY_Controller
             //     return;
             // }
 
-            $response = $this->gympass_lib->put_update_class($categoria_row->gympass_id, $data);
+            $response = $this->gympass_lib->put_update_class($categoria_row->gympass_class_id, $data);
 
             if (!empty($response)) {
                 $this->output_json(['status' => 'error', 'message' => $response['message']]);
@@ -209,7 +209,7 @@ class Gympass extends MY_Controller
                 return;
             }
 
-            if (!empty($categoria_row->gympass_id)) {
+            if (!empty($categoria_row->gympass_class_id)) {
                 $this->output_json(['status' => 'error', 'message' => 'Esta Categoría ya se encuentra registrada en Gympass.']);
                 return;
             }
@@ -234,7 +234,7 @@ class Gympass extends MY_Controller
                 $this->output_json(['status' => 'error', 'message' => $response['message']]);
             } else {
 
-                $this->gympass_model->categoria_actualizar_por_id($categoria_row->id, array('gympass_id' => $response['classes'][0]['id'], 'gympass_json' => json_encode($response, JSON_UNESCAPED_UNICODE)));
+                $this->gympass_model->categoria_actualizar_por_id($categoria_row->id, array('gympass_class_id' => $response['classes'][0]['id'], 'gympass_json' => json_encode($response, JSON_UNESCAPED_UNICODE)));
 
                 $this->output_json(['status' => 'success', 'message' => 'Categorías de Gympass registrada correctamente.']);
             }
@@ -275,101 +275,355 @@ class Gympass extends MY_Controller
 
     public function registrar_clase()
     {
-        if ($this->input->post()) {
+        $this->db->trans_start();
+
+        try {
+            if (!$this->input->post()) {
+                throw new Exception('No se recibieron datos de entrada.', 1001);
+            }
+
             $id = $this->input->post('id');
             $categoria = $this->input->post('categoria');
-        } else {
-            $this->mensaje_del_sistema('MENSAJE_ERROR', 'Al parecer ha ocurrido un error, por favor intentelo más tarde.', 'gympass/clases');
-            return;
-        }
 
-        $clase_row = $this->gympass_model->clases_obtener_por_id($id)->row();
+            if (empty($id)) {
+                throw new Exception('El ID de la clase no fue proporcionado.', 1001);
+            }
+            if (empty($categoria)) {
+                throw new Exception('La categoría no fue proporcionada.', 1001);
+            }
 
-        $categoria_row = $this->gympass_model->categorias_obtener_por_id($categoria)->row();
+            $clase_row = $this->gympass_model->clases_obtener_por_id($id)->row();
 
-        // Fecha y hora de la clase en la zona horaria local de Puebla, México (GMT-6)
-        $class_datetime = '2024-06-07 07:00:00';
+            if (empty($clase_row)) {
+                throw new Exception('La clase especificada no existe.', 1001);
+            }
 
-        // Crear un objeto DateTime con la fecha y hora de la clase en la zona horaria local
-        $puebla_timezone = new DateTimeZone('America/Mexico_City'); // Puebla sigue el mismo huso horario
-        $class_date = new DateTime($class_datetime, $puebla_timezone);
+            if (!empty($clase_row->gympass_slot_id)) {
+                throw new Exception('Esta clase ya se encuentra registrada en Gympass.', 1002);
+            }
 
-        // Convertir la fecha y hora a UTC
-        $utc_timezone = new DateTimeZone('UTC');
-        $class_date->setTimezone($utc_timezone);
+            $categoria_row = $this->gympass_model->categorias_obtener_por_id($categoria)->row();
 
-        // Convertir la fecha de la clase al formato deseado
-        $occur_date = $class_date->format('Y-m-d\TH:i:s\Z');
+            if (empty($categoria_row)) {
+                throw new Exception('La categoría especificada no existe.', 1001);
+            }
 
-        // Clonar el objeto DateTime para calcular las demás fechas sin modificar el original
-        $booking_window_opens_date = clone $class_date;
-        $booking_window_closes_date = clone $class_date;
-        $cancellable_until_date = clone $class_date;
+            if (empty($categoria_row->gympass_class_id)) {
+                throw new Exception('La categoría especificada no tiene un Gympass Class ID asociado.', 1001);
+            }
 
-        // Calcular la fecha y hora de apertura de la ventana de reserva (5 días antes)
-        $booking_window_opens_date->sub(new DateInterval('P5D'));
-        $booking_window_opens = $booking_window_opens_date->format('Y-m-d\TH:i:s\Z');
+            $class_datetime = $clase_row->inicia;
+            $puebla_timezone = new DateTimeZone('America/Mexico_City');
+            $utc_timezone = new DateTimeZone('UTC');
+            $class_date = new DateTime($class_datetime, $puebla_timezone);
+            $class_date->setTimezone($utc_timezone);
+            $occur_date = $class_date->format('Y-m-d\TH:i:s\Z');
 
-        // Calcular la fecha y hora de cierre de la ventana de reserva (1 hora antes)
-        $booking_window_closes_date->sub(new DateInterval('PT1H'));
-        $booking_window_closes = $booking_window_closes_date->format('Y-m-d\TH:i:s\Z');
+            $booking_window_opens_date = clone $class_date;
+            $booking_window_opens_date->modify('-5 days');
+            $booking_window_opens = $booking_window_opens_date->format('Y-m-d\TH:i:s\Z');
 
-        // Calcular la fecha y hora límite para cancelación (4 horas antes)
-        $cancellable_until_date->sub(new DateInterval('PT4H'));
-        $cancellable_until = $cancellable_until_date->format('Y-m-d\TH:i:s\Z');
+            $booking_window_closes_date = clone $class_date;
+            $booking_window_closes_date->modify('-1 hour');
+            $booking_window_closes = $booking_window_closes_date->format('Y-m-d\TH:i:s\Z');
 
-        $status = 1;
-        $room = 'Salon';
-        $length_in_minutes = $clase_row->intervalo_horas * 60;
-        $total_capacity = $clase_row->cupo;
-        $total_booked = $clase_row->reservado;
-        $product_id = $clase_row->disciplinas_gympass_product_id;
-        $instructors_name = $clase_row->instructores_nombre;
-        $instructors_substitute = false;
+            $cancellable_until_date = clone $class_date;
+            $cancellable_until_date->modify('-4 hours');
+            $cancellable_until = $cancellable_until_date->format('Y-m-d\TH:i:s\Z');
 
-        $data = array(
-            "occur_date" => $occur_date . '[UTC]',
-            "status" => $status,
-            "room" => $room,
-            "length_in_minutes" => $length_in_minutes,
-            "total_capacity" => $total_capacity,
-            "total_booked" => $total_booked,
-            "product_id" => $product_id,
-            "booking_window" => array(
-                "opens_at" => $booking_window_opens . '[UTC]',
-                "closes_at" => $booking_window_closes . '[UTC]'
-            ),
-            "cancellable_until" => $cancellable_until . '[UTC]',
-            "instructors" => [
-                array(
-                    "name" => $instructors_name,
-                    "substitute" => $instructors_substitute
-                )
-            ],
-            "rate" => 4.0
-        );
-        // $this->mensaje_del_sistema('MENSAJE_EXITO', '' .  json_encode($data) . '', 'gympass/clases');
-        // return;
-        try {
-            $response = $this->gympass_lib->post_create_slot($categoria_row->gympass_id, $data);
-            $this->mensaje_del_sistema('MENSAJE_EXITO', '' .  json_encode($response) . '', 'gympass/clases');
+            $status = $clase_row->estatus === 'Activa' ? 1 : 0;
+
+            $data_1 = array(
+                "occur_date" => $occur_date . '[UTC]',
+                "status" => $status,
+                "room" => 'Salon',
+                "length_in_minutes" => $clase_row->intervalo_horas * 60,
+                "total_capacity" => $clase_row->cupo,
+                "total_booked" => $clase_row->reservado,
+                "product_id" => $clase_row->disciplinas_gympass_product_id,
+                "booking_window" => array(
+                    "opens_at" => $booking_window_opens . '[UTC]',
+                    "closes_at" => $booking_window_closes . '[UTC]'
+                ),
+                "cancellable_until" => $cancellable_until . '[UTC]',
+                "instructors" => [
+                    array(
+                        "name" => trim($clase_row->instructores_nombre),
+                        "substitute" => false
+                    )
+                ],
+                "rate" => 4.0
+            );
+
+            $response = $this->gympass_lib->post_create_slot($categoria_row->gympass_class_id, $data_1);
+
+            if (!is_array($response) || isset($response['error']) && $response['error'] === true) {
+                throw new Exception("Error: " . ($response['message'] ?? 'Respuesta inválida de Gympass.'), 1001);
+            }
+
+            if (empty($response['results']) || !isset($response['results'][0]['id'])) {
+                throw new Exception("La respuesta de Gympass no contiene un ID de slot válido.", 1001);
+            }
+
+            $data_2 = array(
+                'categoria_id' => $categoria_row->id,
+                'gympass_slot_id' => $response['results'][0]['id'],
+                'gympass_json' => json_encode($response, true)
+            );
+
+            if (!$this->gympass_model->clase_actualizar_por_id($clase_row->id, $data_2)) {
+                throw new Exception("No se pudo actualizar la clase en la base de datos.", 1001);
+            }
+
+            $this->db->trans_complete();
+
+            if ($this->db->trans_status() === false) {
+                throw new Exception('La transacción falló al completar la operación.', 1001);
+            }
+
+            $this->mensaje_del_sistema('MENSAJE_EXITO', 'La clase se ha registrado en Gympass correctamente.', 'gympass/clases');
         } catch (Exception $e) {
-            $this->mensaje_del_sistema('MENSAJE_ERROR', "Error: " . $e->getMessage(), 'gympass/clases');
+            $this->db->trans_rollback();
+            $mensaje_tipo = ($e->getCode() === 1002) ? 'MENSAJE_INFO' : 'MENSAJE_ERROR';
+            $this->mensaje_del_sistema($mensaje_tipo, $e->getMessage(), 'gympass/clases');
         }
     }
 
+    public function actualizar_clase()
+    {
+        $this->db->trans_start();
+
+        try {
+            if ($this->input->method() !== 'post') {
+                throw new Exception('Método de solicitud no válido.', 1001);
+            }
+
+            $id = $this->input->post('id');
+
+            if (empty($id)) {
+                throw new Exception('El ID de la clase no fue proporcionado.', 1001);
+            }
+
+            $clase_row = $this->gympass_model->clases_obtener_por_id($id)->row();
+
+            if (empty($clase_row)) {
+                throw new Exception('La clase especificada no existe.', 1001);
+            }
+
+            if (empty($clase_row->gympass_slot_id)) {
+                throw new Exception('Esta clase no se encuentra registrada en Gympass.', 1002);
+            }
+
+            $categoria_row = $this->gympass_model->categorias_obtener_por_id($clase_row->categoria_id)->row();
+
+            if (empty($categoria_row)) {
+                throw new Exception('La categoría especificada no existe.', 1001);
+            }
+
+            if (empty($categoria_row->gympass_class_id)) {
+                throw new Exception('La categoría especificada no tiene un Gympass Class ID asociado.', 1001);
+            }
+
+            $class_datetime = $clase_row->inicia;
+            $puebla_timezone = new DateTimeZone('America/Mexico_City');
+            $utc_timezone = new DateTimeZone('UTC');
+            $class_date = new DateTime($class_datetime, $puebla_timezone);
+            $class_date->setTimezone($utc_timezone);
+            $occur_date = $class_date->format('Y-m-d\TH:i:s\Z');
+
+            $booking_window_opens_date = clone $class_date;
+            $booking_window_opens_date->modify('-5 days');
+            $booking_window_opens = $booking_window_opens_date->format('Y-m-d\TH:i:s\Z');
+
+            $booking_window_closes_date = clone $class_date;
+            $booking_window_closes_date->modify('-1 hour');
+            $booking_window_closes = $booking_window_closes_date->format('Y-m-d\TH:i:s\Z');
+
+            $cancellable_until_date = clone $class_date;
+            $cancellable_until_date->modify('-4 hours');
+            $cancellable_until = $cancellable_until_date->format('Y-m-d\TH:i:s\Z');
+
+            $status = $clase_row->estatus === 'Activa' ? 1 : 0;
+
+            $data_1 = array(
+                "occur_date" => $occur_date . '[UTC]',
+                "status" => $status,
+                "room" => 'Salon',
+                "length_in_minutes" => $clase_row->intervalo_horas * 60,
+                "total_capacity" => $clase_row->cupo,
+                "total_booked" => $clase_row->reservado,
+                "product_id" => $clase_row->disciplinas_gympass_product_id,
+                "booking_window" => array(
+                    "opens_at" => $booking_window_opens . '[UTC]',
+                    "closes_at" => $booking_window_closes . '[UTC]'
+                ),
+                "cancellable_until" => $cancellable_until . '[UTC]',
+                "instructors" => [
+                    array(
+                        "name" => trim($clase_row->instructores_nombre),
+                        "substitute" => false
+                    )
+                ],
+                "rate" => 4.0
+            );
+
+            $response = $this->gympass_lib->put_update_slot($categoria_row->gympass_class_id, $clase_row->gympass_slot_id, $data_1);
+
+            if (!is_array($response) || isset($response['error']) && $response['error'] === true) {
+                throw new Exception("Error: " . ($response['message'] ?? 'Respuesta inválida de Gympass.'), 1001);
+            }
+
+            if (empty($response['results']) || !isset($response['results'][0]['id'])) {
+                throw new Exception("La respuesta de Gympass no contiene un ID de slot válido.", 1001);
+            }
+
+            $data_2 = array(
+                'gympass_json' => json_encode($response, true)
+            );
+
+            if (!$this->gympass_model->clase_actualizar_por_id($clase_row->id, $data_2)) {
+                throw new Exception("No se pudo actualizar la clase en la base de datos.", 1001);
+            }
+
+            $this->db->trans_complete();
+
+            if ($this->db->trans_status() === false) {
+                throw new Exception('La transacción falló al completar la operación.', 1001);
+            }
+
+            $this->output_json(array('status' => 'success', 'message' => 'La clase se ha actualizado en Gympass correctamente.'));
+        } catch (Exception $e) {
+            $this->db->trans_rollback();
+            $mensaje_tipo = ($e->getCode() === 1002) ? 'info' : 'error';
+            $this->output_json(array('status' => $mensaje_tipo, 'message' => $e->getMessage()));
+        }
+    }
+
+    public function eliminar_clase()
+    {
+        $this->db->trans_start();
+
+        try {
+            if ($this->input->method() !== 'post') {
+                throw new Exception('Método de solicitud no válido.', 1001);
+            }
+
+            $id = $this->input->post('id');
+
+            if (empty($id)) {
+                throw new Exception('El ID de la clase no fue proporcionado.', 1001);
+            }
+
+            $clase_row = $this->gympass_model->clases_obtener_por_id($id)->row();
+
+            if (empty($clase_row)) {
+                throw new Exception('La clase especificada no existe.', 1001);
+            }
+
+            if (empty($clase_row->gympass_slot_id)) {
+                throw new Exception('Esta clase no se encuentra registrada en Gympass.', 1002);
+            }
+
+            $categoria_row = $this->gympass_model->categorias_obtener_por_id($clase_row->categoria_id)->row();
+
+            if (empty($categoria_row)) {
+                throw new Exception('La categoría especificada no existe.', 1001);
+            }
+
+            if (empty($categoria_row->gympass_class_id)) {
+                throw new Exception('La categoría especificada no tiene un Gympass Class ID asociado.', 1001);
+            }
+
+            $response = $this->gympass_lib->delete_slot($categoria_row->gympass_class_id, $clase_row->gympass_slot_id);
+
+            if (!empty($response) || isset($response['error']) && $response['error'] === true) {
+                throw new Exception("Error: " . ($response['message'] ?? 'Respuesta inválida de Gympass.'), 1001);
+            }
+
+            $data_2 = array(
+                'categoria_id' => null,
+                'gympass_slot_id' => null,
+                'gympass_json' => json_encode(array('eliminado' => $this->session->userdata('correo')), true)
+            );
+
+            if (!$this->gympass_model->clase_actualizar_por_id($clase_row->id, $data_2)) {
+                throw new Exception("No se pudo actualizar la clase en la base de datos.", 1001);
+            }
+
+            $this->db->trans_complete();
+
+            if ($this->db->trans_status() === false) {
+                throw new Exception('La transacción falló al completar la operación.', 1001);
+            }
+
+            $this->output_json(array('status' => 'success', 'message' => 'La clase se ha eliminado en Gympass correctamente.'));
+        } catch (Exception $e) {
+            $this->db->trans_rollback();
+            $mensaje_tipo = ($e->getCode() === 1002) ? 'info' : 'error';
+            $this->output_json(array('status' => $mensaje_tipo, 'message' => $e->getMessage()));
+        }
+    }
+
+    public function reservacion_clase()
+    {
+        $this->db->trans_start();
+
+        try {
+            if ($this->input->method() !== 'post') {
+                throw new Exception('Método de solicitud no válido.', 1001);
+            }
+
+            $id = $this->input->post('id');
+
+            if (empty($id)) {
+                throw new Exception('El ID de la clase no fue proporcionado.', 1001);
+            }
+
+            $clase_row = $this->gympass_model->clases_obtener_por_id($id)->row();
+
+            if (empty($clase_row)) {
+                throw new Exception('La clase especificada no existe.', 1001);
+            }
+
+            if (empty($clase_row->gympass_slot_id)) {
+                throw new Exception('Esta clase no se encuentra registrada en Gympass.', 1002);
+            }
+
+            $categoria_row = $this->gympass_model->categorias_obtener_por_id($clase_row->categoria_id)->row();
+
+            if (empty($categoria_row)) {
+                throw new Exception('La categoría especificada no existe.', 1001);
+            }
+
+            if (empty($categoria_row->gympass_class_id)) {
+                throw new Exception('La categoría especificada no tiene un Gympass Class ID asociado.', 1001);
+            }
 
 
+            $data_1 = array(
+                "total_capacity" => $clase_row->cupo,
+                "total_booked" => $clase_row->reservado
+            );
 
+            $response = $this->gympass_lib->patch_update_slot($categoria_row->gympass_class_id, $clase_row->gympass_slot_id, $data_1);
 
+            if (!empty($response) || isset($response['error']) && $response['error'] === true) {
+                throw new Exception("Error: " . ($response['message'] ?? 'Respuesta inválida de Gympass.'), 1001);
+            }
 
+            $this->db->trans_complete();
 
+            if ($this->db->trans_status() === false) {
+                throw new Exception('La transacción falló al completar la operación.', 1001);
+            }
 
-
-
-
-
-
+            $this->output_json(array('status' => 'success', 'message' => 'La clase se ha actualizado en Gympass correctamente.'));
+        } catch (Exception $e) {
+            $this->db->trans_rollback();
+            $mensaje_tipo = ($e->getCode() === 1002) ? 'info' : 'error';
+            $this->output_json(array('status' => $mensaje_tipo, 'message' => $e->getMessage()));
+        }
+    }
 
     private function output_json($data)
     {

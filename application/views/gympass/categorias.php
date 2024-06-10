@@ -20,14 +20,14 @@
                                 <th>Disciplina</th>
                                 <th>Descripción</th>
                                 <th>Nota</th>
-                                <th>Gympass ID</th>
+                                <th>Gympass Class ID</th>
                                 <th>Opciones</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php foreach ($categorias_list as $categoria_key => $categoria_value) : ?>
                                 <?php
-                                if (empty($categoria_value->gympass_id)) {
+                                if (empty($categoria_value->gympass_class_id)) {
                                     $opciones = '<a href="javascript:registrar(' . $categoria_value->id . ')">Registrar</a>';
                                 } else {
                                     $opciones = '<a href="javascript:actualizar(' . $categoria_value->id . ')">Actualizar</a>';
@@ -39,7 +39,7 @@
                                     <td><?php echo $categoria_value->disciplinas_nombre; ?></td>
                                     <td><?php echo $categoria_value->descripcion; ?></td>
                                     <td><?php echo $categoria_value->nota; ?></td>
-                                    <td><?php echo $categoria_value->gympass_id; ?></td>
+                                    <td><?php echo $categoria_value->gympass_class_id; ?></td>
                                     <td><?php echo $opciones; ?></td>
                                 </tr>
                             <?php endforeach; ?>

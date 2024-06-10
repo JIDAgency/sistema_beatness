@@ -55,7 +55,7 @@ class Categorias extends MY_Controller
 
             $data[] = array(
                 'id' => $categoria->id,
-                'gympass_id' => !empty($categoria->gympass_id) ? $categoria->gympass_id : '',
+                'gympass_class_id' => !empty($categoria->gympass_class_id) ? $categoria->gympass_class_id : '',
                 'gympass_product_id' => $categoria->gympass_product_id,
                 'gympass_gym_id' => !empty($categoria->gympass_gym_id) ? ucwords($categoria->gympass_gym_id) : '',
                 'disciplina' => !empty($categoria->disciplina_id) ? ucwords($categoria->disciplina_id) : '',
@@ -119,7 +119,7 @@ class Categorias extends MY_Controller
         } else {
             // Preparar datos para hacer el insert en la bd
             $data = array(
-                'gympass_id' => 1000000000001,
+                'gympass_class_id' => 1000000000001,
                 'gympass_product_id' => $this->input->post('disciplina_id'),
                 'gympass_gym_id' => '60',
                 'disciplina_id' => $this->input->post('disciplina_id'),

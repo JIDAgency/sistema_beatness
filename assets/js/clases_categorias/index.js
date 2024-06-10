@@ -35,7 +35,7 @@ $(document).ready(function () {
             { "data": "disciplina_id" },
             { "data": "descripcion" },
             { "data": "nota" },
-            { "data": "gympass_id" },
+            { "data": "gympass_class_id" },
             { "data": "estatus" },
             { "data": "opciones" },
         ],

@@ -67,7 +67,7 @@ class Gympass_model extends CI_Model
     public function categoria_actualizar_por_id($id, $data)
     {
         $query = $this->db
-            ->where('id', intval($id))
+            ->where('id', $id)
             ->update('clases_categorias', $data);
 
         return $query;
@@ -80,6 +80,8 @@ class Gympass_model extends CI_Model
     {
         $query = $this->db
             ->where('t1.estatus', 'Activa')
+            ->where('t2.gympass_product_id IS NOT NULL')
+            ->where('t2.gympass_product_id !=', 0)
             ->select('
                 t1.*,
                 t2.nombre as disciplinas_nombre,
@@ -113,6 +115,15 @@ class Gympass_model extends CI_Model
             ->join("sucursales t4", "t4.id = t2.sucursal_id")
             ->get();
 
+
+        return $query;
+    }
+
+    public function clase_actualizar_por_id($id, $data)
+    {
+        $query = $this->db
+            ->where('id', $id)
+            ->update('clases', $data);
 
         return $query;
     }

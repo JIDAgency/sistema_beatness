@@ -61,7 +61,7 @@ class Clases_categorias extends MY_Controller
                 'disciplina_id' => $clase->nombre_disciplina,
                 'descripcion' => !empty($clase->descripcion) ? ($clase->descripcion) : '',
                 'nota' => !empty($clase->nota) ? ucfirst($clase->nota) : '',
-                'gympass_id' => !empty($clase->gympass_id) ? mb_strtoupper($clase->gympass_id) : '',
+                'gympass_class_id' => !empty($clase->gympass_class_id) ? mb_strtoupper($clase->gympass_class_id) : '',
                 'estatus' => !empty($clase->estatus) ? ucwords($clase->estatus) : '',
                 'opciones' => $opciones,
             );
@@ -120,7 +120,7 @@ class Clases_categorias extends MY_Controller
 
         // Establecer validaciones
         $this->form_validation->set_rules('disciplina_id', 'Disciplina', 'required');
-        // $this->form_validation->set_rules('gympass_id', 'Gympass', 'required');
+        // $this->form_validation->set_rules('gympass_class_id', 'Gympass', 'required');
         $this->form_validation->set_rules('nombre', 'Nombre', 'required');
         $this->form_validation->set_rules('descripcion', 'Descripción', 'required');
         $this->form_validation->set_rules('nota', 'Nota', 'required');
@@ -140,7 +140,7 @@ class Clases_categorias extends MY_Controller
             // Preparar los datos a insertar
             $data = array(
                 'disciplina_id' => $this->input->post('disciplina_id'),
-                // 'gympass_id' => $this->input->post('gympass_id'),
+                // 'gympass_class_id' => $this->input->post('gympass_class_id'),
                 'nombre' => $this->input->post('nombre'),
                 'descripcion' => $this->input->post('descripcion'),
                 'nota' => $this->input->post('nota'),

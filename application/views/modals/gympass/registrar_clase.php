@@ -73,7 +73,7 @@
                         <select id="categoria" name="categoria" class="form-control custom-select" required>
                             <option value="" <?php echo set_select('categoria', '', set_value('categoria') ? false : '' == $this->session->flashdata('categoria')); ?>>Seleccione una categoría…</option>
                             <?php foreach ($categorias_list as $categoria_key => $categoria_value) : ?>
-                                <?php if (!empty($categoria_value->gympass_id) and !empty($categoria_value->disciplinas_gympass_product_id)) : ?>
+                                <?php if (!empty($categoria_value->gympass_class_id) and !empty($categoria_value->disciplinas_gympass_product_id)) : ?>
                                     <option value="<?php echo $categoria_value->id; ?>" <?php echo set_select('categoria', $categoria_value->id, set_value('categoria') ? false : $categoria_value->id == $this->session->flashdata('categoria')); ?>><?php echo trim($categoria_value->nombre . ' - ' . $categoria_value->disciplinas_nombre); ?></option>
                                 <?php endif; ?>
                             <?php endforeach; ?>
