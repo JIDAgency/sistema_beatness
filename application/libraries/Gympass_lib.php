@@ -19,7 +19,7 @@ class Gympass_lib
         $this->gympass_gym_id = 60;
         $this->gympass_partner_id = 'b806bd77-d913-4046-a6e7-8fba7b34d277';
         $this->gympass_system_id = 81;
-        $this->gympass_secret_key = 'YourSecretKeyHere'; // Clave secreta para la firma X-Gympass-Signature
+        $this->gympass_secret_key = 'office_eagle_consider'; // Clave secreta para la firma X-Gympass-Signature
     }
 
     private function call_api($url, $method = 'GET', $data = null)
