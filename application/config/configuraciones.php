@@ -142,6 +142,23 @@ $select_es_estudiante = array(
 
 $config['select_es_estudiante'] = $select_es_estudiante;
 
+/* ====== Calendario o lista ====== */
+
+$select_mostrar_clase = array(
+    (object) array(
+        'nombre'    => 'Calendario',
+        'valor'     => 'calendario',
+        'activo'    => false,
+    ),
+    (object) array(
+        'nombre'    => 'Lista',
+        'valor'     => 'lista',
+        'activo'    => false,
+    )
+);
+
+$config['select_mostrar_clase'] = $select_mostrar_clase;
+
 /* ====== disciplina ====== */
 
 $select_disciplina = array(

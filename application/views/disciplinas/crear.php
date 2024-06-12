@@ -157,7 +157,21 @@
 													</select>
 												</div>
 											</div>
-										</div>		
+										</div>	
+										
+										<div class="row">
+											<div class="col-md-6 mb-3">
+												<div class="form-group">
+													<label for="formato">Como mostrar clase <span class="red">*</span></label>
+													<select name="formato" id="formato" class="form-control">
+														<option value="" <?php echo set_select('formato', '', set_value('formato') ? false : '' == $this->session->flashdata('formato')); ?>>Seleccione una opcion…</option>
+														<?php foreach (select_mostrar_clase() as $mostrar_key => $mostrar_row) : ?>
+															<option value="<?php echo $mostrar_row->valor; ?>" <?php echo $mostrar_row->activo == false ? '' : 'selected'; ?> <?php echo set_select('formato', $mostrar_row->valor, set_value('formato') ? false : $mostrar_row->valor == $this->session->flashdata('formato')); ?>><?php echo trim($mostrar_row->nombre); ?></option>
+														<?php endforeach; ?>
+													</select>
+												</div>
+											</div>
+										</div>	
 										
 										<div class="row">
 											<div class="col-md-6 mb-3">

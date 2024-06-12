@@ -165,6 +165,20 @@
 										<div class="row">
 											<div class="col-md-6 mb-3">
 												<div class="form-group">
+													<label for="formato">Como mostrar clase <span class="red">*</span></label>
+													<select name="formato" id="formato" class="form-control">
+														<option value="" <?php echo set_select('formato', '', set_value('formato') ? false : '' == (!empty($this->session->flashdata('formato')) ? $this->session->flashdata('formato') : (!empty($disciplina_a_editar_row->formato) ? $disciplina_a_editar_row->formato : set_value('formato')))); ?>>Seleccione una opcion…</option>
+														<?php foreach (select_mostrar_clase() as $key => $mostrar_row) : ?>
+															<option value="<?php echo $mostrar_row->valor; ?>" <?php echo set_select('formato', $mostrar_row->valor, set_value('formato') ? false : $mostrar_row->valor == (!empty($this->session->flashdata('formato')) ? $this->session->flashdata('formato') : (!empty($disciplina_a_editar_row->formato) ? $disciplina_a_editar_row->formato : set_value('formato')))); ?>><?php echo trim($mostrar_row->nombre); ?></option>
+														<?php endforeach; ?>
+													</select>
+												</div>
+											</div>
+										</div>
+
+										<div class="row">
+											<div class="col-md-6 mb-3">
+												<div class="form-group">
 													<label for="gympass_product_id" class="label-control">Gympass Product id </label>
 													<input type="number" class="form-control" id="gympass_product_id" name="gympass_product_id" placeholder="Gympass Product id" value="<?php echo set_value('gympass_product_id') == false ? $disciplina_a_editar_row->gympass_product_id : set_value('gympass_product_id'); ?>">
 												</div>

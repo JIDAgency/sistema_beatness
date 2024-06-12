@@ -74,6 +74,7 @@ class Disciplinas extends MY_Controller
         $this->form_validation->set_rules('mostrar_app', 'mostrar_app', 'required');
         $this->form_validation->set_rules('mostrar_web', 'mostrar_web', 'required');
         $this->form_validation->set_rules('estatus', 'estatus', 'required');
+        $this->form_validation->set_rules('formato', 'formato', 'required');
         $this->form_validation->set_rules('gympass_gym_id', 'gympass_gym_id');
 
         // Inicializar vista, scripts
@@ -102,6 +103,7 @@ class Disciplinas extends MY_Controller
                 'url_titulo' => $this->input->post('url_titulo'),
                 'url_logo' => $this->input->post('url_logo'),
                 'sucursal_id' => $this->input->post('sucursal_id'),
+                'formato' => $this->input->post('formato'),
                 'es_ilimitado' => $this->input->post('ilimitado'),
                 'mostrar_en_app' => $this->input->post('mostrar_app'),
                 'mostrar_en_web' => $this->input->post('mostrar_web'),
@@ -131,6 +133,7 @@ class Disciplinas extends MY_Controller
         $this->form_validation->set_rules('mostrar_app', 'mostrar_app', 'required');
         $this->form_validation->set_rules('mostrar_web', 'mostrar_web', 'required');
         $this->form_validation->set_rules('estatus', 'estatus', 'required');
+        $this->form_validation->set_rules('formato', 'formato', 'required');
         $this->form_validation->set_rules('gympass_product_id', 'gympass_product_id');
 
         // Inicializar vista, scripts y catálogos
@@ -172,6 +175,7 @@ class Disciplinas extends MY_Controller
                 'url_titulo' => $this->input->post('url_titulo'),
                 'url_logo' => $this->input->post('url_logo'),
                 'sucursal_id' => $this->input->post('sucursal_id'),
+                'formato' => $this->input->post('formato'),
                 'es_ilimitado' => $this->input->post('ilimitado'),
                 'mostrar_en_app' => $this->input->post('mostrar_app'),
                 'mostrar_en_web' => $this->input->post('mostrar_web'),
