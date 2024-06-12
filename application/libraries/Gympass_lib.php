@@ -133,9 +133,9 @@ class Gympass_lib
 
     // ============ BOOKING ============
 
-    public function patch_validate_booking($gym_id, $booking_number, $data)
+    public function patch_validate_booking($booking_number, $data)
     {
-        $url = $this->gympass_base_url . "/booking/v1/gyms/{$gym_id}/bookings/{$booking_number}";
+        $url = $this->gympass_base_url . "/booking/v1/gyms/{$this->gympass_gym_id}/bookings/{$booking_number}";
         return $this->call_api($url, 'PATCH', $data);
     }
 }

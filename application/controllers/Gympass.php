@@ -8,7 +8,7 @@ class Gympass extends MY_Controller
     {
         parent::__construct();
         $this->load->library('gympass_lib');
-        $this->load->model('gympass_model');
+        $this->load->model('wellhub_model');
     }
 
     public function disciplinas()
@@ -36,7 +36,7 @@ class Gympass extends MY_Controller
             $list_products = null;
         }
 
-        $disciplinas_list = $this->gympass_model->disciplinas_obtener()->result();
+        $disciplinas_list = $this->wellhub_model->disciplinas_obtener()->result();
 
         if (!$disciplinas_list) {
             $this->mensaje_del_sistema('MENSAJE_ERROR', 'Ha ocurrido un error, por favor inténtalo más tarde. (1)', $data['regresar_a']);
@@ -64,14 +64,14 @@ class Gympass extends MY_Controller
         }
 
         if (!empty($gympass_product_id)) {
-            if ($this->gympass_model->disciplina_esta_vinculado($gympass_product_id, $disciplina_id)) {
+            if ($this->wellhub_model->disciplina_esta_vinculado($gympass_product_id, $disciplina_id)) {
                 $this->output_json(['status' => 'error', 'message' => 'Este ID de Gympass ya está vinculado a otra disciplina.']);
                 return;
             }
         }
 
         $data = ['gympass_product_id' => $gympass_product_id ?: null];
-        if ($this->gympass_model->disciplina_editar($disciplina_id, $data)) {
+        if ($this->wellhub_model->disciplina_editar($disciplina_id, $data)) {
             $this->output_json(['status' => 'success', 'message' => 'ID de Gympass actualizado correctamente.']);
         } else {
             $this->output_json(['status' => 'error', 'message' => 'Error al actualizar el ID de Gympass.']);
@@ -97,7 +97,7 @@ class Gympass extends MY_Controller
             array('es_rel' => true, 'src' => '' . $controlador_js . '.js'),
         );
 
-        $categorias_list = $this->gympass_model->categorias_obtener()->result();
+        $categorias_list = $this->wellhub_model->categorias_obtener()->result();
 
         $data['categorias_list'] = $categorias_list;
 
@@ -119,7 +119,7 @@ class Gympass extends MY_Controller
                 return;
             }
 
-            $categoria_row = $this->gympass_model->categorias_obtener_por_id($id)->row();
+            $categoria_row = $this->wellhub_model->categorias_obtener_por_id($id)->row();
 
             if (empty($categoria_row->gympass_class_id)) {
                 $this->output_json(['status' => 'error', 'message' => 'Esta categoría de clase aún no está vinculada a Gympass.']);
@@ -173,7 +173,7 @@ class Gympass extends MY_Controller
                 $this->output_json(['status' => 'error', 'message' => $response['message']]);
             } else {
 
-                $this->gympass_model->categoria_actualizar_por_id($categoria_row->id, array('gympass_json' => json_encode($data_in, JSON_UNESCAPED_UNICODE)));
+                $this->wellhub_model->categoria_actualizar_por_id($categoria_row->id, array('gympass_json' => json_encode($data_in, JSON_UNESCAPED_UNICODE)));
 
                 $this->output_json(['status' => 'success', 'message' => 'Categorías de Gympass actualizada correctamente.']);
             }
@@ -197,7 +197,7 @@ class Gympass extends MY_Controller
                 return;
             }
 
-            $categoria_row = $this->gympass_model->categorias_obtener_por_id($id)->row();
+            $categoria_row = $this->wellhub_model->categorias_obtener_por_id($id)->row();
 
             if (empty($categoria_row->disciplina_id)) {
                 $this->output_json(['status' => 'error', 'message' => 'Esta categoría de clase aún no está vinculada a una Disciplina.']);
@@ -234,7 +234,7 @@ class Gympass extends MY_Controller
                 $this->output_json(['status' => 'error', 'message' => $response['message']]);
             } else {
 
-                $this->gympass_model->categoria_actualizar_por_id($categoria_row->id, array('gympass_class_id' => $response['classes'][0]['id'], 'gympass_json' => json_encode($response, JSON_UNESCAPED_UNICODE)));
+                $this->wellhub_model->categoria_actualizar_por_id($categoria_row->id, array('gympass_class_id' => $response['classes'][0]['id'], 'gympass_json' => json_encode($response, JSON_UNESCAPED_UNICODE)));
 
                 $this->output_json(['status' => 'success', 'message' => 'Categorías de Gympass registrada correctamente.']);
             }
@@ -264,8 +264,8 @@ class Gympass extends MY_Controller
             array('es_rel' => true, 'src' => '' . $controlador_js . '.js'),
         );
 
-        $clases_list = $this->gympass_model->clases_obtener_activas()->result();
-        $categorias_list = $this->gympass_model->categorias_obtener()->result();
+        $clases_list = $this->wellhub_model->clases_obtener_activas()->result();
+        $categorias_list = $this->wellhub_model->categorias_obtener()->result();
 
         $data['clases_list'] = $clases_list;
         $data['categorias_list'] = $categorias_list;
@@ -292,7 +292,7 @@ class Gympass extends MY_Controller
                 throw new Exception('La categoría no fue proporcionada.', 1001);
             }
 
-            $clase_row = $this->gympass_model->clases_obtener_por_id($id)->row();
+            $clase_row = $this->wellhub_model->clases_obtener_por_id($id)->row();
 
             if (empty($clase_row)) {
                 throw new Exception('La clase especificada no existe.', 1001);
@@ -302,7 +302,7 @@ class Gympass extends MY_Controller
                 throw new Exception('Esta clase ya se encuentra registrada en Gympass.', 1002);
             }
 
-            $categoria_row = $this->gympass_model->categorias_obtener_por_id($categoria)->row();
+            $categoria_row = $this->wellhub_model->categorias_obtener_por_id($categoria)->row();
 
             if (empty($categoria_row)) {
                 throw new Exception('La categoría especificada no existe.', 1001);
@@ -371,7 +371,7 @@ class Gympass extends MY_Controller
                 'gympass_json' => json_encode($response, true)
             );
 
-            if (!$this->gympass_model->clase_actualizar_por_id($clase_row->id, $data_2)) {
+            if (!$this->wellhub_model->clase_actualizar_por_id($clase_row->id, $data_2)) {
                 throw new Exception("No se pudo actualizar la clase en la base de datos.", 1001);
             }
 
@@ -404,7 +404,7 @@ class Gympass extends MY_Controller
                 throw new Exception('El ID de la clase no fue proporcionado.', 1001);
             }
 
-            $clase_row = $this->gympass_model->clases_obtener_por_id($id)->row();
+            $clase_row = $this->wellhub_model->clases_obtener_por_id($id)->row();
 
             if (empty($clase_row)) {
                 throw new Exception('La clase especificada no existe.', 1001);
@@ -414,7 +414,7 @@ class Gympass extends MY_Controller
                 throw new Exception('Esta clase no se encuentra registrada en Gympass.', 1002);
             }
 
-            $categoria_row = $this->gympass_model->categorias_obtener_por_id($clase_row->categoria_id)->row();
+            $categoria_row = $this->wellhub_model->categorias_obtener_por_id($clase_row->categoria_id)->row();
 
             if (empty($categoria_row)) {
                 throw new Exception('La categoría especificada no existe.', 1001);
@@ -481,7 +481,7 @@ class Gympass extends MY_Controller
                 'gympass_json' => json_encode($response, true)
             );
 
-            if (!$this->gympass_model->clase_actualizar_por_id($clase_row->id, $data_2)) {
+            if (!$this->wellhub_model->clase_actualizar_por_id($clase_row->id, $data_2)) {
                 throw new Exception("No se pudo actualizar la clase en la base de datos.", 1001);
             }
 
@@ -514,7 +514,7 @@ class Gympass extends MY_Controller
                 throw new Exception('El ID de la clase no fue proporcionado.', 1001);
             }
 
-            $clase_row = $this->gympass_model->clases_obtener_por_id($id)->row();
+            $clase_row = $this->wellhub_model->clases_obtener_por_id($id)->row();
 
             if (empty($clase_row)) {
                 throw new Exception('La clase especificada no existe.', 1001);
@@ -524,7 +524,7 @@ class Gympass extends MY_Controller
                 throw new Exception('Esta clase no se encuentra registrada en Gympass.', 1002);
             }
 
-            $categoria_row = $this->gympass_model->categorias_obtener_por_id($clase_row->categoria_id)->row();
+            $categoria_row = $this->wellhub_model->categorias_obtener_por_id($clase_row->categoria_id)->row();
 
             if (empty($categoria_row)) {
                 throw new Exception('La categoría especificada no existe.', 1001);
@@ -546,7 +546,7 @@ class Gympass extends MY_Controller
                 'gympass_json' => json_encode(array('eliminado' => $this->session->userdata('correo')), true)
             );
 
-            if (!$this->gympass_model->clase_actualizar_por_id($clase_row->id, $data_2)) {
+            if (!$this->wellhub_model->clase_actualizar_por_id($clase_row->id, $data_2)) {
                 throw new Exception("No se pudo actualizar la clase en la base de datos.", 1001);
             }
 
@@ -579,7 +579,7 @@ class Gympass extends MY_Controller
                 throw new Exception('El ID de la clase no fue proporcionado.', 1001);
             }
 
-            $clase_row = $this->gympass_model->clases_obtener_por_id($id)->row();
+            $clase_row = $this->wellhub_model->clases_obtener_por_id($id)->row();
 
             if (empty($clase_row)) {
                 throw new Exception('La clase especificada no existe.', 1001);
@@ -589,7 +589,7 @@ class Gympass extends MY_Controller
                 throw new Exception('Esta clase no se encuentra registrada en Gympass.', 1002);
             }
 
-            $categoria_row = $this->gympass_model->categorias_obtener_por_id($clase_row->categoria_id)->row();
+            $categoria_row = $this->wellhub_model->categorias_obtener_por_id($clase_row->categoria_id)->row();
 
             if (empty($categoria_row)) {
                 throw new Exception('La categoría especificada no existe.', 1001);
@@ -598,7 +598,6 @@ class Gympass extends MY_Controller
             if (empty($categoria_row->gympass_class_id)) {
                 throw new Exception('La categoría especificada no tiene un Gympass Class ID asociado.', 1001);
             }
-
 
             $data_1 = array(
                 "total_capacity" => $clase_row->cupo,

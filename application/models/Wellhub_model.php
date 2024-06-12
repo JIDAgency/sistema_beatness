@@ -1,6 +1,6 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed');
 
-class Gympass_model extends CI_Model
+class Wellhub_model extends CI_Model
 {
     // ====== Disciplinas ======
 
@@ -28,6 +28,7 @@ class Gympass_model extends CI_Model
             ->where('gympass_product_id', $gympass_product_id)
             ->where('id !=', $id)
             ->get();
+
         return $query->num_rows() > 0;
     }
 
@@ -73,7 +74,6 @@ class Gympass_model extends CI_Model
         return $query;
     }
 
-
     // ====== Clases ======
 
     public function clases_obtener_activas()
@@ -115,7 +115,6 @@ class Gympass_model extends CI_Model
             ->join("sucursales t4", "t4.id = t2.sucursal_id")
             ->get();
 
-
         return $query;
     }
 
@@ -124,6 +123,77 @@ class Gympass_model extends CI_Model
         $query = $this->db
             ->where('id', $id)
             ->update('clases', $data);
+
+        return $query;
+    }
+
+    // ====== Webhooks ======
+
+    public function obtener_webhook_por_id($id)
+    {
+        $query = $this->db
+            ->where('id', $id)
+            ->get('wellhub_webhooks');
+
+        return $query;
+    }
+
+    public function insertar_webhook($data)
+    {
+        $query = $this->db
+            ->insert('wellhub_webhooks', $data);
+
+        return $query;
+    }
+
+    public function validar_webhook_registrado($evento_id)
+    {
+        if ($evento_id === null) {
+            return false;
+        }
+
+        $query = $this->db
+            ->where('evento_id', $evento_id)
+            ->select('evento_id')
+            ->from('wellhub_webhooks')
+            ->get();
+
+        return $query->num_rows() > 0;
+    }
+
+    // ====== Usuarios ======
+
+    public function obtener_cliente_por_gympass_user_id($gympass_user_id)
+    {
+        $query = $this->db
+            ->where('gympass_user_id', $gympass_user_id)
+            ->get('usuarios');
+
+        return $query;
+    }
+
+    public function obtener_cliente_por_email($correo)
+    {
+        $query = $this->db
+            ->where('correo', $correo)
+            ->get('usuarios');
+
+        return $query;
+    }
+
+    public function insertar_usuario($data)
+    {
+        $query = $this->db
+            ->insert('usuarios', $data);
+
+        return $query;
+    }
+
+    public function actualizar_usuario_por_id($id, $data)
+    {
+        $query = $this->db
+            ->where('id', $id)
+            ->update('usuarios', $data);
 
         return $query;
     }
