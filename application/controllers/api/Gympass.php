@@ -16,6 +16,11 @@ class Gympass extends REST_Controller
 
     public function index_post()
     {
+        redirect('error_404');
+    }
+
+    public function webhooks_post()
+    {
         try {
             $body_post = $this->post();
             $headers_post = $this->input->request_headers();
