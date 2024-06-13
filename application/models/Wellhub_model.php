@@ -118,6 +118,26 @@ class Wellhub_model extends CI_Model
         return $query;
     }
 
+    public function clase_obtener_por_gympass_slot_id($gympass_slot_id)
+    {
+        $query = $this->db
+            ->where('t1.gympass_slot_id', $gympass_slot_id)
+            ->select('
+                t1.*,
+                t2.nombre as disciplinas_nombre,
+                t2.gympass_product_id as disciplinas_gympass_product_id,
+                CONCAT(COALESCE(t3.nombre_completo, "N/D"), " ", COALESCE(t3.apellido_paterno, "N/D")) as instructores_nombre,
+                t4.locacion as sucursales_locacion,
+            ')
+            ->from('clases t1')
+            ->join("disciplinas t2", "t2.id = t1.disciplina_id")
+            ->join("usuarios t3", "t3.id = t1.instructor_id")
+            ->join("sucursales t4", "t4.id = t2.sucursal_id")
+            ->get();
+
+        return $query;
+    }
+
     public function clase_actualizar_por_id($id, $data)
     {
         $query = $this->db
@@ -126,7 +146,6 @@ class Wellhub_model extends CI_Model
 
         return $query;
     }
-
     // ====== Webhooks ======
 
     public function obtener_webhook_por_id($id)
@@ -138,10 +157,28 @@ class Wellhub_model extends CI_Model
         return $query;
     }
 
+    public function webhook_obtener_por_evento_id($evento_id)
+    {
+        $query = $this->db
+            ->where('evento_id', $evento_id)
+            ->get('wellhub_webhooks');
+
+        return $query;
+    }
+
     public function insertar_webhook($data)
     {
         $query = $this->db
             ->insert('wellhub_webhooks', $data);
+
+        return $query;
+    }
+
+    public function webhook_actualizar_por_id($id, $data)
+    {
+        $query = $this->db
+            ->where('id', $id)
+            ->update('wellhub_webhooks', $data);
 
         return $query;
     }
@@ -194,6 +231,25 @@ class Wellhub_model extends CI_Model
         $query = $this->db
             ->where('id', $id)
             ->update('usuarios', $data);
+
+        return $query;
+    }
+
+    // ====== Reservaciones ======
+
+    public function reservaciones_insertar($data)
+    {
+        $query = $this->db
+            ->insert('reservaciones', $data);
+
+        return $query;
+    }
+
+    public function reservaciones_obtener_por_gympass_booking_number($gympass_booking_number)
+    {
+        $query = $this->db
+            ->where('gympass_booking_number', $gympass_booking_number)
+            ->get('reservaciones');
 
         return $query;
     }

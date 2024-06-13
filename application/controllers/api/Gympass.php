@@ -33,17 +33,32 @@ class Gympass extends REST_Controller
 
             $this->db->trans_start();
 
-            $data_1 = array(
-                'evento_tipo' => isset($body_post['event_type']) ? $body_post['event_type'] : null,
-                'evento_id' => isset($body_post['event_data']['event_id']) ? $body_post['event_data']['event_id'] : null,
-                'contenido' => json_encode($body_post, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)
-            );
+            $validar_webhook = $this->wellhub_model->webhook_obtener_por_evento_id(isset($body_post['event_data']['event_id']) ? $body_post['event_data']['event_id'] : null)->row();
 
-            if (!$this->wellhub_model->insertar_webhook($data_1)) {
-                throw new Exception('Hubo un problema al procesar la solicitud del webhook.');
+            if (!$validar_webhook) {
+                $data_1 = array(
+                    'evento_tipo' => isset($body_post['event_type']) ? $body_post['event_type'] : null,
+                    'evento_id' => isset($body_post['event_data']['event_id']) ? $body_post['event_data']['event_id'] : null,
+                    'contenido' => json_encode($body_post, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
+                    'intentos' => 1
+                );
+
+                if (!$this->wellhub_model->insertar_webhook($data_1)) {
+                    throw new Exception('Hubo un problema al procesar la solicitud del webhook.');
+                }
+
+                $webhook_id = $this->db->insert_id();
+            } else {
+
+                $this->wellhub_model->webhook_actualizar_por_id($validar_webhook->id, array(
+                    'intentos' => $validar_webhook->intentos + 1,
+                ));
+
+                $webhook_id = $validar_webhook->id;
             }
 
-            $webhook_id = $this->db->insert_id();
+            $this->output->set_header('X-Gympass-Signature: ' . $signature_esperada);
+            $this->set_response(REST_Controller::HTTP_OK);
 
             $this->db->trans_complete();
 
@@ -51,16 +66,6 @@ class Gympass extends REST_Controller
                 throw new Exception('La transacción falló al completar la operación.');
             }
 
-            $this->output->set_header('X-Gympass-Signature: ' . $signature_esperada);
-            $this->set_response(REST_Controller::HTTP_OK);
-
-            // Permite que la respuesta se envíe de inmediato
-            ignore_user_abort(true);
-            if (function_exists('fastcgi_finish_request')) {
-                fastcgi_finish_request();
-            }
-
-            // Ejecuta la función en segundo plano
             $this->validar_reservacion($webhook_id);
         } catch (Exception $e) {
             $this->db->trans_rollback();
@@ -78,12 +83,15 @@ class Gympass extends REST_Controller
 
         $webhook_row = $this->wellhub_model->obtener_webhook_por_id($id)->row();
         $webhook_contenido = json_decode($webhook_row->contenido, true);
+        $cliente_row = null;
+        $minutos_para_reservar = 15;
 
-        try {
+        if ($webhook_row->evento_tipo == 'booking-requested') {
+            try {
 
-            if ($webhook_row->evento_tipo == 'booking-requested') {
                 $flar_validar_cliente = false;
                 $user = $webhook_contenido['event_data']['user'];
+                $slot = $webhook_contenido['event_data']['slot'];
 
                 if (!empty($user['unique_token'])) {
                     $cliente_row = $this->wellhub_model->obtener_cliente_por_gympass_user_id($user['unique_token'])->row();
@@ -101,7 +109,7 @@ class Gympass extends REST_Controller
                             'gympass_user_id' => $user['unique_token'] ?? null,
                         ];
 
-                        if ($this->wellhub_model->actualizar_usuario_por_id($cliente_row->id, $data_1)) {
+                        if (!$this->wellhub_model->actualizar_usuario_por_id($cliente_row->id, $data_1)) {
                             throw new Exception('No fue posible vincular su cuenta de usuario con Gympass.', 1009);
                         }
                     }
@@ -138,30 +146,235 @@ class Gympass extends REST_Controller
                     if (!$this->wellhub_model->insertar_usuario($data_1)) {
                         throw new Exception('Ninguna de las firmas generadas coincide con la esperada.');
                     }
+
+                    $cliente_row = $this->wellhub_model->obtener_cliente_por_gympass_user_id($user['unique_token'])->row();
                 }
+
+
+                if (!$cliente_row) {
+                    throw new Exception('No fue posible encontrar al usuario.', 1009);
+                }
+
+                $clase_row = $this->wellhub_model->clase_obtener_por_gympass_slot_id($slot['id'])->row();
+
+                if (!$clase_row) {
+                    throw new Exception('No se encontro la clase a reservar.', 1008);
+                }
+
+                if ($clase_row->estatus === 'Cancelada') {
+                    throw new Exception('La clase a reservasr ha sido cancelada.', 1007);
+                }
+
+                if ($clase_row->estatus === 'Terminada') {
+                    throw new Exception('La clase a reservar ha termindo', 1006);
+                }
+
+                $validar_reservacion = $this->wellhub_model->reservaciones_obtener_por_gympass_booking_number($slot['booking_number'])->row();
+
+                if ($validar_reservacion) {
+                    throw new Exception('El usuario ya cuenta con una reservación para esta clase.', 1003);
+                }
+
+                $fecha_de_clase = $clase_row->inicia;
+                $fecha_limite_de_clase = strtotime($minutos_para_reservar . ' minutes', strtotime($fecha_de_clase));
+                if (strtotime('now') > $fecha_limite_de_clase) {
+                    throw new Exception('La clase que intenta reservar está por comenzar o ya ha iniciado, por favor seleccione otro horario.', 1006);
+                }
+
+                $cupo_lugares = json_decode($clase_row->cupo_lugares);
+
+                usort($cupo_lugares, function ($a, $b) {
+                    return $b->no_lugar - $a->no_lugar;
+                });
+
+                $lugar_reservado = false;
+                $no_lugar_reservado = 0;
+
+                foreach ($cupo_lugares as &$lugar) {
+                    if (!$lugar->esta_reservado) {
+                        $lugar->esta_reservado = true;
+                        $lugar->nombre_usuario = $cliente_row->id;
+                        $no_lugar_reservado = $lugar->no_lugar;
+                        $lugar_reservado = true;
+                        break;
+                    }
+                }
+
+                if (!$lugar_reservado) {
+                    throw new Exception('No hay lugares disponibles para reservar.', 1004);
+                }
+
+                usort($cupo_lugares, function ($a, $b) {
+                    return $a->no_lugar - $b->no_lugar;
+                });
+
+                $clase_row->cupo_lugares = json_encode($cupo_lugares);
+
+                if (!$this->wellhub_model->clase_actualizar_por_id($clase_row->id, array('reservado' => $clase_row->reservado + 1, 'cupo_lugares' => json_encode($cupo_lugares)))) {
+                    throw new Exception('No hay lugares disponibles para reservar.', 1004);
+                }
+
+                $data_2 = array(
+                    'usuario_id' => $cliente_row->id,
+                    'clase_id' => $clase_row->id,
+                    'asignaciones_id' => 364,
+                    'no_lugar' => $no_lugar_reservado,
+                    'gympass_booking_number' => $slot['booking_number'],
+                );
+
+                if (!$this->wellhub_model->reservaciones_insertar($data_2)) {
+                    throw new Exception('La reservación no pudo ser creada', 1010);
+                }
+
+                $this->db->trans_complete();
+
+                if ($this->db->trans_status() === false) {
+                    throw new Exception('La transacción falló al completar la operación.');
+                }
+
+                $data_result = array(
+                    'status' => 'RESERVED'
+                );
+
+                $response = $this->gympass_lib->patch_validate_booking($slot['booking_number'], $data_result);
+
+                $data_3 = array(
+                    'data' => !empty($webhook_row->data) ? $webhook_row->data . ',' . json_encode($data_result) : json_encode($data_result),
+                    'respuesta' => !empty($webhook_row->respuesta) ? $webhook_row->respuesta . ',' . json_encode($response) : json_encode($response),
+                );
+
+                $this->wellhub_model->webhook_actualizar_por_id($webhook_row->id, $data_3);
+
+                $data_4 = array(
+                    "total_capacity" => $clase_row->cupo,
+                    "total_booked" => $clase_row->reservado + 1
+                );
+
+                $response = $this->gympass_lib->patch_update_slot($slot['class_id'], $clase_row->gympass_slot_id, $data_4);
+
+                if (!empty($response) || isset($response['error']) && $response['error'] === true) {
+                    throw new Exception("Error: " . ($response['message'] ?? 'Respuesta inválida de Gympass.'), 1001);
+                }
+            } catch (Exception $e) {
+                $this->db->trans_rollback();
+
+                $reason = $this->determinar_reason_category($e->getCode());
+
+                $data_result = array(
+                    'status' => 'REJECTED',
+                    'reason' => $e->getMessage(),
+                    'reason_category' => $reason,
+                );
+
+                $response = $this->gympass_lib->patch_validate_booking($slot['booking_number'], $data_result);
+
+                $data_3 = array(
+                    'data' => !empty($webhook_row->data) ? $webhook_row->data . ',' . json_encode($data_result) : json_encode($data_result),
+                    'respuesta' => !empty($webhook_row->respuesta) ? $webhook_row->respuesta . ',' . json_encode($response) : json_encode($response),
+                );
+
+                $this->wellhub_model->webhook_actualizar_por_id($webhook_row->id, $data_3);
             }
+        }
 
-            $this->db->trans_complete();
+        if ($webhook_row->evento_tipo == 'booking-requested') {
+            try {
 
-            if ($this->db->trans_status() === false) {
-                throw new Exception('La transacción falló al completar la operación.');
+                $flar_validar_cliente = false;
+                $user = $webhook_contenido['event_data']['user'];
+                $slot = $webhook_contenido['event_data']['slot'];
+
+                if (!empty($user['unique_token'])) {
+                    $cliente_row = $this->wellhub_model->obtener_cliente_por_gympass_user_id($user['unique_token'])->row();
+                    if (!empty($cliente_row)) {
+                        $flar_validar_cliente = true;
+                    }
+                }
+
+                if (!$flar_validar_cliente && !empty($user['email'])) {
+                    $cliente_row = $this->wellhub_model->obtener_cliente_por_email($user['email'])->row();
+                    if (!empty($cliente_row)) {
+                        $flar_validar_cliente = true;
+
+                        $data_1 = [
+                            'gympass_user_id' => $user['unique_token'] ?? null,
+                        ];
+
+                        if (!$this->wellhub_model->actualizar_usuario_por_id($cliente_row->id, $data_1)) {
+                            throw new Exception('No fue posible vincular su cuenta de usuario con Gympass.', 1009);
+                        }
+                    }
+                }
+
+                if (!$flar_validar_cliente) {
+                    $nombre_completo = isset($user['name']) ? $user['name'] : '';
+                    $nombre_dividido = $this->dividir_nombre($nombre_completo);
+
+                    $data_1 = [
+                        'gympass_user_id' => $user['unique_token'] ?? null,
+                        'nombre_completo' => $nombre_dividido['nombre'] ?? '',
+                        'apellido_paterno' => $nombre_dividido['apellido_paterno'] ?? '',
+                        'apellido_materno' => $nombre_dividido['apellido_materno'] ?? '',
+                        'correo' => $user['email'] ?? null,
+                        'no_telefono' => $user['phone_number'] ?? null,
+                        'contrasena_hash' => password_hash('temporal', PASSWORD_DEFAULT),
+                        'rol_id' => 1, // Este usuario pertenece al rol con id 1 (Cliente)
+                        'es_estudiante' => 'no',
+                        'es_estudiante_vigencia' => date('Y-m-d'),
+                        'fecha_nacimiento' => date('Y-m-d'),
+                        'rfc' => null,
+                        'genero' => 'M',
+                        'calle' => null,
+                        'numero' => null,
+                        'colonia' => null,
+                        'ciudad' => null,
+                        'estado' => null,
+                        'pais' => null,
+                        'nombre_imagen_avatar' => 'default.jpg',
+                        'dominio' => 'beatness'
+                    ];
+
+                    if (!$this->wellhub_model->insertar_usuario($data_1)) {
+                        throw new Exception('Ninguna de las firmas generadas coincide con la esperada.');
+                    }
+
+                    $cliente_row = $this->wellhub_model->obtener_cliente_por_gympass_user_id($user['unique_token'])->row();
+                }
+
+
+                if (!$cliente_row) {
+                    throw new Exception('No fue posible encontrar al usuario.', 1009);
+                }
+
+                $clase_row = $this->wellhub_model->clase_obtener_por_gympass_slot_id($slot['id'])->row();
+
+                if (!$clase_row) {
+                    throw new Exception('No se encontro la clase a reservar.', 1008);
+                }
+
+                if ($clase_row->estatus === 'Cancelada') {
+                    throw new Exception('La clase a reservasr ha sido cancelada.', 1007);
+                }
+
+                if ($clase_row->estatus === 'Terminada') {
+                    throw new Exception('La clase a reservar ha termindo', 1006);
+                }
+
+                $this->db->trans_complete();
+
+                if ($this->db->trans_status() === false) {
+                    throw new Exception('La transacción falló al completar la operación.');
+                }
+
+                $this->response(REST_Controller::HTTP_OK);
+            } catch (Exception $e) {
+                $this->db->trans_rollback();
+
+                $this->response(array(
+                    'error' => true,
+                    'message' => $e->getMessage(),
+                ), REST_Controller::HTTP_BAD_REQUEST);
             }
-        } catch (Exception $e) {
-            $this->db->trans_rollback();
-
-            $reason = $this->determinar_reason_category($e->getCode());
-
-            $data_2 = array(
-                'status' => 3,
-                'reason' => $e->getMessage(),
-                'reason_category' => $reason,
-            );
-
-            print_r($data_2);
-
-            $response = $this->gympass_lib->patch_validate_booking($webhook_contenido['event_data']['slot']['booking_number'], $data_2);
-            echo '<br>';
-            print_r($response);
         }
     }
 
