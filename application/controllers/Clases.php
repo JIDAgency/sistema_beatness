@@ -913,6 +913,12 @@ class Clases extends MY_Controller
 
             $clase_existente = $this->clases_model->obtener_clase_por_identificador_para_sku($identificador)->row();
 
+            if (strtotime($this->input->post('inicia_time')) <= strtotime('12:00')) {
+                $img_acceso = base_url() . 'almacenamiento/img_app/img_acceso/acceso-matutino.png';
+            } elseif (strtotime($this->input->post('inicia_time')) >= strtotime('12:01')) {
+                $img_acceso = base_url() . 'almacenamiento/img_app/img_acceso/acceso-vespertino.png';
+            }
+
             if ($clase_existente and ($clase_existente->intervalo_horas == $this->input->post('intervalo_horas')) and ($clase_existente->distribucion_imagen == $this->input->post('distribucion_imagen')) and ($clase_existente->distribucion_lugares == $this->input->post('distribucion_lugares'))) {
                 $this->session->set_flashdata('MENSAJE_INFO', 'La clase con los nuevos datos ya existe.');
                 redirect('clases/index');
@@ -927,6 +933,7 @@ class Clases extends MY_Controller
                     //'subdisciplina_id' => $subdisciplina_id,
                     'instructor_id' => $this->input->post('instructor_id'),
                     'cupo' => $this->input->post('cupo'),
+                    'img_acceso' => $img_acceso,
                     'inicia' => date('Y-m-d', strtotime(str_replace('/', '-', $this->input->post('inicia_date')))) . 'T' . $this->input->post('inicia_time'),
                     'inicia_ionic' => $fecha_numerica_de_la_clase,
                     'intervalo_horas' => $this->input->post('intervalo_horas'),
