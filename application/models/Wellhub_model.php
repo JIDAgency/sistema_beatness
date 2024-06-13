@@ -245,6 +245,15 @@ class Wellhub_model extends CI_Model
         return $query;
     }
 
+    public function reservaciones_actualizar_por_id($id, $data)
+    {
+        $query = $this->db
+            ->where('id', $id)
+            ->update('reservaciones', $data);
+
+        return $query;
+    }
+
     public function reservaciones_obtener_por_gympass_booking_number($gympass_booking_number)
     {
         $query = $this->db

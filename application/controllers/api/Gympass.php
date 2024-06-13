@@ -376,11 +376,34 @@ class Gympass extends REST_Controller
                     throw new Exception('No se pudo actualizar la clase con la cancelación de la reserva.');
                 }
 
+                $data_2 = array(
+                    'asistencia' => 'cancelada',
+                    'estatus' => 'Cancelada',
+                );
+
+                if (!$this->wellhub_model->reservaciones_actualizar_por_id($reservacion_row->id, $data_2)) {
+                    throw new Exception('No se pudo crear la reserva. Por favor, intente nuevamente.');
+                }
+
                 $this->db->trans_complete();
 
                 if ($this->db->trans_status() === false) {
                     throw new Exception('La transacción falló al completar la operación. Por favor, intente nuevamente.');
                 }
+
+                $data_result = array(
+                    "total_capacity" => $clase_row->cupo,
+                    "total_booked" => $clase_row->reservado - 1
+                );
+
+                $response = $this->gympass_lib->patch_update_slot($slot['class_id'], $clase_row->gympass_slot_id, $data_result);
+
+                $data_3 = array(
+                    'data' => !empty($webhook_row->data) ? $webhook_row->data . ',' . json_encode($data_result) : json_encode($data_result),
+                    'respuesta' => !empty($webhook_row->respuesta) ? $webhook_row->respuesta . ',' . json_encode($response) : json_encode($response),
+                );
+
+                $this->wellhub_model->webhook_actualizar_por_id($webhook_row->id, $data_3);
 
                 $this->response(REST_Controller::HTTP_OK);
             } catch (Exception $e) {
