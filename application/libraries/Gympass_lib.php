@@ -15,7 +15,9 @@ class Gympass_lib
         $this->CI->load->helper('file');
 
         $this->gympass_base_url = 'https://apitesting.partners.gympass.com';
+        $this->gympass_access_control_base_url = 'https://sandbox.partners.gympass.com';
         $this->gympass_api_key = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyNjYzNGFmYy1kZjE4LTQ1MzctYjEzMC1hM2VlZjY2ODVhN2IiLCJpc3MiOiJwYXJ0bmVycy10ZXN0aW5nLWlhbS51cy5zdGcuZ3ltcGFzcy5jbG91ZCIsImlhdCI6MTcxMzk3NTE3NSwianRpIjoiMjY2MzRhZmMtZGYxOC00NTM3LWIxMzAtYTNlZWY2Njg1YTdiIn0.FArt7ha1fJuNihB9Am0y_858duLbNU8ghQe0XQI78ZM';
+        $this->gympass_access_control_api_key = 'testkey';
         $this->gympass_gym_id = 60;
         $this->gympass_partner_id = 'b806bd77-d913-4046-a6e7-8fba7b34d277';
         $this->gympass_system_id = 81;
@@ -27,7 +29,45 @@ class Gympass_lib
         $headers = [
             'Authorization: Bearer ' . $this->gympass_api_key,
             'Accept: application/json',
-            'Content-Type: application/json'
+            'Content-Type: application/json',
+        ];
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+        if ($method !== 'GET') {
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
+            if ($data !== null) {
+                curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+            }
+        }
+
+        $response = curl_exec($ch);
+        $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        if ($response === false) {
+            $error_message = curl_error($ch);
+            return ['error' => true, 'message' => "Error al llamar a la API: $error_message"];
+        }
+
+        if ($http_status >= 200 && $http_status < 300) {
+            return json_decode($response, true); // Success response
+        } else {
+            $error_response = json_decode($response, true);
+            return ['error' => true, 'message' => $error_response['Message'] ?? $error_response['message'] ?? 'Error desconocido en la API (' . $response . ')'];
+        }
+    }
+
+    private function call_api_access_control($url, $method = 'GET', $data = null)
+    {
+        $headers = [
+            'Authorization: Bearer ' . $this->gympass_access_control_api_key,
+            'Accept: application/json',
+            'Content-Type: application/json',
+            'X-Gym-Id: 1234'
         ];
 
         $ch = curl_init();
@@ -138,5 +178,13 @@ class Gympass_lib
         // $url = $this->gympass_base_url . "/booking/v1/gyms/{$this->gympass_gym_id}/bookings/{$booking_number}";
         $url = $this->gympass_base_url . "/booking/v2/gyms/{$this->gympass_gym_id}/bookings/{$booking_number}";
         return $this->call_api($url, 'PATCH', $data);
+    }
+
+    // ============ ACCESS CONTROL ============
+
+    public function post_access_validate($data)
+    {
+        $url = "https://sandbox.partners.gympass.com/access/v1/validate";
+        return $this->call_api_access_control($url, 'POST', $data);
     }
 }
