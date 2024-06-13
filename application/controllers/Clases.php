@@ -467,11 +467,27 @@ class Clases extends MY_Controller
         } else {
 
             if ($columna == 'inicia') {
-                $data_1 = array(
-                    'identificador' => $identificador_nuevo,
-                    $columna => $nuevoValor,
-                    'inicia_ionic' => $nuevoValor,
-                );
+                // Extraer la hora de la cadena de fecha
+                $hora = substr($nuevoValor, 11, 5); // Obtiene "07:30"
+                $horaNumerica = intval(substr($hora, 0, 2)); // Obtiene "07" y lo convierte a entero
+
+                // Determinar si es AM o PM
+                if ($horaNumerica < 12) {
+
+                    $data_1 = array(
+                        'identificador' => $identificador_nuevo,
+                        $columna => $nuevoValor,
+                        'inicia_ionic' => $nuevoValor,
+                        'img_acceso' => 'https://beatness.com.mx/almacenamiento/img_app/img_acceso/acceso-matutino.png'
+                    );
+                } else {
+                    $data_1 = array(
+                        'identificador' => $identificador_nuevo,
+                        $columna => $nuevoValor,
+                        'inicia_ionic' => $nuevoValor,
+                        'img_acceso' => 'https://beatness.com.mx/almacenamiento/img_app/img_acceso/acceso-vespertino.png'
+                    );
+                }
             } else {
                 $data_1 = array(
                     'identificador' => $identificador_nuevo,
