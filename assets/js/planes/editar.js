@@ -7,6 +7,11 @@ $(function () {
         }
     );
 
+	// Inicializar el plugin del select
+	$(".select2-categorias").select2({
+		placeholder: "Selecciona las categorías de venta"
+	});
+
     // Establecer validaciones
 	$("#forma-editar-plan").validate({
 		rules: {

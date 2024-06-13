@@ -167,9 +167,9 @@
 													</div>
 
 													<div class="form-group row col-lg-12 col-md-12 col-sm-12">
-														<label for="categorias" class="col-md-12">Seleccione las categorias&nbsp;<span class="red">*</span></label>
+														<label for="categorias" class="col-md-12">Seleccione las categorias de venta&nbsp;<span class="red">*</span></label>
 														<div class="col-md-12">
-															<select class="select2-disciplinas form-control" name="categorias[]" multiple>
+															<select class="select2-categorias form-control" name="categorias[]" multiple>
 
 																<?php foreach ($categorias as $amenidades_key => $categoria) : ?>
 																	<option value="<?php echo $categoria->id; ?>" <?php foreach ($categorias_seleccionadas as $categoria_seleccionada) {

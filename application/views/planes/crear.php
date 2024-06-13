@@ -148,9 +148,9 @@
 												</div>
 
 												<div class="form-group row">
-													<label for="categorias" class="col-md-12">Seleccione las categorias</label>
+													<label for="categorias" class="col-md-12">Seleccione las categorias de venta</label>
 													<div class="col-md-12">
-														<select class="select2-disciplinas form-control" name="categorias[]" multiple readonly>
+														<select class="select2-categorias form-control" name="categorias[]" multiple readonly>
 															<?php foreach ($categorias as $categoria) : ?>
 																<option value="<?php echo $categoria->id; ?>">
 																	<?php echo $categoria->nombre; ?>
