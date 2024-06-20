@@ -71,13 +71,6 @@ class Endpoint extends REST_Controller
 
     public function planes_disponibles_get()
     {
-        /** Esto se bloqueó por el cierre de operaciones de Sensoria. */
-        /*
-        $this->response(array(
-            'mensaje' => 'Por el momento no es posible realizar la esta operación.',
-        ), REST_Controller::HTTP_OK);
-        */
-        // Validar que el cliente que realiza la petición esté autenticado
         $datos_get = $this->get();
 
         $usuario_valido = $this->_autenticar_usuario($datos_get['token'], $datos_get['usuario_id']);
@@ -142,6 +135,7 @@ class Endpoint extends REST_Controller
 
                     $plan_con_disciplinas->disciplinas_sucursal_id = $plan->disciplinas_sucursal_id;
                     $plan_con_disciplinas->rel_planes_categorias_categoria_id = $plan->rel_planes_categorias_categoria_id;
+                    $plan_con_disciplinas->sucursales_url_whatsapp = $plan->sucursales_url_whatsapp;
                 } elseif (!$reservaciones_list) {
 
                     $plan_con_disciplinas = new stdClass();
@@ -174,6 +168,7 @@ class Endpoint extends REST_Controller
 
                     $plan_con_disciplinas->disciplinas_sucursal_id = $plan->disciplinas_sucursal_id;
                     $plan_con_disciplinas->rel_planes_categorias_categoria_id = $plan->rel_planes_categorias_categoria_id;
+                    $plan_con_disciplinas->sucursales_url_whatsapp = $plan->sucursales_url_whatsapp;
                 }
             }
         }
