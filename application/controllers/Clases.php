@@ -1103,7 +1103,7 @@ class Clases extends MY_Controller
                                 }
 
                                 $this->session->set_flashdata('MENSAJE_EXITO', 'La reservación se ha realizado con éxito. Para ID ' . $this->input->post('usuario_id') . ' con el Lugar: ' . $this->input->post('no_lugar'));
-                                redirect('reservaciones/index');
+                                redirect('clases/reservar/'.$id);
                             }
                         }
                     }
