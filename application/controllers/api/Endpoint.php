@@ -1484,6 +1484,34 @@ class Endpoint extends REST_Controller
         ), REST_Controller::HTTP_OK);
     }
 
+    /**
+     * Cambia la sucursal del usuario
+     *
+     * @return void
+     */
+    public function cambiar_sucursal_post()
+    {
+        $datos_post = $this->post();
+
+        $usuario_valido = $this->_autenticar_usuario($datos_post['token'], $datos_post['usuario_id']);
+
+        if (!$this->usuarios_model->editar(
+            $usuario_valido->id,
+            array(
+                'sucursal_id' => $datos_post['sucursal_id'],
+            )
+        )) {
+            $this->response(array(
+                'error' => true,
+                'mensaje' => 'La sucursal no pudo ser cambiada; por favor inténtelo más tarde',
+            ), REST_Controller::HTTP_NOT_FOUND);
+        }
+
+        $this->response(array(
+            'mensaje' => 'La sucrusal se cambio exitosamente',
+        ), REST_Controller::HTTP_OK);
+    }
+
     public function cambiar_contrasena_post()
     {
 

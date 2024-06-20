@@ -246,7 +246,15 @@ class Usuarios_model extends CI_Model
 
     public function obtener_por_token_id($token, $id)
     {
-        return $this->db->where(array('token' => $token, 'id' => intval($id)))->get('usuarios');
+
+        $query = $this->db
+            ->where(array('t1.token' => $token, 't1.id' => intval($id)))
+            ->select('t1.*, t2.descripcion as nombre_sucursal')
+            ->from('usuarios t1')
+            ->join('sucursales t2', 't1.sucursal_id = t2.id')
+            ->get();
+
+        return $query; 
     }
 
     public function obtener_por_facebook_id($facebook_id)
