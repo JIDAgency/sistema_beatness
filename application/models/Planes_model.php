@@ -216,12 +216,14 @@ class Planes_model extends CI_Model
             ->select('
                 t1.*,
                 t3.sucursal_id as disciplinas_sucursal_id,
-                t4.categoria_id as rel_planes_categorias_categoria_id
+                t4.categoria_id as rel_planes_categorias_categoria_id,
+                t5.url_whatsapp as sucursales_url_whatsapp
             ')
             ->from('planes t1')
             ->join('planes_disciplinas t2', 't2.plan_id = t1.id')
             ->join('disciplinas t3', 't3.id = t2.disciplina_id')
             ->join('rel_planes_categorias t4', 't4.plan_id = t1.id')
+            ->join('sucursales t5', 't5.id = t3.sucursal_id')
             ->group_by(array("t1.id", "t3.sucursal_id", "t4.categoria_id"))
             ->order_by("t1.orden_venta", "asc")
             ->get();
