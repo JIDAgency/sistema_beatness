@@ -246,15 +246,19 @@ class Usuarios_model extends CI_Model
 
     public function obtener_por_token_id($token, $id)
     {
+        return $this->db->where(array('token' => $token, 'id' => $id))->get('usuarios');
+    }
 
+    public function obtener_usuario_para_app($token, $id)
+    {
         $query = $this->db
-            ->where(array('t1.token' => $token, 't1.id' => intval($id)))
+            ->where(array('t1.token' => $token, 't1.id' => $id))
             ->select('t1.*, t2.descripcion as nombre_sucursal')
             ->from('usuarios t1')
-            ->join('sucursales t2', 't1.sucursal_id = t2.id')
+            ->join('sucursales t2', 't1.sucursal_id = t2.id', 'left')
             ->get();
 
-        return $query; 
+        return $query;
     }
 
     public function obtener_por_facebook_id($facebook_id)

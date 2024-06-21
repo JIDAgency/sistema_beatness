@@ -32,6 +32,209 @@ class Endpoint extends REST_Controller
         $this->load->model("ventas_model");
     }
 
+    // ====== Perfil (Inicio) ======
+    /**
+     * Obtiene los datos del usuario autenticado
+     *
+     * @return void
+     */
+    public function datos_usuario_get()
+    {
+        $datos_get = $this->get();
+
+        $usuario_valido = $this->_autenticar_usuario($datos_get['token'], $datos_get['usuario_id']);
+
+        if ($usuario_valido) {
+            $datos_usuario = $this->usuarios_model->obtener_usuario_para_app($datos_get['token'], $datos_get['usuario_id'])->row();
+        } else {
+            $this->response(array(
+                'error' => true,
+                'mensaje' => 'Token y/o usuario inválido',
+            ), REST_Controller::HTTP_BAD_REQUEST);
+        }
+
+        $this->response($datos_usuario);
+    }
+
+    /**
+     * Cambia el nombre del usuario
+     *
+     * @return void
+     */
+    public function cambiar_nombre_post()
+    {
+        $datos_post = $this->post();
+
+        $usuario_valido = $this->_autenticar_usuario($datos_post['token'], $datos_post['usuario_id']);
+
+        if (!$this->usuarios_model->editar(
+            $usuario_valido->id,
+            array(
+                'nombre_completo' => $datos_post['nombre_completo'],
+                'apellido_paterno' => $datos_post['apellido_paterno'],
+                'apellido_materno' => $datos_post['apellido_materno'],
+            )
+        )) {
+            $this->response(array(
+                'error' => true,
+                'mensaje' => 'El nombre no pudo ser cambiado; por favor inténtelo más tarde',
+            ), REST_Controller::HTTP_NOT_FOUND);
+        }
+
+        $this->response(array(
+            'mensaje' => 'El nombre se cambio exitosamente',
+        ), REST_Controller::HTTP_OK);
+    }
+
+    /**
+     * Cambia el número de teléfono del usuario
+     *
+     * @return void
+     */
+    public function cambiar_no_telefono_post()
+    {
+        $datos_post = $this->post();
+
+        $usuario_valido = $this->_autenticar_usuario($datos_post['token'], $datos_post['usuario_id']);
+
+        if (!$this->usuarios_model->editar(
+            $usuario_valido->id,
+            array(
+                'no_telefono' => $datos_post['no_telefono'],
+            )
+        )) {
+            $this->response(array(
+                'error' => true,
+                'mensaje' => 'El número de teléfono no pudo ser cambiado; por favor inténtelo más tarde',
+            ), REST_Controller::HTTP_NOT_FOUND);
+        }
+
+        $this->response(array(
+            'mensaje' => 'El número de teléfono se cambio exitosamente',
+        ), REST_Controller::HTTP_OK);
+    }
+
+    /**
+     * Cambia la sucursal del usuario
+     *
+     * @return void
+     */
+    public function cambiar_sucursal_post()
+    {
+        $datos_post = $this->post();
+
+        $usuario_valido = $this->_autenticar_usuario($datos_post['token'], $datos_post['usuario_id']);
+
+        if (!$this->usuarios_model->editar(
+            $usuario_valido->id,
+            array(
+                'sucursal_id' => $datos_post['sucursal_id'],
+            )
+        )) {
+            $this->response(array(
+                'error' => true,
+                'mensaje' => 'La sucursal no pudo ser cambiada; por favor inténtelo más tarde',
+            ), REST_Controller::HTTP_NOT_FOUND);
+        }
+
+        $this->response(array(
+            'mensaje' => 'La sucrusal se cambio exitosamente',
+        ), REST_Controller::HTTP_OK);
+    }
+
+    public function cambiar_contrasena_post()
+    {
+
+        $datos_post = $this->post();
+
+        $usuario_valido = $this->_autenticar_usuario($datos_post['token'], $datos_post['usuario_id']);
+
+        if (!$datos_post['contrasena_actual'] || !$datos_post['contrasena_nueva'] || !$datos_post['confirmar_contrasena']) {
+            $this->response(array(
+                'error' => true,
+                'mensaje' => 'Por favor verifique que haya enviado todos los datos requeridos',
+            ), REST_Controller::HTTP_NOT_FOUND);
+        }
+
+        if ($datos_post['contrasena_nueva'] != $datos_post['confirmar_contrasena']) {
+            $this->response(array(
+                'error' => true,
+                'mensaje' => 'Las contraseña nueva y la contraseña a confirmar deben coincidir',
+            ), REST_Controller::HTTP_CONFLICT);
+        }
+
+        // Validar que la contraseña anterior sea la correcta
+        /*if (!password_verify($datos_post['contrasena_nueva'], $usuario_valido->contrasena_hash)) {
+            $this->response(array(
+                'error' => true,
+                'mensaje' => 'La contraseña actual ingresada no es correcta',
+            ), REST_Controller::HTTP_CONFLICT);
+        }*/
+
+        if (!password_verify($datos_post['contrasena_actual'], $usuario_valido->contrasena_hash)) {
+            $this->response(array(
+                'error' => true,
+                'mensaje' => 'La contraseña actual ingresada no es correcta',
+            ), REST_Controller::HTTP_CONFLICT);
+        }
+
+        // Actualizar contrasena
+        if (!$this->usuarios_model->editar($usuario_valido->id, array('contrasena_hash' => password_hash($datos_post['contrasena_nueva'], PASSWORD_DEFAULT)))) {
+            $this->response(array(
+                'error' => true,
+                'mensaje' => 'Ha ocurrido un error al intentar cambiar la contraseña; por favor inténtelo más tarde',
+            ), REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
+        }
+
+        $this->response(array(
+            'mensaje' => 'La contraseña ha sido cambiada exitosamente',
+        ), REST_Controller::HTTP_OK);
+    }
+
+    function eliminar_cuenta_post()
+    {
+
+        $datos_post = $this->post();
+
+        $usuario_valido = $this->_autenticar_usuario($datos_post['token'], $datos_post['usuario_id']);
+
+        if (!$this->usuarios_model->editar(
+            $usuario_valido->id,
+            array(
+                'correo' => $usuario_valido->id . "@user.deleted",
+                'contrasena_hash' => null,
+                'rol_id' => 1,
+                'nombre_completo' => null,
+                'apellido_paterno' => null,
+                'apellido_materno' => null,
+                'no_telefono' => null,
+                'rfc' => null,
+                'genero' => "H",
+                'calle' => null,
+                'numero' => null,
+                'colonia' => null,
+                'ciudad' => null,
+                'estado' => null,
+                'pais' => null,
+                'token' => null,
+                'token_web' => null,
+                'codigo_recuperar_contrasena' => null,
+                'estatus' => "suspendido",
+            )
+        )) {
+            $this->response(array(
+                'error' => true,
+                'mensaje' => 'Error al eliminar cuenta, por favor inténtelo más tarde',
+            ), REST_Controller::HTTP_NOT_FOUND);
+        }
+
+        $this->response(array(
+            'mensaje' => 'Cuenta eliminada con éxito.',
+        ), REST_Controller::HTTP_OK);
+    }
+
+    // ====== Perfil (Fin) ======
+
     /* ====== Métodos para la nueva funcionalidad de compras en la app con categorías Mayo 2024 (Inicio) ====== */
     public function obtener_sucurales_disponibles_para_app_get()
     {
@@ -1395,21 +1598,6 @@ class Endpoint extends REST_Controller
      *
      * @return void
      */
-    public function datos_usuario_get()
-    {
-        $datos_get = $this->get();
-
-        $usuario_valido = $this->_autenticar_usuario($datos_get['token'], $datos_get['usuario_id']);
-
-        $this->response($usuario_valido);
-    }
-
-
-    /**
-     * Obtiene los datos del usuario autenticado
-     *
-     * @return void
-     */
     public function aviso_clase_get()
     {
         $datos_get = $this->get();
@@ -1419,183 +1607,6 @@ class Endpoint extends REST_Controller
         $anuncios_list = $this->anuncios_model->get_anuncio_por_tipo("aviso_clases")->row();
 
         $this->response($anuncios_list);
-    }
-
-    /**
-     * Cambia el nombre del usuario
-     *
-     * @return void
-     */
-    public function cambiar_nombre_post()
-    {
-        $datos_post = $this->post();
-
-        $usuario_valido = $this->_autenticar_usuario($datos_post['token'], $datos_post['usuario_id']);
-
-        if (!$this->usuarios_model->editar(
-            $usuario_valido->id,
-            array(
-                'nombre_completo' => $datos_post['nombre_completo'],
-                'apellido_paterno' => $datos_post['apellido_paterno'],
-                'apellido_materno' => $datos_post['apellido_materno'],
-            )
-        )) {
-            $this->response(array(
-                'error' => true,
-                'mensaje' => 'El nombre no pudo ser cambiado; por favor inténtelo más tarde',
-            ), REST_Controller::HTTP_NOT_FOUND);
-        }
-
-        $this->response(array(
-            'mensaje' => 'El nombre se cambio exitosamente',
-        ), REST_Controller::HTTP_OK);
-    }
-
-    /**
-     * Cambia el número de teléfono del usuario
-     *
-     * @return void
-     */
-    public function cambiar_no_telefono_post()
-    {
-        $datos_post = $this->post();
-
-        $usuario_valido = $this->_autenticar_usuario($datos_post['token'], $datos_post['usuario_id']);
-
-        if (!$this->usuarios_model->editar(
-            $usuario_valido->id,
-            array(
-                'no_telefono' => $datos_post['no_telefono'],
-            )
-        )) {
-            $this->response(array(
-                'error' => true,
-                'mensaje' => 'El número de teléfono no pudo ser cambiado; por favor inténtelo más tarde',
-            ), REST_Controller::HTTP_NOT_FOUND);
-        }
-
-        $this->response(array(
-            'mensaje' => 'El número de teléfono se cambio exitosamente',
-        ), REST_Controller::HTTP_OK);
-    }
-
-    /**
-     * Cambia la sucursal del usuario
-     *
-     * @return void
-     */
-    public function cambiar_sucursal_post()
-    {
-        $datos_post = $this->post();
-
-        $usuario_valido = $this->_autenticar_usuario($datos_post['token'], $datos_post['usuario_id']);
-
-        if (!$this->usuarios_model->editar(
-            $usuario_valido->id,
-            array(
-                'sucursal_id' => $datos_post['sucursal_id'],
-            )
-        )) {
-            $this->response(array(
-                'error' => true,
-                'mensaje' => 'La sucursal no pudo ser cambiada; por favor inténtelo más tarde',
-            ), REST_Controller::HTTP_NOT_FOUND);
-        }
-
-        $this->response(array(
-            'mensaje' => 'La sucrusal se cambio exitosamente',
-        ), REST_Controller::HTTP_OK);
-    }
-
-    public function cambiar_contrasena_post()
-    {
-
-        $datos_post = $this->post();
-
-        $usuario_valido = $this->_autenticar_usuario($datos_post['token'], $datos_post['usuario_id']);
-
-        if (!$datos_post['contrasena_actual'] || !$datos_post['contrasena_nueva'] || !$datos_post['confirmar_contrasena']) {
-            $this->response(array(
-                'error' => true,
-                'mensaje' => 'Por favor verifique que haya enviado todos los datos requeridos',
-            ), REST_Controller::HTTP_NOT_FOUND);
-        }
-
-        if ($datos_post['contrasena_nueva'] != $datos_post['confirmar_contrasena']) {
-            $this->response(array(
-                'error' => true,
-                'mensaje' => 'Las contraseña nueva y la contraseña a confirmar deben coincidir',
-            ), REST_Controller::HTTP_CONFLICT);
-        }
-
-        // Validar que la contraseña anterior sea la correcta
-        /*if (!password_verify($datos_post['contrasena_nueva'], $usuario_valido->contrasena_hash)) {
-            $this->response(array(
-                'error' => true,
-                'mensaje' => 'La contraseña actual ingresada no es correcta',
-            ), REST_Controller::HTTP_CONFLICT);
-        }*/
-
-        if (!password_verify($datos_post['contrasena_actual'], $usuario_valido->contrasena_hash)) {
-            $this->response(array(
-                'error' => true,
-                'mensaje' => 'La contraseña actual ingresada no es correcta',
-            ), REST_Controller::HTTP_CONFLICT);
-        }
-
-        // Actualizar contrasena
-        if (!$this->usuarios_model->editar($usuario_valido->id, array('contrasena_hash' => password_hash($datos_post['contrasena_nueva'], PASSWORD_DEFAULT)))) {
-            $this->response(array(
-                'error' => true,
-                'mensaje' => 'Ha ocurrido un error al intentar cambiar la contraseña; por favor inténtelo más tarde',
-            ), REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
-        }
-
-        $this->response(array(
-            'mensaje' => 'La contraseña ha sido cambiada exitosamente',
-        ), REST_Controller::HTTP_OK);
-    }
-
-    function eliminar_cuenta_post()
-    {
-
-        $datos_post = $this->post();
-
-        $usuario_valido = $this->_autenticar_usuario($datos_post['token'], $datos_post['usuario_id']);
-
-        if (!$this->usuarios_model->editar(
-            $usuario_valido->id,
-            array(
-                'correo' => $usuario_valido->id . "@user.deleted",
-                'contrasena_hash' => null,
-                'rol_id' => 1,
-                'nombre_completo' => null,
-                'apellido_paterno' => null,
-                'apellido_materno' => null,
-                'no_telefono' => null,
-                'rfc' => null,
-                'genero' => "H",
-                'calle' => null,
-                'numero' => null,
-                'colonia' => null,
-                'ciudad' => null,
-                'estado' => null,
-                'pais' => null,
-                'token' => null,
-                'token_web' => null,
-                'codigo_recuperar_contrasena' => null,
-                'estatus' => "suspendido",
-            )
-        )) {
-            $this->response(array(
-                'error' => true,
-                'mensaje' => 'Error al eliminar cuenta, por favor inténtelo más tarde',
-            ), REST_Controller::HTTP_NOT_FOUND);
-        }
-
-        $this->response(array(
-            'mensaje' => 'Cuenta eliminada con éxito.',
-        ), REST_Controller::HTTP_OK);
     }
 
     public function aplicar_cupon_post()
