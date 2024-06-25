@@ -652,8 +652,8 @@ class Gympass extends REST_Controller
                 }
 
                 $data_result = array(
-                    //"gympass_id" => $cliente_row->gympass_user_id,
-                    "gympass_id" => 1234321567890,
+                    "gympass_id" => $cliente_row->gympass_user_id,
+                    //"gympass_id" => 1234321567890,
                 );
 
                 $response = $this->gympass_lib->post_access_validate($data_result);
