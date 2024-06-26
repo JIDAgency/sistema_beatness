@@ -38,12 +38,12 @@ class Gympass extends REST_Controller
 
             $this->db->trans_start();
 
-            $validar_webhook = $this->wellhub_model->webhook_obtener_por_evento_id(isset($body_post['event_data']['event_id']) ? $body_post['event_data']['event_id'] : null)->row();
+            $validar_webhook = $this->wellhub_model->webhook_obtener_por_evento_id(isset($body_post['event_data']['event_id']) ? $body_post['event_data']['event_id'] : (isset($body_post['event_data']['booking']['booking_number']) ? $body_post['event_data']['booking']['booking_number'] : null))->row();
 
             if (!$validar_webhook) {
                 $data_1 = array(
                     'evento_tipo' => isset($body_post['event_type']) ? $body_post['event_type'] : null,
-                    'evento_id' => isset($body_post['event_data']['event_id']) ? $body_post['event_data']['event_id'] : null,
+                    'evento_id' => isset($body_post['event_data']['event_id']) ? $body_post['event_data']['event_id'] : (isset($body_post['event_data']['booking']['booking_number']) ? $body_post['event_data']['booking']['booking_number'] : null),
                     'contenido' => json_encode($body_post, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
                     'intentos' => 1
                 );

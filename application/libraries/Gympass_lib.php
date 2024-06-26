@@ -193,7 +193,7 @@ class Gympass_lib
 
     public function post_access_validate($data)
     {
-        $url = "https://sandbox.partners.gympass.com/access/v1/validate";
+        $url = $this->gympass_access_control_base_url . "/access/v1/validate";
         return $this->call_api_access_control($url, 'POST', $data);
     }
 }
