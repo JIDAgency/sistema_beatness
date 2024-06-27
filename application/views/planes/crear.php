@@ -108,6 +108,16 @@
 												</div>
 
 												<div class="form-group">
+													<label for="es_empresarial">¿Pertenece a una empresa? <span class="red">*</span></label>
+													<select name="es_empresarial" id="es_empresarial" class="form-control">
+														<option value="" <?php echo set_select('es_empresarial', '', set_value('es_empresarial') ? false : '' == $this->session->flashdata('es_empresarial')); ?>>Seleccione una opcion…</option>
+														<?php foreach (select_es_empresarial() as $mostrar_key => $mostrar_row) : ?>
+															<option value="<?php echo $mostrar_row->valor; ?>" <?php echo $mostrar_row->activo == false ? '' : 'selected'; ?> <?php echo set_select('es_empresarial', $mostrar_row->valor, set_value('es_empresarial') ? false : $mostrar_row->valor == $this->session->flashdata('es_empresarial')); ?>><?php echo trim($mostrar_row->nombre); ?></option>
+														<?php endforeach; ?>
+													</select>
+												</div>
+
+												<div class="form-group">
 													<label for="activado">Activado <span class="red">*</span></label>
 													<select name="activado" id="activado" class="form-control">
 														<option value="" <?php echo set_select('activado', '', set_value('activado') ? false : '' == $this->session->flashdata('activado')); ?>>Seleccione una opcion…</option>

@@ -54,6 +54,7 @@
 														<th>Es ilimitado</th>
 														<th>Mostrar en app</th>
 														<th>Mostrar en web</th>
+														<th>Como mostrar clase</th>
 														<th>Estatus</th>
 														<th>Opciones</th>
 													</tr>

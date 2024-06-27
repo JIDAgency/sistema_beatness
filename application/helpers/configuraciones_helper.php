@@ -257,6 +257,13 @@ if (!function_exists('select_es_estudiante')) {
     }
 }
 
+if (!function_exists('select_es_empresarial')) {
+    function select_es_empresarial()
+    {
+        return get_instance()->config->item('select_es_empresarial');
+    }
+}
+
 if (!function_exists('select_mostrar_clase')) {
     function select_mostrar_clase() {
         return get_instance()->config->item('select_mostrar_clase');

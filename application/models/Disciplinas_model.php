@@ -53,6 +53,7 @@ class Disciplinas_model extends CI_Model
                 t1.mostrar_en_app,
                 t1.mostrar_en_web,
                 t1.es_ilimitado,
+                t1.formato,
                 CONCAT(UPPER(SUBSTRING(t1.estatus, 1, 1)),LOWER(SUBSTRING(t1.estatus FROM 2))) as listar_estatus,
             ")
             ->from('disciplinas t1')

@@ -35,6 +35,7 @@ class Usuarios_model extends CI_Model
                     t1.no_telefono as no_telefono,
                     t1.es_estudiante as es_estudiante,
                     t1.es_estudiante_vigencia as es_estudiante_vigencia,
+                    t1.es_empresarial as es_empresarial,
                     t1.dominio as dominio,
                     t1.estatus as estatus,
                     t1.fecha_registro as fecha_registro,

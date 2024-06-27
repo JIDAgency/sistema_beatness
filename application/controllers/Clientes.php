@@ -69,6 +69,7 @@ class Clientes extends MY_Controller
                 "no_telefono" => !empty($usuario_row->no_telefono) ? $usuario_row->no_telefono : null,
                 "es_estudiante" => !empty($usuario_row->es_estudiante) ? ucfirst($usuario_row->es_estudiante) : null,
                 "es_estudiante_vigencia" => $vigencia,
+                "es_empresarial" => !empty($usuario_row->es_empresarial) ? ucfirst($usuario_row->es_empresarial) : null,
                 "dominio" => !empty($usuario_row->dominio) ? ucfirst($usuario_row->dominio) : null,
                 "estatus" => !empty($usuario_row->estatus) ? ucfirst($usuario_row->estatus) : null,
                 "fecha_registro" => !empty($usuario_row->fecha_registro) ? $usuario_row->fecha_registro : null,
@@ -253,6 +254,7 @@ class Clientes extends MY_Controller
         $this->form_validation->set_rules('apellido_paterno', 'apellido paterno', 'required');
         $this->form_validation->set_rules('es_estudiante', '¿Es estudiante?', 'required');
         $this->form_validation->set_rules('es_estudiante_vigencia', 'Vigencia de estudiante', 'required');
+        $this->form_validation->set_rules('es_empresarial', '¿Pertenece a una empresa?', 'required');
 
         // Inicializar vista y scripts
         $data['controlador'] = 'clientes/crear';
@@ -326,6 +328,7 @@ class Clientes extends MY_Controller
                 'no_telefono' => $this->input->post('no_telefono'),
                 'es_estudiante' => $this->input->post('es_estudiante'),
                 'es_estudiante_vigencia' => $this->input->post('es_estudiante_vigencia'),
+                'es_empresarial' => $this->input->post('es_empresarial'),
                 'fecha_nacimiento' => date('Y-m-d', strtotime(str_replace('/', '-', $this->input->post('fecha_nacimiento')))),
                 'rfc' => $this->input->post('rfc'),
                 'genero' => $this->input->post('genero'),
@@ -371,6 +374,7 @@ class Clientes extends MY_Controller
         $this->form_validation->set_rules('apellido_paterno', 'apellido paterno', 'required');
         $this->form_validation->set_rules('es_estudiante', '¿Es estudiante?', 'required');
         $this->form_validation->set_rules('es_estudiante_vigencia', 'Vigencia de estudiante', 'required');
+        $this->form_validation->set_rules('es_empresarial', '¿Pertenece a una empresa?', 'required');
 
         // Inicializar vista, scripts
         $data['menu_clientes_activo_activo'] = true;
@@ -457,6 +461,7 @@ class Clientes extends MY_Controller
                 'no_telefono' => $this->input->post('no_telefono'),
                 'es_estudiante' => $this->input->post('es_estudiante'),
                 'es_estudiante_vigencia' => $this->input->post('es_estudiante_vigencia'),
+                'es_empresarial' => $this->input->post('es_empresarial'),
                 'nombre_imagen_avatar' => $nombre_foto,
                 // 'url_ine' => $nombre_foto_ine,
                 'fecha_nacimiento' => date('Y-m-d', strtotime(str_replace('/', '-', $this->input->post('fecha_nacimiento')))),

@@ -305,6 +305,10 @@ class Endpoint extends REST_Controller
                 continue;
             }
 
+            if ($usuario_valido->es_empresarial == 'no' and $plan->es_empresarial == 'si') {
+                continue;
+            }
+
             if (in_array($plan->codigo, $codigos_canjeados_array) or !$plan->codigo) {
                 if ($reservaciones_list) {
 

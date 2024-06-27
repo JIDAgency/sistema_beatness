@@ -34,6 +34,7 @@ $(function () {
             { "data": "es_ilimitado" },
             { "data": "es_primera" },
             { "data": "es_estudiante" },
+            { "data": "es_empresarial" },
             { "data": "listar_activo" },
             { "data": "listar_opciones" },
         ],

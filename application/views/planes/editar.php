@@ -112,6 +112,18 @@
 													</div>
 
 													<div class="form-group row col-lg-12 col-md-12 col-sm-12">
+														<label for="es_empresarial" class="col-md-12">¿Pertenece a una empresa? <span class="red">*</span></label>
+														<div class="col-md-12">
+															<select name="es_empresarial" id="es_empresarial" class="form-control">
+																<option value="" <?php echo set_select('es_empresarial', '', set_value('es_empresarial') ? false : '' == (!empty($this->session->flashdata('es_empresarial')) ? $this->session->flashdata('es_empresarial') : (!empty($plan_a_editar->es_empresarial) ? $plan_a_editar->es_empresarial : set_value('es_empresarial')))); ?>>Seleccione una opcion…</option>
+																<?php foreach (select_es_empresarial() as $key => $mostrar_row) : ?>
+																	<option value="<?php echo $mostrar_row->valor; ?>" <?php echo set_select('es_empresarial', $mostrar_row->valor, set_value('es_empresarial') ? false : $mostrar_row->valor == (!empty($this->session->flashdata('es_empresarial')) ? $this->session->flashdata('es_empresarial') : (!empty($plan_a_editar->es_empresarial) ? $plan_a_editar->es_empresarial : set_value('es_empresarial')))); ?>><?php echo trim($mostrar_row->nombre); ?></option>
+																<?php endforeach; ?>
+															</select>
+														</div>
+													</div>
+
+													<div class="form-group row col-lg-12 col-md-12 col-sm-12">
 														<label for="activado" class="col-md-12">Activo <span class="red">*</span></label>
 														<div class="col-md-12">
 															<select name="activado" id="activado" class="form-control">

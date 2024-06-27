@@ -30,6 +30,7 @@ $(function () {
             { "data": "no_telefono" },
             { "data": "es_estudiante" },
             { "data": "es_estudiante_vigencia" },
+            { "data": "es_empresarial" },
             { "data": "dominio" },
             { "data": "estatus" },
             { "data": "fecha_registro" },

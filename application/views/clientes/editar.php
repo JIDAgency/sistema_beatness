@@ -126,6 +126,29 @@
 													</div>
 												</div>
 
+												<div class="row">
+													<div class="col-xl-12 col-md-12 col-sm-12">
+
+														<div class="form-group">
+															<div class="row">
+																<label class="col-md-3 label-control required-field" for="es_empresarial">¿Pertenece a una empresa? <span class="red">*</span></label>
+																<div class="col-md-9">
+																	<select id="es_empresarial" name="es_empresarial" class="form-control select2 custom-select" required>
+																		<option value="" <?php echo set_select('es_empresarial', '', set_value('es_empresarial') ? false : '' == (!empty($this->session->flashdata('es_empresarial')) ? $this->session->flashdata('es_empresarial') : (!empty($cliente_a_editar->es_empresarial) ? $cliente_a_editar->es_empresarial : set_value('es_empresarial')))); ?>>Seleccione si pertenece a una empresa…</option>
+																		<?php foreach (select_es_empresarial() as $es_empresarial_key => $es_empresarial_value) : ?>
+																			<option value="<?php echo $es_empresarial_value->valor; ?>" <?php echo set_select('es_empresarial', $es_empresarial_value->valor, set_value('es_empresarial') ? false : $es_empresarial_value->valor == (!empty($this->session->flashdata('es_empresarial')) ? $this->session->flashdata('es_empresarial') : (!empty($cliente_a_editar->es_empresarial) ? $cliente_a_editar->es_empresarial : set_value('es_empresarial')))); ?>><?php echo trim($es_empresarial_value->nombre); ?></option>
+																		<?php endforeach; ?>
+																	</select>
+																	<div class="invalid-feedback">
+																		Se requiere una opción válida.
+																	</div>
+																</div>
+															</div>
+														</div>
+
+													</div>
+												</div>
+
 												<h4 class="form-section">Datos personales</h4>
 
 												<div class="row">

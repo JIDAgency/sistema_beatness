@@ -31,6 +31,7 @@ $(function () {
             { "data": "listar_es_ilimitado" },
             { "data": "listar_mostrar_app" },
             { "data": "listar_mostrar_web" },
+            { "data": "listar_formato" },
             { "data": "listar_estatus" },
             { "data": "listar_opciones" },
         ],

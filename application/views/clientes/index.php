@@ -66,6 +66,7 @@
 													<th>Teléfono</th>
 													<th>Estudiante</th>
 													<th>Vigencia de estudiante</th>
+													<th>Pertenece a una empresa</th>
 													<th>Registrado por</th>
 													<th>Estatus</th>
 													<th>Fecha de registro</th>

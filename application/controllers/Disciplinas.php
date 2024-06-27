@@ -55,6 +55,7 @@ class Disciplinas extends MY_Controller
                 "listar_es_ilimitado" => $disciplina_row->es_ilimitado,
                 "listar_mostrar_app" => $disciplina_row->mostrar_en_app,
                 "listar_mostrar_web" => $disciplina_row->mostrar_en_web,
+                "listar_formato" => $disciplina_row->formato,
                 "listar_estatus" => $disciplina_row->listar_estatus,
                 "listar_opciones" => $menu
             );
