@@ -103,10 +103,10 @@
                             <div class="card card-transparent no-border">
                                 <ul class="nav nav-tabs">
                                     <li class="nav-item">
-                                        <a class="nav-link active" id="base-tab1" data-toggle="tab" aria-controls="tab1" href="#tab1" aria-expanded="true">Semana actual <?php echo date('d/m/Y', strtotime($fecha_lunes)) . ' - ' . date('d/m/Y', strtotime($fecha_domingo)); ?></a>
+                                        <a class="nav-link active" id="base-tab1" data-toggle="tab" aria-controls="tab1" href="#tab1" aria-expanded="true">Semana actual <?php echo date('d/M/Y', strtotime($fecha_lunes)) . ' - ' . date('d/M/Y', strtotime($fecha_domingo)); ?></a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" id="base-tab2" data-toggle="tab" aria-controls="tab2" href="#tab2" aria-expanded="false">Semana siguiente <?php echo date('d/m/Y', strtotime($fecha_lunes_siguente)) . ' - ' . date('d/m/Y', strtotime($fecha_domingo_siguente)); ?></a>
+                                        <a class="nav-link" id="base-tab2" data-toggle="tab" aria-controls="tab2" href="#tab2" aria-expanded="false">Semana siguiente <?php echo date('d/M/Y', strtotime($fecha_lunes_siguente)) . ' - ' . date('d/M/Y', strtotime($fecha_domingo_siguente)); ?></a>
                                     </li>
                                 </ul>
                                 <div class="tab-content">
