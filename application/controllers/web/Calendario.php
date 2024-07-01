@@ -29,9 +29,28 @@ class Calendario extends CI_Controller
             array('es_rel' => true, 'src' => '' . $controlador_js . '.js'),
         );
 
+        // Fecha actual
+        $fecha_actual = date('Y-m-d');
+
+        // Obtener el número de día de la semana actual (1 para lunes, 7 para domingo)
+        $numero_dia_actual = date('N', strtotime($fecha_actual));
+
+        // Calcular la fecha del lunes de la semana actual
+        $fecha_lunes = date('Y-m-d', strtotime($fecha_actual . ' -' . ($numero_dia_actual - 1) . ' days'));
+
+        // Calcular la fecha del domingo de la semana actual
+        $fecha_domingo = date('Y-m-d', strtotime($fecha_actual . ' +' . (7 - $numero_dia_actual) . ' days'));
+        $fecha_lunes_siguente = date('Y-m-d', strtotime($fecha_actual . ' +' . (8 - $numero_dia_actual) . ' days'));
+        $fecha_domingo_siguente = date('Y-m-d', strtotime($fecha_actual . ' +' . (14 - $numero_dia_actual) . ' days'));
+
         $disciplinas_list = $this->calendario_model->obtener_disciplinas();
 
         $data['disciplinas_list'] = $disciplinas_list;
+
+        $data['fecha_lunes'] = $fecha_lunes; 
+        $data['fecha_domingo'] = $fecha_domingo;
+        $data['fecha_lunes_siguente'] = $fecha_lunes_siguente;
+        $data['fecha_domingo_siguente'] = $fecha_domingo_siguente;
 
         $this->load->view('web/calendario/index', $data);
     }
