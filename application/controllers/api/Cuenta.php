@@ -70,8 +70,8 @@ class Cuenta extends REST_Controller
                 'apellido_materno' => $datos_post['apellido_materno'],
                 'no_telefono' => $datos_post['no_telefono'],
                 'codigo_postal' => $datos_post['codigo_postal'],
-                'talla_calzado' => $datos_post['talla_calzado'],
-                'sucursal_id' => 2,
+                'talla_calzado' => !empty($datos_post['talla_calzado']) ? $datos_post['talla_calzado'] : 'Necesito ayuda',
+                'sucursal_id' => !empty($datos_post['sucursal_id']) ? $datos_post['sucursal_id'] : 2,
                 'rol_id' => 1,
             );
 
