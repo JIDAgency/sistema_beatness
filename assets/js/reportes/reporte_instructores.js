@@ -81,6 +81,16 @@ $(document).ready( function(){
         },
     });
 
+    var buttons = new $.fn.dataTable.Buttons(table, {
+        buttons: [
+            {
+                extend: 'excelHtml5',
+                className: 'custom-button'
+
+            }
+        ]
+    }).container().appendTo($('#buttons'));
+
     table_primera_quincena = $('#table_primera_quincena').DataTable({ 
         "scrollX": true,
         "deferRender": true,
@@ -126,6 +136,16 @@ $(document).ready( function(){
             }
         },
     });
+
+    var buttons2 = new $.fn.dataTable.Buttons(table_primera_quincena, {
+        buttons: [
+            {
+                extend: 'excelHtml5',
+                className: 'custom-button'
+
+            }
+        ]
+    }).container().appendTo($('#buttons2'));
 
     table_segunda_quincena = $('#table_segunda_quincena').DataTable({ 
         "scrollX": true,
@@ -173,11 +193,11 @@ $(document).ready( function(){
         },
     });
 
-    var buttons = new $.fn.dataTable.Buttons(table, {
+    var buttons3 = new $.fn.dataTable.Buttons(table_segunda_quincena, {
         buttons: [
             'excelHtml5',
         ]
-    }).container().appendTo($('#buttons'));
+    }).container().appendTo($('#buttons3'));
 
     $("#mes_a_consultar").change(function () {
         table.clear().draw();

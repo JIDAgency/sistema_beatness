@@ -24,6 +24,9 @@
 									<h4 class="card-title">Reservaciones</h4>
 									<div class="heading-elements">
 									</div>
+									<div class="form-group float-md-right mr-1">
+										<div id="buttons"></div>
+									</div>
 								</div>
 								<div class="card-content p_dt">
 									<div class="card-body">

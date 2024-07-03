@@ -29,6 +29,9 @@
 							<a class="dropdown-item" href="<?php echo site_url('ventas/crear_personalizada') ?>">+ Nueva Venta Personalizada</a>
 						</div>
 					</div>
+					<div class="form-group float-md-left mr-1">
+						<div id="buttons"></div>
+					</div>
 				</div>
 			</div>
 		</div>

@@ -65,7 +65,11 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="form-group float-md-right mr-1">
+                                        <div id="buttons"></div>
+                                    </div>
                                     <h4 class="form-section"><i class="ft-calendar"></i> Mensual</h4>
+                                    
                                     <hr>
                                     <table class="table display nowrap table-striped table-bordered scroll-horizontal table-hover" name="table" id="table">
                                         <thead>
@@ -82,6 +86,9 @@
                                     <br><br>
                                     <div class="row">
                                         <div class="col-6">
+                                            <div class="form-group float-md-right mr-1">
+                                                <div id="buttons2"></div>
+                                            </div>
                                             <h4 class="form-section"><i class="ft-calendar"></i> Primera quincena</h4>
                                             <hr>
                                             <table class="table display nowrap table-striped table-bordered scroll-horizontal table-hover" name="table_primera_quincena" id="table_primera_quincena">
@@ -99,7 +106,11 @@
                                         </div>
 
                                         <div class="col-6">
+                                            <div class="form-group float-md-right mr-1">
+                                                <div id="buttons3"></div>
+                                            </div>
                                             <h4 class="form-section"><i class="ft-calendar"></i> Segunda quincena</h4>
+
                                             <hr>
                                             <table class="table display nowrap table-striped table-bordered scroll-horizontal table-hover" name="table_segunda_quincena" id="table_segunda_quincena">
                                                 <thead>

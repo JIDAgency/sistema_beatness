@@ -27,6 +27,9 @@
 										<a href="<?php echo site_url('clases_categorias/crear') ?>" class="btn btn-outline-secondary btn-min-width">
 											<i class="ft-plus"></i> Nueva clase
 										</a>
+										<div class="form-group float-md-left mr-1">
+											<div id="buttons"></div>
+										</div>
 									</div>
 								</div>
 								<div class="card-content p_dt">

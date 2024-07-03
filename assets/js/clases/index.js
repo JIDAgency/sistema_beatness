@@ -75,6 +75,16 @@ $(document).ready(function () {
 
     });
 
+    var buttons = new $.fn.dataTable.Buttons(table, {
+        buttons: [
+            {
+                extend: 'excelHtml5',
+                className: 'custom-button'
+
+            }
+        ]
+    }).container().appendTo($('#buttons'));
+
     // Detectar doble clic en celda editable
     $('#table').on('dblclick', 'td.editable-cell', function () {
         if (!flag_editando) {

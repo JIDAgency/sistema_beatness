@@ -67,6 +67,16 @@ $(document).ready(function () {
 
     });
 
+    var buttons = new $.fn.dataTable.Buttons(table, {
+        buttons: [
+            {
+                extend: 'excelHtml5',
+                className: 'custom-button'
+
+            }
+        ]
+    }).container().appendTo($('#buttons'));
+
     $('#table').on('click', '.delete-row', function (e) {
         e.preventDefault();
         var row = $(this).closest('tr');

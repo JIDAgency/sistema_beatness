@@ -1,7 +1,7 @@
 <div class="app-content content center-layout mt-2">
-    <div class="content-wrapper">
-        <div class="content-header row">
-            <div class="content-header-left col-md-6 col-12 mb-2">
+	<div class="content-wrapper">
+		<div class="content-header row">
+			<div class="content-header-left col-md-6 col-12 mb-2">
 				<div class="row breadcrumbs-top">
 					<div class="breadcrumb-wrapper col-12">
 						<ol class="breadcrumb">
@@ -27,6 +27,9 @@
 							<a class="dropdown-item" href="<?php echo site_url('ventas/crear_personalizada') ?>">+ Nueva Venta Personalizada</a>
 						</div>
 					</div>
+					<div class="form-group float-md-left mr-1">
+						<div id="buttons"></div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -40,7 +43,8 @@
 							</div>
 							<div class="card-content p_dt">
 								<div class="card-body">
-									<?php $this->load->view('_comun/mensajes_alerta'); $i = 1; ?>
+									<?php $this->load->view('_comun/mensajes_alerta');
+									$i = 1; ?>
 									<table id="tabla-instructores" class="table display nowrap table-striped table-bordered scroll-horizontal table-hover">
 										<thead>
 											<tr>
@@ -52,46 +56,46 @@
 												<th>Genero</th>
 												<th>Opciones</th>
 												<th>Dirección</th>
-												
+
 											</tr>
 										</thead>
 										<tbody>
-											<?php foreach ($instructores->result() as $instructor): ?>
-											<tr>
-												<th>
-													<?php echo $instructor->id; ?>
-												</th>
-												<td>
-													<?php echo $instructor->nombre_completo; ?>
-													<?php echo $instructor->apellido_paterno; ?>
-													<?php echo $instructor->apellido_materno; ?>
-												</td>
-												<td>
-													<?php echo $instructor->correo; ?>
-												</td>
-												<td>
-													<?php echo $instructor->no_telefono; ?>
-												</td>
-												<td>
-													<?php echo $instructor->rfc; ?>
-												</td>
-												<td>
-													<?php echo $instructor->genero; ?>
-												</td>
-												<td>
-													<?php echo anchor('instructores/editar/' . $instructor->id, 'Editar'); ?>
-												</td>
-												
-												<td>
-													<?php echo $instructor->calle; ?>
-													<?php echo $instructor->numero; ?>
-													<?php echo $instructor->colonia; ?>
-													<?php echo $instructor->ciudad; ?>
-													<?php echo $instructor->estado; ?>
-													<?php echo $instructor->pais; ?>
-												</td>
-											</tr>
-											<?php endforeach;?>
+											<?php foreach ($instructores->result() as $instructor) : ?>
+												<tr>
+													<th>
+														<?php echo $instructor->id; ?>
+													</th>
+													<td>
+														<?php echo $instructor->nombre_completo; ?>
+														<?php echo $instructor->apellido_paterno; ?>
+														<?php echo $instructor->apellido_materno; ?>
+													</td>
+													<td>
+														<?php echo $instructor->correo; ?>
+													</td>
+													<td>
+														<?php echo $instructor->no_telefono; ?>
+													</td>
+													<td>
+														<?php echo $instructor->rfc; ?>
+													</td>
+													<td>
+														<?php echo $instructor->genero; ?>
+													</td>
+													<td>
+														<?php echo anchor('instructores/editar/' . $instructor->id, 'Editar'); ?>
+													</td>
+
+													<td>
+														<?php echo $instructor->calle; ?>
+														<?php echo $instructor->numero; ?>
+														<?php echo $instructor->colonia; ?>
+														<?php echo $instructor->ciudad; ?>
+														<?php echo $instructor->estado; ?>
+														<?php echo $instructor->pais; ?>
+													</td>
+												</tr>
+											<?php endforeach; ?>
 										</tbody>
 									</table>
 								</div>

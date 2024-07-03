@@ -28,6 +28,9 @@
 						<i class="ft-plus"></i> Nueva disciplina
 					</a>
 				</div>
+				<div class="form-group float-md-right">
+					<div id="buttons"></div>
+				</div>
 			</div>
 		</div>
 		<div class="content-wrapper">

@@ -67,6 +67,16 @@ $(function () {
             }
         },
     });
+
+    var buttons = new $.fn.dataTable.Buttons(table, {
+        buttons: [
+            {
+                extend: 'excelHtml5',
+                className: 'custom-button'
+
+            }
+        ]
+    }).container().appendTo($('#buttons'));
 })
 /*$(function () {
 	$("#tabla-planes").DataTable({

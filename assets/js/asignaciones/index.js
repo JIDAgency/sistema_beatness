@@ -67,6 +67,16 @@ $(document).ready(function(){
         }
     });
 
+    var buttons = new $.fn.dataTable.Buttons(table, {
+        buttons: [
+            {
+                extend: 'excelHtml5',
+                className: 'custom-button'
+
+            }
+        ]
+    }).container().appendTo($('#buttons'));
+
     table2 = $('#table2').DataTable({ 
         "scrollX": true,
         "deferRender": true,
@@ -117,6 +127,16 @@ $(document).ready(function(){
             $(row).find('td:eq(0)').css('color', 'white');
         }
     });
+
+    var buttons2 = new $.fn.dataTable.Buttons(table2, {
+        buttons: [
+            {
+                extend: 'excelHtml5',
+                className: 'custom-button'
+
+            }
+        ]
+    }).container().appendTo($('#buttons2'));
 
     table3 = $('#table3').DataTable({ 
         "scrollX": true,
@@ -173,5 +193,15 @@ $(document).ready(function(){
             }
         }
     });
+
+    var buttons3 = new $.fn.dataTable.Buttons(table3, {
+        buttons: [
+            {
+                extend: 'excelHtml5',
+                className: 'custom-button'
+
+            }
+        ]
+    }).container().appendTo($('#buttons3'));
 
 });
