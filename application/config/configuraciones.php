@@ -48,20 +48,6 @@ $config['autor'] = 'Beatness Team';
 
 /*
 |--------------------------------------------------------------------------
-| GymPass
-|--------------------------------------------------------------------------
-| Configuración de GymPass
-|
-*/
-
-$config['gympass_base_url'] = 'https://apitesting.partners.gympass.com';
-$config['gympass_api_key'] = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyNjYzNGFmYy1kZjE4LTQ1MzctYjEzMC1hM2VlZjY2ODVhN2IiLCJpc3MiOiJwYXJ0bmVycy10ZXN0aW5nLWlhbS51cy5zdGcuZ3ltcGFzcy5jbG91ZCIsImlhdCI6MTcxMzk3NTE3NSwianRpIjoiMjY2MzRhZmMtZGYxOC00NTM3LWIxMzAtYTNlZWY2Njg1YTdiIn0.FArt7ha1fJuNihB9Am0y_858duLbNU8ghQe0XQI78ZM';
-$config['gympass_gym_id'] = 60;
-$config['gympass_partner_id'] = 'b806bd77-d913-4046-a6e7-8fba7b34d277';
-$config['gympass_system_id'] = 81;
-
-/*
-|--------------------------------------------------------------------------
 | Redes sociales
 |--------------------------------------------------------------------------
 | Configurar todos los links externos de redes sociales de la marca.
@@ -336,14 +322,3 @@ $select_activo = array(
 );
 
 $config['select_activo'] = $select_activo;
-
-
-
-
-
-$config['gympass_base_url'] = 'https://apitesting.partners.gympass.com';
-$config['gympass_api_key'] = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyNjYzNGFmYy1kZjE4LTQ1MzctYjEzMC1hM2VlZjY2ODVhN2IiLCJpc3MiOiJwYXJ0bmVycy10ZXN0aW5nLWlhbS51cy5zdGcuZ3ltcGFzcy5jbG91ZCIsImlhdCI6MTcxMzk3NTE3NSwianRpIjoiMjY2MzRhZmMtZGYxOC00NTM3LWIxMzAtYTNlZWY2Njg1YTdiIn0.FArt7ha1fJuNihB9Am0y_858duLbNU8ghQe0XQI78ZM';
-$config['gympass_gym_id'] = 60;
-$config['gympass_partner_id'] = 'b806bd77-d913-4046-a6e7-8fba7b34d277';
-$config['gympass_system_id'] = 81;
-$config['gympass_secret_key'] = 'YourSecretKeyHere';
