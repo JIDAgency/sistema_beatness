@@ -392,4 +392,13 @@ class Usuarios_model extends CI_Model
 
         return $query;
     }
+
+    public function actualizar_usuario_por_identificador($identificador, $data)
+    {
+        $query = $this->db
+            ->where('id', $identificador)
+            ->update('usuarios', $data);
+
+        return $query;
+    }
 }

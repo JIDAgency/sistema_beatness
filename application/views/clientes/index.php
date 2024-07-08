@@ -57,7 +57,7 @@
 											<div class="content-header-right col-md-12 col-12">
 											</div>
 										</div> -->
-										<table id="tabla" class="table display nowrap table-striped table-bordered scroll-horizontal table-hover" cellspacing="0">
+										<table id="table" class="table display nowrap table-striped table-bordered scroll-horizontal table-hover" cellspacing="0">
 											<thead>
 												<tr>
 													<th>ID</th>

@@ -71,7 +71,7 @@ class Clientes extends MY_Controller
                 "es_estudiante" => !empty($usuario_row->es_estudiante) ? ucfirst($usuario_row->es_estudiante) : null,
                 "es_estudiante_vigencia" => $vigencia,
                 "es_empresarial" => !empty($usuario_row->es_empresarial) ? ucfirst($usuario_row->es_empresarial) : null,
-                "sucursal" => !empty($usuario_row->nombre_sucursal) ? ucfirst($usuario_row->nombre_sucursal) : null,
+                "sucursal_id" => !empty($usuario_row->nombre_sucursal) ? strtoupper($usuario_row->nombre_sucursal) : null,
                 "dominio" => !empty($usuario_row->dominio) ? ucfirst($usuario_row->dominio) : null,
                 "estatus" => !empty($usuario_row->estatus) ? ucfirst($usuario_row->estatus) : null,
                 "fecha_registro" => !empty($usuario_row->fecha_registro) ? $usuario_row->fecha_registro : null,
@@ -507,5 +507,43 @@ class Clientes extends MY_Controller
             $output = implode(',', $output);
         }
         echo "<script>console.log( 'Que vas a probar: " . $output . "' );</script>";
+    }
+
+    public function actualizar()
+    {
+        $identificador = $this->input->post('identificador');
+        $columna = $this->input->post('columna'); // Índice de la columna
+        $nuevoValor = $this->input->post('nuevoValor');
+
+        $data_1 = array(
+            $columna => $nuevoValor,
+        );
+
+        $this->usuarios_model->actualizar_usuario_por_identificador($identificador, $data_1);
+
+        // Devolver una respuesta JSON con éxito
+        echo json_encode(array('status' => 'success', 'message' => 'Dato actualizado'));
+
+    }
+
+    public function obtener_opciones_select_sucursal()
+    {
+
+        $sucursales = $this->sucursales_model->get_sucursales_para_select_de_ventas();
+
+        $data = [];
+        foreach ($sucursales->result() as $sucursal) {
+
+            $data[] = array(
+                'nombre' => $sucursal->descripcion,
+                'valor' => $sucursal->id
+            );
+        }
+
+        echo json_encode($data);
+        exit();
+
+        // echo json_encode(select_disciplina());
+        // exit();
     }
 }
