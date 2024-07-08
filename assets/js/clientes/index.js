@@ -31,6 +31,7 @@ $(function () {
             { "data": "es_estudiante" },
             { "data": "es_estudiante_vigencia" },
             { "data": "es_empresarial" },
+            { "data": "sucursal" },
             { "data": "dominio" },
             { "data": "estatus" },
             { "data": "fecha_registro" },

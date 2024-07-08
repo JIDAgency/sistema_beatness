@@ -7,6 +7,7 @@ class Clientes extends MY_Controller
     {
         parent::__construct();
         $this->load->model('usuarios_model');
+        $this->load->model('sucursales_model');
     }
 
     /** Index - Vista principal de clientes para mostrar la lista de usuarios del tipo cliente (INICIO) */
@@ -70,6 +71,7 @@ class Clientes extends MY_Controller
                 "es_estudiante" => !empty($usuario_row->es_estudiante) ? ucfirst($usuario_row->es_estudiante) : null,
                 "es_estudiante_vigencia" => $vigencia,
                 "es_empresarial" => !empty($usuario_row->es_empresarial) ? ucfirst($usuario_row->es_empresarial) : null,
+                "sucursal" => !empty($usuario_row->nombre_sucursal) ? ucfirst($usuario_row->nombre_sucursal) : null,
                 "dominio" => !empty($usuario_row->dominio) ? ucfirst($usuario_row->dominio) : null,
                 "estatus" => !empty($usuario_row->estatus) ? ucfirst($usuario_row->estatus) : null,
                 "fecha_registro" => !empty($usuario_row->fecha_registro) ? $usuario_row->fecha_registro : null,
@@ -255,6 +257,7 @@ class Clientes extends MY_Controller
         $this->form_validation->set_rules('es_estudiante', '¿Es estudiante?', 'required');
         $this->form_validation->set_rules('es_estudiante_vigencia', 'Vigencia de estudiante', 'required');
         $this->form_validation->set_rules('es_empresarial', '¿Pertenece a una empresa?', 'required');
+        $this->form_validation->set_rules('sucursal_id', 'Sucursal favorita', 'required');
 
         // Inicializar vista y scripts
         $data['controlador'] = 'clientes/crear';
@@ -271,6 +274,10 @@ class Clientes extends MY_Controller
             array('es_rel' => true, 'src' => 'clientes/crear.js'),
 
         );
+
+        $sucursal_list = $this->sucursales_model->get_sucursales_para_select_de_ventas()->result();
+
+        $data['sucursal_list'] = $sucursal_list;
 
         if ($this->form_validation->run() == false) {
             $this->construir_private_site_ui('clientes/crear', $data);
@@ -322,6 +329,7 @@ class Clientes extends MY_Controller
                 'contrasena_hash' => password_hash($this->input->post('contrasena'), PASSWORD_DEFAULT),
                 'correo' => $this->input->post('correo'),
                 'rol_id' => 1, // Este usuario pertenece al rol con id 1 (Cliente)
+                'sucursal_id' => $this->input->post('sucursal_id'), // Este usuario pertenece al rol con id 1 (Cliente)
                 'nombre_completo' => $this->input->post('nombre_completo'),
                 'apellido_paterno' => $this->input->post('apellido_paterno'),
                 'apellido_materno' => $this->input->post('apellido_materno'),
@@ -375,6 +383,7 @@ class Clientes extends MY_Controller
         $this->form_validation->set_rules('es_estudiante', '¿Es estudiante?', 'required');
         $this->form_validation->set_rules('es_estudiante_vigencia', 'Vigencia de estudiante', 'required');
         $this->form_validation->set_rules('es_empresarial', '¿Pertenece a una empresa?', 'required');
+        $this->form_validation->set_rules('sucursal_id', 'Sucursal favorita', 'required');
 
         // Inicializar vista, scripts
         $data['menu_clientes_activo_activo'] = true;
@@ -403,6 +412,10 @@ class Clientes extends MY_Controller
             redirect('/clientes/index');
         }
         $data['cliente_a_editar'] = $cliente_a_editar;
+
+        $sucursal_list = $this->sucursales_model->get_sucursales_para_select_de_ventas()->result();
+
+        $data['sucursal_list'] = $sucursal_list;
 
         if ($this->form_validation->run() == false) {
 
@@ -455,6 +468,7 @@ class Clientes extends MY_Controller
             $data = array(
                 'correo' => $this->input->post('correo'),
                 'rol_id' => 1, // Este usuario pertenece al rol con id 1 (Cliente)
+                'sucursal_id' => $this->input->post('sucursal_id'), // Este usuario pertenece al rol con id 1 (Cliente)
                 'nombre_completo' => $this->input->post('nombre_completo'),
                 'apellido_paterno' => $this->input->post('apellido_paterno'),
                 'apellido_materno' => $this->input->post('apellido_materno'),

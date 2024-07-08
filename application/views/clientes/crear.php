@@ -91,6 +91,8 @@
 												</div>
 											</div>
 
+											<h4 class="form-section">Datos personales</h4>
+
 											<div class="row">
 												<div class="col-xl-12 col-md-12 col-sm-12">
 													<div class="form-group">
@@ -149,7 +151,26 @@
 												</div>
 											</div>
 
-											<h4 class="form-section">Datos personales</h4>
+											<div class="row">
+												<div class="col-xl-12 col-md-12 col-sm-12">
+													<div class="form-group">
+														<div class="row">
+															<label class="col-md-3 label-control required-field" for="sucursal_id">Sucursal favorita <span class="red">*</span></label>
+															<div class="col-md-9">
+																<select id="sucursal_id" name="sucursal_id" class="form-control select2 custom-select" required>
+																	<option value="" <?php echo set_select('sucursal_id', '', set_value('sucursal_id') ? false : '' == $this->session->flashdata('sucursal_id')); ?>>Seleccione una sucursal…</option>
+																	<?php foreach ($sucursal_list as $key => $sucursal_row) : ?>
+																		<option value="<?php echo $sucursal_row->id; ?>" <?php echo set_select('sucursal_id', $sucursal_row->id, set_value('sucursal_id') ? false : $sucursal_row->id == $this->session->flashdata('sucursal_id')); ?>><?php echo trim($sucursal_row->descripcion); ?></option>
+																	<?php endforeach; ?>
+																</select>
+																<div class="invalid-feedback">
+																	Se requiere una opción válida.
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
 
 											<div class="row">
 												<div class="col-lg-12 col-md-12 col-sm-12">

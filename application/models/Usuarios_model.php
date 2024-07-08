@@ -39,9 +39,12 @@ class Usuarios_model extends CI_Model
                     t1.dominio as dominio,
                     t1.estatus as estatus,
                     t1.fecha_registro as fecha_registro,
+                    t1.sucursal_id,
+                    t3.descripcion as nombre_sucursal,
                 ")
             ->from('usuarios t1')
             ->join('roles t2', 't1.rol_id = t2.id')
+            ->join('sucursales t3', 't1.sucursal_id = t3.id')
             ->get();
 
         return $query;
@@ -242,7 +245,7 @@ class Usuarios_model extends CI_Model
 
     public function obtener_usuario_por_id($id)
     {
-        return $this->db->where('id', intval($id))->get('usuarios');
+        return $this->db->where('t1.id', intval($id))->select('t1.*, t2.descripcion as nombre_sucursal')->from('usuarios t1')->join('sucursales t2', 't1.sucursal_id = t2.id')->get();
     }
 
     public function obtener_por_token_id($token, $id)
