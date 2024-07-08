@@ -1,0 +1,108 @@
+var table;
+
+var actual_url = document.URL;
+var method_call = "";
+
+if (actual_url.indexOf("index") < 0) {
+    method_call = "";
+}
+
+$.fn.dataTable.ext.errMode = 'throw';
+
+$(document).ready(function () {
+    table = $('#table').DataTable({
+        "searching": true,
+        "scrollX": true,
+        "deferRender": true,
+        'processing': true,
+        "order": [[0, "desc"]],
+        "lengthMenu": [[25, 50, 100, 250, 500, -1], [25, 50, 100, 250, 500, "Todos"]],
+        "ajax": {
+            "url": method_call + "clases_obtener_activas",
+            "type": 'POST'
+        },
+        "columns": [
+            { "data": "id" },
+            { "data": "identificador" },
+            { "data": "disciplinas_nombre" },
+            { "data": "dificultad" },
+            { "data": "fecha" },
+            { "data": "horario" },
+            { "data": "instructores_nombre" },
+            { "data": "sucursales_locacion" },
+            { "data": "cupos" },
+            { "data": "opciones" },
+        ],
+        'language': {
+            "sProcessing": '<i class="fa fa-spinner spinner"></i> Cargando...',
+            "sLengthMenu": "Mostrar _MENU_",
+            "sZeroRecords": "No se encontraron resultados",
+            "sEmptyTable": "Ningún dato disponible en esta tabla =(",
+            "sInfo": "Mostrando del _START_ al _END_ de _TOTAL_",
+            "sInfoEmpty": "Mostrando del 0 al 0 de 0",
+            "sInfoFiltered": "(filtrado _MAX_)",
+            "sInfoPostFix": "",
+            "sSearch": "Buscar:",
+            "sUrl": "",
+            "sInfoThousands": ",",
+            "sLoadingRecords": "&nbsp;",
+            "oPaginate": {
+                "sFirst": "Primero",
+                "sLast": "Último",
+                "sNext": ">",
+                "sPrevious": "<"
+            },
+            "oAria": {
+                "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+            }
+        }
+    });
+
+    var buttons = new $.fn.dataTable.Buttons(table, {
+        buttons: [
+            {
+                extend: 'excelHtml5',
+                className: 'custom-button'
+            }
+        ]
+    }).container().appendTo($('#buttons'));
+});
+
+function crear_ocurrencia_evento(clase_id) {
+    fetch(method_call + "crear_ocurrencia_evento/" + clase_id, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ clase_id: clase_id })
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert(data.message);
+
+                var updatedData = data.data;
+                var row = table.row($('a[data-id="' + clase_id + '"]').closest('tr'));
+
+                row.data({
+                    id: updatedData.id,
+                    identificador: updatedData.identificador,
+                    disciplinas_nombre: updatedData.disciplinas_nombre,
+                    dificultad: updatedData.dificultad,
+                    fecha: updatedData.fecha,
+                    horario: updatedData.horario,
+                    instructores_nombre: updatedData.instructores_nombre,
+                    sucursales_locacion: updatedData.sucursales_locacion,
+                    cupos: updatedData.cupos,
+                    opciones: updatedData.opciones
+                }).draw(false);
+            } else {
+                alert('Error: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Ocurrió un error al crear la ocurrencia del evento.');
+        });
+}
