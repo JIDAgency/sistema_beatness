@@ -111,27 +111,14 @@
                         </ul>
                     </li>
 
-                    <!-- <li class="nav-item"><a class="nav-link <?php echo isset($menu_sucursales_activo) ? 'active' : ''; ?>" href="<?php echo site_url('sucursales'); ?>"><i class="ft-map"></i><span>Sucursales</span></a></li> -->
-
-                    <!-- <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link <?php echo isset($menu_disciplinas_activo) ? 'active' : ''; ?>" href="#" data-toggle="dropdown"><i class="icon-notebook"></i><span data-i18n="nav.dash.main">Disciplinas<i class="ft-chevron-down"></i></span></a>
-                        <ul class="dropdown-menu">
-                            <li data-menu=""><a class="dropdown-item" href="<?php echo site_url('disciplinas'); ?>" data-toggle="dropdown">Disciplinas</a></li>
-                            <li data-menu=""><a class="dropdown-item" href="<?php echo site_url('planes_categorias'); ?>" data-toggle="dropdown">Categorias de planes</a></li>
-                        </ul>
-                    </li> -->
-
                     <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link <?php echo isset($menu_wrokflow_activo) ? 'active' : ''; ?>" href="#" data-toggle="dropdown"><i class="icon-book-open"></i><span data-i18n="nav.dash.main">Workflow<i class="ft-chevron-down"></i></span></a>
                         <ul class="dropdown-menu">
-                            <li data-menu=""><a class="dropdown-item" href="<?php echo site_url('sucursales'); ?>" data-toggle="dropdown"><span>Sucursales</span></a></li>
-                            <li data-menu=""><a class="dropdown-item" href="<?php echo site_url('disciplinas'); ?>" data-toggle="dropdown"><span>Disciplinas</span></a></li>
-                            <li data-menu=""><a class="dropdown-item" href="<?php echo site_url('planes_categorias'); ?>" data-toggle="dropdown"><span>Categorias de planes</span></a></li>
-                            <li data-menu=""><a class="dropdown-item" href="<?php echo site_url('planes'); ?>" data-toggle="dropdown"><span>Planes</span></a></li>
+                            <li data-menu=""><a class="dropdown-item" href="<?php echo site_url('sucursales'); ?>" data-toggle="dropdown">Sucursales</a></li>
+                            <li data-menu=""><a class="dropdown-item" href="<?php echo site_url('disciplinas'); ?>" data-toggle="dropdown">Disciplinas</a></li>
+                            <li data-menu=""><a class="dropdown-item" href="<?php echo site_url('planes_categorias'); ?>" data-toggle="dropdown">Categorias de planes</a></li>
+                            <li data-menu=""><a class="dropdown-item" href="<?php echo site_url('planes'); ?>" data-toggle="dropdown">Planes</a></li>
                         </ul>
                     </li>
-
-                    <!-- <li class="nav-item"><a class="nav-link <?php echo isset($menu_disciplinas_activo) ? 'active' : ''; ?>" href="<?php echo site_url('disciplinas'); ?>"><i class="icon-notebook"></i><span>Disciplinas</span></a></li> -->
-
-                    <!-- <li class="nav-item"><a class="nav-link <?php echo isset($menu_planes_activo) ? 'active' : ''; ?>" href="<?php echo site_url('planes'); ?>"><i class="icon-trophy"></i><span>Planes</span></a></li> -->
 
                     <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link <?php echo isset($menu_historial_reservaciones_activo) ? 'active' : ''; ?> <?php echo isset($menu_reportes_clases_activo) ? 'active' : ''; ?> <?php echo isset($menu_asignaciones_activo) ? 'active' : ''; ?> <?php echo isset($menu_reservaciones_activo) ? 'active' : ''; ?> <?php echo isset($menu_clases_activo) ? 'active' : ''; ?> <?php echo isset($pagina_menu_reportes) ? 'active' : ''; ?> <?php echo isset($pagina_menu_clases_categorias) ? 'active' : ''; ?>" href="#" data-toggle="dropdown"><i class="icon-notebook"></i><span data-i18n="nav.dash.main">Gestión <i class="ft-chevron-down"></i></span></a>
                         <ul class="dropdown-menu">
@@ -240,36 +227,11 @@
                             <li data-menu=""><a class="dropdown-item" href="<?php echo site_url('categorias'); ?>" data-toggle="dropdown">Disciplinas - Categorias</a></li>
                         </ul>
                     </li>
-                    <!--
-                            <li class="nav-item"><a class="nav-link <?php //echo isset($menu_inicio_activo) ? 'active' : ''; 
-                                                                    ?>" href="<?php //echo site_url('inicio'); 
-                                                                                ?>"><i class="icon-home"></i><span>Inicio</span></a></li>
-                            <li class="nav-item"><a class="nav-link <?php //echo isset($menu_clientes_activo) ? 'active' : ''; 
-                                                                    ?>" href="<?php //echo site_url('clientes'); 
-                                                                                ?>"><i class="icon-people"></i><span>Clientes</span></a></li>
-                            <li class="nav-item"><a class="nav-link <?php //echo isset($menu_clases_activo) ? 'active' : ''; 
-                                                                    ?>" href="<?php //echo site_url('clases'); 
-                                                                                ?>"><i class="icon-calendar"></i><span>Clases</span></a></li>
-                            <li class="nav-item"><a class="nav-link <?php //echo isset($menu_reservaciones_activo) ? 'active' : ''; 
-                                                                    ?>" href="<?php //echo site_url('reservaciones'); 
-                                                                                ?>"><i class="icon-event"></i><span>Reservaciones</span></a></li>
-                            <li class="nav-item"><a class="nav-link <?php //echo isset($menu_historial_reservaciones_activo) ? 'active' : ''; 
-                                                                    ?>" href="<?php //echo site_url('historial_reservaciones'); 
-                                                                                ?>"><i class="icon-notebook"></i><span>Historial de reservaciones</span></a></li>
-                            <li class="nav-item"><a class="nav-link <?php //echo isset($menu_asignaciones_activo) ? 'active' : ''; 
-                                                                    ?>" href="<?php //echo site_url('asignaciones'); 
-                                                                                ?>"><i class="icon-list"></i><span>Asignaciones</span></a></li>
-                            <li class="nav-item"><a class="nav-link <?php //echo isset($menu_ventas_activo) ? 'active' : ''; 
-                                                                    ?>" href="<?php //echo site_url('ventas'); 
-                                                                                ?>"><i class="icon-wallet"></i><span>Ventas</span></a></li>
-                        -->
                 <?php endif; ?>
 
                 <?php if (es_operaciones()) : ?>
                     <li class="nav-item"><a class="nav-link <?php echo isset($menu_inicio_activo) ? 'active' : ''; ?>" href="<?php echo site_url('inicio'); ?>"><i class="icon-home"></i><span>Inicio</span></a></li>
                     <li class="nav-item"><a class="nav-link <?php echo isset($menu_clientes_activo) ? 'active' : ''; ?>" href="<?php echo site_url('clientes'); ?>"><i class="icon-people"></i><span>Clientes</span></a></li>
-
-                    <!-- <li class="nav-item"><a class="nav-link <?php echo isset($menu_sucursales_activo) ? 'active' : ''; ?>" href="<?php echo site_url('sucursales'); ?>"><i class="ft-map"></i><span>Sucursales</span></a></li> -->
 
                     <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link <?php echo isset($menu_wrokflow_activo) ? 'active' : ''; ?>" href="#" data-toggle="dropdown"><i class="icon-notebook"></i><span data-i18n="nav.dash.main">Workflow<i class="ft-chevron-down"></i></span></a>
                         <ul class="dropdown-menu">
@@ -279,10 +241,6 @@
                             <li data-menu=""><a class="dropdown-item" href="<?php echo site_url('planes'); ?>" data-toggle="dropdown"><span>Planes</span></a></li>
                         </ul>
                     </li>
-
-                    <!-- <li class="nav-item"><a class="nav-link <?php echo isset($menu_disciplinas_activo) ? 'active' : ''; ?>" href="<?php echo site_url('disciplinas'); ?>"><i class="icon-notebook"></i><span>Disciplinas</span></a></li> -->
-
-                    <!-- <li class="nav-item"><a class="nav-link <?php echo isset($menu_planes_activo) ? 'active' : ''; ?>" href="<?php echo site_url('planes'); ?>"><i class="icon-trophy"></i><span>Planes</span></a></li> -->
 
                     <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link <?php echo isset($menu_historial_reservaciones_activo) ? 'active' : ''; ?> <?php echo isset($menu_reportes_clases_activo) ? 'active' : ''; ?> <?php echo isset($menu_asignaciones_activo) ? 'active' : ''; ?> <?php echo isset($menu_reservaciones_activo) ? 'active' : ''; ?> <?php echo isset($menu_clases_activo) ? 'active' : ''; ?> <?php echo isset($pagina_menu_reportes) ? 'active' : ''; ?>" href="#" data-toggle="dropdown"><i class="icon-notebook"></i><span data-i18n="nav.dash.main">Gestión <i class="ft-chevron-down"></i></span></a>
                         <ul class="dropdown-menu">

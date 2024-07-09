@@ -18,7 +18,7 @@
 			<section>
 				<div class="row">
 					<div class="col-12">
-						<div class="card">
+						<div class="card no-border">
 							<div class="card-header">
 								<h4 class="card-title">Editar clase</h4>
 							</div>
@@ -37,14 +37,16 @@
 											</div>
 										<?php endif ?>
 										<?php $this->load->view('_comun/mensajes_alerta'); ?>
+
 										<h4 class="form-section">Datos de la clase</h4>
+
+										<input type="hidden" readonly="true" id="identificador" class="form-control" name="identificador" placeholder="Identificador" value="<?php echo set_value('identificador'); ?>">
+
 										<div class="row">
-											<input type="hidden" readonly="true" id="identificador" class="form-control" name="identificador" placeholder="Identificador" value="<?php echo set_value('identificador'); ?>">
 											<div class="col-md-6">
 												<div class="form-group row">
-													<label for="terminos_condiciones" class="col-md-3 label-control"><span class="red">*</span> Disciplina
-														para la clase</label>
-													<div class="col-md-9">
+													<label for="terminos_condiciones" class="col-md-12"><span class="red">*</span> Disciplina para la clase</label>
+													<div class="col-md-12">
 														<select id="mySelect" name="disciplina_id" class="form-control">
 															<option value="">Seleccione la disciplina</option>
 															<?php foreach ($disciplinas->result() as $disciplina) : ?>
@@ -65,13 +67,11 @@
 													</div>
 												</div>
 											</div>
-										</div>
-										<div class="row">
+
 											<div class="col-md-6">
 												<div class="form-group row">
-													<label for="terminos_condiciones" class="col-md-3 label-control"><span class="red">*</span> Instructor
-														para la clase</label>
-													<div class="col-md-9">
+													<label for="terminos_condiciones" class="col-md-12"><span class="red">*</span> Instructor para la clase</label>
+													<div class="col-md-12">
 														<select id="mySelect2" name="instructor_id" class="select2 form-control info">
 															<option value="">Seleccione el instructor de esta clase</option>
 															<?php foreach ($instructores->result() as $instructor) : ?>
@@ -87,38 +87,25 @@
 													</div>
 												</div>
 											</div>
-											<div class="col-md-6">
-												<div class="form-group row">
-													<label for="inicia" class="col-md-3 label-control"><span class="red">*</span> Fecha y hora de inicio</label>
-													<div class="col-md-5">
-														<input type="date" id="mySelect3" name="inicia_date" class="form-control" placeholder="Indique la fecha" value="<?php echo set_value('inicia') == false ? date('Y-m-d', strtotime($clase_a_editar->inicia)) : date('Y-m-d', strtotime(set_value('inicia'))); ?>">
-													</div>
-													<div class="col-md-4">
-														<input type="time" id="mySelect4" name="inicia_time" class="form-control" value="<?php echo set_value('inicia') == false ? date('H:i', strtotime($clase_a_editar->inicia)) : date('H:i', strtotime(set_value('inicia'))); ?>">
-													</div>
-												</div>
-											</div>
 										</div>
 
 										<div class="row">
 											<div class="col-md-6">
 												<div class="form-group row">
-													<label for="dificultad" class="col-md-3 label-control"><span class="red">*</span> Seleccione la
-														dificultad</label>
-													<div class="col-md-9">
-														<select name="dificultad" class="form-control">
-															<option value="" <?php echo set_select('dificultad', '', set_value('dificultad') ? false : '' == (!empty($this->session->flashdata('dificultad')) ? $this->session->flashdata('dificultad') : (!empty($clase_a_editar->dificultad) ? $clase_a_editar->dificultad : set_value('dificultad')))); ?>>Seleccione una opcion…</option>
-															<?php foreach (select_dificultad() as $key => $mostrar_row) : ?>
-																<option value="<?php echo $mostrar_row->valor; ?>" <?php echo set_select('dificultad', $mostrar_row->valor, set_value('dificultad') ? false : $mostrar_row->valor == (!empty($this->session->flashdata('dificultad')) ? $this->session->flashdata('dificultad') : (!empty($clase_a_editar->dificultad) ? $clase_a_editar->dificultad : set_value('dificultad')))); ?>><?php echo trim($mostrar_row->nombre); ?></option>
-															<?php endforeach; ?>
-														</select>
+													<label for="inicia" class="col-md-12"><span class="red">*</span> Fecha y hora de inicio</label>
+													<div class="col-md-7">
+														<input type="date" id="mySelect3" name="inicia_date" class="form-control" placeholder="Indique la fecha" value="<?php echo set_value('inicia') == false ? date('Y-m-d', strtotime($clase_a_editar->inicia)) : date('Y-m-d', strtotime(set_value('inicia'))); ?>">
+													</div>
+													<div class="col-md-5">
+														<input type="time" id="mySelect4" name="inicia_time" class="form-control" value="<?php echo set_value('inicia') == false ? date('H:i', strtotime($clase_a_editar->inicia)) : date('H:i', strtotime(set_value('inicia'))); ?>">
 													</div>
 												</div>
 											</div>
+
 											<div class="col-md-6">
 												<div class="form-group row">
-													<label for="cupo" class="col-md-3 label-control"><span class="red">*</span> Cupo</label>
-													<div class="col-md-4">
+													<label for="cupo" class="col-md-12"><span class="red">*</span> Cupo</label>
+													<div class="col-md-12">
 														<input type="number" readonly="true" min="0" pattern="^[0-9]+" class="form-control" name="cupo" placeholder="Cupo" value="<?php echo set_value('cupo') == false ? $clase_a_editar->cupo : set_value('cupo'); ?>">
 													</div>
 												</div>
@@ -128,8 +115,22 @@
 										<div class="row">
 											<div class="col-md-6">
 												<div class="form-group row">
-													<label for="distribucion_imagen" class="col-md-3 label-control"><span class="red">*</span> Seleccione una locación de clase</label>
-													<div class="col-md-9">
+													<label for="dificultad" class="col-md-12"><span class="red">*</span> Seleccione la dificultad</label>
+													<div class="col-md-12">
+														<select name="dificultad" class="form-control">
+															<option value="" <?php echo set_select('dificultad', '', set_value('dificultad') ? false : '' == (!empty($this->session->flashdata('dificultad')) ? $this->session->flashdata('dificultad') : (!empty($clase_a_editar->dificultad) ? $clase_a_editar->dificultad : set_value('dificultad')))); ?>>Seleccione una opcion…</option>
+															<?php foreach (select_dificultad() as $key => $mostrar_row) : ?>
+																<option value="<?php echo $mostrar_row->valor; ?>" <?php echo set_select('dificultad', $mostrar_row->valor, set_value('dificultad') ? false : $mostrar_row->valor == (!empty($this->session->flashdata('dificultad')) ? $this->session->flashdata('dificultad') : (!empty($clase_a_editar->dificultad) ? $clase_a_editar->dificultad : set_value('dificultad')))); ?>><?php echo trim($mostrar_row->nombre); ?></option>
+															<?php endforeach; ?>
+														</select>
+													</div>
+												</div>
+											</div>
+
+											<div class="col-md-6">
+												<div class="form-group row">
+													<label for="distribucion_imagen" class="col-md-12"><span class="red">*</span> Seleccione una locación de clase</label>
+													<div class="col-md-12">
 														<select name="distribucion_imagen" class="form-control">
 															<option value="">Seleccione una locación de clase...</option>
 															<option value="https://b3studio.mx/app_imgs/clases/clase-top-escenario.jpg" <?php echo set_select('distribucion_imagen', 'https://b3studio.mx/app_imgs/clases/clase-top-escenario.jpg', set_value('distribucion_imagen') ? false : 'https://b3studio.mx/app_imgs/clases/clase-top-escenario.jpg' == $clase_a_editar->distribucion_imagen); ?>>Salon</option>
@@ -139,10 +140,13 @@
 													</div>
 												</div>
 											</div>
+										</div>
+
+										<div class="row">
 											<div class="col-md-6">
 												<div class="form-group row">
-													<label for="distribucion_lugares" class="col-md-3 label-control"><span class="red">*</span> Seleccione la distribución de lugares por fila...</label>
-													<div class="col-md-9">
+													<label for="distribucion_lugares" class="col-md-12"><span class="red">*</span> Seleccione la distribución de lugares por fila...</label>
+													<div class="col-md-12">
 														<select name="distribucion_lugares" class="form-control">
 															<option value="">Seleccione la distribución de lugares por fila...</option>
 															<option value="child-2" <?php echo set_select('distribucion_lugares', 'child-2', set_value('distribucion_lugares') ? false : 'child-2' == $clase_a_editar->distribucion_lugares); ?>>2</option>
@@ -160,21 +164,21 @@
 													</div>
 												</div>
 											</div>
-										</div>
-
-										<div class="row mb-3">
 											<div class="col-md-6">
 												<div class="form-group row">
-													<label for="intervalo_horas" class="col-md-3 label-control"><span class="red">*</span> Clases a consumir del plan</label>
-													<div class="col-md-4">
+													<label for="intervalo_horas" class="col-md-12"><span class="red">*</span> Clases a consumir del plan</label>
+													<div class="col-md-12">
 														<input type="number" min="0" pattern="^[0-9]+" name="intervalo_horas" class="form-control" placeholder="Clases a consumir" value="<?php echo set_value('intervalo_horas') == false ? $clase_a_editar->intervalo_horas : set_value('intervalo_horas'); ?>">
 													</div>
 												</div>
 											</div>
-											<div>
+										</div>
+
+										<div class="row mb-3">
+											<div class="col-md-12">
+												<a href="<?php echo site_url('clases/agregar_cupo/' . $clase_a_editar->id); ?>" class="btn btn-secondary float-right btn-sm">Agregar un cupo</a>
 												<?php
 												$cupo_lugares = json_decode($clase_a_editar->cupo_lugares);
-												echo '<br>';
 												$i = 0;
 												foreach ($cupo_lugares as $lugar) {
 													$i++;
@@ -196,14 +200,6 @@
 													}
 												}
 												?>
-											</div>
-										</div>
-
-										<div class="row">
-											<div class="col-md-6">
-											</div>
-											<div class="col-md-6">
-												<a href="<?php echo site_url('clases/agregar_cupo/' . $clase_a_editar->id); ?>" class="btn btn-secondary float-right btn-sm">Agregar un cupo</a>
 											</div>
 										</div>
 
