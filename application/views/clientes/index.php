@@ -64,13 +64,13 @@
 													<th>Nombre completo</th>
 													<th>Correo electrónico</th>
 													<th>Teléfono</th>
+													<th>Sucursal Favorita</th>
+													<th>Fecha de registro</th>
 													<th>Estudiante</th>
 													<th>Vigencia de estudiante</th>
 													<th>Pertenece a una empresa</th>
-													<th>Sucursal</th>
 													<th>Registrado por</th>
 													<th>Estatus</th>
-													<th>Fecha de registro</th>
 													<th>Opciones</th>
 												</tr>
 											</thead>

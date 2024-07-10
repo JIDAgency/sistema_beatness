@@ -68,13 +68,13 @@ class Clientes extends MY_Controller
                 "nombre_completo" => !empty($usuario_row->nombre_completo) ? $usuario_row->nombre_completo : null,
                 "correo" => !empty($usuario_row->correo) ? $usuario_row->correo : null,
                 "no_telefono" => !empty($usuario_row->no_telefono) ? $usuario_row->no_telefono : null,
+                "sucursal_id" => !empty($usuario_row->nombre_sucursal) ? strtoupper($usuario_row->nombre_sucursal) : null,
+                "fecha_registro" => !empty($usuario_row->fecha_registro) ? $usuario_row->fecha_registro : null,
                 "es_estudiante" => !empty($usuario_row->es_estudiante) ? ucfirst($usuario_row->es_estudiante) : null,
                 "es_estudiante_vigencia" => $vigencia,
                 "es_empresarial" => !empty($usuario_row->es_empresarial) ? ucfirst($usuario_row->es_empresarial) : null,
-                "sucursal_id" => !empty($usuario_row->nombre_sucursal) ? strtoupper($usuario_row->nombre_sucursal) : null,
                 "dominio" => !empty($usuario_row->dominio) ? ucfirst($usuario_row->dominio) : null,
                 "estatus" => !empty($usuario_row->estatus) ? ucfirst($usuario_row->estatus) : null,
-                "fecha_registro" => !empty($usuario_row->fecha_registro) ? $usuario_row->fecha_registro : null,
                 "opciones" => $menu,
             );
         }
