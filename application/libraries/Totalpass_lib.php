@@ -11,6 +11,7 @@ class Totalpass_lib
     private $partner_api_key;
     private $token;
     private $token_expiracion;
+    private $token_response;
 
     public function __construct()
     {
@@ -50,20 +51,22 @@ class Totalpass_lib
         );
 
         if (isset($response['token'])) {
-            $this->token_guardar($response['token'], strtotime('+24 hours'));
+            $this->token_guardar($response['token'], strtotime('+24 hours'), $response);
         } else {
             throw new Exception('Error al renovar el token: ' . ($response['message'] ?? 'Respuesta inválida de TotalPass.'));
         }
     }
 
-    private function token_guardar($token, $expiracion)
+    private function token_guardar($token, $expiracion, $response = null)
     {
         $this->token = $token;
         $this->token_expiracion = $expiracion;
+        $this->token_response = $response;
 
         $data = array(
             'valor_1' => $token,
-            'valor_2' => strtotime('-10 minutes', $expiracion)
+            'valor_2' => strtotime('-10 minutes', $expiracion),
+            'json_1' => json_encode($response)
         );
 
         $this->CI->totalpass_model->guardar_token($data);

@@ -31,6 +31,66 @@ class Totalpass extends MY_Controller
         $this->construir_private_site_ui('totalpass/index', $data);
     }
 
+    public function disciplinas()
+    {
+        $data['pagina_titulo'] = 'Disciplinas';
+        $data['pagina_subtitulo'] = 'Vincular disciplinas';
+        $data['pagina_totalpass'] = true;
+
+        $data['controlador'] = 'totalpass';
+        $data['regresar_a'] = 'inicio';
+        $controlador_js = "totalpass/disciplinas";
+
+        $data['styles'] = array(
+            array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/tables/datatable/datatables.min.css'),
+        );
+
+        $data['scripts'] = array(
+            array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/tables/datatable/datatables.min.js'),
+            array('es_rel' => true, 'src' => '' . $controlador_js . '.js'),
+        );
+
+
+        if (isset($list_products['error']) && $list_products['error']) {
+            $this->session->set_flashdata('MENSAJE_ERROR', $list_products['message'] . ' (1)');
+            $list_products = null;
+        }
+
+        $this->construir_private_site_ui('totalpass/disciplinas', $data);
+    }
+
+    public function disciplinas_obtener()
+    {
+        $draw = intval($this->input->post('draw'));
+        $start = intval($this->input->post('start'));
+        $length = intval($this->input->post('length'));
+
+        $disciplinas_list = $this->totalpass_model->disciplinas_obtener();
+
+        $data = [];
+
+        foreach ($disciplinas_list->result() as $disciplina_key => $disciplina_value) {
+            $opciones = '<a href="javascript:crear_ocurrencia_evento(' . $disciplina_value->id . ')" class="" data-id="' . $disciplina_value->id . '">Registrar</a>';
+
+            $data[] = array(
+                'id' => $disciplina_value->id,
+                'nombre' => $disciplina_value->nombre,
+                'totalpass_plan_id' => $disciplina_value->totalpass_plan_id,
+                'estatus' => mb_strtoupper($disciplina_value->estatus),
+            );
+        }
+
+        $result = array(
+            'draw' => $draw,
+            'recordsTotal' => $disciplinas_list->num_rows(),
+            'recordsFiltered' => $disciplinas_list->num_rows(),
+            'data' => $data
+        );
+
+        echo json_encode($result);
+        exit();
+    }
+
     public function clases()
     {
         $data['pagina_titulo'] = 'Totalpass';
@@ -169,5 +229,3 @@ class Totalpass extends MY_Controller
         $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
 }
-
-

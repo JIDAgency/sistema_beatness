@@ -26,7 +26,17 @@ class Totalpass_model extends CI_Model
         return $query;
     }
 
-    // ====== Clases (Inicio) ======
+    // ====== disciplinas (Inicio) ======
+    public function disciplinas_obtener()
+    {
+        $query = $this->db
+            ->get('disciplinas');
+
+        return $query;
+    }
+    // ====== disciplinas (Fin) ======
+
+    // ====== clases (Inicio) ======
 
     public function clases_obtener_activas()
     {
@@ -78,6 +88,6 @@ class Totalpass_model extends CI_Model
         return $query;
     }
 
-    // ====== Clases (Fin) ======
+    // ====== clases (Fin) ======
 
 }

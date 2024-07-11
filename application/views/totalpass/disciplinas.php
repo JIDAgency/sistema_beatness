@@ -49,15 +49,9 @@
                                         <thead>
                                             <tr>
                                                 <th>#</th>
-                                                <th>SKU</th>
-                                                <th>Disciplina</th>
-                                                <th>Grupo muscular</th>
-                                                <th>Fecha</th>
-                                                <th>Horario</th>
-                                                <th>Coach</th>
-                                                <th>Sucursal</th>
-                                                <th>Cupos</th>
-                                                <th>Opciones</th>
+                                                <th>TotalPass ID</th>
+                                                <th>Nombre</th>
+                                                <th>Estatus</th>
                                             </tr>
                                         </thead>
                                         <tbody>
