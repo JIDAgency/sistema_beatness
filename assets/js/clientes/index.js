@@ -287,7 +287,7 @@ async function obtener_opciones_select_sucursal() {
 }
 
 function createEditableCells(row, data, dataIndex) {
-    var columnsToEdit = [7];
+    var columnsToEdit = [4];
     $.each(columnsToEdit, function (index, columnIndex) {
         $('td:eq(' + columnIndex + ')', row).addClass('editable-cell');
     });

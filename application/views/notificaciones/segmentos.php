@@ -53,13 +53,41 @@
 
                 <div class="row">
 
-                    <div class="col-xl-3 col-lg-12">
+                    <!-- <div class="col-xl-3 col-lg-12">
                         <a href="<?php echo site_url("notificaciones/segmento_usuarios_seleccionados_julio_2023"); ?>">
                             <div class="card white bg-grey text-center">
                                 <div class="card-content">
                                     <div class="card-body py-3">
                                         <h4 class="white mt-3 mb-2">Usuarios seleccionados julio 2023</h4>
                                         <p class="card-text">Ver la lista y notificar a usuarios seleccionados.</p>
+                                        <button class="btn btn-grey btn-darken-3">Ver</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div> -->
+
+                    <div class="col-xl-3 col-lg-12">
+                        <a href="<?php echo site_url("notificaciones/segmento_usuarios_puebla"); ?>">
+                            <div class="card white bg-grey text-center">
+                                <div class="card-content">
+                                    <div class="card-body py-3">
+                                        <h4 class="white mt-3 mb-2">Usuarios Puebla</h4>
+                                        <p class="card-text">Ver la lista y notificar a usuarios de Puebla.</p>
+                                        <button class="btn btn-grey btn-darken-3">Ver</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="col-xl-3 col-lg-12">
+                        <a href="<?php echo site_url("notificaciones/segmento_usuarios_polanco"); ?>">
+                            <div class="card white bg-grey text-center">
+                                <div class="card-content">
+                                    <div class="card-body py-3">
+                                        <h4 class="white mt-3 mb-2">Usuarios Polanco</h4>
+                                        <p class="card-text">Ver la lista y notificar a usuarios de Polanco.</p>
                                         <button class="btn btn-grey btn-darken-3">Ver</button>
                                     </div>
                                 </div>
