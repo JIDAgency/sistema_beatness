@@ -72,9 +72,14 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-function actualizar_disciplina(disciplina_id, gympass_product_id) {
+function actualizar_disciplina(disciplina_id, value) {
     let select = document.getElementById('select-' + disciplina_id);
     let valor_anterior = select.getAttribute('data-previous');
+
+    // Dividir el valor recibido en product_id y gym_id
+    let parts = value.split(',');
+    let gympass_product_id = parts[0];
+    let gympass_gym_id = parts[1];
 
     if (gympass_product_id === valor_anterior) {
         alert('No se realizaron cambios en el ID de Gympass.');
@@ -84,7 +89,7 @@ function actualizar_disciplina(disciplina_id, gympass_product_id) {
     fetch('../gympass/actualizar_disciplina', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: `id=${encodeURIComponent(disciplina_id)}&gympass_product_id=${encodeURIComponent(gympass_product_id)}`
+        body: `id=${encodeURIComponent(disciplina_id)}&gympass_product_id=${encodeURIComponent(gympass_product_id)}&gympass_gym_id=${encodeURIComponent(gympass_gym_id)}`
     })
         .then(response => response.json())
         .then(data => {

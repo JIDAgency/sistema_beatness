@@ -110,8 +110,9 @@ class Gympass_lib
 
     // ============ PRODUCTS ============
 
-    public function get_list_products()
+    public function get_list_products($gym_id)
     {
+        $this->gympass_gym_id = $gym_id;
         $url = $this->gympass_base_url . "/setup/v1/gyms/{$this->gympass_gym_id}/products";
         return $this->call_api($url);
     }

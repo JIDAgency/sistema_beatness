@@ -30,16 +30,42 @@ class Gympass extends MY_Controller
             array('es_rel' => true, 'src' => '' . $controlador_js . '.js'),
         );
 
-        $list_products = $this->list_products();
-        if (isset($list_products['error']) && $list_products['error']) {
-            $this->session->set_flashdata('MENSAJE_ERROR', $list_products['message'] . ' (1)');
-            $list_products = null;
-        }
-
         $disciplinas_list = $this->wellhub_model->disciplinas_obtener()->result();
 
         if (!$disciplinas_list) {
             $this->mensaje_del_sistema('MENSAJE_ERROR', 'Ha ocurrido un error, por favor inténtalo más tarde. (1)', $data['regresar_a']);
+        }
+
+        // Filtrar las disciplinas que tienen gympass_gym_id
+        $disciplinas_flag = array_filter($disciplinas_list, function ($disciplina) {
+            return !is_null($disciplina->gympass_gym_id);
+        });
+
+        // Obtener los IDs únicos de los gimnasios
+        $gym_ids = array_unique(array_map(function ($disciplina) {
+            return $disciplina->gympass_gym_id;
+        }, $disciplinas_flag));
+
+        $query_list = [];
+        $list_products = [];
+
+        // Obtener la lista de productos para cada gimnasio
+        foreach ($gym_ids as $gym_id) {
+            $query_result = $this->gympass_lib->get_list_products($gym_id);
+
+            if (isset($query_result['error']) && $query_result['error']) {
+                $this->session->set_flashdata('MENSAJE_ERROR', $query_result['message'] . ' (1)');
+                continue; // Saltar al siguiente gimnasio si hay un error
+            }
+
+            // Agregar los productos a la lista
+            foreach ($query_result['products'] as $product) {
+                $list_products[] = (object) [
+                    'gym_id' => $query_result['gym_id'],
+                    'product_id' => $product['product_id'],
+                    'name' => $product['name']
+                ];
+            }
         }
 
         $data['list_products'] = $list_products;
@@ -47,6 +73,8 @@ class Gympass extends MY_Controller
 
         $this->construir_private_site_ui('gympass/disciplinas', $data);
     }
+
+    // ============ PRODUCTS ============
 
     public function actualizar_disciplina()
     {
@@ -57,20 +85,25 @@ class Gympass extends MY_Controller
 
         $disciplina_id = $this->input->post('id');
         $gympass_product_id = $this->input->post('gympass_product_id');
+        $gympass_gym_id = $this->input->post('gympass_gym_id');
 
         if (empty($disciplina_id)) {
             $this->output_json(['status' => 'error', 'message' => 'Faltan parámetros.']);
             return;
         }
 
-        if (!empty($gympass_product_id)) {
-            if ($this->wellhub_model->disciplina_esta_vinculado($gympass_product_id, $disciplina_id)) {
-                $this->output_json(['status' => 'error', 'message' => 'Este ID de Gympass ya está vinculado a otra disciplina.']);
-                return;
-            }
-        }
+        // if (!empty($gympass_product_id)) {
+        //     if ($this->wellhub_model->disciplina_esta_vinculado($gympass_product_id, $disciplina_id)) {
+        //         $this->output_json(['status' => 'error', 'message' => 'Este ID de Gympass ya está vinculado a otra disciplina.']);
+        //         return;
+        //     }
+        // }
 
-        $data = ['gympass_product_id' => $gympass_product_id ?: null];
+        $data = [
+            'gympass_gym_id' => $gympass_gym_id ?: null,
+            'gympass_product_id' => $gympass_product_id ?: null
+        ];
+
         if ($this->wellhub_model->disciplina_editar($disciplina_id, $data)) {
             $this->output_json(['status' => 'success', 'message' => 'ID de Gympass actualizado correctamente.']);
         } else {
@@ -649,17 +682,5 @@ class Gympass extends MY_Controller
         );
 
         $this->construir_private_site_ui('gympass/index', $data);
-    }
-
-    // ============ PRODUCTS ============
-
-    public function list_products()
-    {
-        try {
-            $response = $this->gympass_lib->get_list_products();
-            return $response;
-        } catch (Exception $e) {
-            return "Error: " . $e->getMessage();
-        }
     }
 }

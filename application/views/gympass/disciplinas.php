@@ -10,6 +10,7 @@
             <div class="row match-height">
 
                 <div class="col-xl-8 col-md-8 col-sm-12">
+
                     <h4>Disciplinas internas</h4>
                     <table name="table" id="table" class="table display nowrap table-striped table-bordered scroll-horizontal table-hover">
                         <thead>
@@ -27,9 +28,11 @@
                                     <td><?php echo $disciplina->nombre; ?></td>
                                     <td>
                                         <select class="form-control" id="select-<?php echo $disciplina->id; ?>" onchange="actualizar_disciplina(<?php echo $disciplina->id; ?>, this.value)">
-                                            <option value="0">Aún no asignado</option>
-                                            <?php foreach ($list_products['products'] as $product) : ?>
-                                                <option value="<?php echo $product['product_id']; ?>" <?php echo ($product['product_id'] == $disciplina->gympass_product_id) ? 'selected' : ''; ?>><?php echo $product['name'] . ' (ID: ' . $product['product_id'] . ')'; ?></option>
+                                            <option value="0,0">Aún no asignado</option>
+                                            <?php foreach ($list_products as $product) : ?>
+                                                <option value="<?php echo $product->product_id . ',' . $product->gym_id; ?>" <?php echo ($product->product_id == $disciplina->gympass_product_id) ? 'selected' : ''; ?>>
+                                                    <?php echo $product->name . ' (ID: ' . $product->product_id . ')'; ?>
+                                                </option>
                                             <?php endforeach; ?>
                                         </select>
                                     </td>
@@ -45,15 +48,17 @@
                     <table name="table_2" id="table_2" class="table display nowrap table-striped table-bordered scroll-horizontal table-hover">
                         <thead>
                             <tr>
-                                <th>#</th>
+                                <th>Gym ID</th>
+                                <th>Product ID</th>
                                 <th>Nombre</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach ($list_products['products'] as $product) : ?>
+                            <?php foreach ($list_products as $product) : ?>
                                 <tr>
-                                    <td><?php echo $product['product_id']; ?></td>
-                                    <td><?php echo $product['name']; ?></td>
+                                    <td><?php echo $product->gym_id; ?></td>
+                                    <td><?php echo $product->product_id; ?></td>
+                                    <td><?php echo $product->name; ?></td>
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>
