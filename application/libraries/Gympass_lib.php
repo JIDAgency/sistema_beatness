@@ -149,10 +149,32 @@ class Gympass_lib
 
     // ============ SLOTS ============
 
-    public function post_create_slot($class_id, $data)
+    public function post_create_slot($gym_id, $class_id, $data)
     {
+        $this->gympass_gym_id = $gym_id;
         $url = $this->gympass_base_url . "/booking/v1/gyms/{$this->gympass_gym_id}/classes/{$class_id}/slots";
         return $this->call_api($url, 'POST', $data);
+    }
+
+    public function put_update_slot($gym_id, $class_id, $slot_id, $data)
+    {
+        $this->gympass_gym_id = $gym_id;
+        $url = $this->gympass_base_url . "/booking/v1/gyms/{$this->gympass_gym_id}/classes/{$class_id}/slots/{$slot_id}";
+        return $this->call_api($url, 'PUT', $data);
+    }
+
+    public function delete_slot($gym_id, $class_id, $slot_id)
+    {
+        $this->gympass_gym_id = $gym_id;
+        $url = $this->gympass_base_url . "/booking/v1/gyms/{$this->gympass_gym_id}/classes/{$class_id}/slots/{$slot_id}";
+        return $this->call_api($url, 'DELETE');
+    }
+
+    public function patch_update_slot($gym_id, $class_id, $slot_id, $data)
+    {
+        $this->gympass_gym_id = $gym_id;
+        $url = $this->gympass_base_url . "/booking/v1/gyms/{$this->gympass_gym_id}/classes/{$class_id}/slots/{$slot_id}";
+        return $this->call_api($url, 'PATCH', $data);
     }
 
     public function get_slot_details($class_id, $slot_id)
@@ -165,24 +187,6 @@ class Gympass_lib
     {
         $url = $this->gympass_base_url . "/booking/v1/gyms/{$this->gympass_gym_id}/classes/{$class_id}/slots?from={$from}&to={$to}";
         return $this->call_api($url);
-    }
-
-    public function delete_slot($class_id, $slot_id)
-    {
-        $url = $this->gympass_base_url . "/booking/v1/gyms/{$this->gympass_gym_id}/classes/{$class_id}/slots/{$slot_id}";
-        return $this->call_api($url, 'DELETE');
-    }
-
-    public function patch_update_slot($class_id, $slot_id, $data)
-    {
-        $url = $this->gympass_base_url . "/booking/v1/gyms/{$this->gympass_gym_id}/classes/{$class_id}/slots/{$slot_id}";
-        return $this->call_api($url, 'PATCH', $data);
-    }
-
-    public function put_update_slot($class_id, $slot_id, $data)
-    {
-        $url = $this->gympass_base_url . "/booking/v1/gyms/{$this->gympass_gym_id}/classes/{$class_id}/slots/{$slot_id}";
-        return $this->call_api($url, 'PUT', $data);
     }
 
     // ============ BOOKING ============

@@ -89,6 +89,7 @@ class Wellhub_model extends CI_Model
             ->select('
                 t1.*,
                 t2.nombre as disciplinas_nombre,
+                t2.gympass_gym_id as disciplinas_gympass_gym_id,
                 t2.gympass_product_id as disciplinas_gympass_product_id,
                 CONCAT(COALESCE(t3.nombre_completo, "N/D"), " ", COALESCE(t3.apellido_paterno, "N/D")) as instructores_nombre,
                 t4.locacion as sucursales_locacion,

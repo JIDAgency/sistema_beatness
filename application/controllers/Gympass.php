@@ -309,6 +309,17 @@ class Gympass extends MY_Controller
         $this->construir_private_site_ui('gympass/clases', $data);
     }
 
+    public function categorias_por_producto($gympass_product_id)
+    {
+        $categorias = $this->wellhub_model->categorias_obtener()->result();
+
+        $categorias_filtradas = array_filter($categorias, function ($categoria) use ($gympass_product_id) {
+            return $categoria->disciplinas_gympass_product_id == $gympass_product_id;
+        });
+
+        echo json_encode(array_values($categorias_filtradas));
+    }
+
     public function registrar_clase()
     {
         $this->db->trans_start();
@@ -346,6 +357,14 @@ class Gympass extends MY_Controller
 
             if (empty($categoria_row->gympass_class_id)) {
                 throw new Exception('La categoría especificada no tiene un Gympass Class ID asociado.', 1001);
+            }
+
+            if (empty($categoria_row->disciplinas_gympass_gym_id)) {
+                throw new Exception('Esta sucursal de clase aún no está vinculada a Gympass.', 1001);
+            }
+
+            if (empty($categoria_row->disciplinas_gympass_product_id)) {
+                throw new Exception('Esta disciplina de clase aún no está vinculada a Gympass.', 1001);
             }
 
             $class_datetime = $clase_row->inicia;
@@ -391,7 +410,7 @@ class Gympass extends MY_Controller
                 "rate" => 4.0
             );
 
-            $response = $this->gympass_lib->post_create_slot($categoria_row->gympass_class_id, $data_1);
+            $response = $this->gympass_lib->post_create_slot($categoria_row->disciplinas_gympass_gym_id, $categoria_row->gympass_class_id, $data_1);
 
             if (!is_array($response) || isset($response['error']) && $response['error'] === true) {
                 throw new Exception("Error: " . ($response['message'] ?? 'Respuesta inválida de Gympass.'), 1001);
@@ -460,6 +479,14 @@ class Gympass extends MY_Controller
                 throw new Exception('La categoría especificada no tiene un Gympass Class ID asociado.', 1001);
             }
 
+            if (empty($categoria_row->disciplinas_gympass_gym_id)) {
+                throw new Exception('Esta sucursal de clase aún no está vinculada a Gympass.', 1001);
+            }
+
+            if (empty($categoria_row->disciplinas_gympass_product_id)) {
+                throw new Exception('Esta disciplina de clase aún no está vinculada a Gympass.', 1001);
+            }
+
             $class_datetime = $clase_row->inicia;
             $puebla_timezone = new DateTimeZone('America/Mexico_City');
             $utc_timezone = new DateTimeZone('UTC');
@@ -503,7 +530,7 @@ class Gympass extends MY_Controller
                 "rate" => 4.0
             );
 
-            $response = $this->gympass_lib->put_update_slot($categoria_row->gympass_class_id, $clase_row->gympass_slot_id, $data_1);
+            $response = $this->gympass_lib->put_update_slot($categoria_row->disciplinas_gympass_gym_id, $categoria_row->gympass_class_id, $clase_row->gympass_slot_id, $data_1);
 
             if (!is_array($response) || isset($response['error']) && $response['error'] === true) {
                 throw new Exception("Error: " . ($response['message'] ?? 'Respuesta inválida de Gympass.'), 1001);
@@ -570,7 +597,15 @@ class Gympass extends MY_Controller
                 throw new Exception('La categoría especificada no tiene un Gympass Class ID asociado.', 1001);
             }
 
-            $response = $this->gympass_lib->delete_slot($categoria_row->gympass_class_id, $clase_row->gympass_slot_id);
+            if (empty($categoria_row->disciplinas_gympass_gym_id)) {
+                throw new Exception('Esta sucursal de clase aún no está vinculada a Gympass.', 1001);
+            }
+
+            if (empty($categoria_row->disciplinas_gympass_product_id)) {
+                throw new Exception('Esta disciplina de clase aún no está vinculada a Gympass.', 1001);
+            }
+
+            $response = $this->gympass_lib->delete_slot($categoria_row->disciplinas_gympass_gym_id, $categoria_row->gympass_class_id, $clase_row->gympass_slot_id);
 
             if (!empty($response) || isset($response['error']) && $response['error'] === true) {
                 throw new Exception("Error: " . ($response['message'] ?? 'Respuesta inválida de Gympass.'), 1001);
@@ -635,12 +670,20 @@ class Gympass extends MY_Controller
                 throw new Exception('La categoría especificada no tiene un Gympass Class ID asociado.', 1001);
             }
 
+            if (empty($categoria_row->disciplinas_gympass_gym_id)) {
+                throw new Exception('Esta sucursal de clase aún no está vinculada a Gympass.', 1001);
+            }
+
+            if (empty($categoria_row->disciplinas_gympass_product_id)) {
+                throw new Exception('Esta disciplina de clase aún no está vinculada a Gympass.', 1001);
+            }
+
             $data_1 = array(
                 "total_capacity" => $clase_row->cupo,
                 "total_booked" => $clase_row->reservado
             );
 
-            $response = $this->gympass_lib->patch_update_slot($categoria_row->gympass_class_id, $clase_row->gympass_slot_id, $data_1);
+            $response = $this->gympass_lib->patch_update_slot($categoria_row->disciplinas_gympass_gym_id, $categoria_row->gympass_class_id, $clase_row->gympass_slot_id, $data_1);
 
             if (!empty($response) || isset($response['error']) && $response['error'] === true) {
                 throw new Exception("Error: " . ($response['message'] ?? 'Respuesta inválida de Gympass.'), 1001);

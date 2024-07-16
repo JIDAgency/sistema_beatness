@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
         "scrollX": true,
         "deferRender": true,
         'processing': true,
-        "order": [[0, "asc"]],
+        "order": [[6, "asc"]],
         "lengthMenu": [[25, 50, 100, 250, 500, -1], [25, 50, 100, 250, 500, "Todos"]],
         'language': {
             "sProcessing": '<i class="fa fa-spinner spinner"></i> Cargando...',
@@ -45,6 +45,23 @@ function modal_registrar_clase(id, data) {
     document.getElementById("instructores_nombre").innerHTML = data.instructores_nombre;
     document.getElementById("sucursales_locacion").innerHTML = data.sucursales_locacion;
     document.getElementById("cupos").innerHTML = data.cupos;
+
+    // Llamada AJAX para obtener las categorías filtradas por gympass_product_id
+    fetch(`../gympass/categorias_por_producto/${data.disciplinas_gympass_product_id}`)
+        .then(response => response.json())
+        .then(categorias => {
+            let categoriaSelect = document.getElementById("categoria");
+            categoriaSelect.innerHTML = '<option value="">Seleccione una categoría…</option>';
+            categorias.forEach(categoria => {
+                let option = document.createElement("option");
+                option.value = categoria.id;
+                option.text = `${categoria.nombre} - ${categoria.disciplinas_nombre}`;
+                categoriaSelect.appendChild(option);
+            });
+        })
+        .catch(error => {
+            console.error('Error al obtener las categorías:', error);
+        });
 }
 
 function actualizar_clase(id) {
