@@ -234,7 +234,7 @@ class Gympass extends REST_Controller
                     'status' => 'RESERVED'
                 );
 
-                $response = $this->gympass_lib->patch_validate_booking($slot['booking_number'], $data_result);
+                $response = $this->gympass_lib->patch_validate_booking($slot['gym_id'], $slot['booking_number'], $data_result);
 
                 $data_3 = array(
                     'data' => !empty($webhook_row->data) ? $webhook_row->data . ',' . json_encode($data_result) : json_encode($data_result),
@@ -248,7 +248,7 @@ class Gympass extends REST_Controller
                     "total_booked" => $clase_row->reservado + 1
                 );
 
-                $response = $this->gympass_lib->patch_update_slot($slot['class_id'], $clase_row->gympass_slot_id, $data_4);
+                $response = $this->gympass_lib->patch_update_slot($slot['gym_id'], $slot['class_id'], $clase_row->gympass_slot_id, $data_4);
 
                 if (!empty($response) || (isset($response['error']) && $response['error'] === true)) {
                     throw new Exception("Hubo un error al comunicarse con Gympass: " . ($response['message'] ?? 'Respuesta inválida de Gympass.'), 1010);
@@ -264,7 +264,7 @@ class Gympass extends REST_Controller
                     'reason_category' => $reason,
                 );
 
-                $response = $this->gympass_lib->patch_validate_booking($slot['booking_number'], $data_result);
+                $response = $this->gympass_lib->patch_validate_booking($slot['gym_id'], $slot['booking_number'], $data_result);
 
                 $data_3 = array(
                     'data' => !empty($webhook_row->data) ? $webhook_row->data . ',' . json_encode($data_result) : json_encode($data_result),
@@ -401,7 +401,7 @@ class Gympass extends REST_Controller
                     "total_booked" => $clase_row->reservado - 1
                 );
 
-                $response = $this->gympass_lib->patch_update_slot($slot['class_id'], $clase_row->gympass_slot_id, $data_result);
+                $response = $this->gympass_lib->patch_update_slot($slot['gym_id'], $slot['class_id'], $clase_row->gympass_slot_id, $data_result);
 
                 $data_3 = array(
                     'data' => !empty($webhook_row->data) ? $webhook_row->data . ',' . json_encode($data_result) : json_encode($data_result),
@@ -547,7 +547,7 @@ class Gympass extends REST_Controller
                     "total_booked" => $clase_row->reservado - 1
                 );
 
-                $response = $this->gympass_lib->patch_update_slot($slot['class_id'], $clase_row->gympass_slot_id, $data_result);
+                $response = $this->gympass_lib->patch_update_slot($slot['gym_id'], $slot['class_id'], $clase_row->gympass_slot_id, $data_result);
 
                 $data_3 = array(
                     'data' => !empty($webhook_row->data) ? $webhook_row->data . ',' . json_encode($data_result) : json_encode($data_result),
@@ -573,6 +573,7 @@ class Gympass extends REST_Controller
                 $flar_validar_cliente = false;
                 $user = $webhook_contenido['event_data']['user'];
                 $booking = $webhook_contenido['event_data']['booking'];
+                $gym = $webhook_contenido['event_data']['gym'];
 
                 if (!empty($user['unique_token'])) {
                     $cliente_row = $this->wellhub_model->obtener_cliente_por_gympass_user_id($user['unique_token'])->row();
@@ -656,7 +657,7 @@ class Gympass extends REST_Controller
                     //"gympass_id" => 1234321567890,
                 );
 
-                $response = $this->gympass_lib->post_access_validate($data_result);
+                $response = $this->gympass_lib->post_access_validate($gym['id'], $data_result);
 
                 $data_3 = array(
                     'data' => !empty($webhook_row->data) ? $webhook_row->data . ',' . json_encode($data_result) : json_encode($data_result),

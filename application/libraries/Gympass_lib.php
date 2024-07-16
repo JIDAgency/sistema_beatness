@@ -191,8 +191,9 @@ class Gympass_lib
 
     // ============ BOOKING ============
 
-    public function patch_validate_booking($booking_number, $data)
+    public function patch_validate_booking($gym_id, $booking_number, $data)
     {
+        $this->gympass_gym_id = $gym_id;
         // $url = $this->gympass_base_url . "/booking/v1/gyms/{$this->gympass_gym_id}/bookings/{$booking_number}";
         $url = $this->gympass_base_url . "/booking/v2/gyms/{$this->gympass_gym_id}/bookings/{$booking_number}";
         return $this->call_api($url, 'PATCH', $data);
@@ -200,8 +201,9 @@ class Gympass_lib
 
     // ============ ACCESS CONTROL ============
 
-    public function post_access_validate($data)
+    public function post_access_validate($gym_id, $data)
     {
+        $this->gympass_gym_id = $gym_id;
         $url = $this->gympass_access_control_base_url . "/access/v1/validate";
         return $this->call_api_access_control($url, 'POST', $data);
     }
