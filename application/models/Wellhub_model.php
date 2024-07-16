@@ -40,10 +40,13 @@ class Wellhub_model extends CI_Model
             ->select('
                 t1.*,
                 t2.nombre as disciplinas_nombre,
+                t2.gympass_gym_id as disciplinas_gympass_gym_id,
                 t2.gympass_product_id as disciplinas_gympass_product_id,
             ')
             ->from('clases_categorias t1')
             ->join("disciplinas t2", "t2.id = t1.disciplina_id")
+            ->order_by('t1.disciplina_id', 'asc')
+            ->order_by('t1.nombre', 'asc')
             ->get();
 
         return $query;
@@ -56,6 +59,7 @@ class Wellhub_model extends CI_Model
             ->select('
             t1.*,
             t2.nombre as disciplinas_nombre,
+            t2.gympass_gym_id as disciplinas_gympass_gym_id,
             t2.gympass_product_id as disciplinas_gympass_product_id,
         ')
             ->from('clases_categorias t1')

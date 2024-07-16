@@ -92,13 +92,6 @@ class Gympass extends MY_Controller
             return;
         }
 
-        // if (!empty($gympass_product_id)) {
-        //     if ($this->wellhub_model->disciplina_esta_vinculado($gympass_product_id, $disciplina_id)) {
-        //         $this->output_json(['status' => 'error', 'message' => 'Este ID de Gympass ya está vinculado a otra disciplina.']);
-        //         return;
-        //     }
-        // }
-
         $data = [
             'gympass_gym_id' => $gympass_gym_id ?: null,
             'gympass_product_id' => $gympass_product_id ?: null
@@ -164,12 +157,17 @@ class Gympass extends MY_Controller
                 return;
             }
 
+            if (empty($categoria_row->disciplinas_gympass_gym_id)) {
+                $this->output_json(['status' => 'error', 'message' => 'Esta sucursal de clase aún no está vinculada a Gympass.']);
+                return;
+            }
+
             if (empty($categoria_row->disciplinas_gympass_product_id)) {
                 $this->output_json(['status' => 'error', 'message' => 'Esta disciplina de clase aún no está vinculada a Gympass.']);
                 return;
             }
 
-            $data = [
+            $data_1 = [
                 'name' => $categoria_row->nombre ?: null,
                 'description' => $categoria_row->descripcion ?: null,
                 'notes' => $categoria_row->nota ?: null,
@@ -179,7 +177,7 @@ class Gympass extends MY_Controller
                 'product_id' => $categoria_row->disciplinas_gympass_product_id ?: null,
             ];
 
-            $data_in = $this->gympass_lib->get_class_details($categoria_row->gympass_class_id);
+            $data_in = $this->gympass_lib->get_class_details($categoria_row->disciplinas_gympass_gym_id, $categoria_row->gympass_class_id);
             if (!empty($data_in['message'])) {
                 $this->output_json(['status' => 'error', 'message' => $data_in['message']]);
                 return;
@@ -195,12 +193,12 @@ class Gympass extends MY_Controller
             //     'product_id' => $data_in['product_id'] ?: null,
             // ];
 
-            // if ($data == $data_comparacion) {
+            // if ($data_1 == $data_comparacion) {
             //     $this->output_json(['status' => 'error', 'message' => 'Cambios ya registrados previamente.']);
             //     return;
             // }
 
-            $response = $this->gympass_lib->put_update_class($categoria_row->gympass_class_id, $data);
+            $response = $this->gympass_lib->put_update_class($categoria_row->disciplinas_gympass_gym_id, $categoria_row->gympass_class_id, $data_1);
 
             if (!empty($response)) {
                 $this->output_json(['status' => 'error', 'message' => $response['message']]);
@@ -232,8 +230,18 @@ class Gympass extends MY_Controller
 
             $categoria_row = $this->wellhub_model->categorias_obtener_por_id($id)->row();
 
+            if (!empty($categoria_row->gympass_class_id)) {
+                $this->output_json(['status' => 'error', 'message' => 'Esta Categoría ya se encuentra registrada en Gympass.']);
+                return;
+            }
+
             if (empty($categoria_row->disciplina_id)) {
                 $this->output_json(['status' => 'error', 'message' => 'Esta categoría de clase aún no está vinculada a una Disciplina.']);
+                return;
+            }
+
+            if (empty($categoria_row->disciplinas_gympass_gym_id)) {
+                $this->output_json(['status' => 'error', 'message' => 'Esta sucursal de clase aún no está vinculada a Gympass.']);
                 return;
             }
 
@@ -242,12 +250,7 @@ class Gympass extends MY_Controller
                 return;
             }
 
-            if (!empty($categoria_row->gympass_class_id)) {
-                $this->output_json(['status' => 'error', 'message' => 'Esta Categoría ya se encuentra registrada en Gympass.']);
-                return;
-            }
-
-            $data = [
+            $data_1 = [
                 'classes' => [
                     [
                         'name' => $categoria_row->nombre ?: null,
@@ -261,7 +264,7 @@ class Gympass extends MY_Controller
                 ]
             ];
 
-            $response = $this->gympass_lib->post_create_class($data);
+            $response = $this->gympass_lib->post_create_class($categoria_row->disciplinas_gympass_gym_id, $data_1);
 
             if (!empty($response['message'])) {
                 $this->output_json(['status' => 'error', 'message' => $response['message']]);

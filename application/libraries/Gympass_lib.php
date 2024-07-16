@@ -16,7 +16,8 @@ class Gympass_lib
 
         $this->gympass_base_url = 'https://api.partners.gympass.com';
         $this->gympass_api_key = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI4NjIyMjUwNS05ZDM0LTRlODItOGY5ZS0wZTE1MTI0YTQ3Y2EiLCJpYXQiOjE3MTg2MjQxOTQsImlzcyI6ImlhbS51cy5neW1wYXNzLmNsb3VkIiwic3ViIjoiODYyMjI1MDUtOWQzNC00ZTgyLThmOWUtMGUxNTEyNGE0N2NhIn0.gGUd_IUegwTy-_WqaXTgXtXBFc9EpHXpqcnykzc5J54';
-        $this->gympass_gym_id = 482157;
+        $this->gympass_gym_id = null;
+        // $this->gympass_gym_id = 482157;
         $this->gympass_partner_id = 'b806bd77-d913-4046-a6e7-8fba7b34d277';
         $this->gympass_system_id = 81;
         $this->gympass_secret_key = 'marca_fuerza_vigor_bienestar_meta_equipo';
@@ -119,8 +120,9 @@ class Gympass_lib
 
     // ============ CLASSES ============
 
-    public function post_create_class($data)
+    public function post_create_class($gym_id, $data)
     {
+        $this->gympass_gym_id = $gym_id;
         $url = $this->gympass_base_url . "/booking/v1/gyms/{$this->gympass_gym_id}/classes";
         return $this->call_api($url, 'POST', $data);
     }
@@ -131,14 +133,16 @@ class Gympass_lib
         return $this->call_api($url);
     }
 
-    public function get_class_details($class_id)
+    public function get_class_details($gym_id, $class_id)
     {
+        $this->gympass_gym_id = $gym_id;
         $url = $this->gympass_base_url . "/booking/v1/gyms/{$this->gympass_gym_id}/classes/$class_id?show-deleted=false";
         return $this->call_api($url);
     }
 
-    public function put_update_class($class_id, $data)
+    public function put_update_class($gym_id, $class_id, $data)
     {
+        $this->gympass_gym_id = $gym_id;
         $url = $this->gympass_base_url . "/booking/v1/gyms/{$this->gympass_gym_id}/classes/$class_id/";
         return $this->call_api($url, 'PUT', $data);
     }
