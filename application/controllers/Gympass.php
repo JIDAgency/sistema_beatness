@@ -309,12 +309,12 @@ class Gympass extends MY_Controller
         $this->construir_private_site_ui('gympass/clases', $data);
     }
 
-    public function categorias_por_producto($gympass_product_id)
+    public function categorias_por_producto($gympass_product_id, $disciplina_id)
     {
         $categorias = $this->wellhub_model->categorias_obtener()->result();
 
-        $categorias_filtradas = array_filter($categorias, function ($categoria) use ($gympass_product_id) {
-            return $categoria->disciplinas_gympass_product_id == $gympass_product_id;
+        $categorias_filtradas = array_filter($categorias, function ($categoria) use ($gympass_product_id, $disciplina_id) {
+            return $categoria->disciplinas_gympass_product_id == $gympass_product_id && $categoria->disciplina_id == $disciplina_id;
         });
 
         echo json_encode(array_values($categorias_filtradas));

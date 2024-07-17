@@ -47,7 +47,7 @@ function modal_registrar_clase(id, data) {
     document.getElementById("cupos").innerHTML = data.cupos;
 
     // Llamada AJAX para obtener las categorías filtradas por gympass_product_id
-    fetch(`../gympass/categorias_por_producto/${data.disciplinas_gympass_product_id}`)
+    fetch(`../gympass/categorias_por_producto/${data.disciplinas_gympass_product_id}/${data.disciplina_id}`)
         .then(response => response.json())
         .then(categorias => {
             let categoriaSelect = document.getElementById("categoria");

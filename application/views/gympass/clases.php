@@ -104,6 +104,7 @@
                                                         } else {
                                                             echo '<a href="javascript:modal_registrar_clase(' . $clase_value->id . ', ' . htmlspecialchars(json_encode(array(
                                                                 'identificador' => $clase_value->identificador,
+                                                                'disciplina_id' => $clase_value->disciplina_id,
                                                                 'disciplinas_nombre' => $clase_value->disciplinas_nombre,
                                                                 'dificultad' => $clase_value->dificultad,
                                                                 'disciplinas_gympass_gym_id' => $clase_value->disciplinas_gympass_gym_id,
