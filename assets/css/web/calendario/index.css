@@ -3,7 +3,7 @@
 }
 
 .card {
-    background-color: rgba(240, 240, 240, 0.15);
+    background-color: rgba(240, 240, 240, 0);
     border-radius: 8px;
 }
 
@@ -55,11 +55,11 @@ tr:last-child td {
 
 /* Estilos personalizados */
 .tp-select {
-    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    background-color: rgb(255, 255, 255);
     /* Color de fondo semi-transparente */
-    color: white;
+    color: rgb(0, 0, 0);
     /* Color de texto blanco */
-    opacity: 0.8;
     /* Opacidad del texto */
 }
 
@@ -69,10 +69,16 @@ html body.bg-calendario {
     background-size: cover;
 }
 
-.nav.nav-tabs .nav-item .nav-link.active {
+/* .nav.nav-tabs .nav-item .nav-link.active {
     background-color: rgba(32, 17, 44, 1);
     border-radius: 0.25rem 0.25rem 0 0;
     color: rgb(205, 0, 255);
+} */
+
+.nav.nav-tabs .nav-item .nav-link.active {
+    background-color: rgba(32, 17, 44, 0);
+    border-radius: 0.25rem 0.25rem 0 0;
+    color: #5CFAA9;
 }
 
 .nav-tabs {

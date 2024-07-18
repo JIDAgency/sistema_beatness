@@ -87,7 +87,7 @@ class Calendario extends CI_Controller
         <table class="semana responsive">
             <thead>
                 <tr>
-                    <th class="">Horario</th>
+                    <th class="blue lighten-3">Horario</th>
                     <th class="">Lun <br>' . date('d M', strtotime($fecha_lunes)) . '</th>
                     <th class="">Mar <br>' . date('d M', strtotime($fecha_lunes . ' +1 days')) . '</th>
                     <th class="">Mie <br>' . date('d M', strtotime($fecha_lunes . ' +2 days')) . '</th>
@@ -118,7 +118,7 @@ class Calendario extends CI_Controller
             }
 
             $contenido .= '<tr>';
-            $contenido .= '<td class=""><small>' . $hora . '</small></td>';
+            $contenido .= '<td class="blue lighten-3"><small>' . $hora . '</small></td>';
             foreach (['Mon', 'Tue', 'Wed', 'Thu', 'Fri'] as $dia) {
                 $contenido .= '<td class=""><small>' . ($clases_dia[$dia] ?? '/') . '</small></td>';
             }
@@ -164,7 +164,7 @@ class Calendario extends CI_Controller
         <table class="semana">
             <thead>
                 <tr>
-                    <th class="">Horario</th>
+                    <th class="blue lighten-3">Horario</th>
                     <th class="">Sab <br>' . date('d M', strtotime($fecha_lunes . ' +5 days')) . '</th>
                     <th class="">Dom <br>' . date('d M', strtotime($fecha_domingo)) . '</th>
                 </tr>
@@ -192,7 +192,7 @@ class Calendario extends CI_Controller
             }
 
             $contenido .= '<tr>';
-            $contenido .= '<td class=""><small>' . $hora . '</small></td>';
+            $contenido .= '<td class="blue lighten-3"><small>' . $hora . '</small></td>';
             foreach (['Sat', 'Sun'] as $dia) {
                 $contenido .= '<td class=""><small>' . ($clases_dia[$dia] ?? '/') . '</small></td>';
             }
@@ -238,7 +238,7 @@ class Calendario extends CI_Controller
         <table class="semana responsive">
             <thead>
                 <tr>
-                    <th class="">Horario</th>
+                    <th class="blue lighten-3">Horario</th>
                     <th class="">Lun <br>' . date('d M', strtotime($fecha_lunes_siguente)) . '</th>
                     <th class="">Mar <br>' . date('d M', strtotime($fecha_lunes_siguente . ' +1 days')) . '</th>
                     <th class="">Mie <br>' . date('d M', strtotime($fecha_lunes_siguente . ' +2 days')) . '</th>
@@ -269,7 +269,7 @@ class Calendario extends CI_Controller
             }
 
             $contenido .= '<tr>';
-            $contenido .= '<td class=""><small>' . $hora . '</small></td>';
+            $contenido .= '<td class="blue lighten-3"><small>' . $hora . '</small></td>';
             foreach (['Mon', 'Tue', 'Wed', 'Thu', 'Fri'] as $dia) {
                 $contenido .= '<td class=""><small>' . ($clases_dia[$dia] ?? '/') . '</small></td>';
             }
@@ -315,7 +315,7 @@ class Calendario extends CI_Controller
         <table class="semana">
             <thead>
                 <tr>
-                    <th class="">Horario</th>
+                    <th class="blue lighten-3">Horario</th>
                     <th class="">Sab <br>' . date('d M', strtotime($fecha_lunes_siguente . ' +5 days')) . '</th>
                     <th class="">Dom <br>' . date('d M', strtotime($fecha_domingo_siguente)) . '</th>
                 </tr>
@@ -343,7 +343,7 @@ class Calendario extends CI_Controller
             }
 
             $contenido .= '<tr>';
-            $contenido .= '<td class=""><small>' . $hora . '</small></td>';
+            $contenido .= '<td class="blue lighten-3"><small>' . $hora . '</small></td>';
             foreach (['Sat', 'Sun'] as $dia) {
                 $contenido .= '<td class=""><small>' . ($clases_dia[$dia] ?? '/') . '</small></td>';
             }
@@ -367,23 +367,23 @@ class Calendario extends CI_Controller
         if (in_array($disciplina_id, array(3))) {
             $response = '
             <tr>
-                <td class=""><small></small></td>
-                <td class=""><small><span class="blue lighten-3">LEGS &<br>BOOTY</span></small></td>
-                <td class=""><small><span class="blue lighten-3">PUSH<br>DAY</span></small></td>
-                <td class=""><small><span class="blue lighten-3">LEG DAY</span></small></td>
-                <td class=""><small><span class="blue lighten-3">PULL<br>DAY</span></small></td>
-                <td class=""><small><span class="blue lighten-3">BOOTY</span></small></td>
+                <th class=""><small></small></th>
+                <th class=""><small><span class="blue lighten-3">LEGS &<br>BOOTY</span></small></th>
+                <th class=""><small><span class="blue lighten-3">PUSH<br>DAY</span></small></th>
+                <th class=""><small><span class="blue lighten-3">LEG DAY</span></small></th>
+                <th class=""><small><span class="blue lighten-3">PULL<br>DAY</span></small></th>
+                <th class=""><small><span class="blue lighten-3">BOOTY</span></small></th>
             </tr>
             ';
         } elseif (in_array($disciplina_id, array(10))) {
             $response = '
             <tr>
-                <td class=""><small></small></td>
-                <td class=""><small><span class="blue lighten-3">LEGS &<br>BOOTY</span></small></td>
-                <td class=""><small><span class="blue lighten-3">UPPER<br>BODY</span></small></td>
-                <td class=""><small><span class="blue lighten-3">KILLER<br>ABS</span></small></td>
-                <td class=""><small><span class="blue lighten-3">ARMS<br>& BOOTY</span></small></td>
-                <td class=""><small><span class="blue lighten-3">FULL<br>BODY &#x1F525;</span></small></td>
+                <th class=""><small></small></th>
+                <th class=""><small><span class="blue lighten-3">LEGS &<br>BOOTY</span></small></th>
+                <th class=""><small><span class="blue lighten-3">UPPER<br>BODY</span></small></th>
+                <th class=""><small><span class="blue lighten-3">KILLER<br>ABS</span></small></th>
+                <th class=""><small><span class="blue lighten-3">ARMS<br>& BOOTY</span></small></th>
+                <th class=""><small><span class="blue lighten-3">FULL<br>BODY &#x1F525;</span></small></th>
             </tr>
             ';
         }
@@ -395,17 +395,17 @@ class Calendario extends CI_Controller
         if (in_array($disciplina_id, array(3))) {
             $response = '
                 <tr>
-                    <td class=""><small></small></td>
-                    <td class=""><small><span class="blue lighten-3">UPPER<br>BODY</span></small></td>
-                    <td class=""><small><span class="blue lighten-3">FULL<br>BODY</span></small></td>
+                    <th class=""><small></small></th>
+                    <th class=""><small><span class="blue lighten-3">UPPER<br>BODY</span></small></th>
+                    <th class=""><small><span class="blue lighten-3">FULL<br>BODY</span></small></th>
                 </tr>
             ';
         } elseif (in_array($disciplina_id, array(10))) {
             $response = '
                 <tr>
-                    <td class=""><small></small></td>
-                    <td class=""><small><span class="blue lighten-3">ABS<br>& BOOTY &#x1F525;</span></small></td>
-                    <td class=""><small><span class="blue lighten-3">FULL<br>BODY</span></small></td>
+                    <th class=""><small></small></th>
+                    <th class=""><small><span class="blue lighten-3">ABS<br>& BOOTY &#x1F525;</span></small></th>
+                    <th class=""><small><span class="blue lighten-3">FULL<br>BODY</span></small></th>
                 </tr>
             ';
         }

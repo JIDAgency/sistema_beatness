@@ -49,14 +49,20 @@
 
     <!-- ////////////////////////////////////////////////////////////////////////////-->
 
-    <div class="app-content content center-layout mt-2">
+    <div class="app-content content center-layout mt-1">
         <div class="content-wrapper">
 
             <div class="content-header row">
-                <div class="content-header-left col-md-6 col-12 mb-2">
-                    <h3 class="content-header-title text-bold-600 text-white mb-0">CALENDARIO</h3>
+                <div class="content-header-left col-md-6 col-4 mb-2">
+                    <img src="<?php echo base_url('almacenamiento/calendario/logo.png') ?>" alt="" class="img-fluid">
                 </div>
-                <div class="content-header-right col-md-6 col-12">
+                <div class="content-header-right row col-md-6 col-8">
+                    <div class="col-lg-6 col-md-6 col-6 text-right">
+                        <img src="<?php echo base_url('almacenamiento/calendario/appstore.png') ?>" alt="" class="img-fluid">
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-6">
+                        <img src="<?php echo base_url('almacenamiento/calendario/googleplay.png') ?>" alt="" class="img-fluid">
+                    </div>
                 </div>
             </div>
 
@@ -70,7 +76,7 @@
 
                             <div class="form-group">
                                 <div class="row">
-                                    <label class="col-lg-12 text-white"><b>+ DISCIPLINAS</b></label>
+                                    <!-- <label class="col-lg-12 text-white"><b>+ DISCIPLINAS</b></label> -->
                                     <div class="col-lg-8">
                                         <select class="form-control select2 custom-select tp-select" name="disciplina_seleccionada" id="disciplina_seleccionada" required>
                                             <option value="" <?php echo set_select('disciplina_seleccionada', '', set_value('disciplina_seleccionada') ? false : '' == $this->session->flashdata('disciplina_seleccionada')); ?>>Seleccione una disciplina…</option>
@@ -158,6 +164,11 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                    <div class="row col-lg-12 col-md-12 col-sm-12">
+                        <div class="col-lg-12 col-md-12 col-12 text-center">
+                            <img src="<?php echo base_url('almacenamiento/calendario/platform.png') ?>" alt="" class="img-fluid">
                         </div>
                     </div>
                 </section>
