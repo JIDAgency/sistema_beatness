@@ -58,10 +58,10 @@
                 </div>
                 <div class="content-header-right row col-md-6 col-8">
                     <div class="col-lg-6 col-md-6 col-6 text-right">
-                        <img src="<?php echo base_url('almacenamiento/calendario/appstore.png') ?>" alt="" class="img-fluid">
+                        <a href="https://apps.apple.com/mx/app/beatness-studio/id6479663018" target="_blank"><img src="<?php echo base_url('almacenamiento/calendario/appstore.png') ?>" alt="" class="img-fluid"></a>
                     </div>
                     <div class="col-lg-6 col-md-6 col-6">
-                        <img src="<?php echo base_url('almacenamiento/calendario/googleplay.png') ?>" alt="" class="img-fluid">
+                       <a href="https://play.google.com/store/apps/details?id=com.mx.beatness.app" target="_blank"><img src="<?php echo base_url('almacenamiento/calendario/googleplay.png') ?>" alt="" class="img-fluid"></a>
                     </div>
                 </div>
             </div>
