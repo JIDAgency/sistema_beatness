@@ -48,7 +48,7 @@ class Calendario extends CI_Controller
         // echo "Viernes: " . date('d/m/Y', strtotime($fecha_lunes . ' +4 days')) . "\n";
         // echo "Sábado: " . date('d/m/Y', strtotime($fecha_lunes . ' +5 days')) . "\n";
         // echo "Domingo: " . date('d/m/Y', strtotime($fecha_domingo)) . "\n";
-        
+
         $disciplinas_list = $this->calendario_model->obtener_disciplinas();
 
         $data['disciplinas_list'] = $disciplinas_list;
@@ -88,11 +88,11 @@ class Calendario extends CI_Controller
             <thead>
                 <tr>
                     <th class="blue lighten-3">Horario</th>
-                    <th class="">Lun <br>' . date('d M', strtotime($fecha_lunes)) . '</th>
-                    <th class="">Mar <br>' . date('d M', strtotime($fecha_lunes . ' +1 days')) . '</th>
-                    <th class="">Mie <br>' . date('d M', strtotime($fecha_lunes . ' +2 days')) . '</th>
-                    <th class="">Jue <br>' . date('d M', strtotime($fecha_lunes . ' +3 days')) . '</th>
-                    <th class="">Vie <br>' . date('d M', strtotime($fecha_lunes . ' +4 days')) . '</th>
+                    <th class=""><a href="">Lun <br>' . date('d M', strtotime($fecha_lunes)) . '</a></th>
+                    <th class=""><a href="">Mar <br>' . date('d M', strtotime($fecha_lunes . ' +1 days')) . '</a></th>
+                    <th class=""><a href="">Mie <br>' . date('d M', strtotime($fecha_lunes . ' +2 days')) . '</a></th>
+                    <th class=""><a href="">Jue <br>' . date('d M', strtotime($fecha_lunes . ' +3 days')) . '</a></th>
+                    <th class=""><a href="">Vie <br>' . date('d M', strtotime($fecha_lunes . ' +4 days')) . '</a></th>
                 </tr>
             </thead>
             <tbody>
@@ -137,6 +137,241 @@ class Calendario extends CI_Controller
             ->set_output(json_encode($response));
     }
 
+    public function obtener_clases_semana_actual_por_disciplina_id_para_dia($disciplina_id = null)
+    {
+        $clases_semana = $this->calendario_model->obtener_clases_semana_actual_por_disciplina_id($disciplina_id);
+
+        $horarios_semana = array();
+
+        foreach ($clases_semana as $clase) {
+            $hora_inicio = date('g:i A', strtotime($clase['inicia']));
+            $dia_semana = date('D', strtotime($clase['inicia']));
+            $horarios_semana[$hora_inicio][$dia_semana] = $clase['instructor_nombre'];
+        }
+
+        // Fecha actual
+        $fecha_actual = date('Y-m-d');
+
+        // Obtener el número de día de la semana actual (1 para lunes, 7 para domingo)
+        $numero_dia_actual = date('N', strtotime($fecha_actual));
+
+        $fecha_lunes = date('Y-m-d', strtotime($fecha_actual . ' -' . ($numero_dia_actual - 1) . ' days'));
+
+        // Dia lunes inicio
+        $contenido_lunes = '';
+
+        $contenido_lunes .= '
+        <table class="semana responsive">
+            <tbody>
+        ';
+
+        // $contenido_lunes .= $this->obtener_titulos_semana($disciplina_id);
+
+        $ciclo_es_tarde = false;
+
+        foreach ($horarios_semana as $hora => $clases_dia) {
+
+            $hora_formato_24 = date('H', strtotime($hora));
+            $es_tarde = $hora_formato_24 >= 14;
+
+            // if ($es_tarde && ($ciclo_es_tarde === false)) {
+            //     $contenido_lunes .= '<tr>';
+            //     $contenido_lunes .= '<th><small> </small></th>';
+            //     foreach (['Mon', 'Tue', 'Wed', 'Thu', 'Fri'] as $dia) {
+            //         $contenido_lunes .= '<th><small> </small></th>';
+            //     }
+            //     $contenido_lunes .= '</tr>';
+            //     $ciclo_es_tarde = true;
+            // }
+
+            $contenido_lunes .= '<tr>';
+            $contenido_lunes .= '<th class="blue lighten-3"><small>' . $hora . '</small></th>';
+            foreach (['Mon'] as $dia) {
+                $contenido_lunes .= '<th class=""><small>' . ($clases_dia[$dia] ?? '/') . '</small></th>';
+            }
+            $contenido_lunes .= '</tr>';
+        }
+
+        $contenido_lunes .= '
+            </tbody>
+        </table>
+        ';
+
+        // Dia lunes fin
+
+        // Dia martes inicio
+        $contenido_martes = '';
+
+        $contenido_martes .= '
+        <table class="semana responsive">
+            <tbody>
+        ';
+
+        // $contenido_martes .= $this->obtener_titulos_semana($disciplina_id);
+
+        $ciclo_es_tarde = false;
+
+        foreach ($horarios_semana as $hora => $clases_dia) {
+
+            $hora_formato_24 = date('H', strtotime($hora));
+            $es_tarde = $hora_formato_24 >= 14;
+
+            // if ($es_tarde && ($ciclo_es_tarde === false)) {
+            //     $contenido_martes .= '<tr>';
+            //     $contenido_martes .= '<th><small> </small></th>';
+            //     foreach (['Mon', 'Tue', 'Wed', 'Thu', 'Fri'] as $dia) {
+            //         $contenido_martes .= '<th><small> </small></th>';
+            //     }
+            //     $contenido_martes .= '</tr>';
+            //     $ciclo_es_tarde = true;
+            // }
+
+            $contenido_martes .= '<tr>';
+            $contenido_martes .= '<th class="blue lighten-3"><small>' . $hora . '</small></th>';
+            foreach (['Tue'] as $dia) {
+                $contenido_martes .= '<th class=""><small>' . ($clases_dia[$dia] ?? '/') . '</small></th>';
+            }
+            $contenido_martes .= '</tr>';
+        }
+
+        $contenido_martes .= '
+            </tbody>
+        </table>
+        ';
+        // Dia martes fin
+
+        // Dia miercoles inicio
+        $contenido_miercoles = '';
+
+        $contenido_miercoles .= '
+        <table class="semana responsive">
+            <tbody>
+        ';
+
+        // $contenido_miercoles .= $this->obtener_titulos_semana($disciplina_id);
+
+        $ciclo_es_tarde = false;
+
+        foreach ($horarios_semana as $hora => $clases_dia) {
+
+            $hora_formato_24 = date('H', strtotime($hora));
+            $es_tarde = $hora_formato_24 >= 14;
+
+            // if ($es_tarde && ($ciclo_es_tarde === false)) {
+            //     $contenido_miercoles .= '<tr>';
+            //     $contenido_miercoles .= '<th><small> </small></th>';
+            //     foreach (['Mon', 'Tue', 'Wed', 'Thu', 'Fri'] as $dia) {
+            //         $contenido_miercoles .= '<th><small> </small></th>';
+            //     }
+            //     $contenido_miercoles .= '</tr>';
+            //     $ciclo_es_tarde = true;
+            // }
+
+            $contenido_miercoles .= '<tr>';
+            $contenido_miercoles .= '<th class="blue lighten-3"><small>' . $hora . '</small></th>';
+            foreach (['Wed'] as $dia) {
+                $contenido_miercoles .= '<th class=""><small>' . ($clases_dia[$dia] ?? '/') . '</small></th>';
+            }
+            $contenido_miercoles .= '</tr>';
+        }
+
+        $contenido_miercoles .= '
+            </tbody>
+        </table>
+        ';
+        // Dia miercoles fin
+
+        // Dia jueves inicio
+        $contenido_jueves = '';
+
+        $contenido_jueves .= '
+        <table class="semana responsive">
+            <tbody>
+        ';
+
+        // $contenido_jueves .= $this->obtener_titulos_semana($disciplina_id);
+
+        $ciclo_es_tarde = false;
+
+        foreach ($horarios_semana as $hora => $clases_dia) {
+
+            $hora_formato_24 = date('H', strtotime($hora));
+            $es_tarde = $hora_formato_24 >= 14;
+
+            // if ($es_tarde && ($ciclo_es_tarde === false)) {
+            //     $contenido_jueves .= '<tr>';
+            //     $contenido_jueves .= '<th><small> </small></th>';
+            //     foreach (['Mon', 'Tue', 'Wed', 'Thu', 'Fri'] as $dia) {
+            //         $contenido_jueves .= '<th><small> </small></th>';
+            //     }
+            //     $contenido_jueves .= '</tr>';
+            //     $ciclo_es_tarde = true;
+            // }
+
+            $contenido_jueves .= '<tr>';
+            $contenido_jueves .= '<th class="blue lighten-3"><small>' . $hora . '</small></th>';
+            foreach (['Thu'] as $dia) {
+                $contenido_jueves .= '<th class=""><small>' . ($clases_dia[$dia] ?? '/') . '</small></th>';
+            }
+            $contenido_jueves .= '</tr>';
+        }
+
+        $contenido_jueves .= '
+            </tbody>
+        </table>
+        ';
+        // Dia jueves fin
+
+        // Dia viernes inicio
+        $contenido_viernes = '';
+
+        $contenido_viernes .= '
+        <table class="semana responsive">
+            <tbody>
+        ';
+
+        // $contenido_viernes .= $this->obtener_titulos_semana($disciplina_id);
+
+        $ciclo_es_tarde = false;
+
+        foreach ($horarios_semana as $hora => $clases_dia) {
+
+            $hora_formato_24 = date('H', strtotime($hora));
+            $es_tarde = $hora_formato_24 >= 14;
+
+            // if ($es_tarde && ($ciclo_es_tarde === false)) {
+            //     $contenido_viernes .= '<tr>';
+            //     $contenido_viernes .= '<th><small> </small></th>';
+            //     foreach (['Mon', 'Tue', 'Wed', 'Thu', 'Fri'] as $dia) {
+            //         $contenido_viernes .= '<th><small> </small></th>';
+            //     }
+            //     $contenido_viernes .= '</tr>';
+            //     $ciclo_es_tarde = true;
+            // }
+
+            $contenido_viernes .= '<tr>';
+            $contenido_viernes .= '<th class="blue lighten-3"><small>' . $hora . '</small></th>';
+            foreach (['Fri'] as $dia) {
+                $contenido_viernes .= '<th class=""><small>' . ($clases_dia[$dia] ?? '/') . '</small></th>';
+            }
+            $contenido_viernes .= '</tr>';
+        }
+
+        $contenido_viernes .= '
+            </tbody>
+        </table>
+        ';
+        // Dia viernes fin
+
+        $data_dias = array($contenido_lunes, $contenido_martes, $contenido_miercoles, $contenido_jueves, $contenido_viernes);
+
+        $response = array('success' => true, 'data' => $data_dias);
+
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($response));
+    }
+
     public function obtener_clases_fin_de_semana_actual_por_disciplina_id($disciplina_id = null)
     {
         $clases_semana = $this->calendario_model->obtener_clases_fin_de_semana_actual_por_disciplina_id($disciplina_id);
@@ -165,8 +400,8 @@ class Calendario extends CI_Controller
             <thead>
                 <tr>
                     <th class="blue lighten-3">Horario</th>
-                    <th class="">Sab <br>' . date('d M', strtotime($fecha_lunes . ' +5 days')) . '</th>
-                    <th class="">Dom <br>' . date('d M', strtotime($fecha_domingo)) . '</th>
+                    <th class=""><a href="">Sab <br>' . date('d M', strtotime($fecha_lunes . ' +5 days')) . '</a></th>
+                    <th class=""><a href="">Dom <br>' . date('d M', strtotime($fecha_domingo)) . '</a></th>
                 </tr>
             </thead>
             <tbody>
@@ -205,6 +440,118 @@ class Calendario extends CI_Controller
         ';
 
         $response = array('success' => true, 'data' => $contenido);
+
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($response));
+    }
+
+    public function obtener_clases_fin_de_semana_actual_por_disciplina_id_para_dia($disciplina_id = null)
+    {
+        $clases_semana = $this->calendario_model->obtener_clases_fin_de_semana_actual_por_disciplina_id($disciplina_id);
+
+        $horarios_semana = array();
+
+        foreach ($clases_semana as $clase) {
+            $hora_inicio = date('g:i A', strtotime($clase['inicia']));
+            $dia_semana = date('D', strtotime($clase['inicia']));
+            $horarios_semana[$hora_inicio][$dia_semana] = $clase['instructor_nombre'];
+        }
+
+        // Fecha actual
+        $fecha_actual = date('Y-m-d');
+
+        // Obtener el número de día de la semana actual (1 para lunes, 7 para domingo)
+        $numero_dia_actual = date('N', strtotime($fecha_actual));
+
+        $fecha_lunes = date('Y-m-d', strtotime($fecha_actual . ' -' . ($numero_dia_actual - 1) . ' days'));
+        $fecha_domingo = date('Y-m-d', strtotime($fecha_actual . ' +' . (7 - $numero_dia_actual) . ' days'));
+
+        // Dia sabado inicio
+        $contenido_sabado = '';
+
+        $contenido_sabado .= '
+        <table class="semana">
+            <tbody>
+        ';
+
+        // $contenido_sabado .= $this->obtener_titulos_fin_de_semana($disciplina_id);
+
+        $ciclo_es_tarde = false;
+
+        foreach ($horarios_semana as $hora => $clases_dia) {
+
+            $hora_formato_24 = date('H', strtotime($hora));
+            $es_tarde = $hora_formato_24 >= 14;
+
+            // if ($es_tarde && ($ciclo_es_tarde === false)) {
+            //     $contenido_sabado .= '<tr>';
+            //     $contenido_sabado .= '<td><small> </small></td>';
+            //     foreach (['Sat', 'Sun'] as $dia) {
+            //         $contenido_sabado .= '<td><small> </small></td>';
+            //     }
+            //     $contenido_sabado .= '</tr>';
+            //     $ciclo_es_tarde = true;
+            // }
+
+            $contenido_sabado .= '<tr>';
+            $contenido_sabado .= '<th class="blue lighten-3"><small>' . $hora . '</small></th>';
+            foreach (['Sat'] as $dia) {
+                $contenido_sabado .= '<th class=""><small>' . ($clases_dia[$dia] ?? '/') . '</small></th>';
+            }
+            $contenido_sabado .= '</tr>';
+        }
+
+        $contenido_sabado .= '
+            </tbody>
+        </table>
+        ';
+        // Dia sabado fin
+
+        // Dia domingo inicio
+        $contenido_domingo = '';
+
+        $contenido_domingo .= '
+        <table class="semana">
+            <tbody>
+        ';
+
+        // $contenido_domingo .= $this->obtener_titulos_fin_de_semana($disciplina_id);
+
+        $ciclo_es_tarde = false;
+
+        foreach ($horarios_semana as $hora => $clases_dia) {
+
+            $hora_formato_24 = date('H', strtotime($hora));
+            $es_tarde = $hora_formato_24 >= 14;
+
+            // if ($es_tarde && ($ciclo_es_tarde === false)) {
+            //     $contenido_domingo .= '<tr>';
+            //     $contenido_domingo .= '<td><small> </small></td>';
+            //     foreach (['Sat', 'Sun'] as $dia) {
+            //         $contenido_domingo .= '<td><small> </small></td>';
+            //     }
+            //     $contenido_domingo .= '</tr>';
+            //     $ciclo_es_tarde = true;
+            // }
+
+            $contenido_domingo .= '<tr>';
+            $contenido_domingo .= '<th class="blue lighten-3"><small>' . $hora . '</small></th>';
+            foreach (['Sun'] as $dia) {
+                $contenido_domingo .= '<th class=""><small>' . ($clases_dia[$dia] ?? '/') . '</small></th>';
+            }
+            $contenido_domingo .= '</tr>';
+        }
+
+        $contenido_domingo .= '
+            </tbody>
+        </table>
+        ';
+        // Dia domingo fin
+
+        $data_dias = array($contenido_sabado, $contenido_domingo);
+
+        $response = array('success' => true, 'data' => $data_dias);
 
         $this->output
             ->set_content_type('application/json')

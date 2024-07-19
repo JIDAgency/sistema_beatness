@@ -8,6 +8,8 @@ document.getElementById('disciplina_titulo_siguiente').innerHTML = select.option
 
 obtener_clases_semana_actual_por_disciplina_id(disciplina_seleccionada);
 obtener_clases_fin_de_semana_actual_por_disciplina_id(disciplina_seleccionada);
+obtener_clases_semana_actual_por_disciplina_id_para_dia(disciplina_seleccionada);
+obtener_clases_fin_de_semana_actual_por_disciplina_id_para_dia(disciplina_seleccionada)
 obtener_clases_semana_siguiente_por_disciplina_id(disciplina_seleccionada);
 obtener_clases_fin_de_semana_siguiente_por_disciplina_id(disciplina_seleccionada);
 
@@ -21,6 +23,8 @@ select.onchange = function () {
 
     obtener_clases_semana_actual_por_disciplina_id(disciplina_seleccionada);
     obtener_clases_fin_de_semana_actual_por_disciplina_id(disciplina_seleccionada);
+    obtener_clases_semana_actual_por_disciplina_id_para_dia(disciplina_seleccionada);
+    obtener_clases_fin_de_semana_actual_por_disciplina_id_para_dia(disciplina_seleccionada)
     obtener_clases_semana_siguiente_por_disciplina_id(disciplina_seleccionada);
     obtener_clases_fin_de_semana_siguiente_por_disciplina_id(disciplina_seleccionada);
 
@@ -36,6 +40,8 @@ reload.addEventListener("click", async (_) => {
     try {
         await obtener_clases_semana_actual_por_disciplina_id(disciplina_seleccionada);
         await obtener_clases_fin_de_semana_actual_por_disciplina_id(disciplina_seleccionada);
+        await obtener_clases_semana_actual_por_disciplina_id_para_dia(disciplina_seleccionada);
+        obtener_clases_fin_de_semana_actual_por_disciplina_id_para_dia(disciplina_seleccionada)
         await obtener_clases_semana_siguiente_por_disciplina_id(disciplina_seleccionada);
         await obtener_clases_fin_de_semana_siguiente_por_disciplina_id(disciplina_seleccionada);
     } catch (error) {
@@ -79,6 +85,55 @@ function obtener_clases_fin_de_semana_actual_por_disciplina_id(disciplina_id) {
                 console.log("Data:", data);
 
                 document.getElementById('contenido_fin_de_semana').innerHTML = data.data;
+                resolve(data); // Resuelve la promesa con los datos obtenidos
+            })
+            .catch(error => {
+                console.error('Error: ' + error);
+                reject(error); // Rechaza la promesa en caso de error
+                // return;
+            });
+    });
+}
+
+function obtener_clases_semana_actual_por_disciplina_id_para_dia(disciplina_id) {
+    return new Promise((resolve, reject) => {
+        fetch('../web/calendario/obtener_clases_semana_actual_por_disciplina_id_para_dia/' + disciplina_id)
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    console.error('Error backoffice');
+                    return false;
+                }
+                console.log("Data:", data);
+
+                document.getElementById('contenido_lunes').innerHTML = data.data[0];
+                document.getElementById('contenido_martes').innerHTML = data.data[1];
+                document.getElementById('contenido_miercoles').innerHTML = data.data[2];
+                document.getElementById('contenido_jueves').innerHTML = data.data[3];
+                document.getElementById('contenido_viernes').innerHTML = data.data[4];
+                resolve(data); // Resuelve la promesa con los datos obtenidos
+            })
+            .catch(error => {
+                console.error('Error: ' + error);
+                reject(error); // Rechaza la promesa en caso de error
+                // return;
+            });
+    });
+}
+
+function obtener_clases_fin_de_semana_actual_por_disciplina_id_para_dia(disciplina_id) {
+    return new Promise((resolve, reject) => {
+        fetch('../web/calendario/obtener_clases_fin_de_semana_actual_por_disciplina_id_para_dia/' + disciplina_id)
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    console.error('Error backoffice');
+                    return false;
+                }
+                console.log("Data:", data);
+
+                document.getElementById('contenido_sabado').innerHTML = data.data[0];
+                document.getElementById('contenido_domingo').innerHTML = data.data[1];
                 resolve(data); // Resuelve la promesa con los datos obtenidos
             })
             .catch(error => {

@@ -61,7 +61,7 @@
                         <a href="https://apps.apple.com/mx/app/beatness-studio/id6479663018" target="_blank"><img src="<?php echo base_url('almacenamiento/calendario/appstore.png') ?>" alt="" class="img-fluid"></a>
                     </div>
                     <div class="col-lg-6 col-md-6 col-6">
-                       <a href="https://play.google.com/store/apps/details?id=com.mx.beatness.app" target="_blank"><img src="<?php echo base_url('almacenamiento/calendario/googleplay.png') ?>" alt="" class="img-fluid"></a>
+                        <a href="https://play.google.com/store/apps/details?id=com.mx.beatness.app" target="_blank"><img src="<?php echo base_url('almacenamiento/calendario/googleplay.png') ?>" alt="" class="img-fluid"></a>
                     </div>
                 </div>
             </div>
@@ -104,7 +104,7 @@
                         </div>
                     </div>
 
-                    <div class="row match-height">
+                    <div class="row match-height" style="display: block">
                         <div class="col-lg-12 col-md-12 col-sm-12">
                             <div class="card card-transparent no-border">
                                 <ul class="nav nav-tabs">
@@ -166,6 +166,169 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="row match-height" style="display: block">
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <div class="card card-transparent no-border">
+                                <ul class="nav nav-tabs">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" id="base-tablunes" data-toggle="tab" aria-controls="tablunes" href="#tablunes" aria-expanded="false">Lunes </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="base-tabmartes" data-toggle="tab" aria-controls="tabmartes" href="#tabmartes" aria-expanded="false">Martes</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="base-tab3" data-toggle="tab" aria-controls="tab3" href="#tab3" aria-expanded="false">Miercoles</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="base-tab4" data-toggle="tab" aria-controls="tab4" href="#tab4" aria-expanded="false">Jueves</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="base-tab5" data-toggle="tab" aria-controls="tab5" href="#tab5" aria-expanded="false">Vierenes</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="base-tab6" data-toggle="tab" aria-controls="tab6" href="#tab6" aria-expanded="false">Sabado</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="base-tab7" data-toggle="tab" aria-controls="tab7" href="#tab7" aria-expanded="false">Domingo</a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="tablunes" aria-labelledby="base-tablunes">
+                                        <h1>lunes</h1>
+
+                                        <div class="card-header bg-transparent">
+                                            <h4 class="card-title text-bold-600 text-white" name="card_titulo" id="card_titulo">
+                                                <span name="lunes_disciplina_titulo" id="lunes_disciplina_titulo"></span>
+                                            </h4>
+                                        </div>
+
+                                        <div class="card-content">
+                                            <div class="card-body bg-transparent">
+
+                                                <div name="contenido_lunes" id="contenido_lunes">
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" id="tabmartes" aria-labelledby="base-tabmartes">
+                                        <h1>martes</h1>
+
+                                        <div class="card-header bg-transparent">
+                                            <h4 class="card-title text-bold-600 text-white" name="card_titulo" id="card_titulo">
+                                                <span name="martes_disciplina_titulo" id="martes_disciplina_titulo"></span>
+                                            </h4>
+                                        </div>
+
+                                        <div class="card-content">
+                                            <div class="card-body bg-transparent">
+
+                                                <div name="contenido_martes" id="contenido_martes">
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="tab-pane" id="tab3" aria-labelledby="base-tab3">
+                                        <h1>miercoles</h1>
+
+                                        <div class="card-header bg-transparent">
+                                            <h4 class="card-title text-bold-600 text-white" name="card_titulo" id="card_titulo">
+                                                <span name="miercoles_disciplina_titulo" id="miercoles_disciplina_titulo"></span>
+                                            </h4>
+                                        </div>
+
+                                        <div class="card-content">
+                                            <div class="card-body bg-transparent">
+
+                                                <div name="contenido_miercoles" id="contenido_miercoles">
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="tab-pane" id="tab4" aria-labelledby="base-tab4">
+                                        <h1>jueves</h1>
+
+                                        <div class="card-header bg-transparent">
+                                            <h4 class="card-title text-bold-600 text-white" name="card_titulo" id="card_titulo">
+                                                <span name="jueves_disciplina_titulo" id="jueves_disciplina_titulo"></span>
+                                            </h4>
+                                        </div>
+
+                                        <div class="card-content">
+                                            <div class="card-body bg-transparent">
+
+                                                <div name="contenido_jueves" id="contenido_jueves">
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="tab-pane" id="tab5" aria-labelledby="base-tab5">
+                                        <h1>viernes</h1>
+
+                                        <div class="card-header bg-transparent">
+                                            <h4 class="card-title text-bold-600 text-white" name="card_titulo" id="card_titulo">
+                                                <span name="viernes_disciplina_titulo" id="viernes_disciplina_titulo"></span>
+                                            </h4>
+                                        </div>
+
+                                        <div class="card-content">
+                                            <div class="card-body bg-transparent">
+
+                                                <div name="contenido_viernes" id="contenido_viernes">
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="tab-pane" id="tab6" aria-labelledby="base-tab6">
+                                        <h1>sabado</h1>
+                                        <div class="card-header bg-transparent">
+                                            <h4 class="card-title text-bold-600 text-white" name="card_titulo" id="card_titulo">
+                                                <span name="sabado_disciplina_titulo" id="sabado_disciplina_titulo"></span>
+                                            </h4>
+                                        </div>
+
+                                        <div class="card-content">
+                                            <div class="card-body bg-transparent">
+
+                                                <div name="contenido_sabado" id="contenido_sabado">
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="tab-pane" id="tab7" aria-labelledby="base-tab7">
+                                        <h1>domigno</h1>
+                                        <div class="card-header bg-transparent">
+                                            <h4 class="card-title text-bold-600 text-white" name="card_titulo" id="card_titulo">
+                                                <span name="sabado_titulo_siguiente" id="sabado_titulo_siguiente"></span>
+                                            </h4>
+                                        </div>
+
+                                        <div class="card-content">
+                                            <div class="card-body bg-transparent">
+
+                                                <div name="contenido_domingo" id="contenido_domingo">
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="row col-lg-12 col-md-12 col-sm-12">
                         <div class="col-lg-12 col-md-12 col-12 text-center">
                             <img src="<?php echo base_url('almacenamiento/calendario/platform.png') ?>" alt="" class="img-fluid">
