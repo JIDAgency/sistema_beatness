@@ -3,7 +3,7 @@
 
         <div class="row">
             <div class="col-12">
-                <div class="card card-vista-titulos ">
+                <div class="card card-vista-titulos">
                     <h3 class="text-white"><strong><?php echo $pagina_titulo; ?></strong></h3>
                 </div>
             </div>
@@ -25,7 +25,20 @@
             </div>
 
             <div class="content-header-right col-md-6 col-12">
+
+                <div class="media float-right">
+
+                    <div class="form-group">
+                        <!-- Outline button group with icons and text. -->
+                        <div class="btn-group" role="group" aria-label="Basic example">
+                            <a class="btn btn-outline-grey btn-outline-lighten-1 btn-min-width mr-1" href="<?php echo site_url($regresar_a); ?>"><i class="fa fa-arrow-circle-left"></i>&nbsp;Volver</a>
+                        </div>
+                    </div>
+
+                </div>
+
             </div>
+
         </div>
 
         <div class="content-body">
@@ -45,8 +58,18 @@
                                 <div class="card-body card-dashboard">
 
                                     <div class="row match-height">
-                                        <div class="col-xl-4 col-md-4 col-sm-4">
-                                            <a href="<?php echo site_url('totalpass/clases'); ?>">Clases</a>
+                                        <div class="col-xl-12 col-md-12 col-sm-12">
+                                            <ol>
+                                                <li>
+                                                    <a href="<?php echo site_url('totalpass/disciplinas'); ?>">Disciplinas</a>
+                                                </li>
+                                                <li>
+                                                    <a href="<?php echo site_url('totalpass/categorias'); ?>">Categorias</a>
+                                                </li>
+                                                <li>
+                                                    <a href="<?php echo site_url('totalpass/clases'); ?>">Clases</a>
+                                                </li>
+                                            </ol>
                                         </div>
                                     </div>
 
