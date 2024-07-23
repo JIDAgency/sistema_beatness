@@ -83,20 +83,20 @@ class Calendario extends CI_Controller
 
         $contenido = '';
 
-        $contenido .= '
-        <table class="semana responsive">
-            <thead>
-                <tr>
-                    <th class="blue lighten-3">Horario</th>
-                    <th class=""><a href="">Lun <br>' . date('d M', strtotime($fecha_lunes)) . '</a></th>
-                    <th class=""><a href="">Mar <br>' . date('d M', strtotime($fecha_lunes . ' +1 days')) . '</a></th>
-                    <th class=""><a href="">Mie <br>' . date('d M', strtotime($fecha_lunes . ' +2 days')) . '</a></th>
-                    <th class=""><a href="">Jue <br>' . date('d M', strtotime($fecha_lunes . ' +3 days')) . '</a></th>
-                    <th class=""><a href="">Vie <br>' . date('d M', strtotime($fecha_lunes . ' +4 days')) . '</a></th>
-                </tr>
-            </thead>
-            <tbody>
-        ';
+        // $contenido .= '
+        // <table class="semana responsive">
+        //     <thead>
+        //         <tr>
+        //             <th class="blue lighten-3">Horario</th>
+        //             <th><a href="#" class="day-link">Lun <br>' . date('d M', strtotime($fecha_lunes)) . '</a></th>
+        //             <th><a href="#" class="day-link">Mar <br>' . date('d M', strtotime($fecha_lunes . ' +1 days')) . '</a></th>
+        //             <th><a href="#" class="day-link">Mie <br>' . date('d M', strtotime($fecha_lunes . ' +2 days')) . '</a></th>
+        //             <th><a href="#" class="day-link">Jue <br>' . date('d M', strtotime($fecha_lunes . ' +3 days')) . '</a></th>
+        //             <th><a href="#" class="day-link">Vie <br>' . date('d M', strtotime($fecha_lunes . ' +4 days')) . '</a></th>
+        //         </tr>
+        //     </thead>
+        //     <tbody>
+        // ';
 
         $contenido .= $this->obtener_titulos_semana($disciplina_id);
 
@@ -125,10 +125,10 @@ class Calendario extends CI_Controller
             $contenido .= '</tr>';
         }
 
-        $contenido .= '
-            </tbody>
-        </table>
-        ';
+        // $contenido .= '
+        //     </tbody>
+        // </table>
+        // ';
 
         $response = array('success' => true, 'data' => $contenido);
 
@@ -185,11 +185,15 @@ class Calendario extends CI_Controller
             // }
 
             $contenido_lunes .= '<tr>';
-            $contenido_lunes .= '<th class="blue lighten-3"><small>' . $hora . '</small></th>';
+            $contenido_lunes .= '<th class="blue lighten-3 text-center"><small>' . $hora . '</small></th>';
             foreach (['Mon'] as $dia) {
-                $contenido_lunes .= '<th class=""><small>' . ($clases_dia[$dia] ?? '/') . '</small></th>';
+                $contenido_lunes .= '<th class="text-center"><small>' . ($clases_dia[$dia] ?? '/') . '</small></th>';
             }
             $contenido_lunes .= '</tr>';
+            $contenido_lunes .= '<tr>
+                                    <th class="bg-glass"></th>
+                                    <th class="bg-glass"></th>
+                                </tr>';
         }
 
         $contenido_lunes .= '
@@ -227,11 +231,15 @@ class Calendario extends CI_Controller
             // }
 
             $contenido_martes .= '<tr>';
-            $contenido_martes .= '<th class="blue lighten-3"><small>' . $hora . '</small></th>';
+            $contenido_martes .= '<th class="blue lighten-3 text-center"><small>' . $hora . '</small></th>';
             foreach (['Tue'] as $dia) {
-                $contenido_martes .= '<th class=""><small>' . ($clases_dia[$dia] ?? '/') . '</small></th>';
+                $contenido_martes .= '<th class="text-center"><small>' . ($clases_dia[$dia] ?? '/') . '</small></th>';
             }
             $contenido_martes .= '</tr>';
+            $contenido_martes .= '<tr>
+                                    <th class="bg-glass"></th>
+                                    <th class="bg-glass"></th>
+                                </tr>';
         }
 
         $contenido_martes .= '
@@ -268,11 +276,15 @@ class Calendario extends CI_Controller
             // }
 
             $contenido_miercoles .= '<tr>';
-            $contenido_miercoles .= '<th class="blue lighten-3"><small>' . $hora . '</small></th>';
+            $contenido_miercoles .= '<th class="blue lighten-3 text-center"><small>' . $hora . '</small></th>';
             foreach (['Wed'] as $dia) {
-                $contenido_miercoles .= '<th class=""><small>' . ($clases_dia[$dia] ?? '/') . '</small></th>';
+                $contenido_miercoles .= '<th class="text-center"><small>' . ($clases_dia[$dia] ?? '/') . '</small></th>';
             }
             $contenido_miercoles .= '</tr>';
+            $contenido_miercoles .= '<tr>
+                                    <th class="bg-glass"></th>
+                                    <th class="bg-glass"></th>
+                                </tr>';
         }
 
         $contenido_miercoles .= '
@@ -309,11 +321,15 @@ class Calendario extends CI_Controller
             // }
 
             $contenido_jueves .= '<tr>';
-            $contenido_jueves .= '<th class="blue lighten-3"><small>' . $hora . '</small></th>';
+            $contenido_jueves .= '<th class="blue lighten-3 text-center"><small>' . $hora . '</small></th>';
             foreach (['Thu'] as $dia) {
-                $contenido_jueves .= '<th class=""><small>' . ($clases_dia[$dia] ?? '/') . '</small></th>';
+                $contenido_jueves .= '<th class="text-center"><small>' . ($clases_dia[$dia] ?? '/') . '</small></th>';
             }
             $contenido_jueves .= '</tr>';
+            $contenido_jueves .= '<tr>
+                                    <th class="bg-glass"></th>
+                                    <th class="bg-glass"></th>
+                                </tr>';
         }
 
         $contenido_jueves .= '
@@ -350,11 +366,15 @@ class Calendario extends CI_Controller
             // }
 
             $contenido_viernes .= '<tr>';
-            $contenido_viernes .= '<th class="blue lighten-3"><small>' . $hora . '</small></th>';
+            $contenido_viernes .= '<th class="blue lighten-3 text-center"><small>' . $hora . '</small></th>';
             foreach (['Fri'] as $dia) {
-                $contenido_viernes .= '<th class=""><small>' . ($clases_dia[$dia] ?? '/') . '</small></th>';
+                $contenido_viernes .= '<th class="text-center"><small>' . ($clases_dia[$dia] ?? '/') . '</small></th>';
             }
             $contenido_viernes .= '</tr>';
+            $contenido_viernes .= '<tr>
+                                    <th class="bg-glass"></th>
+                                    <th class="bg-glass"></th>
+                                </tr>';
         }
 
         $contenido_viernes .= '
@@ -395,17 +415,17 @@ class Calendario extends CI_Controller
 
         $contenido = '';
 
-        $contenido .= '
-        <table class="semana">
-            <thead>
-                <tr>
-                    <th class="blue lighten-3">Horario</th>
-                    <th class=""><a href="">Sab <br>' . date('d M', strtotime($fecha_lunes . ' +5 days')) . '</a></th>
-                    <th class=""><a href="">Dom <br>' . date('d M', strtotime($fecha_domingo)) . '</a></th>
-                </tr>
-            </thead>
-            <tbody>
-        ';
+        // $contenido .= '
+        // <table class="semana">
+        //     <thead>
+        //         <tr>
+        //             <th class="blue lighten-3">Horario</th>
+        //             <th class=""><a href="#">Sab <br>' . date('d M', strtotime($fecha_lunes . ' +5 days')) . '</a></th>
+        //             <th class=""><a href="#">Dom <br>' . date('d M', strtotime($fecha_domingo)) . '</a></th>
+        //         </tr>
+        //     </thead>
+        //     <tbody>
+        // ';
 
         $contenido .= $this->obtener_titulos_fin_de_semana($disciplina_id);
 
@@ -434,10 +454,10 @@ class Calendario extends CI_Controller
             $contenido .= '</tr>';
         }
 
-        $contenido .= '
-            </tbody>
-        </table>
-        ';
+        // $contenido .= '
+        //     </tbody>
+        // </table>
+        // ';
 
         $response = array('success' => true, 'data' => $contenido);
 
@@ -495,11 +515,15 @@ class Calendario extends CI_Controller
             // }
 
             $contenido_sabado .= '<tr>';
-            $contenido_sabado .= '<th class="blue lighten-3"><small>' . $hora . '</small></th>';
+            $contenido_sabado .= '<th class="blue lighten-3 text-center"><small>' . $hora . '</small></th>';
             foreach (['Sat'] as $dia) {
-                $contenido_sabado .= '<th class=""><small>' . ($clases_dia[$dia] ?? '/') . '</small></th>';
+                $contenido_sabado .= '<th class="text-center"><small>' . ($clases_dia[$dia] ?? '/') . '</small></th>';
             }
             $contenido_sabado .= '</tr>';
+            $contenido_sabado .= '<tr>
+                                    <th class="bg-glass"></th>
+                                    <th class="bg-glass"></th>
+                                </tr>';
         }
 
         $contenido_sabado .= '
@@ -536,11 +560,15 @@ class Calendario extends CI_Controller
             // }
 
             $contenido_domingo .= '<tr>';
-            $contenido_domingo .= '<th class="blue lighten-3"><small>' . $hora . '</small></th>';
+            $contenido_domingo .= '<th class="blue lighten-3 text-center"><small>' . $hora . '</small></th>';
             foreach (['Sun'] as $dia) {
-                $contenido_domingo .= '<th class=""><small>' . ($clases_dia[$dia] ?? '/') . '</small></th>';
+                $contenido_domingo .= '<th class="text-center"><small>' . ($clases_dia[$dia] ?? '/') . '</small></th>';
             }
             $contenido_domingo .= '</tr>';
+            $contenido_domingo .= '<tr>
+                                    <th class="bg-glass"></th>
+                                    <th class="bg-glass"></th>
+                                </tr>';
         }
 
         $contenido_domingo .= '
@@ -581,20 +609,22 @@ class Calendario extends CI_Controller
         $fecha_lunes_siguente = date('Y-m-d', strtotime($fecha_actual . ' +' . (8 - $numero_dia_actual) . ' days'));
         $fecha_domingo_siguente = date('Y-m-d', strtotime($fecha_actual . ' +' . (14 - $numero_dia_actual) . ' days'));
 
-        $contenido = '
-        <table class="semana responsive">
-            <thead>
-                <tr>
-                    <th class="blue lighten-3">Horario</th>
-                    <th class="">Lun <br>' . date('d M', strtotime($fecha_lunes_siguente)) . '</th>
-                    <th class="">Mar <br>' . date('d M', strtotime($fecha_lunes_siguente . ' +1 days')) . '</th>
-                    <th class="">Mie <br>' . date('d M', strtotime($fecha_lunes_siguente . ' +2 days')) . '</th>
-                    <th class="">Jue <br>' . date('d M', strtotime($fecha_lunes_siguente . ' +3 days')) . '</th>
-                    <th class="">Vie <br>' . date('d M', strtotime($fecha_lunes_siguente . ' +4 days')) . '</th>
-                </tr>
-            </thead>
-            <tbody>
-        ';
+        $contenido = '';
+
+        // $contenido = '
+        // <table class="semana responsive">
+        //     <thead>
+        //         <tr>
+        //             <th class="blue lighten-3">Horario</th>
+        //             <th class="">Lun <br>' . date('d M', strtotime($fecha_lunes_siguente)) . '</th>
+        //             <th class="">Mar <br>' . date('d M', strtotime($fecha_lunes_siguente . ' +1 days')) . '</th>
+        //             <th class="">Mie <br>' . date('d M', strtotime($fecha_lunes_siguente . ' +2 days')) . '</th>
+        //             <th class="">Jue <br>' . date('d M', strtotime($fecha_lunes_siguente . ' +3 days')) . '</th>
+        //             <th class="">Vie <br>' . date('d M', strtotime($fecha_lunes_siguente . ' +4 days')) . '</th>
+        //         </tr>
+        //     </thead>
+        //     <tbody>
+        // ';
 
         $contenido .= $this->obtener_titulos_semana($disciplina_id);
 
@@ -623,10 +653,10 @@ class Calendario extends CI_Controller
             $contenido .= '</tr>';
         }
 
-        $contenido .= '
-            </tbody>
-        </table>
-        ';
+        // $contenido .= '
+        //     </tbody>
+        // </table>
+        // ';
 
         $response = array('success' => true, 'data' => $contenido);
 
@@ -658,17 +688,18 @@ class Calendario extends CI_Controller
         $fecha_lunes_siguente = date('Y-m-d', strtotime($fecha_actual . ' +' . (8 - $numero_dia_actual) . ' days'));
         $fecha_domingo_siguente = date('Y-m-d', strtotime($fecha_actual . ' +' . (14 - $numero_dia_actual) . ' days'));
 
-        $contenido = '
-        <table class="semana">
-            <thead>
-                <tr>
-                    <th class="blue lighten-3">Horario</th>
-                    <th class="">Sab <br>' . date('d M', strtotime($fecha_lunes_siguente . ' +5 days')) . '</th>
-                    <th class="">Dom <br>' . date('d M', strtotime($fecha_domingo_siguente)) . '</th>
-                </tr>
-            </thead>
-            <tbody>
-        ';
+        $contenido = '';
+        // $contenido = '
+        // <table class="semana">
+        //     <thead>
+        //         <tr>
+        //             <th class="blue lighten-3">Horario</th>
+        //             <th class="">Sab <br>' . date('d M', strtotime($fecha_lunes_siguente . ' +5 days')) . '</th>
+        //             <th class="">Dom <br>' . date('d M', strtotime($fecha_domingo_siguente)) . '</th>
+        //         </tr>
+        //     </thead>
+        //     <tbody>
+        // ';
 
         $contenido .= $this->obtener_titulos_fin_de_semana($disciplina_id);
 
@@ -697,10 +728,10 @@ class Calendario extends CI_Controller
             $contenido .= '</tr>';
         }
 
-        $contenido .= '
-            </tbody>
-        </table>
-        ';
+        // $contenido .= '
+        //     </tbody>
+        // </table>
+        // ';
 
         $response = array('success' => true, 'data' => $contenido);
 

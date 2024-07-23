@@ -1,3 +1,12 @@
+@media (max-width: 768px) {
+    #nav-tabs-container ul.nav-tabs {
+        display: none;
+    }
+    #nav-tabs-container2 ul.nav-tabs {
+        display: none;
+    }
+}
+
 .nav {
     padding-left: 0 !important;
 }
@@ -15,6 +24,10 @@ table {
 
 }
 
+.text-verdeb {
+    color: #5CFAA9;
+}
+
 th,
 td {
     padding: 8px;
@@ -22,8 +35,13 @@ td {
 }
 
 th {
-    background-color: rgba(240, 240, 240, 0.30);
+    background-color: rgba(240, 240, 240, 0.401);
     color: #FFFFFF;
+}
+
+.bg-glass{
+    background-color: rgba(240, 240, 240, 0);
+    border-radius: 20px !important;
 }
 
 th:first-child {

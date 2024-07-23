@@ -104,7 +104,7 @@
                         </div>
                     </div>
 
-                    <div class="row match-height" style="display: block">
+                    <div class="row match-height" id="tabla-container" style="display: block">
                         <div class="col-lg-12 col-md-12 col-sm-12">
                             <div class="card card-transparent no-border">
                                 <ul class="nav nav-tabs">
@@ -126,14 +126,37 @@
                                         <div class="card-content">
                                             <div class="card-body bg-transparent">
 
-                                                <div name="contenido_semana" id="contenido_semana">
-                                                </div>
+                                                <table class="semana responsive">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="blue lighten-3">Horario</th>
+                                                            <th><a id="base-tablunes" data-toggle="tab" aria-controls="tablunes" href="#tablunes" class="day-link">Lun <br><?php echo date('d M', strtotime($fecha_lunes)); ?> </a></th>
+                                                            <th><a id="base-tabmartes" data-toggle="tab" aria-controls="tabmartes" href="#tabmartes" class="day-link">Mar <br><?php echo date('d M', strtotime($fecha_lunes . ' +1 days')); ?></a></th>
+                                                            <th><a id="base-tab3" data-toggle="tab" aria-controls="tab3" href="#tab3" class="day-link">Mie <br><?php echo date('d M', strtotime($fecha_lunes . ' +2 days')); ?></a></th>
+                                                            <th><a id="base-tab4" data-toggle="tab" aria-controls="tab4" href="#tab4" class="day-link">Jue <br><?php echo date('d M', strtotime($fecha_lunes . ' +3 days')); ?></a></th>
+                                                            <th><a id="base-tab5" data-toggle="tab" aria-controls="tab5" href="#tab5" class="day-link">Vie <br><?php echo date('d M', strtotime($fecha_lunes . ' +4 days')); ?></a></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody name="contenido_semana" id="contenido_semana">
+                                                    </tbody>
+                                                </table>
 
                                                 <br>
                                                 <br>
 
-                                                <div name="contenido_fin_de_semana" id="contenido_fin_de_semana">
-                                                </div>
+                                                <table class="semana">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="blue lighten-3">Horario</th>
+                                                            <th class=""><a id="base-tab6" data-toggle="tab" aria-controls="tab6" href="#tab6" class="day-link">Sab <br><?php echo date('d M', strtotime($fecha_lunes . ' +5 days')); ?></a></th>
+                                                            <th class=""><a id="base-tab7" data-toggle="tab" aria-controls="tab7" href="#tab7" class="day-link">Dom <br><?php echo date('d M', strtotime($fecha_domingo)); ?></a></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody name="contenido_fin_de_semana" id="contenido_fin_de_semana">
+                                                        <!-- <div name="contenido_fin_de_semana" id="contenido_fin_de_semana">
+                                                        </div> -->
+                                                    </tbody>
+                                                </table>
 
                                             </div>
                                         </div>
@@ -149,14 +172,39 @@
                                         <div class="card-content">
                                             <div class="card-body bg-transparent">
 
-                                                <div name="contenido_semana_siguiente" id="contenido_semana_siguiente">
-                                                </div>
+                                                <table class="semana responsive">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="blue lighten-3">Horario</th>
+                                                            <th class=""><a id="base-tablunesnext" data-toggle="tab" aria-controls="tablunesnext" href="#tablunesnext" class="day-link2">Lun <br><?php echo date('d M', strtotime($fecha_lunes_siguente)); ?></a></th>
+                                                            <th class=""><a id="base-tabmartesnext" data-toggle="tab" aria-controls="tabmartesnext" href="#tabmartesnext" class="day-link2">Mar <br><?php echo date('d M', strtotime($fecha_lunes_siguente . ' +1 days')); ?></a></th>
+                                                            <th class=""><a id="base-tabmiercolesnext" data-toggle="tab" aria-controls="tabmiercolesnext" href="#tabmiercolesnext" class="day-link2">Mie <br><?php echo date('d M', strtotime($fecha_lunes_siguente . ' +2 days')); ?></a></th>
+                                                            <th class=""><a id="base-tabjuevesnext" data-toggle="tab" aria-controls="tabjuevesnext" href="#tabjuevesnext" class="day-link2">Jue <br><?php echo date('d M', strtotime($fecha_lunes_siguente . ' +3 days')); ?></a></th>
+                                                            <th class=""><a id="base-tabviernesnext" data-toggle="tab" aria-controls="tabviernesnext" href="#tabviernesnext" class="day-link2">Vie <br><?php echo date('d M', strtotime($fecha_lunes_siguente . ' +4 days')); ?></a></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody name="contenido_semana_siguiente" id="contenido_semana_siguiente">
+                                                        <!-- <div name="contenido_semana_siguiente" id="contenido_semana_siguiente">
+                                                        </div> -->
+                                                    </tbody>
+                                                </table>
 
                                                 <br>
                                                 <br>
 
-                                                <div name="contenido_fin_de_semana_siguiente" id="contenido_fin_de_semana_siguiente">
-                                                </div>
+                                                <table class="semana">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="blue lighten-3">Horario</th>
+                                                            <th class=""><a id="base-tabsabadonext" data-toggle="tab" aria-controls="tabsabadonext" href="#tabsabadonext" class="day-link2">Sab <br><?php echo date('d M', strtotime($fecha_lunes_siguente . ' +5 days')); ?></a></th>
+                                                            <th class=""><a id="base-tabdomingonext" data-toggle="tab" aria-controls="tabdomingonext" href="#tabdomingonext" class="day-link2">Dom <br><?php echo date('d M', strtotime($fecha_domingo_siguente)); ?></a></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody name="contenido_fin_de_semana_siguiente" id="contenido_fin_de_semana_siguiente">
+                                                        <!-- <div name="contenido_fin_de_semana_siguiente" id="contenido_fin_de_semana_siguiente">
+                                                        </div> -->
+                                                    </tbody>
+                                                </table>
 
                                             </div>
                                         </div>
@@ -167,40 +215,52 @@
                         </div>
                     </div>
 
-                    <div class="row match-height" style="display: block">
+                    <div class="row match-height" id="tabla-dia" style="display: none">
                         <div class="col-lg-12 col-md-12 col-sm-12">
-                            <div class="card card-transparent no-border">
+                            <div class="card card-transparent no-border" id="nav-tabs-container">
                                 <ul class="nav nav-tabs">
                                     <li class="nav-item">
-                                        <a class="nav-link active" id="base-tablunes" data-toggle="tab" aria-controls="tablunes" href="#tablunes" aria-expanded="false">Lunes </a>
+                                        <a class="nav-link" id="base-tablunes" data-toggle="tab" aria-controls="tablunes" href="#tablunes" aria-expanded="false">Lunes <?php echo date('d M', strtotime($fecha_lunes)) ?> </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" id="base-tabmartes" data-toggle="tab" aria-controls="tabmartes" href="#tabmartes" aria-expanded="false">Martes</a>
+                                        <a class="nav-link" id="base-tabmartes" data-toggle="tab" aria-controls="tabmartes" href="#tabmartes" aria-expanded="false">Martes <?php echo date('d M', strtotime($fecha_lunes . ' +1 days')) ?></a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" id="base-tab3" data-toggle="tab" aria-controls="tab3" href="#tab3" aria-expanded="false">Miercoles</a>
+                                        <a class="nav-link" id="base-tab3" data-toggle="tab" aria-controls="tab3" href="#tab3" aria-expanded="false">Miercoles <?php echo date('d M', strtotime($fecha_lunes . ' +2 days')) ?></a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" id="base-tab4" data-toggle="tab" aria-controls="tab4" href="#tab4" aria-expanded="false">Jueves</a>
+                                        <a class="nav-link" id="base-tab4" data-toggle="tab" aria-controls="tab4" href="#tab4" aria-expanded="false">Jueves <?php echo date('d M', strtotime($fecha_lunes . ' +3 days')) ?></a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" id="base-tab5" data-toggle="tab" aria-controls="tab5" href="#tab5" aria-expanded="false">Vierenes</a>
+                                        <a class="nav-link" id="base-tab5" data-toggle="tab" aria-controls="tab5" href="#tab5" aria-expanded="false">Vierenes <?php echo date('d M', strtotime($fecha_lunes . ' +4 days')) ?></a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" id="base-tab6" data-toggle="tab" aria-controls="tab6" href="#tab6" aria-expanded="false">Sabado</a>
+                                        <a class="nav-link" id="base-tab6" data-toggle="tab" aria-controls="tab6" href="#tab6" aria-expanded="false">Sabado <?php echo date('d M', strtotime($fecha_lunes . ' +5 days')) ?></a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" id="base-tab7" data-toggle="tab" aria-controls="tab7" href="#tab7" aria-expanded="false">Domingo</a>
+                                        <a class="nav-link" id="base-tab7" data-toggle="tab" aria-controls="tab7" href="#tab7" aria-expanded="false">Domingo <?php echo date('d M', strtotime($fecha_lunes . ' +6 days')) ?></a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link semanal" id="semanal" data-toggle="tab" aria-controls="tab7" href="#" aria-expanded="false">Calendario semanal</a>
                                     </li>
                                 </ul>
-                                <div class="tab-content">
-                                    <div class="tab-pane active" id="tablunes" aria-labelledby="base-tablunes">
-                                        <h1>lunes</h1>
+                                <select id="nav-tabs-select" class="d-block d-sm-none form-control tp-select" onchange="handleSelectChange(this)">
+                                    <option value="base-tablunes">Lunes <?php echo date('d M', strtotime($fecha_lunes)) ?></option>
+                                    <option value="base-tabmartes">Martes <?php echo date('d M', strtotime($fecha_lunes . ' +1 days')) ?></option>
+                                    <option value="base-tab3">Miercoles <?php echo date('d M', strtotime($fecha_lunes . ' +2 days')) ?></option>
+                                    <option value="base-tab4">Jueves <?php echo date('d M', strtotime($fecha_lunes . ' +3 days')) ?></option>
+                                    <option value="base-tab5">Viernes <?php echo date('d M', strtotime($fecha_lunes . ' +4 days')) ?></option>
+                                    <option value="base-tab6">Sabado <?php echo date('d M', strtotime($fecha_lunes . ' +5 days')) ?></option>
+                                    <option value="base-tab7">Domingo <?php echo date('d M', strtotime($fecha_lunes . ' +6 days')) ?></option>
+                                    <option value="semanal">Calendario semanal</option>
+                                </select>
 
+                                <div class="tab-content">
+                                    <div role="tabpanel" class="tab-pane" id="tablunes" aria-expanded="false" aria-labelledby="base-tablunes">
                                         <div class="card-header bg-transparent">
-                                            <h4 class="card-title text-bold-600 text-white" name="card_titulo" id="card_titulo">
-                                                <span name="lunes_disciplina_titulo" id="lunes_disciplina_titulo"></span>
-                                            </h4>
+                                            <h1 class="text-verdeb" name="card_titulo" id="card_titulo">
+                                                LUNES <span name="disciplina_titulo_lunes" id="disciplina_titulo_lunes"></span>
+                                            </h1>
                                         </div>
 
                                         <div class="card-content">
@@ -212,13 +272,11 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="tab-pane" id="tabmartes" aria-labelledby="base-tabmartes">
-                                        <h1>martes</h1>
-
+                                    <div role="tabpanel" class="tab-pane" id="tabmartes" aria-expanded="false" aria-labelledby="base-tabmartes">
                                         <div class="card-header bg-transparent">
-                                            <h4 class="card-title text-bold-600 text-white" name="card_titulo" id="card_titulo">
-                                                <span name="martes_disciplina_titulo" id="martes_disciplina_titulo"></span>
-                                            </h4>
+                                            <h1 class="text-verdeb" name="card_titulo" id="card_titulo">
+                                                MARTES <span name="disciplina_titulo_martes" id="disciplina_titulo_martes"></span>
+                                            </h1>
                                         </div>
 
                                         <div class="card-content">
@@ -232,12 +290,10 @@
 
                                     </div>
                                     <div class="tab-pane" id="tab3" aria-labelledby="base-tab3">
-                                        <h1>miercoles</h1>
-
                                         <div class="card-header bg-transparent">
-                                            <h4 class="card-title text-bold-600 text-white" name="card_titulo" id="card_titulo">
-                                                <span name="miercoles_disciplina_titulo" id="miercoles_disciplina_titulo"></span>
-                                            </h4>
+                                            <h1 class="text-verdeb" name="card_titulo" id="card_titulo">
+                                                MIERCOLES <span name="disciplina_titulo_miercoles" id="disciplina_titulo_miercoles"></span>
+                                            </h1>
                                         </div>
 
                                         <div class="card-content">
@@ -251,12 +307,10 @@
 
                                     </div>
                                     <div class="tab-pane" id="tab4" aria-labelledby="base-tab4">
-                                        <h1>jueves</h1>
-
                                         <div class="card-header bg-transparent">
-                                            <h4 class="card-title text-bold-600 text-white" name="card_titulo" id="card_titulo">
-                                                <span name="jueves_disciplina_titulo" id="jueves_disciplina_titulo"></span>
-                                            </h4>
+                                            <h1 class="text-verdeb" name="card_titulo" id="card_titulo">
+                                                JUEVES <span name="disciplina_titulo_jueves" id="disciplina_titulo_jueves"></span>
+                                            </h1>
                                         </div>
 
                                         <div class="card-content">
@@ -270,12 +324,10 @@
 
                                     </div>
                                     <div class="tab-pane" id="tab5" aria-labelledby="base-tab5">
-                                        <h1>viernes</h1>
-
                                         <div class="card-header bg-transparent">
-                                            <h4 class="card-title text-bold-600 text-white" name="card_titulo" id="card_titulo">
-                                                <span name="viernes_disciplina_titulo" id="viernes_disciplina_titulo"></span>
-                                            </h4>
+                                            <h1 class="text-verdeb" name="card_titulo" id="card_titulo">
+                                                VIERNES <span name="disciplina_titulo_viernes" id="disciplina_titulo_viernes"></span>
+                                            </h1>
                                         </div>
 
                                         <div class="card-content">
@@ -289,11 +341,10 @@
 
                                     </div>
                                     <div class="tab-pane" id="tab6" aria-labelledby="base-tab6">
-                                        <h1>sabado</h1>
                                         <div class="card-header bg-transparent">
-                                            <h4 class="card-title text-bold-600 text-white" name="card_titulo" id="card_titulo">
-                                                <span name="sabado_disciplina_titulo" id="sabado_disciplina_titulo"></span>
-                                            </h4>
+                                            <h1 class="text-verdeb" name="card_titulo" id="card_titulo">
+                                                SABADO <span name="disciplina_titulo_sabado" id="disciplina_titulo_sabado"></span>
+                                            </h1>
                                         </div>
 
                                         <div class="card-content">
@@ -307,11 +358,10 @@
 
                                     </div>
                                     <div class="tab-pane" id="tab7" aria-labelledby="base-tab7">
-                                        <h1>domigno</h1>
                                         <div class="card-header bg-transparent">
-                                            <h4 class="card-title text-bold-600 text-white" name="card_titulo" id="card_titulo">
-                                                <span name="sabado_titulo_siguiente" id="sabado_titulo_siguiente"></span>
-                                            </h4>
+                                            <h1 class="text-verdeb" name="card_titulo" id="card_titulo">
+                                                DOMINGO <span name="disciplina_titulo_domingo" id="disciplina_titulo_domingo"></span>
+                                            </h1>
                                         </div>
 
                                         <div class="card-content">
@@ -329,18 +379,186 @@
                         </div>
                     </div>
 
+                    <div class="row match-height" id="tabla-dianext" style="display: none">
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <div class="card card-transparent no-border" id="nav-tabs-container2">
+                                <ul class="nav nav-tabs">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" id="base-tablunesnext" data-toggle="tab" aria-controls="tablunesnext" href="#tablunesnext" aria-expanded="false">Lunes <?php echo date('d M', strtotime($fecha_lunes_siguente)) ?> </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="base-tabmartesnext" data-toggle="tab" aria-controls="tabmartesnext" href="#tabmartesnext" aria-expanded="false">Martes <?php echo date('d M', strtotime($fecha_lunes_siguente . ' +1 days')) ?></a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="base-tabmiercolesnext" data-toggle="tab" aria-controls="tabmiercolesnext" href="#tabmiercolesnext" aria-expanded="false">Miercoles <?php echo date('d M', strtotime($fecha_lunes_siguente . ' +2 days')) ?></a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="base-tabjuevesnext" data-toggle="tab" aria-controls="tabjuevesnext" href="#tabjuevesnext" aria-expanded="false">Jueves <?php echo date('d M', strtotime($fecha_lunes_siguente . ' +3 days')) ?></a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="base-tabviernesnext" data-toggle="tab" aria-controls="tabviernesnext" href="#tabviernesnext" aria-expanded="false">Vierenes <?php echo date('d M', strtotime($fecha_lunes_siguente . ' +4 days')) ?></a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="base-tabsabadonext" data-toggle="tab" aria-controls="tabsabadonext" href="#tabsabadonext" aria-expanded="false">Sabado <?php echo date('d M', strtotime($fecha_lunes_siguente . ' +5 days')) ?></a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="base-tabdomingonext" data-toggle="tab" aria-controls="tabdomingonext" href="#tabdomingonext" aria-expanded="false">Domingo <?php echo date('d M', strtotime($fecha_lunes_siguente . ' +6 days')) ?></a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link semanal" id="semanal" data-toggle="tab" aria-controls="tab7" href="#" aria-expanded="false">Calendario semanal</a>
+                                    </li>
+                                </ul>
+
+                                <select id="nav-tabs-select2" class="d-block d-sm-none form-control tp-select" onchange="handleSelectChange(this)">
+                                    <option value="base-tablunesnext">Lunes <?php echo date('d M', strtotime($fecha_lunes_siguente)) ?></option>
+                                    <option value="base-tabmartesnext">Martes <?php echo date('d M', strtotime($fecha_lunes_siguente . ' +1 days')) ?></option>
+                                    <option value="base-tabmiercolesnext">Miercoles <?php echo date('d M', strtotime($fecha_lunes_siguente . ' +2 days')) ?></option>
+                                    <option value="base-tabjuevesnext">Jueves <?php echo date('d M', strtotime($fecha_lunes_siguente . ' +3 days')) ?></option>
+                                    <option value="base-tabviernesnext">Viernes <?php echo date('d M', strtotime($fecha_lunes_siguente . ' +4 days')) ?></option>
+                                    <option value="base-tabsabadonext">Sabado <?php echo date('d M', strtotime($fecha_lunes_siguente . ' +5 days')) ?></option>
+                                    <option value="base-tabdomingonext">Domingo <?php echo date('d M', strtotime($fecha_lunes_siguente . ' +6 days')) ?></option>
+                                    <option value="semanal">Calendario semanal</option>
+                                </select>
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="tablunesnext" aria-labelledby="base-tablunesnext">
+
+                                        <div class="card-header bg-transparent">
+                                            <h1 class="text-verdeb" name="card_titulo" id="card_titulo">
+                                                LUNES <span name="disciplina_titulo_lunesnext" id="disciplina_titulo_lunesnext"></span>
+                                            </h1>
+                                        </div>
+
+                                        <div class="card-content">
+                                            <div class="card-body bg-transparent">
+
+                                                <div name="contenido_lunes_siguiente" id="contenido_lunes_siguiente">
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" id="tabmartesnext" aria-labelledby="base-tabmartesnext">
+
+                                        <div class="card-header bg-transparent">
+                                            <h1 class="text-verdeb" name="card_titulo" id="card_titulo">
+                                                MARTES <span name="disciplina_titulo_martesnext" id="disciplina_titulo_martesnext"></span>
+                                            </h1>
+                                        </div>
+
+                                        <div class="card-content">
+                                            <div class="card-body bg-transparent">
+
+                                                <div name="contenido_martes_siguiente" id="contenido_martes_siguiente">
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="tab-pane" id="tabmiercolesnext" aria-labelledby="base-tabmiercolesnext">
+
+                                        <div class="card-header bg-transparent">
+                                            <h1 class="text-verdeb" name="card_titulo" id="card_titulo">
+                                                MIERCOLES <span name="disciplina_titulo_miercolesnext" id="disciplina_titulo_miercolesnext"></span>
+                                            </h1>
+                                        </div>
+
+                                        <div class="card-content">
+                                            <div class="card-body bg-transparent">
+
+                                                <div name="contenido_miercoles_siguiente" id="contenido_miercoles_siguiente">
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="tab-pane" id="tabjuevesnext" aria-labelledby="base-tabjuevesnext">
+
+                                        <div class="card-header bg-transparent">
+                                            <h1 class="text-verdeb" name="card_titulo" id="card_titulo">
+                                                JUEVES <span name="disciplina_titulo_juevesnext" id="disciplina_titulo_juevesnext"></span>
+                                            </h1>
+                                        </div>
+
+                                        <div class="card-content">
+                                            <div class="card-body bg-transparent">
+
+                                                <div name="contenido_jueves_siguiente" id="contenido_jueves_siguiente">
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="tab-pane" id="tabviernesnext" aria-labelledby="base-tabviernesnext">
+
+                                        <div class="card-header bg-transparent">
+                                            <h1 class="text-verdeb" name="card_titulo" id="card_titulo">
+                                                VIERNES <span name="disciplina_titulo_viernesnext" id="disciplina_titulo_viernesnext"></span>
+                                            </h1>
+                                        </div>
+
+                                        <div class="card-content">
+                                            <div class="card-body bg-transparent">
+
+                                                <div name="contenido_viernes_siguiente" id="contenido_viernes_siguiente">
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="tab-pane" id="tabsabadonext" aria-labelledby="base-tabsabadonext">
+                                        <div class="card-header bg-transparent">
+                                            <h1 class="text-verdeb" name="card_titulo" id="card_titulo">
+                                                SABADO <span name="disciplina_titulo_sabadonext" id="disciplina_titulo_sabadonext"></span>
+                                            </h1>
+                                        </div>
+
+                                        <div class="card-content">
+                                            <div class="card-body bg-transparent">
+
+                                                <div name="contenido_sabado_siguiente" id="contenido_sabado_siguiente">
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="tab-pane" id="tabdomingonext" aria-labelledby="base-tabdomingonext">
+                                        <div class="card-header bg-transparent">
+                                            <h1 class="text-verdeb" name="card_titulo" id="card_titulo">
+                                                DOMINGO <span name="disciplina_titulo_domingonext" id="disciplina_titulo_domingonext"></span>
+                                            </h1>
+                                        </div>
+
+                                        <div class="card-content">
+                                            <div class="card-body bg-transparent">
+
+                                                <div name="contenido_domingo_siguiente" id="contenido_domingo_siguiente">
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="row col-lg-12 col-md-12 col-sm-12">
                         <div class="col-lg-12 col-md-12 col-12 text-center">
+                            <h4 class="text-verdeb">#SEMANABEATNESS</h4>
                             <img src="<?php echo base_url('almacenamiento/calendario/platform.png') ?>" alt="" class="img-fluid">
                         </div>
                     </div>
                 </section>
                 <!-- End -->
-
             </div>
         </div>
     </div>
-
     <!-- ////////////////////////////////////////////////////////////////////////////-->
 
 
