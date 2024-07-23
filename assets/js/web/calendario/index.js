@@ -6,24 +6,6 @@ var disciplina_seleccionada = '';
 document.getElementById('disciplina_titulo').innerHTML = select.options[select.selectedIndex].innerText;
 document.getElementById('disciplina_titulo_siguiente').innerHTML = select.options[select.selectedIndex].innerText;
 
-if (disciplina_seleccionada == 10 || disciplina_seleccionada == 19) {
-    document.getElementById('disciplina_titulo_lunes').innerHTML = "/ LEGS & BOOTY";
-    document.getElementById('disciplina_titulo_martes').innerHTML = "/ UPPER BODY";
-    document.getElementById('disciplina_titulo_miercoles').innerHTML = "/ KILLER ABS";
-    document.getElementById('disciplina_titulo_jueves').innerHTML = "/ ARMS & BOOTY";
-    document.getElementById('disciplina_titulo_viernes').innerHTML = "/ FULL BODY &#x1F525";
-    document.getElementById('disciplina_titulo_sabado').innerHTML = "/ ABS & BOOTY &#x1F525";
-    document.getElementById('disciplina_titulo_domingo').innerHTML = "/ FULL BODY";
-} else {
-    document.getElementById('disciplina_titulo_lunes').innerHTML = "/ ";
-    document.getElementById('disciplina_titulo_martes').innerHTML = "/ ";
-    document.getElementById('disciplina_titulo_miercoles').innerHTML = "/ ";
-    document.getElementById('disciplina_titulo_jueves').innerHTML = "/ ";
-    document.getElementById('disciplina_titulo_viernes').innerHTML = "/ ";
-    document.getElementById('disciplina_titulo_sabado').innerHTML = "/ ";
-    document.getElementById('disciplina_titulo_domingo').innerHTML = "/ ";
-}
-
 obtener_clases_semana_actual_por_disciplina_id(disciplina_seleccionada);
 obtener_clases_fin_de_semana_actual_por_disciplina_id(disciplina_seleccionada);
 obtener_clases_semana_actual_por_disciplina_id_para_dia(disciplina_seleccionada);
@@ -330,7 +312,15 @@ function cambiarFondo() {
 
 function handleSelectChange(selectElement) {
     var selectedValue = selectElement.value;
-    document.getElementById(selectedValue).click();
+
+    if (selectedValue === "semanal") {
+        // Reset the select to its default value
+        document.getElementById(selectedValue).click();
+        selectElement.selectedIndex = 0;
+    } else {
+        // Simulate a click on the corresponding tab
+        document.getElementById(selectedValue).click();
+    }
 }
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -346,7 +336,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 lnk.classList.remove('active');
             });
             // Add 'active' class to the clicked nav-link
-            this.classList.add('active');
+            this.classList.remove('active');
             // Set the corresponding select option to selected
             select.value = this.id;
         });

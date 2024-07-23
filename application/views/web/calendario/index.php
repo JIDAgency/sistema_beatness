@@ -245,6 +245,7 @@
                                     </li>
                                 </ul>
                                 <select id="nav-tabs-select" class="d-block d-sm-none form-control tp-select" onchange="handleSelectChange(this)">
+                                    <option value="">Seleccione un dia...</option>
                                     <option value="base-tablunes">Lunes <?php echo date('d M', strtotime($fecha_lunes)) ?></option>
                                     <option value="base-tabmartes">Martes <?php echo date('d M', strtotime($fecha_lunes . ' +1 days')) ?></option>
                                     <option value="base-tab3">Miercoles <?php echo date('d M', strtotime($fecha_lunes . ' +2 days')) ?></option>
