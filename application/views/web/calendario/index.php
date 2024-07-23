@@ -95,7 +95,7 @@
                                     </div>
                                     <div class="col-lg-4 col-md-4 col-sm-12 d-flex align-items-center">
                                         <a id="reload">
-                                            <h3 class="white"><i class="ft-refresh-cw" id="loading"></i></h3>
+                                            <h1 class="refresh">Actualizar</h1>
                                         </a>
                                     </div>
                                 </div>
