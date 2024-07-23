@@ -3,8 +3,8 @@ var select = document.getElementById('disciplina_seleccionada');
 
 var disciplina_seleccionada = '';
 
-document.getElementById('disciplina_titulo').innerHTML = select.options[select.selectedIndex].innerText;
-document.getElementById('disciplina_titulo_siguiente').innerHTML = select.options[select.selectedIndex].innerText;
+// document.getElementById('disciplina_titulo').innerHTML = select.options[select.selectedIndex].innerText;
+// document.getElementById('disciplina_titulo_siguiente').innerHTML = select.options[select.selectedIndex].innerText;
 
 obtener_clases_semana_actual_por_disciplina_id(disciplina_seleccionada);
 obtener_clases_fin_de_semana_actual_por_disciplina_id(disciplina_seleccionada);
@@ -16,8 +16,8 @@ obtener_clases_fin_de_semana_siguiente_por_disciplina_id(disciplina_seleccionada
 cambiarFondo();
 
 select.onchange = function () {
-    document.getElementById('disciplina_titulo').innerHTML = select.options[select.selectedIndex].innerText;
-    document.getElementById('disciplina_titulo_siguiente').innerHTML = select.options[select.selectedIndex].innerText;
+    // document.getElementById('disciplina_titulo').innerHTML = select.options[select.selectedIndex].innerText;
+    // document.getElementById('disciplina_titulo_siguiente').innerHTML = select.options[select.selectedIndex].innerText;
 
     disciplina_seleccionada = this.value;
 

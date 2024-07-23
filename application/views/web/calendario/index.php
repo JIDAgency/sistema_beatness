@@ -117,11 +117,11 @@
                                 </ul>
                                 <div class="tab-content">
                                     <div role="tabpanel" class="tab-pane active" id="tab1" aria-expanded="true" aria-labelledby="base-tab1">
-                                        <div class="card-header bg-transparent">
+                                        <!-- <div class="card-header bg-transparent">
                                             <h4 class="card-title text-bold-600 text-white" name="card_titulo" id="card_titulo">
                                                 <span name="disciplina_titulo" id="disciplina_titulo"></span>
                                             </h4>
-                                        </div>
+                                        </div> -->
 
                                         <div class="card-content">
                                             <div class="card-body bg-transparent">
@@ -163,11 +163,11 @@
                                     </div>
                                     <div class="tab-pane" id="tab2" aria-labelledby="base-tab2">
 
-                                        <div class="card-header bg-transparent">
+                                        <!-- <div class="card-header bg-transparent">
                                             <h4 class="card-title text-bold-600 text-white" name="card_titulo" id="card_titulo">
                                                 <span name="disciplina_titulo_siguiente" id="disciplina_titulo_siguiente"></span>
                                             </h4>
-                                        </div>
+                                        </div> -->
 
                                         <div class="card-content">
                                             <div class="card-body bg-transparent">

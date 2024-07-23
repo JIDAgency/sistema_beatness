@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
 @media (max-width: 768px) {
     #nav-tabs-container ul.nav-tabs {
         display: none;
@@ -6,7 +8,9 @@
         display: none;
     }
 }
-
+h4{
+    font-family: 'Montserrat', sans-serif;
+}
 .nav {
     padding-left: 0 !important;
 }
@@ -16,12 +20,31 @@
     border-radius: 8px;
 }
 
+@media (max-width: 768px) {
+    h1{
+        font-size: 0.9em;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        border-spacing: 0;
+        color: #FFFFFF;
+        font-size: 0.7em;
+    }
+
+    .nav-tabs {
+        border-bottom: none !important;
+        font-size: 0.4em;
+    }
+}
+
 table {
+    font-family: 'Montserrat', sans-serif;
     width: 100%;
     border-collapse: collapse;
     border-spacing: 0;
     color: #FFFFFF;
-
 }
 
 .text-verdeb {
@@ -100,6 +123,7 @@ html body.bg-calendario {
 }
 
 .nav-tabs {
+    font-family: 'Montserrat', sans-serif;
     border-bottom: none !important;
 }
 
