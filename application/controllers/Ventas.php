@@ -2454,7 +2454,7 @@ class Ventas extends MY_Controller
         $data["total"] = $venta_row->total;
         $total_letras = $this->numletras($venta_row->total, 1);;
         $data["total_letras"] = $total_letras;
-        $data["website"] = "sensoriastudio.mx";
+        $data["website"] = "beatness.com.mx";
 
         $this->load->view('ventas/ticket', $data);
     }

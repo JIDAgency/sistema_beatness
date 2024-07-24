@@ -77,7 +77,7 @@
                                                         $fecha_activacion->modify("+$vigencia_en_dias days");
 
                                                         // Obtenemos la fecha de vencimiento como una cadena de texto en formato 'Y-m-d'
-                                                        $fecha_vencimiento = $fecha_activacion->format('Y-m-d'); ?>
+                                                        $fecha_vencimiento = $fecha_activacion->format('d-m-Y'); ?>
                                                         <tr>
                                                             <td><?php echo $usuario_row->usuarios_id; ?></td>
                                                             <td><?php echo $usuario_row->usuarios_correo; ?></td>
