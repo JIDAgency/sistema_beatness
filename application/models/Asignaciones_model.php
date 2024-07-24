@@ -387,6 +387,26 @@ class Asignaciones_model extends CI_Model
         return $query;
     }
 
+    public function obtener_usuarios_planes_por_vencer()
+    {
+        $query = $this->db
+            ->where("t1.estatus", "Activo")
+            ->where("t1.clases_incluidas >", 1)
+            ->where("DATE_FORMAT(DATE_ADD(t1.fecha_activacion, INTERVAL t1.vigencia_en_dias DAY),'%Y-%m-%d') <=", date('Y-m-d', strtotime('+5 days')))
+            ->select("
+                t1.*,
+                t2.id as usuarios_id,
+                t2.correo as usuarios_correo,
+                CONCAT(COALESCE(t2.nombre_completo, 'N/D'), ' ', COALESCE(t2.apellido_paterno, 'N/D'), ' ', COALESCE(t2.apellido_materno, 'N/D')) AS usuarios_nombre,
+                DATE_FORMAT(DATE_ADD(t1.fecha_activacion, INTERVAL t1.vigencia_en_dias DAY),'%Y-%m-%d') as asignaciones_fecha_finalizacion
+                ")
+            ->from("asignaciones t1")
+            ->join("usuarios t2", "t2.id = t1.usuario_id")
+            ->order_by("t2.correo", "asc")
+            ->get();
+        return $query;
+    }
+
     public function obtener_tabla_index_planes_caducados_por_cliente()
     {
         $query = $this->db

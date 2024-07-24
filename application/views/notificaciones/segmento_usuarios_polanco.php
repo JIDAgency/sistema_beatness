@@ -72,7 +72,7 @@
                                                             <td><?php echo $usuario_row->id; ?></td>
                                                             <td><?php echo $usuario_row->correo; ?></td>
                                                             <td><?php echo $usuario_row->nombre; ?></td>
-                                                            <td><?php echo $usuario_row->sucursal_id; ?></td>
+                                                            <td><?php echo $usuario_row->nombre_sucursal; ?></td>
                                                         </tr>
                                                     <?php endforeach; ?>
                                                 </tbody>
