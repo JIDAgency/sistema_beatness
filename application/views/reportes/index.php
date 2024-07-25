@@ -44,7 +44,46 @@
                             <div class="card-content collapse show">
                                 <div class="card-body card-dashboard">
 
-                                <a href="<?php echo site_url('reportes/reporte_instructores'); ?>">Reporte de instructores</a>
+                                    <a href="<?php echo site_url('reportes/reporte_instructores'); ?>">Reporte de instructores</a>
+
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <table class="table">
+                                        <tr>
+                                            <th>Reporte</th>
+                                            <th>Resultado</th>
+                                        </tr>
+                                        <tr>
+                                            <td><b>Usuarios totales:</b></td>
+                                            <td><?php print_r($reporte_1); ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>Usuarios tipo cliente totales:</b></td>
+                                            <td><?php print_r($reporte_2); ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>Clientes registrados por Gympass:</b></td>
+                                            <td><?php print_r($reporte_3); ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>Clientes registrados por Beatness:</b></td>
+                                            <td><?php print_r($reporte_4); ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>Planes de clientes activos:</b></td>
+                                            <td><?php print_r($reporte_5); ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>Clientes con plan activo:</b></td>
+                                            <td><?php print_r($reporte_6); ?></td>
+                                        </tr>
+                                    </table>
+
                                 </div>
                             </div>
 

@@ -26,6 +26,13 @@ class Reportes extends MY_Controller
 			array('es_rel' => true, 'src' => '' . $controlador_js . '.js'),
 		);
 
+		$data['reporte_1'] = $this->reportes_model->reporte_1();
+		$data['reporte_2'] = $this->reportes_model->reporte_2();
+		$data['reporte_3'] = $this->reportes_model->reporte_3();
+		$data['reporte_4'] = $this->reportes_model->reporte_4();
+		$data['reporte_5'] = $this->reportes_model->reporte_5();
+		$data['reporte_6'] = $this->reportes_model->reporte_6();
+
 		$this->construir_private_site_ui('reportes/index', $data);
 	}
 
@@ -45,7 +52,7 @@ class Reportes extends MY_Controller
 
 		$data['scripts'] = array(
 			array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/tables/datatable/datatables.min.js'),
-			array('es_rel' => true, 'src' => ''.$controlador_js.'.js'),
+			array('es_rel' => true, 'src' => '' . $controlador_js . '.js'),
 		);
 
 		$periodo_inicia = (new DateTime('2023-01-01'))->modify('first day of this month');
@@ -60,61 +67,63 @@ class Reportes extends MY_Controller
 		$this->construir_private_site_ui('reportes/reporte_instructores', $data);
 	}
 
-	public function obtener_tabla_reporte_instructores_por_mes($fechaYm) {
-        $draw = intval($this->input->post('draw'));
-        $start = intval($this->input->post('start'));
-        $length = intval($this->input->post('length'));
+	public function obtener_tabla_reporte_instructores_por_mes($fechaYm)
+	{
+		$draw = intval($this->input->post('draw'));
+		$start = intval($this->input->post('start'));
+		$length = intval($this->input->post('length'));
 
 		$reporte_list = $this->reportes_model->obtener_reporte_de_instructores_por_mes($fechaYm);
 
-        $data = [];
-		
-        foreach ($reporte_list->result() as $reporte_key => $reporte_value) {
-            $data[] = array(
-                'id' => $reporte_key+1,
-				'instructor_nombre' => ucwords($reporte_value->instructor_nombre).' #'.$reporte_value->instructor_id,
+		$data = [];
+
+		foreach ($reporte_list->result() as $reporte_key => $reporte_value) {
+			$data[] = array(
+				'id' => $reporte_key + 1,
+				'instructor_nombre' => ucwords($reporte_value->instructor_nombre) . ' #' . $reporte_value->instructor_id,
 				'total_clases' => $reporte_value->total_clases,
 				'total_reservado' => $reporte_value->total_reservado,
-            );
-        }
+			);
+		}
 
-        $result = array(
-            'draw' => $draw,
-            'recordsTotal' => $reporte_list->num_rows(),
-            'recordsFiltered' => $reporte_list->num_rows(),
-            'data' => $data
-        );
+		$result = array(
+			'draw' => $draw,
+			'recordsTotal' => $reporte_list->num_rows(),
+			'recordsFiltered' => $reporte_list->num_rows(),
+			'data' => $data
+		);
 
-        echo json_encode($result);
-        exit();
-    }
+		echo json_encode($result);
+		exit();
+	}
 
-	public function obtener_tabla_reporte_instructores_entre_fechas($fecha_inicio, $fecha_fin) {
-        $draw = intval($this->input->post('draw'));
-        $start = intval($this->input->post('start'));
-        $length = intval($this->input->post('length'));
+	public function obtener_tabla_reporte_instructores_entre_fechas($fecha_inicio, $fecha_fin)
+	{
+		$draw = intval($this->input->post('draw'));
+		$start = intval($this->input->post('start'));
+		$length = intval($this->input->post('length'));
 
 		$reporte_list = $this->reportes_model->obtener_reporte_de_instructores_entre_fechas($fecha_inicio, $fecha_fin);
 
-        $data = [];
-		
-        foreach ($reporte_list->result() as $reporte_key => $reporte_value) {
-            $data[] = array(
-                'id' => $reporte_key+1,
-				'instructor_nombre' => ucwords($reporte_value->instructor_nombre).' #'.$reporte_value->instructor_id,
+		$data = [];
+
+		foreach ($reporte_list->result() as $reporte_key => $reporte_value) {
+			$data[] = array(
+				'id' => $reporte_key + 1,
+				'instructor_nombre' => ucwords($reporte_value->instructor_nombre) . ' #' . $reporte_value->instructor_id,
 				'total_clases' => $reporte_value->total_clases,
 				'total_reservado' => $reporte_value->total_reservado,
-            );
-        }
+			);
+		}
 
-        $result = array(
-            'draw' => $draw,
-            'recordsTotal' => $reporte_list->num_rows(),
-            'recordsFiltered' => $reporte_list->num_rows(),
-            'data' => $data
-        );
+		$result = array(
+			'draw' => $draw,
+			'recordsTotal' => $reporte_list->num_rows(),
+			'recordsFiltered' => $reporte_list->num_rows(),
+			'data' => $data
+		);
 
-        echo json_encode($result);
-        exit();
-    }
+		echo json_encode($result);
+		exit();
+	}
 }
