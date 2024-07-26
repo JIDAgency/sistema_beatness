@@ -64,6 +64,7 @@ class Totalpass_lib
         $this->token_response = $response;
 
         $data = array(
+            'descripcion' => 'Se renueva cada 24 hrs. Última renovación: ' . date('Y-m-d H:i:s'),
             'valor_1' => $token,
             'valor_2' => strtotime('-10 minutes', $expiracion),
             'json_1' => json_encode($response)

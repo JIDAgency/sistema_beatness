@@ -50,11 +50,17 @@ class Totalpass extends MY_Controller
             array('es_rel' => true, 'src' => '' . $controlador_js . '.js'),
         );
 
+        $token_data = $this->totalpass_model->obtener_token()->row();
 
-        if (isset($list_products['error']) && $list_products['error']) {
-            $this->session->set_flashdata('MENSAJE_ERROR', $list_products['message'] . ' (1)');
-            $list_products = null;
+        if (time() >= $token_data->valor_2) {
+            $this->totalpass_lib->token_renovar();
+            $token_data = $this->totalpass_model->obtener_token()->row();
         }
+
+        $token_data = json_decode($token_data->json_1);
+        $token_data = $token_data->place->Plans;
+
+        $data['token_data'] = $token_data;
 
         $this->construir_private_site_ui('totalpass/disciplinas', $data);
     }

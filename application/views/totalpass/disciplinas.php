@@ -45,18 +45,25 @@
                             <div class="card-content collapse show">
                                 <div class="card-body card-dashboard">
 
-                                    <table name="table" id="table" class="table display nowrap table-striped table-bordered scroll-horizontal table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th>#</th>
-                                                <th>TotalPass ID</th>
-                                                <th>Nombre</th>
-                                                <th>Estatus</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                        </tbody>
-                                    </table>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <table name="table" id="table" class="table display nowrap table-striped table-bordered scroll-horizontal table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>TotalPass ID</th>
+                                                        <th>Nombre</th>
+                                                        <th>Estatus</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="col-6">
+                                            <?php print_r($token_data); ?>
+                                        </div>
+                                    </div>
 
                                 </div>
                             </div>
