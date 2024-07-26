@@ -109,4 +109,192 @@ class Reportes_model extends CI_Model
         $result = $query->row();
         return $result->total;
     }
+
+    public function obtene_reporte_planes()
+    {
+        $query = $this->db
+            ->where('t1.clases_incluidas >', 0)
+            ->where('t1.clases_incluidas <=', 400)
+            ->select('t1.clases_incluidas, COUNT(t1.clases_incluidas) as cantidad')
+            ->from('asignaciones t1')
+            ->group_by('t1.clases_incluidas')
+            ->order_by('cantidad', 'desc')
+            ->get();
+
+        return $query->result();
+    }
+
+    public function obtene_reporte_planes_por_anho()
+    {
+        $query = $this->db
+            ->where('t1.clases_incluidas >', 0)
+            ->where('t1.clases_incluidas <=', 400)
+            ->select('t1.clases_incluidas, YEAR(t1.fecha_activacion) as anho, COUNT(*) as cantidad')
+            ->from('asignaciones t1')
+            ->group_by('t1.clases_incluidas, anho')
+            ->order_by('anho', 'desc')
+
+            ->order_by('cantidad', 'desc')
+            ->get();
+
+        return $query->result();
+    }
+
+    function get_reservaciones_numero_total()
+    {
+        $query = $this->db
+            ->where_not_in("estatus", "Cancelada")
+            ->count_all_results('reservaciones');
+
+        return $query;
+    }
+
+    function get_reservaciones_numero_activas()
+    {
+        $query = $this->db
+            ->where("estatus", "Activa")
+            ->count_all_results('reservaciones');
+
+        return $query;
+    }
+
+    function get_reservaciones_numero_terminadas()
+    {
+        $query = $this->db
+            ->where("estatus", "Terminada")
+            ->count_all_results('reservaciones');
+
+        return $query;
+    }
+
+    function get_reservaciones_numero_canceladas()
+    {
+        $query = $this->db
+            ->where("estatus", "Cancelada")
+            ->count_all_results('reservaciones');
+
+        return $query;
+    }
+
+    function get_reservaciones_numero_del_mes($mes_a_consultar)
+    {
+        $query = $this->db
+            ->where_in("estatus", array("Activa", "Terminada"))
+            ->where("DATE_FORMAT(fecha_creacion,'%Y-%m')", $mes_a_consultar)
+            ->count_all_results('reservaciones');
+
+        return $query;
+    }
+
+    /** Ventas */
+
+    function get_ventas_numero_total()
+    {
+        $query = $this->db
+            ->where_not_in("estatus", "Cancelada")
+            ->count_all_results('ventas');
+
+        return $query;
+    }
+
+    function get_ventas_numero_vendidas()
+    {
+        $query = $this->db
+            ->where("estatus", "Vendido")
+            ->count_all_results('ventas');
+
+        return $query;
+    }
+
+    function get_ventas_numero_canceladas()
+    {
+        $query = $this->db
+            ->where("estatus", "Cancelada")
+            ->count_all_results('ventas');
+
+        return $query;
+    }
+
+    function get_ventas_numero_reembolsos()
+    {
+        $query = $this->db
+            ->where("estatus", "Reembolso")
+            ->count_all_results('ventas');
+
+        return $query;
+    }
+
+    function get_ventas_numero_pruebas()
+    {
+        $query = $this->db
+            ->where("estatus", "prueba")
+            ->count_all_results('ventas');
+
+        return $query;
+    }
+
+    function get_ventas_numero_del_mes($mes_a_consultar)
+    {
+        $query = $this->db
+            ->where_in("estatus", array("Vendido", "prueba"))
+            ->where("DATE_FORMAT(fecha_venta,'%Y-%m')", $mes_a_consultar)
+            ->count_all_results('ventas');
+
+        return $query;
+    }
+
+    function get_ventas_numero_vendidas_por_vendedor()
+    {
+        $query = $this->db
+            ->select('vendedor, COUNT(vendedor) as total, sucursal_id')
+            ->where_in("estatus", array("Vendido", "prueba"))
+            ->group_by('vendedor')
+            ->order_by('sucursal_id', 'asc')
+            ->order_by('vendedor', 'asc')
+            //->get('ventas', 10);
+            ->get('ventas');
+
+        return $query;
+    }
+
+
+    function get_ventas_numero_vendidas_por_vendedor_del_mes($mes_a_consultar)
+    {
+        $query = $this->db
+            ->select('t1.vendedor, COUNT(t1.vendedor) as total, t2.nombre as sucursal_nombre, t2.locacion as sucursal_locacion,')
+            ->where("DATE_FORMAT(t1.fecha_venta,'%Y-%m')", $mes_a_consultar)
+            ->where_in("t1.estatus", array("Vendido", "prueba"))
+            ->group_by('t1.vendedor')
+            ->order_by('t1.sucursal_id', 'asc')
+            ->order_by('t1.vendedor', 'asc')
+            ->from("ventas t1")
+            ->join("sucursales t2", "t1.sucursal_id = t2.id")
+            //->get('ventas', 10);
+            ->get();
+
+        return $query;
+    }
+
+    public function obtener_reservaciones_agrupadas_por_usuario($fecha_inicio, $fecha_fin, $sucursal_id)
+    {
+        $this->db->select("
+            t2.id as id,
+            t2.correo as email,
+            COUNT(t1.usuario_id) as total_reservaciones
+        ");
+        $this->db->from("reservaciones t1");
+        $this->db->join("usuarios t2", "t2.id = t1.usuario_id");
+        $this->db->join("clases t3", "t3.id = t1.clase_id");
+        $this->db->join("disciplinas t4", "t4.id = t3.disciplina_id");
+        $this->db->where("t3.inicia >=", $fecha_inicio);
+        $this->db->where("t3.inicia <=", $fecha_fin);
+        if ($sucursal_id != -1) {
+            $this->db->where("t4.sucursal_id", $sucursal_id);
+        }
+        $this->db->group_by("t2.correo");
+        $this->db->order_by("total_reservaciones", "desc");
+
+        $query = $this->db->get();
+        return $query->result();
+    }
 }

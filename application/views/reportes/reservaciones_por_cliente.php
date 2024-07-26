@@ -1,0 +1,89 @@
+<div class="app-content content center-layout">
+    <div class="content-wrapper">
+
+        <div class="content-header row px-1 my-1">
+            <div class="content-header-left col-md-6 col-12">
+                <div class="row breadcrumbs-top">
+                    <div class="breadcrumb-wrapper col-12">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="<?php echo site_url('inicio'); ?>">Inicio</a></li>
+                            <li class="breadcrumb-item"><a href="<?php echo site_url('reportes'); ?>">Reportes</a></li>
+                            <li class="breadcrumb-item active"><?php echo $pagina_titulo; ?></li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+            <div class="content-header-right col-md-6 col-12">
+                <div class="media float-right">
+                    <div class="form-group">
+                        <div class="btn-group" role="group" aria-label="Basic example">
+                            <a class="btn btn-outline-grey btn-outline-lighten-1 btn-min-width mr-1" href="<?php echo site_url($regresar_a); ?>"><i class="fa fa-arrow-circle-left"></i>&nbsp;Volver</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-body">
+            <section id="section">
+                <?php $this->load->view('_templates/mensajes_alerta.tpl.php'); ?>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card no-border">
+                            <div class="card-header">
+                                <h4 class="card-title"><?php echo $pagina_subtitulo; ?></h4>
+                            </div>
+                            <div class="card-content collapse show">
+                                <div class="card-body card-dashboard">
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <div class="form-group">
+                                                <label for="fecha_inicio">Fecha de inicio:</label>
+                                                <input type="date" name="fecha_inicio" id="fecha_inicio" value="<?php echo date('Y-m-d', strtotime('first day of this month')); ?>" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="form-group">
+                                                <label for="fecha_fin">Fecha de fin:</label>
+                                                <input type="date" name="fecha_fin" id="fecha_fin" value="<?php echo date('Y-m-d'); ?>" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="form-group">
+                                                <label for="sucursal">Sucursal:</label>
+                                                <select name="sucursal" id="sucursal" class="form-control">
+                                                    <option value="-1" selected>Todas</option>
+                                                    <option value="2">Plaza Vela</option>
+                                                    <option value="3">El Dorado</option>
+                                                    <option value="4">Outdoor</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-group float-md-right">
+                                                <button name="actualizar_grafica" id="actualizar_grafica" class="btn btn-secondary">Actualizar Gráfica</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="chart-container" style="position: relative; height: 400px; width: 100%;">
+                                        <canvas name="canvas_grafica" id="canvas_grafica"></canvas>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-12">
+                                            <div class="form-group float-md-right">
+                                                <a class="btn btn-outline-grey btn-outline-lighten-1 btn-min-width mr-1" href="<?php echo site_url($regresar_a); ?>"><i class="fa fa-arrow-circle-left"></i>&nbsp;Volver</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+        </div>
+    </div>
+</div>

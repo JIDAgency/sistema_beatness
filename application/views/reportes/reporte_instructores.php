@@ -11,6 +11,7 @@
                     <div class="breadcrumb-wrapper col-12">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="<?php echo site_url('site/inicio'); ?>">Inicio</a></li>
+                            <li class="breadcrumb-item"><a href="<?php echo site_url('reportes'); ?>">Reportes</a></li>
                             <li class="breadcrumb-item active"><?php echo $pagina_titulo; ?></li>
                         </ol>
                     </div>
