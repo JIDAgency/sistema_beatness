@@ -20,8 +20,17 @@ class Totalpass_lib
         $this->CI->load->model('totalpass_model');
 
         $this->totalpass_base_url = 'https://booking-api.totalpass.com';
-        $this->place_api_key = '3e05190a-013e-4f0d-afc2-57dcf4d121e9';
+
         $this->partner_api_key = '8e85f6e4-8653-470f-9cee-ac67321f38f6';
+
+        // Sandbox
+        // $this->place_api_key = '3e05190a-013e-4f0d-afc2-57dcf4d121e9';
+        // Cycling Polanco
+        // $this->place_api_key = '1c90544a-e9f6-4794-a8b4-adb1ac4eac20';
+        // Bootcamp Polanco
+        // $this->place_api_key = '1c38afd4-0dbc-4d3c-bf6f-8e201749e3b2';
+        // Bootcamp Puebla
+        $this->place_api_key = '90e01ec4-07f9-4d82-8cfe-7dadef7a3d31';
 
         $this->token_cargar();
     }

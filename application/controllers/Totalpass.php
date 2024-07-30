@@ -58,7 +58,7 @@ class Totalpass extends MY_Controller
         }
 
         $token_data = json_decode($token_data->json_1);
-        $token_data = $token_data->place->Plans;
+        $token_data = $token_data;
 
         $data['token_data'] = $token_data;
 
@@ -99,8 +99,8 @@ class Totalpass extends MY_Controller
 
     public function clases()
     {
-        $data['pagina_titulo'] = 'Totalpass';
-        $data['pagina_subtitulo'] = 'Totalpass';
+        $data['pagina_titulo'] = 'Clases';
+        $data['pagina_subtitulo'] = 'Clases | Totalpass';
         $data['pagina_totalpass'] = true;
 
         $data['controlador'] = 'totalpass';
@@ -157,7 +157,6 @@ class Totalpass extends MY_Controller
         exit();
     }
 
-
     public function crear_ocurrencia_evento($id)
     {
         $this->db->trans_begin();
@@ -173,10 +172,10 @@ class Totalpass extends MY_Controller
                 'title' => mb_strtoupper($clase_row->dificultad),
                 'responsible' => $clase_row->instructores_nombre,
                 'duration' => $clase_row->intervalo_horas * 60,
-                'slots' => intval($clase_row->cupo),
-                'planId' => 19703,
+                'slots' => intval($clase_row->cupo - $clase_row->reservado),
+                'planId' => 19976,
                 'eventDate' => date('Y-m-d', strtotime($clase_row->inicia)),
-                'startTime' => date('H:i A', strtotime($clase_row->inicia)),
+                'startTime' => date('h:i A', strtotime($clase_row->inicia)),
                 'timezone' => 'es-MX',
                 'description' => $clase_row->disciplinas_nombre
             );
@@ -228,7 +227,6 @@ class Totalpass extends MY_Controller
             $this->output_json(array('error' => true, 'message' => $e->getMessage()));
         }
     }
-
 
     private function output_json($data)
     {

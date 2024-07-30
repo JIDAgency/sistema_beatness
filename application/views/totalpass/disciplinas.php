@@ -61,7 +61,7 @@
                                             </table>
                                         </div>
                                         <div class="col-6">
-                                            <?php print_r($token_data); ?>
+                                            <?php print_r(json_encode($token_data)); ?>
                                         </div>
                                     </div>
 
