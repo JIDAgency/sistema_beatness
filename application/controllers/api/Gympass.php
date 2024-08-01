@@ -387,7 +387,7 @@ class Gympass extends REST_Controller
                 );
 
                 if (!$this->wellhub_model->reservaciones_actualizar_por_id($reservacion_row->id, $data_2)) {
-                    throw new Exception('No se pudo crear la reserva. Por favor, intente nuevamente.');
+                    throw new Exception('No se pudo cancelar la reserva. Por favor, intente nuevamente.');
                 }
 
                 $this->db->trans_complete();
