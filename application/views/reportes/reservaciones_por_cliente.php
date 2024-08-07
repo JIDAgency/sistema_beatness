@@ -53,9 +53,8 @@
                                                 <label for="sucursal">Sucursal:</label>
                                                 <select name="sucursal" id="sucursal" class="form-control">
                                                     <option value="-1" selected>Todas</option>
-                                                    <option value="2">Plaza Vela</option>
-                                                    <option value="3">El Dorado</option>
-                                                    <option value="4">Outdoor</option>
+                                                    <option value="2">Puebla</option>
+                                                    <option value="3">Polanco</option>
                                                 </select>
                                             </div>
                                         </div>

@@ -235,3 +235,24 @@ html body.bg-full-screen-image {
     /* Color de texto blanco */
     /* Otros estilos que desees aplicar */
 }
+
+.img-segmento {
+    background: url(../../almacenamiento/beat.png);
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat; 
+}
+
+.img-segmento-puebla {
+    background: url(../../almacenamiento/beat-puebla.png);
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat; 
+}
+
+.img-segmento-polanco {
+    background: url(../../almacenamiento/beat-polanco.png);
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat; 
+}

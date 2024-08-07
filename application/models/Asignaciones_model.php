@@ -104,7 +104,7 @@ class Asignaciones_model extends CI_Model
     {
         $this->db->select("t1.*,
         t2.descripcion as descripcion,
-        t2.terminos_condiciones as terminos
+        t2.terminos_condiciones as terminos,
         ")
             ->from("asignaciones t1")
             ->join("planes t2", "t1.plan_id = t2.id")
@@ -402,6 +402,54 @@ class Asignaciones_model extends CI_Model
                 ")
             ->from("asignaciones t1")
             ->join("usuarios t2", "t2.id = t1.usuario_id")
+            ->order_by("t2.correo", "asc")
+            ->get();
+        return $query;
+    }
+
+    public function obtener_usuarios_puebla_planes_por_vencer()
+    {
+        $query = $this->db
+            ->where("t1.estatus", "Activo")
+            ->where("t1.clases_incluidas >", 1)
+            ->where("t2.sucursal_id", 2)
+            ->where("DATE_FORMAT(DATE_ADD(t1.fecha_activacion, INTERVAL t1.vigencia_en_dias DAY),'%Y-%m-%d') <=", date('Y-m-d', strtotime('+5 days')))
+            ->select("
+                t1.*,
+                t2.id as usuarios_id,
+                t2.correo as usuarios_correo,
+                t2.sucursal_id,
+                CONCAT(COALESCE(t2.nombre_completo, 'N/D'), ' ', COALESCE(t2.apellido_paterno, 'N/D'), ' ', COALESCE(t2.apellido_materno, 'N/D')) AS usuarios_nombre,
+                DATE_FORMAT(DATE_ADD(t1.fecha_activacion, INTERVAL t1.vigencia_en_dias DAY),'%Y-%m-%d') as asignaciones_fecha_finalizacion,
+                t3.descripcion as nombre_sucursal
+                ")
+            ->from("asignaciones t1")
+            ->join("usuarios t2", "t2.id = t1.usuario_id")
+            ->join("sucursales t3", "t3.id = t2.sucursal_id")
+            ->order_by("t2.correo", "asc")
+            ->get();
+        return $query;
+    }
+
+    public function obtener_usuarios_polanco_planes_por_vencer()
+    {
+        $query = $this->db
+            ->where("t1.estatus", "Activo")
+            ->where("t1.clases_incluidas >", 1)
+            ->where("t2.sucursal_id", 3)
+            ->where("DATE_FORMAT(DATE_ADD(t1.fecha_activacion, INTERVAL t1.vigencia_en_dias DAY),'%Y-%m-%d') <=", date('Y-m-d', strtotime('+5 days')))
+            ->select("
+                t1.*,
+                t2.id as usuarios_id,
+                t2.correo as usuarios_correo,
+                t2.sucursal_id,
+                CONCAT(COALESCE(t2.nombre_completo, 'N/D'), ' ', COALESCE(t2.apellido_paterno, 'N/D'), ' ', COALESCE(t2.apellido_materno, 'N/D')) AS usuarios_nombre,
+                DATE_FORMAT(DATE_ADD(t1.fecha_activacion, INTERVAL t1.vigencia_en_dias DAY),'%Y-%m-%d') as asignaciones_fecha_finalizacion,
+                t3.descripcion as nombre_sucursal
+                ")
+            ->from("asignaciones t1")
+            ->join("usuarios t2", "t2.id = t1.usuario_id")
+            ->join("sucursales t3", "t3.id = t2.sucursal_id")
             ->order_by("t2.correo", "asc")
             ->get();
         return $query;

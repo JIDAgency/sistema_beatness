@@ -432,11 +432,11 @@ class Endpoint extends REST_Controller
                 throw new Exception('Has alcanzado el límite de reservaciones para esta clase.<br>' . date('d/m/Y H:i a', strtotime($fecha_de_clase)) . '');
             }
 
-            if ($plan_cliente->es_ilimitado != 'si') {
-                if ($verificacion_de_reservaciones_hoy) {
-                    throw new Exception('Has alcanzado el límite de reservaciones para este día.<br>' . date('d/m/Y', strtotime($fecha_de_clase)) . '');
-                }
-            }
+            // if ($plan_cliente->es_ilimitado != 'si') {
+            //     if ($verificacion_de_reservaciones_hoy) {
+            //         throw new Exception('Has alcanzado el límite de reservaciones para este día.<br>' . date('d/m/Y', strtotime($fecha_de_clase)) . '');
+            //     }
+            // }
 
             // Validar plan del cliente
             if (($plan_cliente->clases_incluidas - $plan_cliente->clases_usadas) < $clase_a_reservar->intervalo_horas) {

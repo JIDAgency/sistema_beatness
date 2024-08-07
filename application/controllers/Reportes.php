@@ -78,7 +78,7 @@ class Reportes extends MY_Controller
 	}
 	public function grafica_numero_de_reservaciones_por_mes()
 	{
-		$start = (new DateTime('2019-04-01'))->modify('first day of this month');
+		$start = (new DateTime('2023-04-01'))->modify('first day of this month');
 		$end = (new DateTime(date('Y-m-d')))->modify('first day of next month');
 		$interval = DateInterval::createFromDateString('1 month');
 		$period = new DatePeriod($start, $interval, $end);
