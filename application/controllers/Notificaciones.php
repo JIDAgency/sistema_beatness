@@ -466,7 +466,7 @@ class Notificaciones extends MY_Controller
 
 	public function segmento_usuarios_puebla()
 	{
-		$data['pagina_titulo'] = 'Segmento de usuarios de Puebla';
+		$data['pagina_titulo'] = 'Notificar usuarios de Puebla';
 		$data['pagina_subtitulo'] = 'Enviar una notificación al segmento de usuarios';
 		$data['pagina_menu_notificaciones'] = true;
 
@@ -634,7 +634,7 @@ class Notificaciones extends MY_Controller
 
 	public function segmento_usuarios_polanco()
 	{
-		$data['pagina_titulo'] = 'Segmento de usuarios de Polanco';
+		$data['pagina_titulo'] = 'Notificar usuarios de Polanco';
 		$data['pagina_subtitulo'] = 'Enviar una notificación al segmento de usuarios';
 		$data['pagina_menu_notificaciones'] = true;
 
@@ -794,8 +794,8 @@ class Notificaciones extends MY_Controller
 
 	public function segmento_usuarios_puebla_planes_por_vencer()
 	{
-		$data['pagina_titulo'] = 'Segmento de usuarios Puebla con planes por vencer';
-		$data['pagina_subtitulo'] = 'Enviar una notificación al segmento de usuarios Puebla';
+		$data['pagina_titulo'] = 'Notificar usuarios con planes por vencer en 5 días';
+		$data['pagina_subtitulo'] = 'Notificar usuarios con planes por vencer en 5 días';
 		$data['pagina_menu_notificaciones'] = true;
 
 		$data['controlador'] = 'notificaciones/segmento_usuarios_puebla_planes_por_vencer/';
@@ -907,8 +907,8 @@ class Notificaciones extends MY_Controller
 
 	public function segmento_usuarios_polanco_planes_por_vencer()
 	{
-		$data['pagina_titulo'] = 'Segmento de usuarios Polanco con planes por vencer';
-		$data['pagina_subtitulo'] = 'Enviar una notificación al segmento de usuarios Polanco';
+		$data['pagina_titulo'] = 'Notificar usuarios con planes por vencer en 5 días';
+		$data['pagina_subtitulo'] = 'Notificar usuarios con planes por vencer en 5 días';
 		$data['pagina_menu_notificaciones'] = true;
 
 		$data['controlador'] = 'notificaciones/segmento_usuarios_polanco_planes_por_vencer/';
@@ -1133,8 +1133,8 @@ class Notificaciones extends MY_Controller
 
 	public function segmento_usuarios_puebla_sin_reservar_en_una_semana()
 	{
-		$data['pagina_titulo'] = 'Segmento de usuarios sin reservar en una semana';
-		$data['pagina_subtitulo'] = 'Enviar una notificación al segmento de usuarios';
+		$data['pagina_titulo'] = '⁠⁠Notificar usuarios sin reservar hace 5 días';
+		$data['pagina_subtitulo'] = '⁠⁠Notificar usuarios sin reservar hace 5 días';
 		$data['pagina_menu_notificaciones'] = true;
 
 		$data['controlador'] = 'notificaciones/segmento_usuarios_puebla_sin_reservar_en_una_semana/';
@@ -1250,8 +1250,8 @@ class Notificaciones extends MY_Controller
 
 	public function segmento_usuarios_polanco_sin_reservar_en_una_semana()
 	{
-		$data['pagina_titulo'] = 'Segmento de usuarios sin reservar en una semana';
-		$data['pagina_subtitulo'] = 'Enviar una notificación al segmento de usuarios';
+		$data['pagina_titulo'] = '⁠⁠Notificar usuarios sin reservar hace 5 días';
+		$data['pagina_subtitulo'] = '⁠⁠Notificar usuarios sin reservar hace 5 días';
 		$data['pagina_menu_notificaciones'] = true;
 
 		$data['controlador'] = 'notificaciones/segmento_usuarios_polanco_sin_reservar_en_una_semana/';
@@ -1368,7 +1368,7 @@ class Notificaciones extends MY_Controller
 	public function segmento_usuarios_puebla_sin_compras_hace_dos_meses()
 	{
 		$data['pagina_titulo'] = 'Notificar usuarios sin comprar en mas de 2 meses';
-		$data['pagina_subtitulo'] = 'Enviar una notificación al segmento de usuarios';
+		$data['pagina_subtitulo'] = 'Notificar usuarios sin comprar en mas de 2 meses';
 		$data['pagina_menu_notificaciones'] = true;
 
 		$data['controlador'] = 'notificaciones/segmento_usuarios_puebla_sin_comprar_hace_dos_meses/';
@@ -1485,7 +1485,7 @@ class Notificaciones extends MY_Controller
 	public function segmento_usuarios_polanco_sin_compras_hace_dos_meses()
 	{
 		$data['pagina_titulo'] = 'Notificar usuarios sin comprar en mas de 2 meses';
-		$data['pagina_subtitulo'] = 'Enviar una notificación al segmento de usuarios';
+		$data['pagina_subtitulo'] = 'Notificar usuarios sin comprar en mas de 2 meses';
 		$data['pagina_menu_notificaciones'] = true;
 
 		$data['controlador'] = 'notificaciones/segmento_usuarios_polanco_sin_comprar_hace_dos_meses/';

@@ -236,6 +236,23 @@ html body.bg-full-screen-image {
     /* Otros estilos que desees aplicar */
 }
 
+/* Contenedor que envuelve ambas columnas */
+.row-contenedor {
+    display: flex;
+    position: relative;
+}
+
+/* Divisor vertical */
+.divisor-vertical {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: -11px;
+    width: 1px;
+    background-color: #cecece; /* Color de la línea divisoria */
+    margin-left: -30px; /* Ajusta el margen para centrar la línea */
+}
+
 .img-segmento {
     background: url(../../almacenamiento/beat.png);
     background-size: cover; 

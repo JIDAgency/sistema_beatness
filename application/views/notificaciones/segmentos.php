@@ -50,11 +50,10 @@
             <?php $this->load->view('_comun/mensajes_alerta'); ?>
 
             <section>
-
-                <div class="row match-height">
-                    <div class="col-lg-6 col-md-6 col-sm-6 row justify-content-center">
+                <div class="row match-height row-contenedor">
+                    <div class="col-lg-6 col-md-6 col-sm-12 row justify-content-center">
                         <div class="col-lg-12 col-md-12 col-sm-12">
-                            <h1>Puebla</h1>
+                            <h1><b>Puebla</b></h1>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6">
                             <a href="<?php echo site_url("notificaciones/segmento_usuarios_puebla"); ?>">
@@ -115,9 +114,12 @@
                         </div>
                     </div>
 
-                    <div class="col-lg-6 col-md-6 col-sm-6 row justify-content-center">
+                    <!-- Divisor vertical -->
+                    <div class="divisor-vertical d-none d-sm-block"></div>
+                    
+                    <div class="col-lg-6 col-md-6 col-sm-12 row justify-content-center">
                         <div class="col-lg-12 col-md-12 col-sm-12">
-                            <h1>Polanco</h1>
+                            <h1><b>Polanco</b></h1>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6">
                             <a href="<?php echo site_url("notificaciones/segmento_usuarios_polanco"); ?>">
@@ -177,23 +179,25 @@
                     </div>
 
                 </div>
-
+                <hr>
                 <div class="row match-height">
-                    <div class="col-lg-12 col-md-12 col-sm-12">
-                        <h1>General</h1>
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-sm-6">
-                        <a href="<?php echo site_url("notificaciones/segmento_todos_usuarios"); ?>">
-                            <div class="card white img-segmento text-center">
-                                <div class="card-content">
-                                    <div class="card-body py-3">
-                                        <h3 class="white mt-3 mb-2"><b> ⁠Notificar usuarios (Todos)</b></h3>
-                                        <p class="card-text"><b>Ver la lista y notificar a usuarios con planes por vencer.</b></p>
-                                        <button class="btn btn-darken-3" style="background-color: #00E0FF;">Ver</button>
+                    <div class="col-lg-12 col-md-12 col-sm-12 row justify-content-center">
+                        <div class="col-lg-12 col-md-12 col-sm-12 text-center">
+                            <h1><b>General</b></h1>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12">
+                            <a href="<?php echo site_url("notificaciones/segmento_todos_usuarios"); ?>">
+                                <div class="card white img-segmento text-center">
+                                    <div class="card-content">
+                                        <div class="card-body py-3">
+                                            <h3 class="white mt-3 mb-2"><b> ⁠Notificar usuarios (Todos)</b></h3>
+                                            <p class="card-text"><b>Ver la lista y notificar a todos los usuarios beatness.</b></p>
+                                            <button class="btn btn-darken-3" style="background-color: #00E0FF;">Ver</button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </a>
+                            </a>
+                        </div>
                     </div>
                 </div>
 
