@@ -49,16 +49,20 @@
             <?php endif ?>
             <?php $this->load->view('_comun/mensajes_alerta'); ?>
 
-            <section id="section">
+            <section>
 
                 <div class="row match-height">
                     <div class="col-lg-6 col-md-6 col-sm-6 row justify-content-center">
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <h1>Puebla</h1>
+                        </div>
                         <div class="col-lg-6 col-md-6 col-sm-6">
                             <a href="<?php echo site_url("notificaciones/segmento_usuarios_puebla"); ?>">
                                 <div class="card white img-segmento-puebla text-center">
                                     <div class="card-content">
                                         <div class="card-body py-3">
-                                            <h3 class="white mt-3 mb-2"><b>Usuarios Puebla</b></h3>
+                                            <h3 class="white mt-3 mb-2"><b>Notificar usuarios de Puebla
+                                                </b></h3>
                                             <p class="card-text"><b>Ver la lista y notificar a usuarios de Puebla.</b></p>
                                             <button class="btn btn-darken-3" style="background-color: #00E0FF;">Ver</button>
                                         </div>
@@ -72,7 +76,8 @@
                                 <div class="card white img-segmento-puebla text-center">
                                     <div class="card-content">
                                         <div class="card-body py-3">
-                                            <h3 class="white mt-3 mb-2"><b>Usuarios Puebla con planes por vencer (5 días)</b></h3>
+                                            <h3 class="white mt-3 mb-2"><b>Notificar usuarios con planes por vencer en 5 días
+                                                </b></h3>
                                             <p class="card-text"><b>Ver la lista y notificar a usuarios Puebla con planes por vencer.</b></p>
                                             <button class="btn btn-darken-3" style="background-color: #00E0FF;">Ver</button>
                                         </div>
@@ -81,28 +86,45 @@
                             </a>
                         </div>
 
-                        <!-- <div class="col-lg-6 col-md-6 col-sm-6">
-                            <a href="<?php echo site_url("notificaciones/segmento_usuarios_puebla_planes_por_vencer"); ?>">
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <a href="<?php echo site_url("notificaciones/segmento_usuarios_puebla_sin_reservar_en_una_semana"); ?>">
                                 <div class="card white img-segmento-puebla text-center">
                                     <div class="card-content">
                                         <div class="card-body py-3">
-                                            <h3 class="white mt-3 mb-2"><b>Usuarios Puebla con una semana sin reservar</b></h3>
+                                            <h3 class="white mt-3 mb-2"><b>Notificar usuarios sin reservar hace 5 días</b></h3>
                                             <p class="card-text"><b>Ver la lista y notificar a usuarios Puebla con una semana sin reservar.</b></p>
                                             <button class="btn btn-darken-3" style="background-color: #00E0FF;">Ver</button>
                                         </div>
                                     </div>
                                 </div>
                             </a>
-                        </div> -->
+                        </div>
+
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <a href="<?php echo site_url("notificaciones/segmento_usuarios_puebla_sin_compras_hace_dos_meses"); ?>">
+                                <div class="card white img-segmento-puebla text-center">
+                                    <div class="card-content">
+                                        <div class="card-body py-3">
+                                            <h3 class="white mt-3 mb-2"><b>⁠⁠Notificar usuarios sin comprar en mas de 2 meses</b></h3>
+                                            <p class="card-text"><b>Ver la lista y notificar a usuarios Puebla con 2 meses sin comprar.</b></p>
+                                            <button class="btn btn-darken-3" style="background-color: #00E0FF;">Ver</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
                     </div>
 
                     <div class="col-lg-6 col-md-6 col-sm-6 row justify-content-center">
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <h1>Polanco</h1>
+                        </div>
                         <div class="col-lg-6 col-md-6 col-sm-6">
                             <a href="<?php echo site_url("notificaciones/segmento_usuarios_polanco"); ?>">
                                 <div class="card white img-segmento-polanco text-center">
                                     <div class="card-content">
                                         <div class="card-body py-3">
-                                            <h3 class="white mt-3 mb-2"><b>Usuarios Polanco</b></h3>
+                                            <h3 class="white mt-3 mb-2"><b>⁠Notificar usuarios de Polanco</b></h3>
                                             <p class="card-text"><b>Ver la lista y notificar a usuarios de Polanco.</b></p>
                                             <button class="btn btn-darken-3" style="background-color: #00E0FF;">Ver</button>
                                         </div>
@@ -116,7 +138,7 @@
                                 <div class="card white img-segmento-polanco text-center">
                                     <div class="card-content">
                                         <div class="card-body py-3">
-                                            <h3 class="white mt-3 mb-2"><b>Usuarios Polanco con planes por vencer (5 días)</b></h3>
+                                            <h3 class="white mt-3 mb-2"><b>Notificar usuarios con planes por vencer en 5 días</b></h3>
                                             <p class="card-text"><b>Ver la lista y notificar a usuarios Polanco con planes por vencer.</b></p>
                                             <button class="btn btn-darken-3" style="background-color: #00E0FF;">Ver</button>
                                         </div>
@@ -125,43 +147,27 @@
                             </a>
                         </div>
 
-                        <!-- <div class="col-lg-6 col-md-6 col-sm-6">
-                            <a href="<?php echo site_url("notificaciones/segmento_usuarios_polanco_planes_por_vencer"); ?>">
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <a href="<?php echo site_url("notificaciones/segmento_usuarios_polanco_sin_reservar_en_una_semana"); ?>">
                                 <div class="card white img-segmento-polanco text-center">
                                     <div class="card-content">
                                         <div class="card-body py-3">
-                                            <h3 class="white mt-3 mb-2"><b>Usuarios Polanco con una semana sin reservar</b></h3>
+                                            <h3 class="white mt-3 mb-2"><b>Notificar usuarios sin reservar hace 5 días</b></h3>
                                             <p class="card-text"><b>Ver la lista y notificar a usuarios Polanco con una semana sin reservar.</b></p>
                                             <button class="btn btn-darken-3" style="background-color: #00E0FF;">Ver</button>
                                         </div>
                                     </div>
                                 </div>
                             </a>
-                        </div> -->
-                    </div>
-
-                    <div class="col-lg-12 col-md-12 col-sm-12 row justify-content-center">
-                        <div class="col-lg-6 col-md-6 col-sm-6">
-                            <a href="<?php echo site_url("notificaciones/segmento_usuarios_planes_por_vencer"); ?>">
-                                <div class="card white img-segmento text-center">
-                                    <div class="card-content">
-                                        <div class="card-body py-3">
-                                            <h3 class="white mt-3 mb-2"><b>Usuarios con planes por vencer (5 días)</b></h3>
-                                            <p class="card-text"><b>Ver la lista y notificar a usuarios con planes por vencer.</b></p>
-                                            <button class="btn btn-darken-3" style="background-color: #00E0FF;">Ver</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
                         </div>
 
                         <div class="col-lg-6 col-md-6 col-sm-6">
-                            <a href="<?php echo site_url("notificaciones/segmento_usuarios_sin_compras_hace_dos_meses"); ?>">
-                                <div class="card white img-segmento text-center">
+                            <a href="<?php echo site_url("notificaciones/segmento_usuarios_polanco_sin_compras_hace_dos_meses"); ?>">
+                                <div class="card white img-segmento-polanco text-center">
                                     <div class="card-content">
                                         <div class="card-body py-3">
-                                            <h3 class="white mt-3 mb-2"><b>Usuarios sin compras hace dos meses</b></h3>
-                                            <p class="card-text"><b>Ver la lista y notificar a usuarios que no han comprado algún plan desde hace dos meses.</b></p>
+                                            <h3 class="white mt-3 mb-2"><b>Notificar usuarios sin comprar en mas de 2 meses</b></h3>
+                                            <p class="card-text"><b>Ver la lista y notificar a usuarios Polanco con 2 meses sin comprar.</b></p>
                                             <button class="btn btn-darken-3" style="background-color: #00E0FF;">Ver</button>
                                         </div>
                                     </div>
@@ -170,6 +176,25 @@
                         </div>
                     </div>
 
+                </div>
+
+                <div class="row match-height">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <h1>General</h1>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <a href="<?php echo site_url("notificaciones/segmento_todos_usuarios"); ?>">
+                            <div class="card white img-segmento text-center">
+                                <div class="card-content">
+                                    <div class="card-body py-3">
+                                        <h3 class="white mt-3 mb-2"><b> ⁠Notificar usuarios (Todos)</b></h3>
+                                        <p class="card-text"><b>Ver la lista y notificar a usuarios con planes por vencer.</b></p>
+                                        <button class="btn btn-darken-3" style="background-color: #00E0FF;">Ver</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
                 </div>
 
             </section>

@@ -369,6 +369,21 @@ class Usuarios_model extends CI_Model
         return $query;
     }
 
+    public function obtener_todos_usuarios()
+    {
+        $query = $this->db
+            ->select("
+                t1.*,
+                CONCAT(COALESCE(t1.nombre_completo, 'N/D'), ' ', COALESCE(t1.apellido_paterno, 'N/D'), ' ', COALESCE(t1.apellido_materno, 'N/D')) AS nombre,
+                t2.descripcion as nombre_sucursal
+            ")
+            ->from("usuarios t1")
+            ->join("sucursales t2", "t2.id = t1.sucursal_id")
+            ->get();
+
+        return $query;
+    }
+
     public function obtener_usuarios_puebla()
     {
         $query = $this->db

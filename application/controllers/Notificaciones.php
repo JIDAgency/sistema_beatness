@@ -220,7 +220,7 @@ class Notificaciones extends MY_Controller
 
 	public function segmentos()
 	{
-		$data['pagina_titulo'] = 'Segmentos';
+		$data['pagina_titulo'] = 'Notificar segmentos';
 		$data['pagina_menu_notificaciones'] = true;
 
 		$data['controlador'] = 'notificaciones/segmentos';
@@ -348,6 +348,122 @@ class Notificaciones extends MY_Controller
 		}
 	}
 
+	public function segmento_todos_usuarios()
+	{
+		$data['pagina_titulo'] = '⁠Notificar usuarios (Todos)';
+		$data['pagina_subtitulo'] = 'Enviar una notificación al segmento de usuarios';
+		$data['pagina_menu_notificaciones'] = true;
+
+		$data['controlador'] = 'notificaciones/segmento_todos_usuarios/';
+		$data['regresar_a'] = 'notificaciones/segmentos/';
+		$controlador_js = 'notificaciones/segmento_todos_usuarios';
+
+		$data['styles'] = array(
+			array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/tables/datatable/datatables.min.css'),
+			array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/forms/selects/select2.min.css'),
+		);
+
+		$data['scripts'] = array(
+			array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/tables/datatable/datatables.min.js'),
+			array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/forms/select/select2.full.min.js'),
+			array('es_rel' => true, 'src' => '' . $controlador_js . '.js'),
+		);
+
+		$this->form_validation->set_rules('fecha_notificacion', 'Fecha de notificación', 'trim');
+
+		$usuarios_list = $this->usuarios_model->obtener_todos_usuarios()->result();
+
+		// foreach ($usuarios_list as $key => $usuarios_row) {
+		// 	$id_usuarios[] = $usuarios_row->id;
+		// }
+		// $usuarios_list = $id_usuarios;
+
+
+		$data['usuarios_list'] = $usuarios_list;
+
+		if ($this->form_validation->run() == false) {
+			$this->construir_private_site_ui('notificaciones/segmento_todos_usuarios', $data);
+		} else {
+			foreach ($usuarios_list as $key => $usuarios_row) {
+				$id_usuarios[] = $usuarios_row->id;
+			}
+
+			$usuarios_list = $id_usuarios;
+
+			$to = $usuarios_list;
+
+			$title = $this->input->post('titulo');
+			$message = $this->input->post('mensaje');
+
+			$img = '';
+
+			$app_id = '66454c58-6e0b-4489-ba82-524c05331a3b';
+			$app_key = 'OGJhYWFlNGYtMDEwYi00NjMyLThiNzMtMDc0YTg4OTk3Yzkx';
+
+			$content = array(
+				"es" => $message,
+				"en" => $message
+			);
+
+			$headings = array(
+				"es" => $title,
+				"en" => $title
+			);
+
+			$fields = array(
+				'app_id' => $app_id,
+				"headings" => $headings,
+				'include_external_user_ids' => $to,
+				// 'included_segments' => $segmento,
+				'channel_for_external_user_ids' => 'push',
+				'contents' => $content,
+				'large_icon' => '',
+				'content_available' => true,
+				'SetIsAndroid' => true,
+				'SetIsIos' => true,
+			);
+
+			if (!empty($img)) {
+				$fields["big_picture"] = $img;
+				$fields["ios_attachments"] = array("id1" => $img);
+			}
+
+			$headers = array(
+				'Authorization: Basic ' . $app_key,
+				'Accept: application/json',
+				'Content-Type: application/json'
+			);
+
+			$ch = curl_init();
+
+			curl_setopt($ch, CURLOPT_URL, 'https://onesignal.com/api/v1/notifications');
+			curl_setopt($ch, CURLOPT_POST, true);
+			curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+
+			$result = curl_exec($ch);
+
+			curl_close($ch);
+
+			//return $result;
+
+			$response = json_decode($result, true);
+
+			if (isset($response['errors'])) {
+				// Manejar los errores de OneSignal
+				$error_message = implode('. ', $response['errors']);
+				$this->mensaje_del_sistema('MENSAJE_ERROR', 'Error al enviar la notificación: ' . $error_message, 'notificaciones/segmento_todos_usuarios');
+				return;
+			}
+
+			$this->mensaje_del_sistema('MENSAJE_EXITO', 'Notificación enviada con éxito: ' . $title, $data['controlador']);
+
+			$this->construir_private_site_ui('notificaciones/segmento_todos_usuarios', $data);
+		}
+	}
+
 	public function segmento_usuarios_puebla()
 	{
 		$data['pagina_titulo'] = 'Segmento de usuarios de Puebla';
@@ -392,7 +508,7 @@ class Notificaciones extends MY_Controller
 			foreach ($usuarios_list as $key => $usuarios_row) {
 				$id_usuarios[] = $usuarios_row->id;
 			}
-			
+
 			$usuarios_puebla = $id_usuarios;
 
 			// $to = $usuarios_seleccionados_list;
@@ -410,12 +526,12 @@ class Notificaciones extends MY_Controller
 				"es" => $message,
 				"en" => $message
 			);
-	
+
 			$headings = array(
 				"es" => $title,
 				"en" => $title
 			);
-	
+
 			$fields = array(
 				'app_id' => $app_id,
 				"headings" => $headings,
@@ -428,12 +544,12 @@ class Notificaciones extends MY_Controller
 				'SetIsAndroid' => true,
 				'SetIsIos' => true,
 			);
-	
+
 			if (!empty($img)) {
 				$fields["big_picture"] = $img;
 				$fields["ios_attachments"] = array("id1" => $img);
 			}
-	
+
 			$headers = array(
 				'Authorization: Basic ' . $app_key,
 				'Accept: application/json',
@@ -553,7 +669,7 @@ class Notificaciones extends MY_Controller
 			foreach ($usuarios_list as $key => $usuarios_row) {
 				$id_usuarios[] = $usuarios_row->id;
 			}
-			
+
 			$usuarios_puebla = $id_usuarios;
 
 			$to = $usuarios_puebla;
@@ -570,12 +686,12 @@ class Notificaciones extends MY_Controller
 				"es" => $message,
 				"en" => $message
 			);
-	
+
 			$headings = array(
 				"es" => $title,
 				"en" => $title
 			);
-	
+
 			$fields = array(
 				'app_id' => $app_id,
 				"headings" => $headings,
@@ -588,12 +704,12 @@ class Notificaciones extends MY_Controller
 				'SetIsAndroid' => true,
 				'SetIsIos' => true,
 			);
-	
+
 			if (!empty($img)) {
 				$fields["big_picture"] = $img;
 				$fields["ios_attachments"] = array("id1" => $img);
 			}
-	
+
 			$headers = array(
 				'Authorization: Basic ' . $app_key,
 				'Accept: application/json',
@@ -715,7 +831,7 @@ class Notificaciones extends MY_Controller
 			foreach ($asignaciones_list as $key => $usuarios_row) {
 				$id_usuarios[] = $usuarios_row->usuarios_id;
 			}
-			
+
 			$usuarios_plan_por_vencer = $id_usuarios;
 
 			$to = $usuarios_plan_por_vencer;
@@ -732,12 +848,12 @@ class Notificaciones extends MY_Controller
 				"es" => $message,
 				"en" => $message
 			);
-	
+
 			$headings = array(
 				"es" => $title,
 				"en" => $title
 			);
-	
+
 			$fields = array(
 				'app_id' => $app_id,
 				"headings" => $headings,
@@ -749,12 +865,12 @@ class Notificaciones extends MY_Controller
 				'SetIsAndroid' => true,
 				'SetIsIos' => true,
 			);
-	
+
 			if (!empty($img)) {
 				$fields["big_picture"] = $img;
 				$fields["ios_attachments"] = array("id1" => $img);
 			}
-	
+
 			$headers = array(
 				'Authorization: Basic ' . $app_key,
 				'Accept: application/json',
@@ -828,7 +944,7 @@ class Notificaciones extends MY_Controller
 			foreach ($asignaciones_list as $key => $usuarios_row) {
 				$id_usuarios[] = $usuarios_row->usuarios_id;
 			}
-			
+
 			$usuarios_plan_por_vencer = $id_usuarios;
 
 			$to = $usuarios_plan_por_vencer;
@@ -845,12 +961,12 @@ class Notificaciones extends MY_Controller
 				"es" => $message,
 				"en" => $message
 			);
-	
+
 			$headings = array(
 				"es" => $title,
 				"en" => $title
 			);
-	
+
 			$fields = array(
 				'app_id' => $app_id,
 				"headings" => $headings,
@@ -862,12 +978,12 @@ class Notificaciones extends MY_Controller
 				'SetIsAndroid' => true,
 				'SetIsIos' => true,
 			);
-	
+
 			if (!empty($img)) {
 				$fields["big_picture"] = $img;
 				$fields["ios_attachments"] = array("id1" => $img);
 			}
-	
+
 			$headers = array(
 				'Authorization: Basic ' . $app_key,
 				'Accept: application/json',
@@ -941,7 +1057,7 @@ class Notificaciones extends MY_Controller
 			foreach ($asignaciones_list as $key => $usuarios_row) {
 				$id_usuarios[] = $usuarios_row->usuarios_id;
 			}
-			
+
 			$usuarios_plan_por_vencer = $id_usuarios;
 
 			$to = $usuarios_plan_por_vencer;
@@ -958,12 +1074,12 @@ class Notificaciones extends MY_Controller
 				"es" => $message,
 				"en" => $message
 			);
-	
+
 			$headings = array(
 				"es" => $title,
 				"en" => $title
 			);
-	
+
 			$fields = array(
 				'app_id' => $app_id,
 				"headings" => $headings,
@@ -975,12 +1091,12 @@ class Notificaciones extends MY_Controller
 				'SetIsAndroid' => true,
 				'SetIsIos' => true,
 			);
-	
+
 			if (!empty($img)) {
 				$fields["big_picture"] = $img;
 				$fields["ios_attachments"] = array("id1" => $img);
 			}
-	
+
 			$headers = array(
 				'Authorization: Basic ' . $app_key,
 				'Accept: application/json',
@@ -1038,23 +1154,27 @@ class Notificaciones extends MY_Controller
 
 		$this->form_validation->set_rules('fecha_notificacion', 'Fecha de notificación', 'trim');
 
-		// $usuarios_seleccionados_list = array('7', '32');
+		$list_usuarios_que_si_han_reservado_hace_una_semana = $this->notificaciones_model->obtener_usuarios_puebla_que_si_han_reservado_hace_una_semana();
 
-		// $usuarios_list = $this->usuarios_model->obtener_usuarios_seleccionados($usuarios_seleccionados_list)->result();
-		// $usuarios_list = $this->usuarios_model->obtener_usuarios_polanco()->result();
-		$reservaciones_list = $this->reservaciones_model->obtener_usuarios_puebla_sin_reservar_en_una_semana()->result();
+		$array_usuarios_que_si_han_reservado_los_ultimos_cinco_dias = array();
+		foreach ($list_usuarios_que_si_han_reservado_hace_una_semana->result() as $key => $value) {
+			array_push($array_usuarios_que_si_han_reservado_los_ultimos_cinco_dias, $value->id);
+		}
 
-		// $data['usuarios_list'] = $usuarios_list;
-		$data['reservaciones_list'] = $reservaciones_list;
+		$lista_usuarios_que_no_han_reservado_los_utlimos_cinco_dias = $this->notificaciones_model->obtener_usuarios_puebla_que_no_han_reservado_hace_una_semana($array_usuarios_que_si_han_reservado_los_ultimos_cinco_dias)->result();
+
+		$data['list_usuarios_que_si_han_reservado_hace_una_semana'] = $list_usuarios_que_si_han_reservado_hace_una_semana;
+
+		$data['lista_usuarios_que_no_han_reservado_los_utlimos_cinco_dias'] = $lista_usuarios_que_no_han_reservado_los_utlimos_cinco_dias;
 
 		if ($this->form_validation->run() == false) {
 			$this->construir_private_site_ui('notificaciones/segmento_usuarios_puebla_sin_reservar_en_una_semana', $data);
 		} else {
 			// array_push($usuarios_seleccionados_list, '22');
-			foreach ($reservaciones_list as $key => $usuarios_row) {
-				$id_usuarios[] = $usuarios_row->usuarios_id;
+			foreach ($lista_usuarios_que_no_han_reservado_los_utlimos_cinco_dias as $key => $usuarios_row) {
+				$id_usuarios[] = $usuarios_row->id;
 			}
-			
+
 			$usuarios_plan_por_vencer = $id_usuarios;
 
 			$to = $usuarios_plan_por_vencer;
@@ -1071,12 +1191,12 @@ class Notificaciones extends MY_Controller
 				"es" => $message,
 				"en" => $message
 			);
-	
+
 			$headings = array(
 				"es" => $title,
 				"en" => $title
 			);
-	
+
 			$fields = array(
 				'app_id' => $app_id,
 				"headings" => $headings,
@@ -1088,12 +1208,12 @@ class Notificaciones extends MY_Controller
 				'SetIsAndroid' => true,
 				'SetIsIos' => true,
 			);
-	
+
 			if (!empty($img)) {
 				$fields["big_picture"] = $img;
 				$fields["ios_attachments"] = array("id1" => $img);
 			}
-	
+
 			$headers = array(
 				'Authorization: Basic ' . $app_key,
 				'Accept: application/json',
@@ -1130,13 +1250,13 @@ class Notificaciones extends MY_Controller
 
 	public function segmento_usuarios_polanco_sin_reservar_en_una_semana()
 	{
-		$data['pagina_titulo'] = 'Segmento de usuarios con planes por vencer';
+		$data['pagina_titulo'] = 'Segmento de usuarios sin reservar en una semana';
 		$data['pagina_subtitulo'] = 'Enviar una notificación al segmento de usuarios';
 		$data['pagina_menu_notificaciones'] = true;
 
-		$data['controlador'] = 'notificaciones/segmento_usuarios_planes_por_vencer/';
+		$data['controlador'] = 'notificaciones/segmento_usuarios_polanco_sin_reservar_en_una_semana/';
 		$data['regresar_a'] = 'notificaciones/segmentos/';
-		$controlador_js = 'notificaciones/segmento_usuarios_planes_por_vencer';
+		$controlador_js = 'notificaciones/segmento_usuarios_polanco_sin_reservar_en_una_semana';
 
 		$data['styles'] = array(
 			array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/tables/datatable/datatables.min.css'),
@@ -1151,23 +1271,27 @@ class Notificaciones extends MY_Controller
 
 		$this->form_validation->set_rules('fecha_notificacion', 'Fecha de notificación', 'trim');
 
-		// $usuarios_seleccionados_list = array('7', '32');
+		$list_usuarios_que_si_han_reservado_hace_una_semana = $this->notificaciones_model->obtener_usuarios_polanco_que_si_han_reservado_hace_una_semana();
 
-		// $usuarios_list = $this->usuarios_model->obtener_usuarios_seleccionados($usuarios_seleccionados_list)->result();
-		// $usuarios_list = $this->usuarios_model->obtener_usuarios_polanco()->result();
-		$asignaciones_list = $this->asignaciones_model->obtener_usuarios_planes_por_vencer()->result();
+		$array_usuarios_que_si_han_reservado_los_ultimos_cinco_dias = array();
+		foreach ($list_usuarios_que_si_han_reservado_hace_una_semana->result() as $key => $value) {
+			array_push($array_usuarios_que_si_han_reservado_los_ultimos_cinco_dias, $value->id);
+		}
 
-		// $data['usuarios_list'] = $usuarios_list;
-		$data['asignaciones_list'] = $asignaciones_list;
+		$lista_usuarios_que_no_han_reservado_los_utlimos_cinco_dias = $this->notificaciones_model->obtener_usuarios_polanco_que_no_han_reservado_hace_una_semana($array_usuarios_que_si_han_reservado_los_ultimos_cinco_dias)->result();
+
+		$data['list_usuarios_que_si_han_reservado_hace_una_semana'] = $list_usuarios_que_si_han_reservado_hace_una_semana;
+
+		$data['lista_usuarios_que_no_han_reservado_los_utlimos_cinco_dias'] = $lista_usuarios_que_no_han_reservado_los_utlimos_cinco_dias;
 
 		if ($this->form_validation->run() == false) {
-			$this->construir_private_site_ui('notificaciones/segmento_usuarios_planes_por_vencer', $data);
+			$this->construir_private_site_ui('notificaciones/segmento_usuarios_polanco_sin_reservar_en_una_semana', $data);
 		} else {
 			// array_push($usuarios_seleccionados_list, '22');
-			foreach ($asignaciones_list as $key => $usuarios_row) {
-				$id_usuarios[] = $usuarios_row->usuarios_id;
+			foreach ($lista_usuarios_que_no_han_reservado_los_utlimos_cinco_dias as $key => $usuarios_row) {
+				$id_usuarios[] = $usuarios_row->id;
 			}
-			
+
 			$usuarios_plan_por_vencer = $id_usuarios;
 
 			$to = $usuarios_plan_por_vencer;
@@ -1184,12 +1308,12 @@ class Notificaciones extends MY_Controller
 				"es" => $message,
 				"en" => $message
 			);
-	
+
 			$headings = array(
 				"es" => $title,
 				"en" => $title
 			);
-	
+
 			$fields = array(
 				'app_id' => $app_id,
 				"headings" => $headings,
@@ -1201,12 +1325,12 @@ class Notificaciones extends MY_Controller
 				'SetIsAndroid' => true,
 				'SetIsIos' => true,
 			);
-	
+
 			if (!empty($img)) {
 				$fields["big_picture"] = $img;
 				$fields["ios_attachments"] = array("id1" => $img);
 			}
-	
+
 			$headers = array(
 				'Authorization: Basic ' . $app_key,
 				'Accept: application/json',
@@ -1231,13 +1355,247 @@ class Notificaciones extends MY_Controller
 			if (isset($response['errors'])) {
 				// Manejar los errores de OneSignal
 				$error_message = implode('. ', $response['errors']);
-				$this->mensaje_del_sistema('MENSAJE_ERROR', 'Error al enviar la notificación: ' . $error_message, 'notificaciones/segmento_usuarios_planes_por_vencer');
+				$this->mensaje_del_sistema('MENSAJE_ERROR', 'Error al enviar la notificación: ' . $error_message, 'notificaciones/segmento_usuarios_polanco_sin_reservar_en_una_semana');
 				return;
 			}
 
 			$this->mensaje_del_sistema('MENSAJE_EXITO', 'Notificación enviada con éxito: ' . $title, $data['controlador']);
 
-			$this->construir_private_site_ui('notificaciones/segmento_usuarios_planes_por_vencer', $data);
+			$this->construir_private_site_ui('notificaciones/segmento_usuarios_polanco_sin_reservar_en_una_semana', $data);
+		}
+	}
+
+	public function segmento_usuarios_puebla_sin_compras_hace_dos_meses()
+	{
+		$data['pagina_titulo'] = 'Notificar usuarios sin comprar en mas de 2 meses';
+		$data['pagina_subtitulo'] = 'Enviar una notificación al segmento de usuarios';
+		$data['pagina_menu_notificaciones'] = true;
+
+		$data['controlador'] = 'notificaciones/segmento_usuarios_puebla_sin_comprar_hace_dos_meses/';
+		$data['regresar_a'] = 'notificaciones/segmentos/';
+		$controlador_js = 'notificaciones/segmento_usuarios_puebla_sin_comprar_hace_dos_meses';
+
+		$data['styles'] = array(
+			array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/tables/datatable/datatables.min.css'),
+			array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/forms/selects/select2.min.css'),
+		);
+
+		$data['scripts'] = array(
+			array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/tables/datatable/datatables.min.js'),
+			array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/forms/select/select2.full.min.js'),
+			array('es_rel' => true, 'src' => '' . $controlador_js . '.js'),
+		);
+
+		$this->form_validation->set_rules('fecha_notificacion', 'Fecha de notificación', 'trim');
+
+		$list_usuarios_que_si_han_comprado_los_ultimos_dos_meses = $this->notificaciones_model->obtener_usuarios_puebla_que_si_han_comprado_los_ultimos_dos_meses();
+
+		$array_usuarios_que_si_han_comprado_los_ultimos_dos_meses = array();
+		foreach ($list_usuarios_que_si_han_comprado_los_ultimos_dos_meses->result() as $key => $value) {
+			array_push($array_usuarios_que_si_han_comprado_los_ultimos_dos_meses, $value->id);
+		}
+
+		$lista_usuarios_que_no_han_comprado_los_ultimos_dos_meses = $this->notificaciones_model->obtener_usuarios_puebla_que_no_han_comprado_los_ultimos_dos_meses($array_usuarios_que_si_han_comprado_los_ultimos_dos_meses)->result();
+
+		$data['list_usuarios_que_si_han_comprado_los_ultimos_dos_meses'] = $list_usuarios_que_si_han_comprado_los_ultimos_dos_meses;
+
+		$data['lista_usuarios_que_no_han_comprado_los_ultimos_dos_meses'] = $lista_usuarios_que_no_han_comprado_los_ultimos_dos_meses;
+
+		if ($this->form_validation->run() == false) {
+			$this->construir_private_site_ui('notificaciones/segmento_usuarios_puebla_sin_comprar_hace_dos_meses', $data);
+		} else {
+			// array_push($usuarios_seleccionados_list, '22');
+			foreach ($lista_usuarios_que_no_han_comprado_los_ultimos_dos_meses as $key => $usuarios_row) {
+				$id_usuarios[] = $usuarios_row->id;
+			}
+
+			$usuarios_plan_por_vencer = $id_usuarios;
+
+			$to = $usuarios_plan_por_vencer;
+
+			$title = $this->input->post('titulo');
+			$message = $this->input->post('mensaje');
+
+			$img = '';
+
+			$app_id = '66454c58-6e0b-4489-ba82-524c05331a3b';
+			$app_key = 'OGJhYWFlNGYtMDEwYi00NjMyLThiNzMtMDc0YTg4OTk3Yzkx';
+
+			$content = array(
+				"es" => $message,
+				"en" => $message
+			);
+
+			$headings = array(
+				"es" => $title,
+				"en" => $title
+			);
+
+			$fields = array(
+				'app_id' => $app_id,
+				"headings" => $headings,
+				'include_external_user_ids' => $to,
+				'channel_for_external_user_ids' => 'push',
+				'contents' => $content,
+				'large_icon' => '',
+				'content_available' => true,
+				'SetIsAndroid' => true,
+				'SetIsIos' => true,
+			);
+
+			if (!empty($img)) {
+				$fields["big_picture"] = $img;
+				$fields["ios_attachments"] = array("id1" => $img);
+			}
+
+			$headers = array(
+				'Authorization: Basic ' . $app_key,
+				'Accept: application/json',
+				'Content-Type: application/json'
+			);
+
+			$ch = curl_init();
+
+			curl_setopt($ch, CURLOPT_URL, 'https://onesignal.com/api/v1/notifications');
+			curl_setopt($ch, CURLOPT_POST, true);
+			curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+
+			$result = curl_exec($ch);
+
+			curl_close($ch);
+
+			$response = json_decode($result, true);
+
+			if (isset($response['errors'])) {
+				// Manejar los errores de OneSignal
+				$error_message = implode('. ', $response['errors']);
+				$this->mensaje_del_sistema('MENSAJE_ERROR', 'Error al enviar la notificación: ' . $error_message, 'notificaciones/segmento_usuarios_puebla_sin_comprar_hace_dos_meses');
+				return;
+			}
+
+			$this->mensaje_del_sistema('MENSAJE_EXITO', 'Notificación enviada con éxito: ' . $title, $data['controlador']);
+
+			$this->construir_private_site_ui('notificaciones/segmento_usuarios_puebla_sin_comprar_hace_dos_meses', $data);
+		}
+	}
+
+	public function segmento_usuarios_polanco_sin_compras_hace_dos_meses()
+	{
+		$data['pagina_titulo'] = 'Notificar usuarios sin comprar en mas de 2 meses';
+		$data['pagina_subtitulo'] = 'Enviar una notificación al segmento de usuarios';
+		$data['pagina_menu_notificaciones'] = true;
+
+		$data['controlador'] = 'notificaciones/segmento_usuarios_polanco_sin_comprar_hace_dos_meses/';
+		$data['regresar_a'] = 'notificaciones/segmentos/';
+		$controlador_js = 'notificaciones/segmento_usuarios_polanco_sin_comprar_hace_dos_meses';
+
+		$data['styles'] = array(
+			array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/tables/datatable/datatables.min.css'),
+			array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/forms/selects/select2.min.css'),
+		);
+
+		$data['scripts'] = array(
+			array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/tables/datatable/datatables.min.js'),
+			array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/forms/select/select2.full.min.js'),
+			array('es_rel' => true, 'src' => '' . $controlador_js . '.js'),
+		);
+
+		$this->form_validation->set_rules('fecha_notificacion', 'Fecha de notificación', 'trim');
+
+		$list_usuarios_que_si_han_comprado_los_ultimos_dos_meses = $this->notificaciones_model->obtener_usuarios_polanco_que_si_han_comprado_los_ultimos_dos_meses();
+
+		$array_usuarios_que_si_han_comprado_los_ultimos_dos_meses = array();
+		foreach ($list_usuarios_que_si_han_comprado_los_ultimos_dos_meses->result() as $key => $value) {
+			array_push($array_usuarios_que_si_han_comprado_los_ultimos_dos_meses, $value->id);
+		}
+
+		$lista_usuarios_que_no_han_comprado_los_ultimos_dos_meses = $this->notificaciones_model->obtener_usuarios_polanco_que_no_han_comprado_los_ultimos_dos_meses($array_usuarios_que_si_han_comprado_los_ultimos_dos_meses)->result();
+
+		$data['list_usuarios_que_si_han_comprado_los_ultimos_dos_meses'] = $list_usuarios_que_si_han_comprado_los_ultimos_dos_meses;
+
+		$data['lista_usuarios_que_no_han_comprado_los_ultimos_dos_meses'] = $lista_usuarios_que_no_han_comprado_los_ultimos_dos_meses;
+
+		if ($this->form_validation->run() == false) {
+			$this->construir_private_site_ui('notificaciones/segmento_usuarios_polanco_sin_comprar_hace_dos_meses', $data);
+		} else {
+			// array_push($usuarios_seleccionados_list, '22');
+			foreach ($lista_usuarios_que_no_han_comprado_los_ultimos_dos_meses as $key => $usuarios_row) {
+				$id_usuarios[] = $usuarios_row->id;
+			}
+
+			$usuarios_plan_por_vencer = $id_usuarios;
+
+			$to = $usuarios_plan_por_vencer;
+
+			$title = $this->input->post('titulo');
+			$message = $this->input->post('mensaje');
+
+			$img = '';
+
+			$app_id = '66454c58-6e0b-4489-ba82-524c05331a3b';
+			$app_key = 'OGJhYWFlNGYtMDEwYi00NjMyLThiNzMtMDc0YTg4OTk3Yzkx';
+
+			$content = array(
+				"es" => $message,
+				"en" => $message
+			);
+
+			$headings = array(
+				"es" => $title,
+				"en" => $title
+			);
+
+			$fields = array(
+				'app_id' => $app_id,
+				"headings" => $headings,
+				'include_external_user_ids' => $to,
+				'channel_for_external_user_ids' => 'push',
+				'contents' => $content,
+				'large_icon' => '',
+				'content_available' => true,
+				'SetIsAndroid' => true,
+				'SetIsIos' => true,
+			);
+
+			if (!empty($img)) {
+				$fields["big_picture"] = $img;
+				$fields["ios_attachments"] = array("id1" => $img);
+			}
+
+			$headers = array(
+				'Authorization: Basic ' . $app_key,
+				'Accept: application/json',
+				'Content-Type: application/json'
+			);
+
+			$ch = curl_init();
+
+			curl_setopt($ch, CURLOPT_URL, 'https://onesignal.com/api/v1/notifications');
+			curl_setopt($ch, CURLOPT_POST, true);
+			curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+
+			$result = curl_exec($ch);
+
+			curl_close($ch);
+
+			$response = json_decode($result, true);
+
+			if (isset($response['errors'])) {
+				// Manejar los errores de OneSignal
+				$error_message = implode('. ', $response['errors']);
+				$this->mensaje_del_sistema('MENSAJE_ERROR', 'Error al enviar la notificación: ' . $error_message, 'notificaciones/segmento_usuarios_polanco_sin_comprar_hace_dos_meses');
+				return;
+			}
+
+			$this->mensaje_del_sistema('MENSAJE_EXITO', 'Notificación enviada con éxito: ' . $title, $data['controlador']);
+
+			$this->construir_private_site_ui('notificaciones/segmento_usuarios_polanco_sin_comprar_hace_dos_meses', $data);
 		}
 	}
 

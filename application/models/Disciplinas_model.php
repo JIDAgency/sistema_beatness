@@ -158,4 +158,10 @@ class Disciplinas_model extends CI_Model
         $this->db->where('id', $id);
         return $this->db->update('disciplinas', $data);
     }
+
+    public function obtener_disciplinas_por_id($id) {
+        $this->db->where_in('id', $id);
+        $query = $this->db->get('disciplinas');
+        return $query->result();
+    }
 }
