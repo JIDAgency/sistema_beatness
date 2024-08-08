@@ -32,6 +32,10 @@ class Gympass_lib
         // $this->gympass_secret_key = 'office_eagle_consider';
         // $this->gympass_access_control_base_url = 'https://sandbox.partners.gympass.com';
         // $this->gympass_access_control_api_key = 'testkey';
+
+        // PRODUCT ID = 120
+        // CLASS ID = 1799 para push day
+
     }
 
     private function call_api($url, $method = 'GET', $data = null)

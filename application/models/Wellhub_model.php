@@ -2,11 +2,20 @@
 
 class Wellhub_model extends CI_Model
 {
-    // ====== Disciplinas ======
+    // ====== disciplinas (Inicio) ======
 
     function disciplinas_obtener()
     {
         $query = $this->db
+            ->get('disciplinas');
+
+        return $query;
+    }
+
+    public function disciplina_obtener_por_id($id)
+    {
+        $query = $this->db
+            ->where('id', $id)
             ->get('disciplinas');
 
         return $query;
@@ -31,6 +40,84 @@ class Wellhub_model extends CI_Model
 
         return $query->num_rows() > 0;
     }
+    // ====== disciplinas (Fin) ======
+
+    // ====== planes (Inicio) ======
+    public function plan_obtener_por_id($id)
+    {
+        $query = $this->db
+            ->where('id', $id)
+            ->get('planes');
+
+        return $query;
+    }
+    // ====== planes (Fin) ======
+
+    // ====== asignaciones (Inicio) ======
+    public function asignacion_insertar($data)
+    {
+        $query = $this->db
+            ->insert('asignaciones', $data);
+
+        return $query;
+    }
+
+    public function asignacion_obtener_por_id($id)
+    {
+        $query = $this->db
+            ->where('id', $id)
+            ->get('asignaciones');
+
+        return $query;
+    }
+
+    public function asignacion_actualizar_por_id($id, $data)
+    {
+        $query =  $this->db
+            ->where('id', $id)
+            ->update('asignaciones', $data);
+
+        return $query;
+    }
+    // ====== asignaciones (Fin) ======
+
+    // ====== ventas (Fin) ======
+    public function venta_insertar($data)
+    {
+        $query = $this->db
+            ->insert('ventas', $data);
+
+        return $query;
+    }
+
+    public function venta_obtener_por_id($id)
+    {
+        $query = $this->db
+            ->where('id', $id)
+            ->get('ventas');
+
+        return $query;
+    }
+
+    public function venta_obtener_por_usuario_id_y_asignacion_id($usuario_id, $asignacion_id)
+    {
+        $query = $this->db
+            ->where('usuario_id', $usuario_id)
+            ->where('asignacion_id', $asignacion_id)
+            ->get('ventas');
+
+        return $query;
+    }
+
+    public function venta_actualizar_por_id($id, $data)
+    {
+        $query =  $this->db
+            ->where('id', $id)
+            ->update('ventas', $data);
+
+        return $query;
+    }
+    // ====== ventas (Fin) ======
 
     // ====== Categorías ======
 
