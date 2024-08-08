@@ -76,18 +76,6 @@
 													</div>
 
 													<div class="form-group row col-lg-12 col-md-12 col-sm-12">
-														<label for="ilimitado" class="col-md-12">Es ilimitado <span class="red">*</span></label>
-														<div class="col-md-12">
-															<select name="ilimitado" id="ilimitado" class="form-control">
-																<option value="" <?php echo set_select('es_ilimitado', '', set_value('es_ilimitado') ? false : '' == (!empty($this->session->flashdata('es_ilimitado')) ? $this->session->flashdata('es_ilimitado') : (!empty($plan_a_editar->es_ilimitado) ? $plan_a_editar->es_ilimitado : set_value('es_ilimitado')))); ?>>Seleccione una opcion…</option>
-																<?php foreach (select_mostrar() as $key => $mostrar_row) : ?>
-																	<option value="<?php echo $mostrar_row->valor; ?>" <?php echo set_select('es_ilimitado', $mostrar_row->valor, set_value('es_ilimitado') ? false : $mostrar_row->valor == (!empty($this->session->flashdata('es_ilimitado')) ? $this->session->flashdata('es_ilimitado') : (!empty($plan_a_editar->es_ilimitado) ? $plan_a_editar->es_ilimitado : set_value('es_ilimitado')))); ?>><?php echo trim($mostrar_row->nombre); ?></option>
-																<?php endforeach; ?>
-															</select>
-														</div>
-													</div>
-
-													<div class="form-group row col-lg-12 col-md-12 col-sm-12">
 														<label for="es_primera" class="col-md-12">Es primera <span class="red">*</span></label>
 														<div class="col-md-12">
 															<select name="es_primera" id="es_primera" class="form-control">

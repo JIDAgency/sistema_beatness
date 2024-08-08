@@ -13,6 +13,16 @@
                     </div>
                 </div>
             </div>
+
+            <div class="content-header-right col-md-6 col-12">
+                <div class="media float-right">
+                    <div class="form-group">
+                        <div class="btn-group" role="group" aria-label="Basic example">
+                            <a class="btn btn-outline-grey btn-outline-lighten-1 btn-min-width mr-1" href="<?php echo site_url($regresar_a); ?>"><i class="fa fa-arrow-circle-left"></i>&nbsp;Volver</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!-- <div class="content-header-right col-md-6 col-12">
                 <div class="media float-right">
                     <div class="form-group">
@@ -37,7 +47,7 @@
                             </div>
                             <div class="content-header-right  col-md-12 col-12">
                                 <div class="btn-group float-md-right" role="group" aria-label="Button group with nested dropdown">
-                                    <button class="btn btn-outline-secondary btn-min-width dropdown-toggle" id="btnGroupDrop1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">+ Reportes</button>
+                                    <button class="btn btn-outline-secondary btn-min-width dropdown-toggle" id="btnGroupDrop1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Reportes</button>
                                     <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                                         <a class="dropdown-item" href="<?php echo site_url('reportes/reservaciones') ?>">Reservaciones</a>
                                         <a class="dropdown-item" href="<?php echo site_url('reportes/reporte_ventas') ?>">Ventas</a>
@@ -342,10 +352,13 @@
                                                             <h4 class="card-title">Gráfica de ventas</h4>
                                                         </div>
 
-                                                        <div class="card-content collapse show">
+                                                        <!-- <div class="card-content collapse show">
                                                             <div class="card-body">
                                                                 <canvas id="chart-ventas" height="400"></canvas>
                                                             </div>
+                                                        </div> -->
+                                                        <div class="chart-container" style="position: relative; height: 100%; width: 100%;">
+                                                            <canvas name="chart-ventas" id="chart-ventas"></canvas>
                                                         </div>
 
                                                     </div>
