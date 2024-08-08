@@ -656,14 +656,14 @@ class Gympass extends REST_Controller
                     throw new Exception('No se pudo obtener la venta de esta reservación. Por favor, inténtelo nuevamente.');
                 }
 
-                $data_4 = array(
-                    'total' => '0',
-                    'estatus' => 'Cancelada',
-                );
+                // $data_4 = array(
+                //     'total' => '0',
+                //     'estatus' => 'Cancelada',
+                // );
 
-                if (!$this->wellhub_model->venta_actualizar_por_id($venta_row->id, $data_4)) {
-                    throw new Exception('No se pudo cancelar la venta de esta reservación. Por favor, inténtelo nuevamente.');
-                }
+                // if (!$this->wellhub_model->venta_actualizar_por_id($venta_row->id, $data_4)) {
+                //     throw new Exception('No se pudo cancelar la venta de esta reservación. Por favor, inténtelo nuevamente.');
+                // }
 
                 $this->db->trans_complete();
 
