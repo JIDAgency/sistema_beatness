@@ -379,7 +379,6 @@ class Gympass extends MY_Controller
             $booking_window_opens = $booking_window_opens_date->format('Y-m-d\TH:i:s\Z');
 
             $booking_window_closes_date = clone $class_date;
-            $booking_window_closes_date->modify('-1 hour');
             $booking_window_closes = $booking_window_closes_date->format('Y-m-d\TH:i:s\Z');
 
             $cancellable_until_date = clone $class_date;
