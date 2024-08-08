@@ -297,4 +297,27 @@ class Reportes_model extends CI_Model
         $query = $this->db->get();
         return $query->result();
     }
+
+    public function obtener_clases_impartidas_agrupadas_por_instructor($fecha_inicio, $fecha_fin, $sucursal_id)
+    {
+        $this->db->select("
+            t2.id as id,
+            t2.correo as email,
+            COUNT(t1.instructor_id) as total_clases,
+            SUM(t1.reservado) as total_reservado,
+        ");
+        $this->db->from("clases t1");
+        $this->db->join("usuarios t2", "t2.id = t1.instructor_id");
+        $this->db->join("disciplinas t4", "t4.id = t1.disciplina_id");
+        $this->db->where("t1.inicia >=", $fecha_inicio);
+        $this->db->where("t1.inicia <=", $fecha_fin);
+        if ($sucursal_id != -1) {
+            $this->db->where("t4.sucursal_id", $sucursal_id);
+        }
+        $this->db->group_by("t2.correo");
+        $this->db->order_by("total_clases", "desc");
+
+        $query = $this->db->get();
+        return $query->result();
+    }
 }

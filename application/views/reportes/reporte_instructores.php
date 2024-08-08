@@ -44,6 +44,52 @@
 
                             <div class="card-content collapse show">
                                 <div class="card-body card-dashboard">
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <div class="form-group">
+                                                <label for="fecha_inicio">Fecha de inicio:</label>
+                                                <input type="date" name="fecha_inicio" id="fecha_inicio" value="<?php echo date('Y-m-d', strtotime('first day of this month')); ?>" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="form-group">
+                                                <label for="fecha_fin">Fecha de fin:</label>
+                                                <input type="date" name="fecha_fin" id="fecha_fin" value="<?php echo date('Y-m-d'); ?>" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="form-group">
+                                                <label for="sucursal">Sucursal:</label>
+                                                <select name="sucursal" id="sucursal" class="form-control">
+                                                    <option value="-1" selected>Todas</option>
+                                                    <option value="2">Puebla</option>
+                                                    <option value="3">Polanco</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-group float-md-right">
+                                                <button name="actualizar_grafica" id="actualizar_grafica" class="btn btn-secondary">Actualizar Gráfica</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="chart-container" style="position: relative; height: 400px; width: 100%;">
+                                        <canvas name="canvas_grafica" id="canvas_grafica"></canvas>
+                                    </div>
+                                    
+                                    <div class="row mt-3">
+                                        <div class="col-12">
+                                            <div class="form-group float-md-right">
+                                                <a class="btn btn-outline-grey btn-outline-lighten-1 btn-min-width mr-1" href="<?php echo site_url($regresar_a); ?>"><i class="fa fa-arrow-circle-left"></i>&nbsp;Volver</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- <div class="card-content collapse show">
+                                <div class="card-body card-dashboard">
 
                                     <div class="row match-height">
                                         <div class="col-xl-3 col-md-3 col-sm-12 mt-2 mb-2">
@@ -70,7 +116,7 @@
                                         <div id="buttons"></div>
                                     </div>
                                     <h4 class="form-section"><i class="ft-calendar"></i> Mensual</h4>
-                                    
+
                                     <hr>
                                     <table class="table display nowrap table-striped table-bordered scroll-horizontal table-hover" name="table" id="table">
                                         <thead>
@@ -130,7 +176,7 @@
                                     </div>
 
                                 </div>
-                            </div>
+                            </div> -->
 
                         </div>
                     </div>

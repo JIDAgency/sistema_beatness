@@ -1,220 +1,115 @@
-var table;
-var table_primera_quincena;
-var table_segunda_quincena;
+document.addEventListener('DOMContentLoaded', function () {
+    const fecha_inicio_input = document.getElementById('fecha_inicio');
+    const fecha_fin_input = document.getElementById('fecha_fin');
+    const sucursal_select = document.getElementById('sucursal');
+    const actualizar_grafica_btn = document.getElementById('actualizar_grafica');
 
-var actual_url = document.URL;
-var method_call = "";
-var url;
-var url_primera_quincena;
-var url_segunda_quincena;
+    let canvas_grafica = null; // Inicializar canvas_grafica como null
 
-// crea una instancia del objeto Date
-let fecha = new Date();
+    async function obtener_clases_impartidas_agrupadas_por_instructor(fecha_inicio, fecha_fin, sucursal) {
+        try {
+            const response = await fetch(`../reportes/obtener_clases_impartidas_agrupadas_por_instructor?fecha_inicio=${fecha_inicio}&fecha_fin=${fecha_fin}&sucursal=${sucursal}`);
 
-// obtiene el año, mes y día de la fecha actual
-let anio = fecha.getFullYear();
-let mes = fecha.getMonth() + 1; // el mes empieza en 0, se le suma 1
-
-// agrega un cero a la izquierda si el mes o el día es menor a 10
-if (mes < 10) {
-    mes = '0' + mes;
-}
-
-// concatena los valores en el formato deseado: "Y-m-d"
-let fechaYm = anio + '-' + mes;
-
-//console.log(fechaYm); // ejemplo de salida: "2023-03-14"
-
-if(actual_url.indexOf("index") < 0){
-    method_call = "";
-}
-
-/**
- * Este línea desactiva los mensajes de error de DataTables();
- */
-$.fn.dataTable.ext.errMode = 'throw';
-
-$(document).ready( function(){
-    table = $('#table').DataTable({ 
-        "scrollX": true,
-        "deferRender": true,
-        'processing': true,
-        "order": [[0, "desc"]],
-        "lengthMenu": [[25, 50, 100, 250, 500, -1], [25, 50, 100, 250, 500, "Todos"]],
-        "ajax": {
-            "url" : method_call+"obtener_tabla_reporte_instructores_por_mes/"+fechaYm,
-            "type" : 'POST'
-        },
-        "columns": [
-            {"data": "id"},
-            {"data": "instructor_nombre"},
-            {"data": "total_clases"},
-            {"data": "total_reservado"},
-        ],
-        'language': {
-            "sProcessing":     '<i class="fa fa-spinner spinner"></i> Cargando...',
-            "sLengthMenu":     "Mostrar _MENU_",
-            "sZeroRecords":    "No se encontraron resultados",
-            "sEmptyTable":     "Ningún dato disponible en esta tabla =(",
-            "sInfo":           "Mostrando del _START_ al _END_ de _TOTAL_",
-            "sInfoEmpty":      "Mostrando del 0 al 0 de 0",
-            "sInfoFiltered":   "(filtrado _MAX_)",
-            "sInfoPostFix":    "",
-            "sSearch":         "Buscar:",
-            "sUrl":            "",
-            "sInfoThousands":  ",",
-            "sLoadingRecords": "&nbsp;",
-            "oPaginate": {
-                "sFirst":    "Primero",
-                "sLast":     "Último",
-                "sNext":     ">",
-                "sPrevious": "<"
-            },
-            "oAria": {
-                "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
-                "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-            },
-            "buttons": {
-                "copy": "Copiar",
-                "colvis": "Visibilidad"
+            if (!response.ok) {
+                throw new Error(`Error: ${response.statusText}`);
             }
-        },
-    });
 
-    var buttons = new $.fn.dataTable.Buttons(table, {
-        buttons: [
-            {
-                extend: 'excelHtml5',
-                className: 'custom-button'
+            const content_type = response.headers.get("content-type");
+            if (content_type && content_type.indexOf("application/json") !== -1) {
+                const clases = await response.json();
+                const labels = clases.map(res => res.email);
+                const datos = clases.map(res => res.total_clases);
+                const datos2 = clases.map(res => res.total_reservado);
 
+                actualizar_grafica(labels, datos, datos2, clases);
+            } else {
+                const text = await response.text();
+                throw new Error(`La respuesta no es JSON: ${text}`);
             }
-        ]
-    }).container().appendTo($('#buttons'));
+        } catch (error) {
+            console.error('Error obteniendo clases agrupadas:', error);
+        }
+    }
 
-    table_primera_quincena = $('#table_primera_quincena').DataTable({ 
-        "scrollX": true,
-        "deferRender": true,
-        'processing': true,
-        "order": [[0, "desc"]],
-        "lengthMenu": [[25, 50, 100, 250, 500, -1], [25, 50, 100, 250, 500, "Todos"]],
-        "ajax": {
-            "url" : method_call+"obtener_tabla_reporte_instructores_entre_fechas/"+fechaYm+"-01/"+fechaYm+"-15",
-            "type" : 'POST'
-        },
-        "columns": [
-            {"data": "id"},
-            {"data": "instructor_nombre"},
-            {"data": "total_clases"},
-            {"data": "total_reservado"},
-        ],
-        'language': {
-            "sProcessing":     '<i class="fa fa-spinner spinner"></i> Cargando...',
-            "sLengthMenu":     "Mostrar _MENU_",
-            "sZeroRecords":    "No se encontraron resultados",
-            "sEmptyTable":     "Ningún dato disponible en esta tabla =(",
-            "sInfo":           "Mostrando del _START_ al _END_ de _TOTAL_",
-            "sInfoEmpty":      "Mostrando del 0 al 0 de 0",
-            "sInfoFiltered":   "(filtrado _MAX_)",
-            "sInfoPostFix":    "",
-            "sSearch":         "Buscar:",
-            "sUrl":            "",
-            "sInfoThousands":  ",",
-            "sLoadingRecords": "&nbsp;",
-            "oPaginate": {
-                "sFirst":    "Primero",
-                "sLast":     "Último",
-                "sNext":     ">",
-                "sPrevious": "<"
+    function actualizar_grafica(labels, datos, datos2, clases) {
+        const container = document.querySelector('.chart-container');
+        const altura_por_dato = 50; // Ajusta este valor según sea necesario
+        const altura_canvas = altura_por_dato * labels.length;
+
+        container.style.height = `${altura_canvas}px`;
+
+        const ctx = document.getElementById('canvas_grafica').getContext('2d');
+
+        if (canvas_grafica) {
+            canvas_grafica.destroy(); // Destruir la gráfica anterior si existe
+        }
+
+        canvas_grafica = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Total de Clases Impartidas',
+                    data: datos,
+                    backgroundColor: 'rgba(0, 248, 254, 0.2)',
+                    borderColor: 'rgba(0, 248, 254, 1)',
+                    borderWidth: 1
+                }, {
+                    label: 'Total de Cupos reservados',
+                    data: datos2,
+                    backgroundColor: 'rgba(102, 110, 232, 0.2)',
+                    borderColor: 'rgba(102, 110, 232, 1)',
+                    borderWidth: 1
+                }]
             },
-            "oAria": {
-                "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
-                "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                indexAxis: 'y',
+                plugins: {
+                    datalabels: {
+                        anchor: 'start',
+                        align: 'end',
+                        color: 'black',
+                        font: {
+                            weight: 'bold'
+                        },
+                        formatter: (value) => value
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    },
+                    x: {
+                        ticks: {
+                            autoSkip: false,
+                            maxRotation: 90,
+                            minRotation: 0
+                        }
+                    }
+                },
+                onClick: function (event, elements) {
+                    if (elements.length > 0) {
+                        const element_index = elements[0].index;
+                        const usuario_id = clases[element_index].id; // Asegúrate de que el usuario_id esté disponible
+                        window.location.href = `../instructores/editar/${usuario_id}`;
+                    }
+                }
             },
-            "buttons": {
-                "copy": "Copiar",
-                "colvis": "Visibilidad"
-            }
-        },
-    });
+            plugins: [ChartDataLabels]
+        });
+    }
 
-    var buttons2 = new $.fn.dataTable.Buttons(table_primera_quincena, {
-        buttons: [
-            {
-                extend: 'excelHtml5',
-                className: 'custom-button'
+    function actualizar_datos_grafica() {
+        const fecha_inicio = fecha_inicio_input.value;
+        const fecha_fin = fecha_fin_input.value;
+        const sucursal = sucursal_select.value;
+        obtener_clases_impartidas_agrupadas_por_instructor(fecha_inicio, fecha_fin, sucursal);
+    }
 
-            }
-        ]
-    }).container().appendTo($('#buttons2'));
+    actualizar_grafica_btn.addEventListener('click', actualizar_datos_grafica);
 
-    table_segunda_quincena = $('#table_segunda_quincena').DataTable({ 
-        "scrollX": true,
-        "deferRender": true,
-        'processing': true,
-        "order": [[0, "desc"]],
-        "lengthMenu": [[25, 50, 100, 250, 500, -1], [25, 50, 100, 250, 500, "Todos"]],
-        "ajax": {
-            "url" : method_call+"obtener_tabla_reporte_instructores_entre_fechas/"+fechaYm+"-16/"+fechaYm+"-31",
-            "type" : 'POST'
-        },
-        "columns": [
-            {"data": "id"},
-            {"data": "instructor_nombre"},
-            {"data": "total_clases"},
-            {"data": "total_reservado"},
-        ],
-        'language': {
-            "sProcessing":     '<i class="fa fa-spinner spinner"></i> Cargando...',
-            "sLengthMenu":     "Mostrar _MENU_",
-            "sZeroRecords":    "No se encontraron resultados",
-            "sEmptyTable":     "Ningún dato disponible en esta tabla =(",
-            "sInfo":           "Mostrando del _START_ al _END_ de _TOTAL_",
-            "sInfoEmpty":      "Mostrando del 0 al 0 de 0",
-            "sInfoFiltered":   "(filtrado _MAX_)",
-            "sInfoPostFix":    "",
-            "sSearch":         "Buscar:",
-            "sUrl":            "",
-            "sInfoThousands":  ",",
-            "sLoadingRecords": "&nbsp;",
-            "oPaginate": {
-                "sFirst":    "Primero",
-                "sLast":     "Último",
-                "sNext":     ">",
-                "sPrevious": "<"
-            },
-            "oAria": {
-                "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
-                "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-            },
-            "buttons": {
-                "copy": "Copiar",
-                "colvis": "Visibilidad"
-            }
-        },
-    });
-
-    var buttons3 = new $.fn.dataTable.Buttons(table_segunda_quincena, {
-        buttons: [
-            'excelHtml5',
-        ]
-    }).container().appendTo($('#buttons3'));
-
-    $("#mes_a_consultar").change(function () {
-        table.clear().draw();
-        table_primera_quincena.clear().draw();
-        table_segunda_quincena.clear().draw();
-        fechaYm = $(this).val();
-        url = method_call+"obtener_tabla_reporte_instructores_por_mes/"+fechaYm;
-        url_primera_quincena = method_call+"obtener_tabla_reporte_instructores_entre_fechas/"+fechaYm+"-01/"+fechaYm+"-15",
-        url_segunda_quincena = method_call+"obtener_tabla_reporte_instructores_entre_fechas/"+fechaYm+"-16/"+fechaYm+"-31";
-        reload_table();
-    });
-
+    // Inicializar la gráfica con valores por defecto
+    actualizar_datos_grafica();
 });
-
-function reload_table() {
-    table.ajax.url(url).load();
-    table_primera_quincena.ajax.url(url_primera_quincena).load();
-    table_segunda_quincena.ajax.url(url_segunda_quincena).load();
-    //table.ajax.reload();
-}
