@@ -173,14 +173,14 @@
 											</div>
 										</div>	
 										
-										<div class="row">
+										<!-- <div class="row">
 											<div class="col-md-6 mb-3">
 												<div class="form-group">
 													<label for="gympass_product_id" class="label-control">Gympass Product id</label>
 													<input type="number" class="form-control" id="gympass_product_id" name="gympass_product_id" placeholder="Gympass product id" value="<?php echo set_value('gympass_product_id'); ?>">
 												</div>
 											</div>
-										</div>
+										</div> -->
 
 										<div class="form-actions right">
 											<a href="<?php echo site_url('disciplinas/index'); ?>" class="btn btn-secondary btn-sm">Cancelar</a>

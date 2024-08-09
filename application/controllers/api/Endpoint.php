@@ -1081,10 +1081,6 @@ class Endpoint extends REST_Controller
                 $disciplinas_nombres[] = $disciplina->nombre;
             }
 
-            // Unimos los nombres en una cadena con el mismo formato
-            // $disciplinas_nombres_str = implode('|', $disciplinas_nombres);
-
-
             $resultado[] = array(
                 "id" => $asignacion_por_cliente_row->id,
                 "usuario_id" => $asignacion_por_cliente_row->usuario_id,
@@ -1094,7 +1090,8 @@ class Endpoint extends REST_Controller
                 "clases_usadas" => $asignacion_por_cliente_row->clases_usadas,
                 "periodo_de_prueba" => $asignacion_por_cliente_row->periodo_de_prueba,
                 "vigencia_en_dias" => $asignacion_por_cliente_row->vigencia_en_dias,
-                "disciplinas" => $disciplinas_nombres,
+                "disciplinas" => $asignacion_por_cliente_row->disciplinas,
+                "disciplinas_perfil" => $disciplinas_nombres,
                 "categoria" => $asignacion_por_cliente_row->categoria,
                 "fecha_activacion" => date("d/m/Y", strtotime($asignacion_por_cliente_row->fecha_activacion)),
                 "fecha_finalizacion" => date("d/m/Y", strtotime($asignacion_por_cliente_row->fecha_activacion . '+' . $asignacion_por_cliente_row->vigencia_en_dias . ' days')),
