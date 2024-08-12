@@ -15,14 +15,17 @@ $(document).ready(function () {
         "scrollX": true,
         "deferRender": true,
         'processing': true,
-        "order": [[0, "desc"]],
+        "order": [[2, "desc"]],
         "lengthMenu": [[25, 50, 100, 250, 500, -1], [25, 50, 100, 250, 500, "Todos"]],
         "ajax": {
             "url": method_call + "clases_obtener_activas",
             "type": 'POST'
         },
         "columns": [
+            { "data": "opciones" },
             { "data": "id" },
+            { "data": "totalpass_event_id" },
+            { "data": "totalpass_eventOccurrenceUuid" },
             { "data": "identificador" },
             { "data": "disciplinas_nombre" },
             { "data": "dificultad" },
@@ -31,7 +34,6 @@ $(document).ready(function () {
             { "data": "instructores_nombre" },
             { "data": "sucursales_locacion" },
             { "data": "cupos" },
-            { "data": "opciones" },
         ],
         'language': {
             "sProcessing": '<i class="fa fa-spinner spinner"></i> Cargando...',
@@ -86,7 +88,10 @@ function crear_ocurrencia_evento(clase_id) {
                 var row = table.row($('a[data-id="' + clase_id + '"]').closest('tr'));
 
                 row.data({
+                    opciones: updatedData.opciones,
                     id: updatedData.id,
+                    totalpass_event_id: updatedData.totalpass_event_id,
+                    totalpass_eventOccurrenceUuid: updatedData.totalpass_eventOccurrenceUuid,
                     identificador: updatedData.identificador,
                     disciplinas_nombre: updatedData.disciplinas_nombre,
                     dificultad: updatedData.dificultad,
@@ -95,7 +100,6 @@ function crear_ocurrencia_evento(clase_id) {
                     instructores_nombre: updatedData.instructores_nombre,
                     sucursales_locacion: updatedData.sucursales_locacion,
                     cupos: updatedData.cupos,
-                    opciones: updatedData.opciones
                 }).draw(false);
             } else {
                 alert('Error: ' + data.message);

@@ -40,7 +40,10 @@
                                     <table name="table" id="table" class="table display nowrap table-striped table-bordered scroll-horizontal table-hover">
                                         <thead>
                                             <tr>
+                                                <th>Opciones</th>
                                                 <th>#</th>
+                                                <th>Totalpass Evento ID</th>
+                                                <th>Totalpass Evento individual ID</th>
                                                 <th>SKU</th>
                                                 <th>Disciplina</th>
                                                 <th>Grupo muscular</th>
@@ -49,7 +52,6 @@
                                                 <th>Coach</th>
                                                 <th>Sucursal</th>
                                                 <th>Cupos</th>
-                                                <th>Opciones</th>
                                             </tr>
                                         </thead>
                                         <tbody>
