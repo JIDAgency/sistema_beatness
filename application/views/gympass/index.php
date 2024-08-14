@@ -51,7 +51,7 @@
                         <div class="card no-border">
 
                             <div class="card-header">
-                                <h4 class="card-title"><?php echo $pagina_subtitulo; ?></h4>
+                                <h4 class="card-title" style="color: #F46152;"><?php echo $pagina_subtitulo; ?></h4>
                             </div>
 
                             <div class="card-content collapse show">

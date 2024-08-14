@@ -159,8 +159,9 @@
                             <li data-menu=""><a class="dropdown-item" href="<?php echo site_url('instructores'); ?>" data-toggle="dropdown">Instructores</a></li>
                             <li data-menu=""><a class="dropdown-item" href="<?php echo site_url('usuarios'); ?>" data-toggle="dropdown">Administradores</a></li>
                             <hr>
-                            <H4 class="dropdown-header" style="color: #F46152;"><b>GYMPASS</b></H4>
-                            <li data-menu=""><a class="dropdown-item" href="<?php echo site_url('categorias'); ?>" data-toggle="dropdown">Disciplinas - Categorias</a></li>
+                            <!-- <H4 class="dropdown-header" style="color: #F46152;"><b>GYMPASS</b></H4> -->
+                            <li data-menu=""><a class="dropdown-item" href="<?php echo site_url('gympass'); ?>" data-toggle="dropdown" style="color: #F46152;"><b>GYMPASS</b></a></li>
+                            <li data-menu=""><a class="dropdown-item" href="<?php echo site_url('totalpass'); ?>" data-toggle="dropdown"><b style="color: #26D07C;">TOTAL</b><b>PASS</b></a></li>
                         </ul>
                     </li>
                 <?php endif; ?>

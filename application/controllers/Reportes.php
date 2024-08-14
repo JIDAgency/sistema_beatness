@@ -7,6 +7,7 @@ class Reportes extends MY_Controller
 	{
 		parent::__construct();
 
+        $this->load->model('clases_model');
 		$this->load->model('reportes_model');
 	}
 
@@ -20,10 +21,14 @@ class Reportes extends MY_Controller
 		$data['regresar_a'] = 'inicio';
 		$controlador_js = "reportes/index";
 
+		// Cargar estilos y scripts
 		$data['styles'] = array();
-
 		$data['scripts'] = array(
-			array('es_rel' => true, 'src' => '' . $controlador_js . '.js'),
+			array('es_rel' => false, 'src' => 'https://cdn.jsdelivr.net/npm/chart.js@3.3.0/dist/chart.min.js'),
+			array('es_rel' => false, 'src' => 'https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0-rc'),
+			array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/extensions/jquery.knob.min.js'),
+			array('es_rel' => false, 'src' => base_url() . 'app-assets/js/scripts/cards/card-statistics.js'),
+			array('es_rel' => true, 'src' => 'reportes/reservaciones.js'),
 		);
 
 		$data['reporte_1'] = $this->reportes_model->reporte_1();
@@ -32,6 +37,23 @@ class Reportes extends MY_Controller
 		$data['reporte_4'] = $this->reportes_model->reporte_4();
 		$data['reporte_5'] = $this->reportes_model->reporte_5();
 		$data['reporte_6'] = $this->reportes_model->reporte_6();
+
+		// Planes
+		$data["reporte_planes"] = $this->reportes_model->obtene_reporte_planes();
+		$data["reporte_planes_por_anho"] = $this->reportes_model->obtene_reporte_planes_por_anho();
+
+		// Reservaciones 
+		$data["reservaciones_numero_total"] = $this->reportes_model->get_reservaciones_numero_total();
+		$data["reservaciones_numero_terminadas"] = $this->reportes_model->get_reservaciones_numero_terminadas();
+		$data["reservaciones_numero_activas"] = $this->reportes_model->get_reservaciones_numero_activas();
+		$data["reservaciones_numero_canceladas"] = $this->reportes_model->get_reservaciones_numero_canceladas();
+
+		// Ventas 
+		$data["ventas_numero_total"] = $this->reportes_model->get_ventas_numero_total();
+		$data["ventas_numero_vendidas"] = $this->reportes_model->get_ventas_numero_vendidas();
+		$data["ventas_numero_canceladas"] = $this->reportes_model->get_ventas_numero_canceladas();
+		$data["ventas_numero_reembolsos"] = $this->reportes_model->get_ventas_numero_reembolsos();
+		$data["ventas_numero_pruebas"] = $this->reportes_model->get_ventas_numero_pruebas();
 
 		$this->construir_private_site_ui('reportes/index', $data);
 	}

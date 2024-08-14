@@ -21,6 +21,19 @@
                         </div>
                     </div>
                 </div>
+                <div class="btn-group float-md-right" role="group" aria-label="Button group with nested dropdown">
+                    <button class="btn btn-outline-secondary btn-min-width dropdown-toggle" id="btnGroupDrop1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Reportes</button>
+                    <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                        <a class="dropdown-item" href="<?php echo site_url('reportes/reservaciones') ?>">Reservaciones</a>
+                        <a class="dropdown-item" href="<?php echo site_url('reportes/reporte_ventas') ?>">Ventas</a>
+                        <a class="dropdown-item" href="<?php echo site_url('reportes/vendedores') ?>">Vendedores</a>
+                        <a class="dropdown-item" href="<?php echo site_url('reportes/reservaciones_por_cliente') ?>">Reservaciones por cliente</a>
+                        <a class="dropdown-item" href="<?php echo site_url('reportes/reporte_instructores'); ?>">Reporte de instructores</a>
+                    </div>
+                </div>
+                <div class="form-group float-right">
+                    <div id="buttons"></div>
+                </div>
             </div>
         </div>
 
@@ -34,7 +47,7 @@
                                 <h4 class="card-title"><?php echo $pagina_subtitulo; ?></h4>
                             </div>
 
-                            <div class="content-header-right  col-md-12 col-12">
+                            <!-- <div class="content-header-right  col-md-12 col-12">
                                 <div class="btn-group float-md-right" role="group" aria-label="Button group with nested dropdown">
                                     <button class="btn btn-outline-secondary btn-min-width dropdown-toggle" id="btnGroupDrop1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Reportes</button>
                                     <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
@@ -48,7 +61,7 @@
                                 <div class="form-group float-right">
                                     <div id="buttons"></div>
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="card-content collapse show">
                                 <div class="card-body card-dashboard">
                                     <div class="row">

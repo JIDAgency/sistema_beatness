@@ -249,27 +249,48 @@ html body.bg-full-screen-image {
     top: 0;
     bottom: -11px;
     width: 1px;
-    background-color: #cecece; /* Color de la línea divisoria */
-    margin-left: -30px; /* Ajusta el margen para centrar la línea */
+    background-color: #cecece;
+    /* Color de la línea divisoria */
+    margin-left: -30px;
+    /* Ajusta el margen para centrar la línea */
 }
 
 .img-segmento {
     background: url(../../almacenamiento/beat.png);
-    background-size: cover; 
-    background-position: center; 
-    background-repeat: no-repeat; 
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .img-segmento-puebla {
     background: url(../../almacenamiento/beat-puebla.png);
-    background-size: cover; 
-    background-position: center; 
-    background-repeat: no-repeat; 
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .img-segmento-polanco {
     background: url(../../almacenamiento/beat-polanco.png);
-    background-size: cover; 
-    background-position: center; 
-    background-repeat: no-repeat; 
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.bg-reportes {
+    border: 1px solid rgba(36, 78, 147, 0.235);
+}
+
+.bg-reportes:hover {
+    border: 1px solid #45AFDA;
+
+    .btn-reportes {
+        background-color: #45AFDA;
+        color: #FFFFFF;
+        border: 1px solid #45AFDA;
+    }
+}
+
+.btn-reportes {
+    background-color: rgba(255, 255, 255, 0.783);
+    border: 1px solid #45AFDA;
 }
