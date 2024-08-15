@@ -9,20 +9,29 @@ class Totalpass_model extends CI_Model
     }
 
     // ====== auth (Inicio) ======
-    public function obtener_token()
+    public function obtener_token($id)
     {
         $query = $this->db
-            ->where('configuracion', 'totalpass_token')
-            ->get('configuraciones');
+            ->where('id', $id)
+            ->get('disciplinas');
+
+        return $query;
+    }
+    public function obtener_tokens()
+    {
+        $query = $this->db
+            ->where('totalpass_partner_api_key IS NOT NULL')
+            ->where('totalpass_place_api_key IS NOT NULL')
+            ->get('disciplinas');
 
         return $query;
     }
 
-    public function guardar_token($data)
+    public function guardar_token($id, $data)
     {
         $query = $this->db
-            ->where('configuracion', 'totalpass_token')
-            ->update('configuraciones', $data);
+            ->where('id', $id)
+            ->update('disciplinas', $data);
 
         return $query;
     }

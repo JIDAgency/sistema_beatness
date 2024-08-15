@@ -38,12 +38,16 @@
                                 <div class="card-body card-dashboard">
 
                                     <div class="row">
-                                        <div class="col-6">
+                                        <div class="col-12">
                                             <table name="table" id="table" class="table display nowrap table-striped table-bordered scroll-horizontal table-hover">
                                                 <thead>
                                                     <tr>
+                                                        <th>Opciones</th>
                                                         <th>#</th>
-                                                        <th>TotalPass ID</th>
+                                                        <th>TotalPass partner ID</th>
+                                                        <th>TotalPass place ID</th>
+                                                        <th>TotalPass plan ID</th>
+                                                        <th>TotalPass renovación</th>
                                                         <th>Nombre</th>
                                                         <th>Estatus</th>
                                                     </tr>
@@ -51,9 +55,6 @@
                                                 <tbody>
                                                 </tbody>
                                             </table>
-                                        </div>
-                                        <div class="col-6">
-                                            <?php print_r(json_encode($token_data)); ?>
                                         </div>
                                     </div>
 

@@ -1,0 +1,139 @@
+[
+    {
+        "partner": {
+            "name": "Beatness",
+            "partnerApiKey": "8e85f6e4-8653-470f-9cee-ac67321f38f6"
+        },
+        "place": {
+            "name": "BEATNESS CYCLING PUEBLA",
+            "placeApiKey": "e6e70fb6-d08d-4224-958d-2d10495936cd",
+            "Plans": [
+                {
+                    "id": 19978,
+                    "name": "TP6",
+                    "code": "39EVVI0P",
+                    "createdAt": "2024-05-21T00:13:08.158Z",
+                    "updatedAt": "2024-05-21T00:13:08.158Z",
+                    "placeId": 17394
+                },
+                {
+                    "id": 20198,
+                    "name": "TP4",
+                    "code": "REFK947K",
+                    "createdAt": "2024-05-24T16:53:55.592Z",
+                    "updatedAt": "2024-05-24T16:53:55.592Z",
+                    "placeId": 17394
+                }
+            ]
+        },
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXJ0bmVyX2FwaV9rZXkiOiI4ZTg1ZjZlNC04NjUzLTQ3MGYtOWNlZS1hYzY3MzIxZjM4ZjYiLCJwbGFjZV9hcGlfa2V5IjoiZTZlNzBmYjYtZDA4ZC00MjI0LTk1OGQtMmQxMDQ5NTkzNmNkIiwicGxhY2VfcGxhbnNfaW5mbyI6W3siaWQiOjE5OTc4LCJuYW1lIjoiVFA2IiwiY29kZSI6IjM5RVZWSTBQIiwiY3JlYXRlZEF0IjoiMjAyNC0wNS0yMVQwMDoxMzowOC4xNThaIiwidXBkYXRlZEF0IjoiMjAyNC0wNS0yMVQwMDoxMzowOC4xNThaIiwicGxhY2VJZCI6MTczOTR9LHsiaWQiOjIwMTk4LCJuYW1lIjoiVFA0IiwiY29kZSI6IlJFRks5NDdLIiwiY3JlYXRlZEF0IjoiMjAyNC0wNS0yNFQxNjo1Mzo1NS41OTJaIiwidXBkYXRlZEF0IjoiMjAyNC0wNS0yNFQxNjo1Mzo1NS41OTJaIiwicGxhY2VJZCI6MTczOTR9XSwiaWF0IjoxNzIzNjc3MjgwLCJleHAiOjE3MjM3NjM2ODB9.6w3P3RBcgN4ZgHtIuzoE4K2xQypdGqheAHCOb3TyK8o"
+    },
+    {
+        "partner": {
+            "name": "Beatness",
+            "partnerApiKey": "8e85f6e4-8653-470f-9cee-ac67321f38f6"
+        },
+        "place": {
+            "name": "BEATNESS BOOTCAMP PUEBLA",
+            "placeApiKey": "90e01ec4-07f9-4d82-8cfe-7dadef7a3d31",
+            "Plans": [
+                {
+                    "id": 19976,
+                    "name": "TP6",
+                    "code": "11SQH7DN",
+                    "createdAt": "2024-05-20T23:53:00.585Z",
+                    "updatedAt": "2024-05-20T23:53:00.585Z",
+                    "placeId": 17393
+                },
+                {
+                    "id": 20552,
+                    "name": "TP4",
+                    "code": "CQCZAUNL",
+                    "createdAt": "2024-06-04T13:23:03.183Z",
+                    "updatedAt": "2024-06-04T13:23:03.183Z",
+                    "placeId": 17393
+                }
+            ]
+        },
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXJ0bmVyX2FwaV9rZXkiOiI4ZTg1ZjZlNC04NjUzLTQ3MGYtOWNlZS1hYzY3MzIxZjM4ZjYiLCJwbGFjZV9hcGlfa2V5IjoiOTBlMDFlYzQtMDdmOS00ZDgyLThjZmUtN2RhZGVmN2EzZDMxIiwicGxhY2VfcGxhbnNfaW5mbyI6W3siaWQiOjE5OTc2LCJuYW1lIjoiVFA2IiwiY29kZSI6IjExU1FIN0ROIiwiY3JlYXRlZEF0IjoiMjAyNC0wNS0yMFQyMzo1MzowMC41ODVaIiwidXBkYXRlZEF0IjoiMjAyNC0wNS0yMFQyMzo1MzowMC41ODVaIiwicGxhY2VJZCI6MTczOTN9LHsiaWQiOjIwNTUyLCJuYW1lIjoiVFA0IiwiY29kZSI6IkNRQ1pBVU5MIiwiY3JlYXRlZEF0IjoiMjAyNC0wNi0wNFQxMzoyMzowMy4xODNaIiwidXBkYXRlZEF0IjoiMjAyNC0wNi0wNFQxMzoyMzowMy4xODNaIiwicGxhY2VJZCI6MTczOTN9XSwiaWF0IjoxNzIzNjc3MjgxLCJleHAiOjE3MjM3NjM2ODF9.5XV8-W2ZEumpp8kiASFsVRcOj6MNpwMto8p_VU-J_pM"
+    },
+    {
+        "partner": {
+            "name": "Beatness",
+            "partnerApiKey": "8e85f6e4-8653-470f-9cee-ac67321f38f6"
+        },
+        "place": {
+            "name": "BEATNESS BOX PUEBLA",
+            "placeApiKey": "d285e353-8e78-4bab-8ef1-cff1d655998d",
+            "Plans": [
+                {
+                    "id": 19984,
+                    "name": "TP6",
+                    "code": "COGGRP8W",
+                    "createdAt": "2024-05-21T01:01:07.314Z",
+                    "updatedAt": "2024-05-21T01:01:07.314Z",
+                    "placeId": 17397
+                },
+                {
+                    "id": 20179,
+                    "name": "TP4",
+                    "code": "MS4XDUN7",
+                    "createdAt": "2024-05-24T01:58:31.321Z",
+                    "updatedAt": "2024-05-24T01:58:31.321Z",
+                    "placeId": 17397
+                }
+            ]
+        },
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXJ0bmVyX2FwaV9rZXkiOiI4ZTg1ZjZlNC04NjUzLTQ3MGYtOWNlZS1hYzY3MzIxZjM4ZjYiLCJwbGFjZV9hcGlfa2V5IjoiZDI4NWUzNTMtOGU3OC00YmFiLThlZjEtY2ZmMWQ2NTU5OThkIiwicGxhY2VfcGxhbnNfaW5mbyI6W3siaWQiOjE5OTg0LCJuYW1lIjoiVFA2IiwiY29kZSI6IkNPR0dSUDhXIiwiY3JlYXRlZEF0IjoiMjAyNC0wNS0yMVQwMTowMTowNy4zMTRaIiwidXBkYXRlZEF0IjoiMjAyNC0wNS0yMVQwMTowMTowNy4zMTRaIiwicGxhY2VJZCI6MTczOTd9LHsiaWQiOjIwMTc5LCJuYW1lIjoiVFA0IiwiY29kZSI6Ik1TNFhEVU43IiwiY3JlYXRlZEF0IjoiMjAyNC0wNS0yNFQwMTo1ODozMS4zMjFaIiwidXBkYXRlZEF0IjoiMjAyNC0wNS0yNFQwMTo1ODozMS4zMjFaIiwicGxhY2VJZCI6MTczOTd9XSwiaWF0IjoxNzIzNjc3MjgxLCJleHAiOjE3MjM3NjM2ODF9.azYF_8MDedsGR-zoK7fq9ZxAsOyrVNLupEhVTPAJQ9k"
+    },
+    {
+        "partner": {
+            "name": "Beatness",
+            "partnerApiKey": "8e85f6e4-8653-470f-9cee-ac67321f38f6"
+        },
+        "place": {
+            "name": "BEATNESS JUMP PUEBLA",
+            "placeApiKey": "985534e0-f989-4a01-b85d-980d6535703a",
+            "Plans": [
+                {
+                    "id": 23912,
+                    "name": "TP4",
+                    "code": "DIEPBMQQ",
+                    "createdAt": "2024-08-14T22:41:27.070Z",
+                    "updatedAt": "2024-08-14T22:41:27.070Z",
+                    "placeId": 20079
+                }
+            ]
+        },
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXJ0bmVyX2FwaV9rZXkiOiI4ZTg1ZjZlNC04NjUzLTQ3MGYtOWNlZS1hYzY3MzIxZjM4ZjYiLCJwbGFjZV9hcGlfa2V5IjoiOTg1NTM0ZTAtZjk4OS00YTAxLWI4NWQtOTgwZDY1MzU3MDNhIiwicGxhY2VfcGxhbnNfaW5mbyI6W3siaWQiOjIzOTEyLCJuYW1lIjoiVFA0IiwiY29kZSI6IkRJRVBCTVFRIiwiY3JlYXRlZEF0IjoiMjAyNC0wOC0xNFQyMjo0MToyNy4wNzBaIiwidXBkYXRlZEF0IjoiMjAyNC0wOC0xNFQyMjo0MToyNy4wNzBaIiwicGxhY2VJZCI6MjAwNzl9XSwiaWF0IjoxNzIzNjc3MjgyLCJleHAiOjE3MjM3NjM2ODJ9.hnRTpf6Fczdy6GQr6lIVpZ_hQRx4x7XZF8h0hsLq4rc"
+    },
+    {
+        "partner": {
+            "name": "Beatness",
+            "partnerApiKey": "8e85f6e4-8653-470f-9cee-ac67321f38f6"
+        },
+        "place": {
+            "name": "BEATNESS CALISTENIA PUEBLA",
+            "placeApiKey": "388a4dab-5f65-4376-898e-2b34fdea5c88",
+            "Plans": [
+                {
+                    "id": 19985,
+                    "name": "TP6",
+                    "code": "ZJZ6KBBJ",
+                    "createdAt": "2024-05-21T01:11:02.118Z",
+                    "updatedAt": "2024-05-21T01:11:02.118Z",
+                    "placeId": 17398
+                },
+                {
+                    "id": 20175,
+                    "name": "TP4",
+                    "code": "RZ6DWX4D",
+                    "createdAt": "2024-05-23T23:49:44.943Z",
+                    "updatedAt": "2024-05-23T23:49:44.943Z",
+                    "placeId": 17398
+                }
+            ]
+        },
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXJ0bmVyX2FwaV9rZXkiOiI4ZTg1ZjZlNC04NjUzLTQ3MGYtOWNlZS1hYzY3MzIxZjM4ZjYiLCJwbGFjZV9hcGlfa2V5IjoiMzg4YTRkYWItNWY2NS00Mzc2LTg5OGUtMmIzNGZkZWE1Yzg4IiwicGxhY2VfcGxhbnNfaW5mbyI6W3siaWQiOjE5OTg1LCJuYW1lIjoiVFA2IiwiY29kZSI6IlpKWjZLQkJKIiwiY3JlYXRlZEF0IjoiMjAyNC0wNS0yMVQwMToxMTowMi4xMThaIiwidXBkYXRlZEF0IjoiMjAyNC0wNS0yMVQwMToxMTowMi4xMThaIiwicGxhY2VJZCI6MTczOTh9LHsiaWQiOjIwMTc1LCJuYW1lIjoiVFA0IiwiY29kZSI6IlJaNkRXWDREIiwiY3JlYXRlZEF0IjoiMjAyNC0wNS0yM1QyMzo0OTo0NC45NDNaIiwidXBkYXRlZEF0IjoiMjAyNC0wNS0yM1QyMzo0OTo0NC45NDNaIiwicGxhY2VJZCI6MTczOTh9XSwiaWF0IjoxNzIzNjc3MjgyLCJleHAiOjE3MjM3NjM2ODJ9.3esam9hBMSoyPSQdcdERVPBviO1eRjgjw5jreo_9s3E"
+    }
+]

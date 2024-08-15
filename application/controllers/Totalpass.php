@@ -50,17 +50,13 @@ class Totalpass extends MY_Controller
             array('es_rel' => true, 'src' => '' . $controlador_js . '.js'),
         );
 
-        $token_data = $this->totalpass_model->obtener_token()->row();
+        $disciplinas_list = $this->totalpass_model->obtener_tokens()->result();
 
-        if (time() >= $token_data->valor_2) {
-            $this->totalpass_lib->token_renovar();
-            $token_data = $this->totalpass_model->obtener_token()->row();
+        foreach ($disciplinas_list as $disciplina_key => $disciplina_value) {
+            if (time() >= $disciplina_value->totalpass_token_expiracion) {
+                $this->totalpass_lib->token_renovar($disciplina_value->id);
+            }
         }
-
-        $token_data = json_decode($token_data->json_1);
-        $token_data = $token_data;
-
-        $data['token_data'] = $token_data;
 
         $this->construir_private_site_ui('totalpass/disciplinas', $data);
     }
@@ -76,12 +72,17 @@ class Totalpass extends MY_Controller
         $data = [];
 
         foreach ($disciplinas_list->result() as $disciplina_key => $disciplina_value) {
-            $opciones = '<a href="javascript:crear_ocurrencia_evento(' . $disciplina_value->id . ')" class="" data-id="' . $disciplina_value->id . '">Registrar</a>';
+            $opciones = '';
+            // $opciones .= '<a href="javascript:disciplina_actualizar_token(' . $disciplina_value->id . ')" class="" data-id="' . $disciplina_value->id . '">Actualizar</a>';
 
             $data[] = array(
+                'opciones' => $opciones,
                 'id' => $disciplina_value->id,
-                'nombre' => $disciplina_value->nombre,
+                'totalpass_partner_api_key' => $disciplina_value->totalpass_partner_api_key,
+                'totalpass_place_api_key' => $disciplina_value->totalpass_place_api_key,
                 'totalpass_plan_id' => $disciplina_value->totalpass_plan_id,
+                'totalpass_token_expiracion' => !empty($disciplina_value->totalpass_token_expiracion) ? floor(($disciplina_value->totalpass_token_expiracion - time()) / 3600) . ' Hrs.' : null,
+                'nombre' => $disciplina_value->nombre,
                 'estatus' => mb_strtoupper($disciplina_value->estatus),
             );
         }
@@ -175,19 +176,21 @@ class Totalpass extends MY_Controller
                 throw new Exception('Clase no encontrada', 1001);
             }
 
+            $disciplina_row = $this->totalpass_model->disciplina_obtener_por_id($clase_row->disciplina_id)->row();
+
             $data_1 = array(
                 'title' => mb_strtoupper($clase_row->dificultad),
                 'responsible' => $clase_row->instructores_nombre,
                 'duration' => $clase_row->intervalo_horas * 60,
                 'slots' => intval($clase_row->cupo - $clase_row->reservado),
-                'planId' => 19976,
+                'planId' => intval($disciplina_row->totalpass_plan_id),
                 'eventDate' => date('Y-m-d', strtotime($clase_row->inicia)),
                 'startTime' => date('h:i A', strtotime($clase_row->inicia)),
                 'timezone' => 'es-MX',
                 'description' => $clase_row->disciplinas_nombre
             );
 
-            $response = $this->totalpass_lib->crear_ocurrencia_evento($data_1);
+            $response = $this->totalpass_lib->crear_ocurrencia_evento($clase_row->disciplina_id, $data_1);
 
             if (isset($response['error']) && $response['error'] === true) {
                 $error_message = is_array($response['message']) ? implode(', ', $response['message']) : $response['message'];

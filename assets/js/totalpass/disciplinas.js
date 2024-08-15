@@ -22,9 +22,13 @@ $(document).ready(function () {
             "type": 'POST'
         },
         "columns": [
+            { "data": "opciones" },
             { "data": "id" },
-            { "data": "nombre" },
+            { "data": "totalpass_partner_api_key" },
+            { "data": "totalpass_place_api_key" },
             { "data": "totalpass_plan_id" },
+            { "data": "totalpass_token_expiracion" },
+            { "data": "nombre" },
             { "data": "estatus" },
         ],
         'language': {

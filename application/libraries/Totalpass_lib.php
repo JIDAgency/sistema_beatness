@@ -12,6 +12,7 @@ class Totalpass_lib
     private $token;
     private $token_expiracion;
     private $token_response;
+    private $disciplina_id;
 
     public function __construct()
     {
@@ -21,7 +22,7 @@ class Totalpass_lib
 
         $this->totalpass_base_url = 'https://booking-api.totalpass.com';
 
-        $this->partner_api_key = '8e85f6e4-8653-470f-9cee-ac67321f38f6';
+        // $this->partner_api_key = '8e85f6e4-8653-470f-9cee-ac67321f38f6';
 
         // Sandbox
         // $this->place_api_key = '3e05190a-013e-4f0d-afc2-57dcf4d121e9';
@@ -30,25 +31,29 @@ class Totalpass_lib
         // Bootcamp Polanco
         // $this->place_api_key = '1c38afd4-0dbc-4d3c-bf6f-8e201749e3b2';
         // Bootcamp Puebla
-        $this->place_api_key = '90e01ec4-07f9-4d82-8cfe-7dadef7a3d31';
-
-        $this->token_cargar();
+        // $this->place_api_key = '90e01ec4-07f9-4d82-8cfe-7dadef7a3d31';
     }
 
-    private function token_cargar()
+    private function token_cargar($disciplina_id)
     {
-        $token_data = $this->CI->totalpass_model->obtener_token()->row();
+        $token_data = $this->CI->totalpass_model->obtener_token($disciplina_id)->row();
+
         if ($token_data) {
-            $this->token = $token_data->valor_1;
-            $this->token_expiracion = $token_data->valor_2;
+            $this->token = $token_data->totalpass_token;
+            $this->token_expiracion = $token_data->totalpass_token_expiracion;
         } else {
             $this->token = null;
             $this->token_expiracion = null;
         }
     }
 
-    public function token_renovar()
+    public function token_renovar($disciplina_id)
     {
+        $disciplina_row = $this->CI->totalpass_model->disciplina_obtener_por_id($disciplina_id)->row();
+
+        $this->place_api_key = $disciplina_row->totalpass_place_api_key;
+        $this->partner_api_key = $disciplina_row->totalpass_partner_api_key;
+
         $url = $this->totalpass_base_url . '/partner/auth';
         $response = $this->call_api_token(
             $url,
@@ -60,26 +65,25 @@ class Totalpass_lib
         );
 
         if (isset($response['token'])) {
-            $this->token_guardar($response['token'], strtotime('+24 hours'), $response);
+            $this->token_guardar($disciplina_row->id, $response['token'], strtotime('+24 hours'), $response);
         } else {
             throw new Exception('Error al renovar el token: ' . ($response['message'] ?? 'Respuesta inválida de TotalPass.'));
         }
     }
 
-    private function token_guardar($token, $expiracion, $response = null)
+    private function token_guardar($disciplina_id, $token, $expiracion, $response = null)
     {
         $this->token = $token;
         $this->token_expiracion = $expiracion;
         $this->token_response = $response;
 
         $data = array(
-            'descripcion' => 'Se renueva cada 24 hrs. Última renovación: ' . date('Y-m-d H:i:s'),
-            'valor_1' => $token,
-            'valor_2' => strtotime('-10 minutes', $expiracion),
-            'json_1' => json_encode($response)
+            'totalpass_token' => $token,
+            'totalpass_token_expiracion' => strtotime('-10 minutes', $expiracion),
+            'totalpass_token_json' => json_encode($response)
         );
 
-        $this->CI->totalpass_model->guardar_token($data);
+        $this->CI->totalpass_model->guardar_token($disciplina_id, $data);
     }
 
     private function token_esta_expirado()
@@ -126,7 +130,7 @@ class Totalpass_lib
     private function call_api($url, $method = 'GET', $data = null)
     {
         if ($this->token_esta_expirado()) {
-            $this->token_renovar();
+            $this->token_renovar($this->disciplina_id);
         }
 
         $headers = [
@@ -190,8 +194,10 @@ class Totalpass_lib
     }
 
     // Funciones para ocurrencias de eventos
-    public function crear_ocurrencia_evento($data)
+    public function crear_ocurrencia_evento($disciplina_id, $data)
     {
+        $this->disciplina_id = $disciplina_id;
+        $this->token_cargar($this->disciplina_id);
         $url = $this->totalpass_base_url . "/partner/event-occurrence";
         return $this->call_api($url, 'POST', $data);
     }
