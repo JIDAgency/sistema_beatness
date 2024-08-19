@@ -25,6 +25,7 @@
             <section id="section">
 
                 <?php $this->load->view('_templates/mensajes_alerta.tpl.php'); ?>
+                <span name="mensaje_en_pantalla" id="mensaje_en_pantalla"></span>
 
                 <div class="row">
                     <div class="col-12">

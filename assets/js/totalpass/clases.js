@@ -72,6 +72,22 @@ $(document).ready(function () {
 });
 
 function crear_ocurrencia_evento(clase_id) {
+    var button = $('a[data-id="' + clase_id + '"]');
+    var mensajeEnPantalla = $('#mensaje_en_pantalla'); // Seleccionar el span del mensaje
+
+    // Deshabilitar el botón inmediatamente para evitar múltiples clics
+    if (button.data('clicked')) {
+        return; // Si el botón ya fue clicado, no hacer nada
+    }
+
+    button.data('clicked', true); // Marcar el botón como clicado
+    button.prop('disabled', true); // Deshabilitar el botón
+
+    // Cambiar el texto del botón a un loader
+    button.html('<i class="fa fa-spinner spinner"></i> Procesando...');
+    mensajeEnPantalla.html('<i class="fa fa-spinner spinner"></i> Procesando...'); // Mostrar mensaje de éxito
+
+
     fetch(method_call + "crear_ocurrencia_evento/" + clase_id, {
         method: 'POST',
         headers: {
@@ -82,10 +98,11 @@ function crear_ocurrencia_evento(clase_id) {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                alert(data.message);
+                mensajeEnPantalla.html(data.message); // Mostrar mensaje de éxito
+                mensajeEnPantalla.removeClass().addClass('text-success'); // Cambiar estilo para éxito
 
                 var updatedData = data.data;
-                var row = table.row($('a[data-id="' + clase_id + '"]').closest('tr'));
+                var row = table.row(button.closest('tr'));
 
                 row.data({
                     opciones: updatedData.opciones,
@@ -102,11 +119,15 @@ function crear_ocurrencia_evento(clase_id) {
                     cupos: updatedData.cupos,
                 }).draw(false);
             } else {
-                alert('Error: ' + data.message);
+                mensajeEnPantalla.html('Error: ' + data.message); // Mostrar mensaje de error
+                mensajeEnPantalla.removeClass().addClass('text-danger'); // Cambiar estilo para error
+                button.html('Registrar (intento fallido)'); // Cambiar el texto del botón para reflejar el fallo
             }
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('Ocurrió un error al crear la ocurrencia del evento.');
+            mensajeEnPantalla.html('Ocurrió un error al crear la ocurrencia del evento.'); // Mostrar mensaje de error
+            mensajeEnPantalla.removeClass().addClass('text-danger'); // Cambiar estilo para error
+            button.html('Registrar (intento fallido)'); // Cambiar el texto del botón para reflejar el fallo
         });
 }

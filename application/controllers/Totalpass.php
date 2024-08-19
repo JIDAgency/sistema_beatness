@@ -235,7 +235,7 @@ class Totalpass extends MY_Controller
 
             $this->output_json(array(
                 'success' => true,
-                'message' => 'Ocurrencia del evento creada correctamente en Totalpass.',
+                'message' => 'Clase ' . $clase_actualizada_row->identificador . ' creada correctamente en Totalpass.',
                 'data' => $data_3
             ));
         } catch (Exception $e) {
