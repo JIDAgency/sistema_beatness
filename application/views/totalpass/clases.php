@@ -1,6 +1,5 @@
 <div class="app-content content center-layout">
     <div class="content-wrapper">
-
         <div class="content-header row px-1 my-1">
 
             <div class="content-header-left col-md-6 col-12">
@@ -18,6 +17,18 @@
             </div>
 
             <div class="content-header-right col-md-6 col-12">
+
+                <div class="media float-right">
+
+                    <div class="form-group">
+                        <div class="btn-group" role="group" aria-label="Basic example">
+                            <a class="btn btn-outline-grey btn-outline-lighten-1 btn-min-width" href="<?php echo site_url($regresar_a); ?>"><i class="fa fa-arrow-circle-left"></i>&nbsp;Volver</a>
+                            <a class="btn btn-outline-grey btn-min-width mr-1" href="<?php echo site_url('totalpass/disciplinas'); ?>">Disciplinas</a>
+                        </div>
+                    </div>
+
+                </div>
+
             </div>
         </div>
 
@@ -39,26 +50,40 @@
 
                                     <p name="mensaje_en_pantalla" id="mensaje_en_pantalla"></p>
 
-                                    <table name="table" id="table" class="table display nowrap table-striped table-bordered scroll-horizontal table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th>Opciones</th>
-                                                <th>#</th>
-                                                <th>Totalpass Evento ID</th>
-                                                <th>Totalpass Evento individual ID</th>
-                                                <th>SKU</th>
-                                                <th>Disciplina</th>
-                                                <th>Grupo muscular</th>
-                                                <th>Fecha</th>
-                                                <th>Horario</th>
-                                                <th>Coach</th>
-                                                <th>Sucursal</th>
-                                                <th>Cupos</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                        </tbody>
-                                    </table>
+                                    <div class="row match-height">
+                                        <div class="col-xl-12 col-md-12 col-sm-12">
+
+                                            <table name="table" id="table" class="table display nowrap table-striped table-bordered scroll-horizontal table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Opciones</th>
+                                                        <th>#</th>
+                                                        <th>Totalpass Evento ID</th>
+                                                        <th>Totalpass Evento individual ID</th>
+                                                        <th>SKU</th>
+                                                        <th>Disciplina</th>
+                                                        <th>Grupo muscular</th>
+                                                        <th>Fecha</th>
+                                                        <th>Horario</th>
+                                                        <th>Coach</th>
+                                                        <th>Sucursal</th>
+                                                        <th>Cupos</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                </tbody>
+                                            </table>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-3">
+                                        <div class="col-12">
+                                            <div class="form-group float-md-right">
+                                                <a class="btn btn-outline-grey btn-outline-lighten-1 btn-min-width mr-1" href="<?php echo site_url($regresar_a); ?>"><i class="fa fa-arrow-circle-left"></i>&nbsp;Volver</a>
+                                            </div>
+                                        </div>
+                                    </div>
 
                                 </div>
                             </div>

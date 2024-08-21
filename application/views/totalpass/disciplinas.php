@@ -1,6 +1,5 @@
 <div class="app-content content center-layout">
     <div class="content-wrapper">
-
         <div class="content-header row px-1 my-1">
 
             <div class="content-header-left col-md-6 col-12">
@@ -18,6 +17,18 @@
             </div>
 
             <div class="content-header-right col-md-6 col-12">
+
+                <div class="media float-right">
+
+                    <div class="form-group">
+                        <div class="btn-group" role="group" aria-label="Basic example">
+                            <a class="btn btn-outline-grey btn-outline-lighten-1 btn-min-width" href="<?php echo site_url($regresar_a); ?>"><i class="fa fa-arrow-circle-left"></i>&nbsp;Volver</a>
+                            <a class="btn btn-outline-grey btn-min-width mr-1" href="<?php echo site_url('totalpass/clases'); ?>">Clases</a>
+                        </div>
+                    </div>
+
+                </div>
+
             </div>
         </div>
 
@@ -37,8 +48,8 @@
                             <div class="card-content collapse show">
                                 <div class="card-body card-dashboard">
 
-                                    <div class="row">
-                                        <div class="col-12">
+                                    <div class="row match-height">
+                                        <div class="col-xl-12 col-md-12 col-sm-12">
                                             <table name="table" id="table" class="table display nowrap table-striped table-bordered scroll-horizontal table-hover">
                                                 <thead>
                                                     <tr>
@@ -54,6 +65,14 @@
                                                 <tbody>
                                                 </tbody>
                                             </table>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-3">
+                                        <div class="col-12">
+                                            <div class="form-group float-md-right">
+                                                <a class="btn btn-outline-grey btn-outline-lighten-1 btn-min-width mr-1" href="<?php echo site_url($regresar_a); ?>"><i class="fa fa-arrow-circle-left"></i>&nbsp;Volver</a>
+                                            </div>
                                         </div>
                                     </div>
 

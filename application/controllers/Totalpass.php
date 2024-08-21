@@ -34,11 +34,11 @@ class Totalpass extends MY_Controller
     public function disciplinas()
     {
         $data['pagina_titulo'] = 'Disciplinas';
-        $data['pagina_subtitulo'] = 'Vincular disciplinas';
+        $data['pagina_subtitulo'] = 'Disciplinas | Totalpass';
         $data['pagina_totalpass'] = true;
 
         $data['controlador'] = 'totalpass';
-        $data['regresar_a'] = 'inicio';
+        $data['regresar_a'] = 'totalpass';
         $controlador_js = "totalpass/disciplinas";
 
         $data['styles'] = array(
@@ -101,7 +101,7 @@ class Totalpass extends MY_Controller
         $data['pagina_totalpass'] = true;
 
         $data['controlador'] = 'totalpass';
-        $data['regresar_a'] = 'inicio';
+        $data['regresar_a'] = 'totalpass';
         $controlador_js = "totalpass/clases";
 
         $data['styles'] = array(
