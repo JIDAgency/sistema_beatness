@@ -202,14 +202,18 @@ class Totalpass_lib
         return $this->call_api($url, 'POST', $data);
     }
 
-    public function actualizar_ocurrencia_evento($event_occurrence_uuid, $data)
+    public function actualizar_ocurrencia_evento($disciplina_id, $event_occurrence_uuid, $data)
     {
+        $this->disciplina_id = $disciplina_id;
+        $this->token_cargar($this->disciplina_id);
         $url = $this->totalpass_base_url . "/partner/event-occurrence/$event_occurrence_uuid";
         return $this->call_api($url, 'PUT', $data);
     }
 
-    public function eliminar_ocurrencia_evento($occurrence_uuid)
+    public function eliminar_ocurrencia_evento($disciplina_id, $occurrence_uuid)
     {
+        $this->disciplina_id = $disciplina_id;
+        $this->token_cargar($this->disciplina_id);
         $url = $this->totalpass_base_url . "/partner/event-occurrence/$occurrence_uuid";
         return $this->call_api($url, 'DELETE');
     }

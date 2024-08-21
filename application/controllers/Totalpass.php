@@ -72,11 +72,7 @@ class Totalpass extends MY_Controller
         $data = [];
 
         foreach ($disciplinas_list->result() as $disciplina_key => $disciplina_value) {
-            $opciones = '';
-            // $opciones .= '<a href="javascript:disciplina_actualizar_token(' . $disciplina_value->id . ')" class="" data-id="' . $disciplina_value->id . '">Actualizar</a>';
-
             $data[] = array(
-                'opciones' => $opciones,
                 'id' => $disciplina_value->id,
                 'totalpass_partner_api_key' => $disciplina_value->totalpass_partner_api_key,
                 'totalpass_place_api_key' => $disciplina_value->totalpass_place_api_key,
@@ -131,11 +127,15 @@ class Totalpass extends MY_Controller
         $data = [];
 
         foreach ($clases_list->result() as $clase_key => $clase_value) {
+
             $opciones = '';
+
             if (!empty($clase_value->totalpass_eventOccurrenceUuid)) {
-                // $opciones .= '<a href="javascript:crear_ocurrencia_evento(' . $clase_value->id . ')" class="" data-id="' . $clase_value->id . '">Actualizar</a>';
+                $opciones .= '<a href="javascript:actualizar_ocurrencia_evento(' . $clase_value->id . ')" class="" data-id="actualizar_' . $clase_value->id . '">Actualizar</a>';
+                $opciones .= ' | ';
+                $opciones .= '<a href="javascript:eliminar_ocurrencia_evento(' . $clase_value->id . ')" class="" data-id="cancelar_' . $clase_value->id . '">Cancelar</a>';
             } else {
-                $opciones .= '<a href="javascript:crear_ocurrencia_evento(' . $clase_value->id . ')" class="" data-id="' . $clase_value->id . '">Registrar</a>';
+                $opciones .= '<a href="javascript:crear_ocurrencia_evento(' . $clase_value->id . ')" class="" data-id="registrar_' . $clase_value->id . '">Registrar</a>';
             }
 
             $data[] = array(
@@ -173,7 +173,7 @@ class Totalpass extends MY_Controller
             $clase_row = $this->totalpass_model->clases_obtener_por_id($id)->row();
 
             if (!$clase_row) {
-                throw new Exception('Clase no encontrada', 1001);
+                throw new Exception('Clase no encontrada');
             }
 
             $disciplina_row = $this->totalpass_model->disciplina_obtener_por_id($clase_row->disciplina_id)->row();
@@ -194,7 +194,7 @@ class Totalpass extends MY_Controller
 
             if (isset($response['error']) && $response['error'] === true) {
                 $error_message = is_array($response['message']) ? implode(', ', $response['message']) : $response['message'];
-                throw new Exception('Error al crear la ocurrencia del evento en Totalpass: ' . $error_message, 1002);
+                throw new Exception('Error al crear la ocurrencia del evento en Totalpass: ' . $error_message);
             }
 
             $data_2 = array(
@@ -204,16 +204,19 @@ class Totalpass extends MY_Controller
             );
 
             if (!$this->totalpass_model->clases_actualizar_por_id($clase_row->id, $data_2)) {
-                throw new Exception('Error al crear la ocurrencia del evento en Totalpass.', 1002);
+                throw new Exception('Error al crear la ocurrencia del evento en Totalpass.');
             }
 
             $clase_actualizada_row = $this->totalpass_model->clases_obtener_por_id($id)->row();
 
             $opciones = '';
+
             if (!empty($clase_actualizada_row->totalpass_eventOccurrenceUuid)) {
-                // $opciones .= '<a href="javascript:crear_ocurrencia_evento(' . $clase_actualizada_row->id . ')" class="" data-id="' . $clase_actualizada_row->id . '">Actualizar</a>';
+                $opciones .= '<a href="javascript:actualizar_ocurrencia_evento(' . $clase_actualizada_row->id . ')" class="" data-id="actualizar_' . $clase_actualizada_row->id . '">Actualizar</a>';
+                $opciones .= ' | ';
+                $opciones .= '<a href="javascript:eliminar_ocurrencia_evento(' . $clase_actualizada_row->id . ')" class="" data-id="cancelar_' . $clase_actualizada_row->id . '">Cancelar</a>';
             } else {
-                $opciones .= '<a href="javascript:crear_ocurrencia_evento(' . $clase_actualizada_row->id . ')" class="" data-id="' . $clase_actualizada_row->id . '">Registrar</a>';
+                $opciones .= '<a href="javascript:crear_ocurrencia_evento(' . $clase_actualizada_row->id . ')" class="" data-id="registrar_' . $clase_actualizada_row->id . '">Registrar</a>';
             }
 
             $data_3 = array(
@@ -233,15 +236,195 @@ class Totalpass extends MY_Controller
 
             $this->db->trans_commit();
 
-            $this->output_json(array(
-                'success' => true,
-                'message' => 'Clase ' . $clase_actualizada_row->identificador . ' creada correctamente en Totalpass.',
-                'data' => $data_3
-            ));
+            return $this->output_json(
+                array(
+                    'success' => true,
+                    'message' => 'La clase ' . $clase_actualizada_row->identificador . ' se ha registrado correctamente en TotalPass.',
+                    'data' => $data_3
+                )
+            );
         } catch (Exception $e) {
+
             $this->db->trans_rollback();
-            $mensaje_tipo = ($e->getCode() === 1002) ? 'info' : 'error';
-            $this->output_json(array('error' => true, 'message' => $e->getMessage()));
+
+            return $this->output_json(
+                array(
+                    'error' => true,
+                    'message' => $e->getMessage()
+                )
+            );
+        }
+    }
+
+    public function actualizar_ocurrencia_evento($id)
+    {
+        $this->db->trans_begin();
+
+        try {
+            $clase_row = $this->totalpass_model->clases_obtener_por_id($id)->row();
+
+            if (!$clase_row) {
+                throw new Exception('No se pudo encontrar la clase especificada.');
+            }
+
+            $disciplina_row = $this->totalpass_model->disciplina_obtener_por_id($clase_row->disciplina_id)->row();
+
+            if (!$disciplina_row) {
+                throw new Exception('No se pudo encontrar la disciplina especificada.');
+            }
+
+            $data_1 = array(
+                'slots' => intval($clase_row->cupo - $clase_row->reservado),
+            );
+
+            $response = $this->totalpass_lib->actualizar_ocurrencia_evento($disciplina_row->id, $clase_row->totalpass_eventOccurrenceUuid, $data_1);
+
+            if (isset($response['error']) && $response['error'] === true) {
+                $error_message = is_array($response['message']) ? implode(', ', $response['message']) : $response['message'];
+                throw new Exception('Error al crear la ocurrencia del evento en Totalpass: ' . $error_message);
+            }
+
+            $data_2 = array(
+                'totalpass_json' => json_encode(array(json_decode($clase_row->totalpass_json, true), $response))
+            );
+
+            if (!$this->totalpass_model->clases_actualizar_por_id($clase_row->id, $data_2)) {
+                throw new Exception('Error al crear la ocurrencia del evento en Totalpass.');
+            }
+
+            $clase_actualizada_row = $this->totalpass_model->clases_obtener_por_id($id)->row();
+
+            $opciones = '';
+
+            if (!empty($clase_actualizada_row->totalpass_eventOccurrenceUuid)) {
+                $opciones .= '<a href="javascript:actualizar_ocurrencia_evento(' . $clase_actualizada_row->id . ')" class="" data-id="actualizar_' . $clase_actualizada_row->id . '">Actualizar</a>';
+                $opciones .= ' | ';
+                $opciones .= '<a href="javascript:eliminar_ocurrencia_evento(' . $clase_actualizada_row->id . ')" class="" data-id="cancelar_' . $clase_actualizada_row->id . '">Cancelar</a>';
+            } else {
+                $opciones .= '<a href="javascript:crear_ocurrencia_evento(' . $clase_actualizada_row->id . ')" class="" data-id="registrar_' . $clase_actualizada_row->id . '">Registrar</a>';
+            }
+
+            $data_3 = array(
+                'opciones' => $opciones,
+                'id' => $clase_actualizada_row->id,
+                'totalpass_event_id' => !empty($clase_actualizada_row->totalpass_event_id) ? $clase_actualizada_row->totalpass_event_id : '<span class="text-muted">No cargada</span>',
+                'totalpass_eventOccurrenceUuid' => !empty($clase_actualizada_row->totalpass_eventOccurrenceUuid) ? $clase_actualizada_row->totalpass_eventOccurrenceUuid : '<span class="text-muted">No cargada</span>',
+                'identificador' => $clase_actualizada_row->identificador,
+                'disciplinas_nombre' => $clase_actualizada_row->disciplinas_nombre,
+                'dificultad' => $clase_actualizada_row->dificultad,
+                'fecha' => date('Y-m-d', strtotime($clase_actualizada_row->inicia)),
+                'horario' => date('h:i A', strtotime($clase_actualizada_row->inicia)),
+                'instructores_nombre' => $clase_actualizada_row->instructores_nombre,
+                'sucursales_locacion' => $clase_actualizada_row->sucursales_locacion,
+                'cupos' => $clase_actualizada_row->reservado . '/' . $clase_actualizada_row->cupo
+            );
+
+            $this->db->trans_commit();
+
+            return $this->output_json(
+                array(
+                    'success' => true,
+                    'message' => 'La clase ' . $clase_actualizada_row->identificador . ' se ha actualizado correctamente en TotalPass.',
+                    'data' => $data_3
+                )
+            );
+        } catch (Exception $e) {
+
+            $this->db->trans_rollback();
+
+            return $this->output_json(
+                array(
+                    'error' => true,
+                    'message' => $e->getMessage()
+                )
+            );
+        }
+    }
+
+    public function eliminar_ocurrencia_evento($id)
+    {
+        $this->db->trans_begin();
+
+        try {
+            $clase_row = $this->totalpass_model->clases_obtener_por_id($id)->row();
+
+            if (!$clase_row) {
+                throw new Exception('No se pudo encontrar la clase especificada.');
+            }
+
+            $disciplina_row = $this->totalpass_model->disciplina_obtener_por_id($clase_row->disciplina_id)->row();
+
+            if (!$disciplina_row) {
+                throw new Exception('No se pudo encontrar la disciplina especificada.');
+            }
+
+            $response = $this->totalpass_lib->eliminar_ocurrencia_evento($disciplina_row->id, $clase_row->totalpass_eventOccurrenceUuid);
+
+            if (isset($response['error']) && $response['error'] === true) {
+                $error_message = is_array($response['message']) ? implode(', ', $response['message']) : $response['message'];
+                throw new Exception('No se pudo cancelar la clase en TotalPass: ' . $error_message);
+            }
+
+            $data_1 = array(
+                'totalpass_event_id' => null,
+                'totalpass_eventOccurrenceUuid' => null,
+                'totalpass_json' => json_encode(array(json_decode($clase_row->totalpass_json, true), $response))
+            );
+
+            if (!$this->totalpass_model->clases_actualizar_por_id($clase_row->id, $data_1)) {
+                throw new Exception('No se pudo actualizar la clase del sistema.');
+            }
+
+            $clase_actualizada_row = $this->totalpass_model->clases_obtener_por_id($id)->row();
+
+            if (!$clase_actualizada_row) {
+                throw new Exception('No se pudo obtener la clase actualizada.');
+            }
+
+            $opciones = '';
+
+            if (!empty($clase_actualizada_row->totalpass_eventOccurrenceUuid)) {
+                $opciones .= '<a href="javascript:actualizar_ocurrencia_evento(' . $clase_actualizada_row->id . ')" class="" data-id="actualizar_' . $clase_actualizada_row->id . '">Actualizar</a>';
+                $opciones .= ' | ';
+                $opciones .= '<a href="javascript:eliminar_ocurrencia_evento(' . $clase_actualizada_row->id . ')" class="" data-id="cancelar_' . $clase_actualizada_row->id . '">Cancelar</a>';
+            } else {
+                $opciones .= '<a href="javascript:crear_ocurrencia_evento(' . $clase_actualizada_row->id . ')" class="" data-id="registrar_' . $clase_actualizada_row->id . '">Registrar</a>';
+            }
+
+            $data_2 = array(
+                'opciones' => $opciones,
+                'id' => $clase_actualizada_row->id,
+                'totalpass_event_id' => !empty($clase_actualizada_row->totalpass_event_id) ? $clase_actualizada_row->totalpass_event_id : '<span class="text-muted">No cargada</span>',
+                'totalpass_eventOccurrenceUuid' => !empty($clase_actualizada_row->totalpass_eventOccurrenceUuid) ? $clase_actualizada_row->totalpass_eventOccurrenceUuid : '<span class="text-muted">No cargada</span>',
+                'identificador' => $clase_actualizada_row->identificador,
+                'disciplinas_nombre' => $clase_actualizada_row->disciplinas_nombre,
+                'dificultad' => $clase_actualizada_row->dificultad,
+                'fecha' => date('Y-m-d', strtotime($clase_actualizada_row->inicia)),
+                'horario' => date('h:i A', strtotime($clase_actualizada_row->inicia)),
+                'instructores_nombre' => $clase_actualizada_row->instructores_nombre,
+                'sucursales_locacion' => $clase_actualizada_row->sucursales_locacion,
+                'cupos' => $clase_actualizada_row->reservado . '/' . $clase_actualizada_row->cupo
+            );
+
+            $this->db->trans_commit();
+
+            return $this->output_json(
+                array(
+                    'success' => true,
+                    'message' => 'La clase ' . $clase_actualizada_row->identificador . ' se ha cancelado correctamente en TotalPass.',
+                    'data' => $data_2
+                )
+            );
+        } catch (Exception $e) {
+
+            $this->db->trans_rollback();
+
+            return $this->output_json(
+                array(
+                    'error' => true,
+                    'message' => $e->getMessage()
+                )
+            );
         }
     }
 

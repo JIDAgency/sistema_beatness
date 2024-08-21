@@ -72,7 +72,7 @@ $(document).ready(function () {
 });
 
 function crear_ocurrencia_evento(clase_id) {
-    var button = $('a[data-id="' + clase_id + '"]');
+    var button = $('a[data-id="registrar_' + clase_id + '"]');
     var mensajeEnPantalla = $('#mensaje_en_pantalla'); // Seleccionar el span del mensaje
 
     // Deshabilitar el botón inmediatamente para evitar múltiples clics
@@ -85,8 +85,10 @@ function crear_ocurrencia_evento(clase_id) {
 
     // Cambiar el texto del botón a un loader
     button.html('<i class="fa fa-spinner spinner"></i> Procesando...');
-    mensajeEnPantalla.html('<i class="fa fa-spinner spinner"></i> Procesando...'); // Mostrar mensaje de éxito
+    button.removeClass().addClass('text-warning'); // Cambiar estilo para error
 
+    mensajeEnPantalla.html('<i class="fa fa-spinner spinner"></i> Procesando...'); // Mostrar mensaje de éxito
+    mensajeEnPantalla.removeClass().addClass('text-warning'); // Cambiar estilo para error
 
     fetch(method_call + "crear_ocurrencia_evento/" + clase_id, {
         method: 'POST',
@@ -121,13 +123,139 @@ function crear_ocurrencia_evento(clase_id) {
             } else {
                 mensajeEnPantalla.html('Error: ' + data.message); // Mostrar mensaje de error
                 mensajeEnPantalla.removeClass().addClass('text-danger'); // Cambiar estilo para error
-                button.html('Registrar (intento fallido)'); // Cambiar el texto del botón para reflejar el fallo
+                button.html('Registrar'); // Cambiar el texto del botón para reflejar el fallo
             }
         })
         .catch(error => {
             console.error('Error:', error);
-            mensajeEnPantalla.html('Ocurrió un error al crear la ocurrencia del evento.'); // Mostrar mensaje de error
+            mensajeEnPantalla.html('No se pudo crear la clase en TotalPass.'); // Mostrar mensaje de error
             mensajeEnPantalla.removeClass().addClass('text-danger'); // Cambiar estilo para error
-            button.html('Registrar (intento fallido)'); // Cambiar el texto del botón para reflejar el fallo
+            button.html('Registrar'); // Cambiar el texto del botón para reflejar el fallo
+        });
+}
+
+function actualizar_ocurrencia_evento(clase_id) {
+    var button = $('a[data-id="actualizar_' + clase_id + '"]');
+    var mensajeEnPantalla = $('#mensaje_en_pantalla'); // Seleccionar el span del mensaje
+
+    // Deshabilitar el botón inmediatamente para evitar múltiples clics
+    if (button.data('clicked')) {
+        return; // Si el botón ya fue clicado, no hacer nada
+    }
+
+    button.data('clicked', true); // Marcar el botón como clicado
+    button.prop('disabled', true); // Deshabilitar el botón
+
+    // Cambiar el texto del botón a un loader
+    button.html('<i class="fa fa-spinner spinner"></i> Procesando...');
+    button.removeClass().addClass('text-warning'); // Cambiar estilo para error
+
+    mensajeEnPantalla.html('<i class="fa fa-spinner spinner"></i> Procesando...'); // Mostrar mensaje de éxito
+    mensajeEnPantalla.removeClass().addClass('text-warning'); // Cambiar estilo para error
+
+    fetch(method_call + "actualizar_ocurrencia_evento/" + clase_id, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ clase_id: clase_id })
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                mensajeEnPantalla.html(data.message); // Mostrar mensaje de éxito
+                mensajeEnPantalla.removeClass().addClass('text-success'); // Cambiar estilo para éxito
+
+                var updatedData = data.data;
+                var row = table.row(button.closest('tr'));
+
+                row.data({
+                    opciones: updatedData.opciones,
+                    id: updatedData.id,
+                    totalpass_event_id: updatedData.totalpass_event_id,
+                    totalpass_eventOccurrenceUuid: updatedData.totalpass_eventOccurrenceUuid,
+                    identificador: updatedData.identificador,
+                    disciplinas_nombre: updatedData.disciplinas_nombre,
+                    dificultad: updatedData.dificultad,
+                    fecha: updatedData.fecha,
+                    horario: updatedData.horario,
+                    instructores_nombre: updatedData.instructores_nombre,
+                    sucursales_locacion: updatedData.sucursales_locacion,
+                    cupos: updatedData.cupos,
+                }).draw(false);
+            } else {
+                mensajeEnPantalla.html(data.message); // Mostrar mensaje de error
+                mensajeEnPantalla.removeClass().addClass('text-danger'); // Cambiar estilo para error
+                button.html('Actualizar'); // Cambiar el texto del botón para reflejar el fallo
+            }
+        })
+        .catch(error => {
+            console.error('* ', error);
+            mensajeEnPantalla.html('No se pudo actualizar la clase en TotalPass.'); // Mostrar mensaje de error
+            mensajeEnPantalla.removeClass().addClass('text-danger'); // Cambiar estilo para error
+            button.html('Actualizar'); // Cambiar el texto del botón para reflejar el fallo
+        });
+}
+
+function eliminar_ocurrencia_evento(clase_id) {
+    var button = $('a[data-id="cancelar_' + clase_id + '"]');
+    var mensajeEnPantalla = $('#mensaje_en_pantalla'); // Seleccionar el span del mensaje
+
+    // Deshabilitar el botón inmediatamente para evitar múltiples clics
+    if (button.data('clicked')) {
+        return; // Si el botón ya fue clicado, no hacer nada
+    }
+
+    button.data('clicked', true); // Marcar el botón como clicado
+    button.prop('disabled', true); // Deshabilitar el botón
+
+    // Cambiar el texto del botón a un loader
+    button.html('<i class="fa fa-spinner spinner"></i> Procesando...');
+    button.removeClass().addClass('text-warning'); // Cambiar estilo para error
+
+    mensajeEnPantalla.html('<i class="fa fa-spinner spinner"></i> Procesando...'); // Mostrar mensaje de éxito
+    mensajeEnPantalla.removeClass().addClass('text-warning'); // Cambiar estilo para error
+
+    fetch(method_call + "eliminar_ocurrencia_evento/" + clase_id, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ clase_id: clase_id })
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                mensajeEnPantalla.html(data.message); // Mostrar mensaje de éxito
+                mensajeEnPantalla.removeClass().addClass('text-success'); // Cambiar estilo para éxito
+
+                var updatedData = data.data;
+                var row = table.row(button.closest('tr'));
+
+                row.data({
+                    opciones: updatedData.opciones,
+                    id: updatedData.id,
+                    totalpass_event_id: updatedData.totalpass_event_id,
+                    totalpass_eventOccurrenceUuid: updatedData.totalpass_eventOccurrenceUuid,
+                    identificador: updatedData.identificador,
+                    disciplinas_nombre: updatedData.disciplinas_nombre,
+                    dificultad: updatedData.dificultad,
+                    fecha: updatedData.fecha,
+                    horario: updatedData.horario,
+                    instructores_nombre: updatedData.instructores_nombre,
+                    sucursales_locacion: updatedData.sucursales_locacion,
+                    cupos: updatedData.cupos,
+                }).draw(false);
+            } else {
+                mensajeEnPantalla.html(data.message); // Mostrar mensaje de error
+                mensajeEnPantalla.removeClass().addClass('text-danger'); // Cambiar estilo para error
+                button.html('Cancelar'); // Cambiar el texto del botón para reflejar el fallo
+            }
+        })
+        .catch(error => {
+            console.error('* ', error);
+            mensajeEnPantalla.html('No se pudo cancelar la clase en TotalPass.'); // Mostrar mensaje de error
+            mensajeEnPantalla.removeClass().addClass('text-danger'); // Cambiar estilo para error
+            button.html('Cancelar'); // Cambiar el texto del botón para reflejar el fallo
         });
 }

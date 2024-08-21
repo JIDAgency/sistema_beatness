@@ -22,7 +22,6 @@ $(document).ready(function () {
             "type": 'POST'
         },
         "columns": [
-            { "data": "opciones" },
             { "data": "id" },
             { "data": "totalpass_partner_api_key" },
             { "data": "totalpass_place_api_key" },

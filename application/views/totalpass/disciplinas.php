@@ -42,7 +42,6 @@
                                             <table name="table" id="table" class="table display nowrap table-striped table-bordered scroll-horizontal table-hover">
                                                 <thead>
                                                     <tr>
-                                                        <th>Opciones</th>
                                                         <th>#</th>
                                                         <th>TotalPass partner ID</th>
                                                         <th>TotalPass place ID</th>

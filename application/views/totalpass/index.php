@@ -64,9 +64,6 @@
                                                     <a href="<?php echo site_url('totalpass/disciplinas'); ?>">Disciplinas</a>
                                                 </li>
                                                 <li>
-                                                    <a href="<?php echo site_url('totalpass/categorias'); ?>">Categorias</a>
-                                                </li>
-                                                <li>
                                                     <a href="<?php echo site_url('totalpass/clases'); ?>">Clases</a>
                                                 </li>
                                             </ol>
