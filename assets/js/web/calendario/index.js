@@ -306,7 +306,7 @@ function cambiarFondo() {
     } else if (disciplina_seleccionada == 19) {
         body.style.backgroundImage = "url('../almacenamiento/disciplinas/bg-calendario-indoorcycling.jpg')";
     } else {
-        body.style.backgroundImage = "url('../almacenamiento/disciplinas/bg-calendario.svg')";
+        body.style.backgroundImage = "url('../almacenamiento/disciplinas/bg-calendario.jpg')";
     }
 }
 

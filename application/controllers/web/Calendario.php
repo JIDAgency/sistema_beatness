@@ -84,7 +84,7 @@ class Calendario extends CI_Controller
         $contenido = '';
 
         // $contenido .= '
-        // <table class="semana responsive">
+        // <table class="semana responsive contenido-por-dia">
         //     <thead>
         //         <tr>
         //             <th class="blue lighten-3">Horario</th>
@@ -109,18 +109,18 @@ class Calendario extends CI_Controller
 
             if ($es_tarde && ($ciclo_es_tarde === false)) {
                 $contenido .= '<tr>';
-                $contenido .= '<td><small> </small></td>';
+                $contenido .= '<td> </td>';
                 foreach (['Mon', 'Tue', 'Wed', 'Thu', 'Fri'] as $dia) {
-                    $contenido .= '<td><small> </small></td>';
+                    $contenido .= '<td> </td>';
                 }
                 $contenido .= '</tr>';
                 $ciclo_es_tarde = true;
             }
 
             $contenido .= '<tr>';
-            $contenido .= '<td class="blue lighten-3"><small>' . $hora . '</small></td>';
+            $contenido .= '<td class="blue lighten-3">' . $hora . '</td>';
             foreach (['Mon', 'Tue', 'Wed', 'Thu', 'Fri'] as $dia) {
-                $contenido .= '<td class=""><small>' . ($clases_dia[$dia] ?? '/') . '</small></td>';
+                $contenido .= '<td class="">' . ($clases_dia[$dia] ?? '<strong>&mdash;</strong>') . '</td>';
             }
             $contenido .= '</tr>';
         }
@@ -161,7 +161,7 @@ class Calendario extends CI_Controller
         $contenido_lunes = '';
 
         $contenido_lunes .= '
-        <table class="semana responsive">
+        <table class="semana responsive contenido-por-dia">
             <tbody>
         ';
 
@@ -176,18 +176,18 @@ class Calendario extends CI_Controller
 
             // if ($es_tarde && ($ciclo_es_tarde === false)) {
             //     $contenido_lunes .= '<tr>';
-            //     $contenido_lunes .= '<th><small> </small></th>';
+            //     $contenido_lunes .= '<th> </th>';
             //     foreach (['Mon', 'Tue', 'Wed', 'Thu', 'Fri'] as $dia) {
-            //         $contenido_lunes .= '<th><small> </small></th>';
+            //         $contenido_lunes .= '<th> </th>';
             //     }
             //     $contenido_lunes .= '</tr>';
             //     $ciclo_es_tarde = true;
             // }
 
             $contenido_lunes .= '<tr>';
-            $contenido_lunes .= '<th class="blue lighten-3 text-center"><small>' . $hora . '</small></th>';
+            $contenido_lunes .= '<th class="blue lighten-3 text-center">' . $hora . '</th>';
             foreach (['Mon'] as $dia) {
-                $contenido_lunes .= '<th class="text-center"><small>' . ($clases_dia[$dia] ?? '/') . '</small></th>';
+                $contenido_lunes .= '<th class="text-center">' . ($clases_dia[$dia] ?? '<strong>&mdash;</strong>') . '</th>';
             }
             $contenido_lunes .= '</tr>';
             $contenido_lunes .= '<tr>
@@ -207,7 +207,7 @@ class Calendario extends CI_Controller
         $contenido_martes = '';
 
         $contenido_martes .= '
-        <table class="semana responsive">
+        <table class="semana responsive contenido-por-dia">
             <tbody>
         ';
 
@@ -222,18 +222,18 @@ class Calendario extends CI_Controller
 
             // if ($es_tarde && ($ciclo_es_tarde === false)) {
             //     $contenido_martes .= '<tr>';
-            //     $contenido_martes .= '<th><small> </small></th>';
+            //     $contenido_martes .= '<th> </th>';
             //     foreach (['Mon', 'Tue', 'Wed', 'Thu', 'Fri'] as $dia) {
-            //         $contenido_martes .= '<th><small> </small></th>';
+            //         $contenido_martes .= '<th> </th>';
             //     }
             //     $contenido_martes .= '</tr>';
             //     $ciclo_es_tarde = true;
             // }
 
             $contenido_martes .= '<tr>';
-            $contenido_martes .= '<th class="blue lighten-3 text-center"><small>' . $hora . '</small></th>';
+            $contenido_martes .= '<th class="blue lighten-3 text-center">' . $hora . '</th>';
             foreach (['Tue'] as $dia) {
-                $contenido_martes .= '<th class="text-center"><small>' . ($clases_dia[$dia] ?? '/') . '</small></th>';
+                $contenido_martes .= '<th class="text-center">' . ($clases_dia[$dia] ?? '<strong>&mdash;</strong>') . '</th>';
             }
             $contenido_martes .= '</tr>';
             $contenido_martes .= '<tr>
@@ -252,7 +252,7 @@ class Calendario extends CI_Controller
         $contenido_miercoles = '';
 
         $contenido_miercoles .= '
-        <table class="semana responsive">
+        <table class="semana responsive contenido-por-dia">
             <tbody>
         ';
 
@@ -267,18 +267,18 @@ class Calendario extends CI_Controller
 
             // if ($es_tarde && ($ciclo_es_tarde === false)) {
             //     $contenido_miercoles .= '<tr>';
-            //     $contenido_miercoles .= '<th><small> </small></th>';
+            //     $contenido_miercoles .= '<th> </th>';
             //     foreach (['Mon', 'Tue', 'Wed', 'Thu', 'Fri'] as $dia) {
-            //         $contenido_miercoles .= '<th><small> </small></th>';
+            //         $contenido_miercoles .= '<th> </th>';
             //     }
             //     $contenido_miercoles .= '</tr>';
             //     $ciclo_es_tarde = true;
             // }
 
             $contenido_miercoles .= '<tr>';
-            $contenido_miercoles .= '<th class="blue lighten-3 text-center"><small>' . $hora . '</small></th>';
+            $contenido_miercoles .= '<th class="blue lighten-3 text-center">' . $hora . '</th>';
             foreach (['Wed'] as $dia) {
-                $contenido_miercoles .= '<th class="text-center"><small>' . ($clases_dia[$dia] ?? '/') . '</small></th>';
+                $contenido_miercoles .= '<th class="text-center">' . ($clases_dia[$dia] ?? '<strong>&mdash;</strong>') . '</th>';
             }
             $contenido_miercoles .= '</tr>';
             $contenido_miercoles .= '<tr>
@@ -297,7 +297,7 @@ class Calendario extends CI_Controller
         $contenido_jueves = '';
 
         $contenido_jueves .= '
-        <table class="semana responsive">
+        <table class="semana responsive contenido-por-dia">
             <tbody>
         ';
 
@@ -312,18 +312,18 @@ class Calendario extends CI_Controller
 
             // if ($es_tarde && ($ciclo_es_tarde === false)) {
             //     $contenido_jueves .= '<tr>';
-            //     $contenido_jueves .= '<th><small> </small></th>';
+            //     $contenido_jueves .= '<th> </th>';
             //     foreach (['Mon', 'Tue', 'Wed', 'Thu', 'Fri'] as $dia) {
-            //         $contenido_jueves .= '<th><small> </small></th>';
+            //         $contenido_jueves .= '<th> </th>';
             //     }
             //     $contenido_jueves .= '</tr>';
             //     $ciclo_es_tarde = true;
             // }
 
             $contenido_jueves .= '<tr>';
-            $contenido_jueves .= '<th class="blue lighten-3 text-center"><small>' . $hora . '</small></th>';
+            $contenido_jueves .= '<th class="blue lighten-3 text-center">' . $hora . '</th>';
             foreach (['Thu'] as $dia) {
-                $contenido_jueves .= '<th class="text-center"><small>' . ($clases_dia[$dia] ?? '/') . '</small></th>';
+                $contenido_jueves .= '<th class="text-center">' . ($clases_dia[$dia] ?? '<strong>&mdash;</strong>') . '</th>';
             }
             $contenido_jueves .= '</tr>';
             $contenido_jueves .= '<tr>
@@ -342,7 +342,7 @@ class Calendario extends CI_Controller
         $contenido_viernes = '';
 
         $contenido_viernes .= '
-        <table class="semana responsive">
+        <table class="semana responsive contenido-por-dia">
             <tbody>
         ';
 
@@ -357,18 +357,18 @@ class Calendario extends CI_Controller
 
             // if ($es_tarde && ($ciclo_es_tarde === false)) {
             //     $contenido_viernes .= '<tr>';
-            //     $contenido_viernes .= '<th><small> </small></th>';
+            //     $contenido_viernes .= '<th> </th>';
             //     foreach (['Mon', 'Tue', 'Wed', 'Thu', 'Fri'] as $dia) {
-            //         $contenido_viernes .= '<th><small> </small></th>';
+            //         $contenido_viernes .= '<th> </th>';
             //     }
             //     $contenido_viernes .= '</tr>';
             //     $ciclo_es_tarde = true;
             // }
 
             $contenido_viernes .= '<tr>';
-            $contenido_viernes .= '<th class="blue lighten-3 text-center"><small>' . $hora . '</small></th>';
+            $contenido_viernes .= '<th class="blue lighten-3 text-center">' . $hora . '</th>';
             foreach (['Fri'] as $dia) {
-                $contenido_viernes .= '<th class="text-center"><small>' . ($clases_dia[$dia] ?? '/') . '</small></th>';
+                $contenido_viernes .= '<th class="text-center">' . ($clases_dia[$dia] ?? '<strong>&mdash;</strong>') . '</th>';
             }
             $contenido_viernes .= '</tr>';
             $contenido_viernes .= '<tr>
@@ -438,18 +438,18 @@ class Calendario extends CI_Controller
 
             if ($es_tarde && ($ciclo_es_tarde === false)) {
                 $contenido .= '<tr>';
-                $contenido .= '<td><small> </small></td>';
+                $contenido .= '<td> </td>';
                 foreach (['Sat', 'Sun'] as $dia) {
-                    $contenido .= '<td><small> </small></td>';
+                    $contenido .= '<td> </td>';
                 }
                 $contenido .= '</tr>';
                 $ciclo_es_tarde = true;
             }
 
             $contenido .= '<tr>';
-            $contenido .= '<td class="blue lighten-3"><small>' . $hora . '</small></td>';
+            $contenido .= '<td class="blue lighten-3">' . $hora . '</td>';
             foreach (['Sat', 'Sun'] as $dia) {
-                $contenido .= '<td class=""><small>' . ($clases_dia[$dia] ?? '/') . '</small></td>';
+                $contenido .= '<td class="">' . ($clases_dia[$dia] ?? '<strong>&mdash;</strong>') . '</td>';
             }
             $contenido .= '</tr>';
         }
@@ -491,7 +491,7 @@ class Calendario extends CI_Controller
         $contenido_sabado = '';
 
         $contenido_sabado .= '
-        <table class="semana">
+        <table class="semana contenido-por-dia">
             <tbody>
         ';
 
@@ -506,18 +506,18 @@ class Calendario extends CI_Controller
 
             // if ($es_tarde && ($ciclo_es_tarde === false)) {
             //     $contenido_sabado .= '<tr>';
-            //     $contenido_sabado .= '<td><small> </small></td>';
+            //     $contenido_sabado .= '<td> </td>';
             //     foreach (['Sat', 'Sun'] as $dia) {
-            //         $contenido_sabado .= '<td><small> </small></td>';
+            //         $contenido_sabado .= '<td> </td>';
             //     }
             //     $contenido_sabado .= '</tr>';
             //     $ciclo_es_tarde = true;
             // }
 
             $contenido_sabado .= '<tr>';
-            $contenido_sabado .= '<th class="blue lighten-3 text-center"><small>' . $hora . '</small></th>';
+            $contenido_sabado .= '<th class="blue lighten-3 text-center">' . $hora . '</th>';
             foreach (['Sat'] as $dia) {
-                $contenido_sabado .= '<th class="text-center"><small>' . ($clases_dia[$dia] ?? '/') . '</small></th>';
+                $contenido_sabado .= '<th class="text-center">' . ($clases_dia[$dia] ?? '<strong>&mdash;</strong>') . '</th>';
             }
             $contenido_sabado .= '</tr>';
             $contenido_sabado .= '<tr>
@@ -536,7 +536,7 @@ class Calendario extends CI_Controller
         $contenido_domingo = '';
 
         $contenido_domingo .= '
-        <table class="semana">
+        <table class="semana contenido-por-dia">
             <tbody>
         ';
 
@@ -551,18 +551,18 @@ class Calendario extends CI_Controller
 
             // if ($es_tarde && ($ciclo_es_tarde === false)) {
             //     $contenido_domingo .= '<tr>';
-            //     $contenido_domingo .= '<td><small> </small></td>';
+            //     $contenido_domingo .= '<td> </td>';
             //     foreach (['Sat', 'Sun'] as $dia) {
-            //         $contenido_domingo .= '<td><small> </small></td>';
+            //         $contenido_domingo .= '<td> </td>';
             //     }
             //     $contenido_domingo .= '</tr>';
             //     $ciclo_es_tarde = true;
             // }
 
             $contenido_domingo .= '<tr>';
-            $contenido_domingo .= '<th class="blue lighten-3 text-center"><small>' . $hora . '</small></th>';
+            $contenido_domingo .= '<th class="blue lighten-3 text-center">' . $hora . '</th>';
             foreach (['Sun'] as $dia) {
-                $contenido_domingo .= '<th class="text-center"><small>' . ($clases_dia[$dia] ?? '/') . '</small></th>';
+                $contenido_domingo .= '<th class="text-center">' . ($clases_dia[$dia] ?? '<strong>&mdash;</strong>') . '</th>';
             }
             $contenido_domingo .= '</tr>';
             $contenido_domingo .= '<tr>
@@ -612,7 +612,7 @@ class Calendario extends CI_Controller
         $contenido = '';
 
         // $contenido = '
-        // <table class="semana responsive">
+        // <table class="semana responsive contenido-por-dia">
         //     <thead>
         //         <tr>
         //             <th class="blue lighten-3">Horario</th>
@@ -637,18 +637,18 @@ class Calendario extends CI_Controller
 
             if ($es_tarde && ($ciclo_es_tarde === false)) {
                 $contenido .= '<tr>';
-                $contenido .= '<td><small> </small></td>';
+                $contenido .= '<td> </td>';
                 foreach (['Mon', 'Tue', 'Wed', 'Thu', 'Fri'] as $dia) {
-                    $contenido .= '<td><small> </small></td>';
+                    $contenido .= '<td> </td>';
                 }
                 $contenido .= '</tr>';
                 $ciclo_es_tarde = true;
             }
 
             $contenido .= '<tr>';
-            $contenido .= '<td class="blue lighten-3"><small>' . $hora . '</small></td>';
+            $contenido .= '<td class="blue lighten-3">' . $hora . '</td>';
             foreach (['Mon', 'Tue', 'Wed', 'Thu', 'Fri'] as $dia) {
-                $contenido .= '<td class=""><small>' . ($clases_dia[$dia] ?? '/') . '</small></td>';
+                $contenido .= '<td class="">' . ($clases_dia[$dia] ?? '<strong>&mdash;</strong>') . '</td>';
             }
             $contenido .= '</tr>';
         }
@@ -712,18 +712,18 @@ class Calendario extends CI_Controller
 
             if ($es_tarde && ($ciclo_es_tarde === false)) {
                 $contenido .= '<tr>';
-                $contenido .= '<td><small> </small></td>';
+                $contenido .= '<td> </td>';
                 foreach (['Sat', 'Sun'] as $dia) {
-                    $contenido .= '<td><small> </small></td>';
+                    $contenido .= '<td> </td>';
                 }
                 $contenido .= '</tr>';
                 $ciclo_es_tarde = true;
             }
 
             $contenido .= '<tr>';
-            $contenido .= '<td class="blue lighten-3"><small>' . $hora . '</small></td>';
+            $contenido .= '<td class="blue lighten-3">' . $hora . '</td>';
             foreach (['Sat', 'Sun'] as $dia) {
-                $contenido .= '<td class=""><small>' . ($clases_dia[$dia] ?? '/') . '</small></td>';
+                $contenido .= '<td class="">' . ($clases_dia[$dia] ?? '<strong>&mdash;</strong>') . '</td>';
             }
             $contenido .= '</tr>';
         }
@@ -745,23 +745,23 @@ class Calendario extends CI_Controller
         if (in_array($disciplina_id, array(3))) {
             $response = '
             <tr>
-                <th class=""><small></small></th>
-                <th class=""><small><span class="blue lighten-3">LEGS &<br>BOOTY</span></small></th>
-                <th class=""><small><span class="blue lighten-3">PUSH<br>DAY</span></small></th>
-                <th class=""><small><span class="blue lighten-3">LEG DAY</span></small></th>
-                <th class=""><small><span class="blue lighten-3">PULL<br>DAY</span></small></th>
-                <th class=""><small><span class="blue lighten-3">BOOTY</span></small></th>
+                <th class="grupo-muscular"></th>
+                <th class="grupo-muscular"><span>LEGS &<br>BOOTY</span></th>
+                <th class="grupo-muscular"><span>PUSH<br>DAY</span></th>
+                <th class="grupo-muscular"><span>LEG DAY</span></th>
+                <th class="grupo-muscular"><span>PULL<br>DAY</span></th>
+                <th class="grupo-muscular"><span>BOOTY</span></th>
             </tr>
             ';
         } elseif (in_array($disciplina_id, array(10))) {
             $response = '
             <tr>
-                <th class=""><small></small></th>
-                <th class=""><small><span class="blue lighten-3">LEGS &<br>BOOTY</span></small></th>
-                <th class=""><small><span class="blue lighten-3">UPPER<br>BODY</span></small></th>
-                <th class=""><small><span class="blue lighten-3">KILLER<br>ABS</span></small></th>
-                <th class=""><small><span class="blue lighten-3">ARMS<br>& BOOTY</span></small></th>
-                <th class=""><small><span class="blue lighten-3">FULL<br>BODY &#x1F525;</span></small></th>
+                <th class="grupo-muscular"></th>
+                <th class="grupo-muscular"><span>LEGS &<br>BOOTY</span></th>
+                <th class="grupo-muscular"><span>UPPER<br>BODY</span></th>
+                <th class="grupo-muscular"><span>KILLER<br>ABS</span></th>
+                <th class="grupo-muscular"><span>ARMS<br>& BOOTY</span></th>
+                <th class="grupo-muscular"><span>FULL<br>BODY &#x1F525;</span></th>
             </tr>
             ';
         }
@@ -773,17 +773,17 @@ class Calendario extends CI_Controller
         if (in_array($disciplina_id, array(3))) {
             $response = '
                 <tr>
-                    <th class=""><small></small></th>
-                    <th class=""><small><span class="blue lighten-3">UPPER<br>BODY</span></small></th>
-                    <th class=""><small><span class="blue lighten-3">FULL<br>BODY</span></small></th>
+                    <th class="grupo-muscular"></th>
+                    <th class="grupo-muscular"><span>UPPER<br>BODY</span></th>
+                    <th class="grupo-muscular"><span>FULL<br>BODY</span></th>
                 </tr>
             ';
         } elseif (in_array($disciplina_id, array(10))) {
             $response = '
                 <tr>
-                    <th class=""><small></small></th>
-                    <th class=""><small><span class="blue lighten-3">ABS<br>& BOOTY &#x1F525;</span></small></th>
-                    <th class=""><small><span class="blue lighten-3">FULL<br>BODY</span></small></th>
+                    <th class="grupo-muscular"></th>
+                    <th class="grupo-muscular"><span>ABS<br>& BOOTY &#x1F525;</span></th>
+                    <th class="grupo-muscular"><span>FULL<br>BODY</span></th>
                 </tr>
             ';
         }

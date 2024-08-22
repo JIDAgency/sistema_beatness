@@ -10,8 +10,17 @@
     }
 }
 
+.card-body {
+    padding:0.5rem;
+}
+
+.form-group {
+    margin-bottom:0px;
+}
+
 h4 {
     font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
 }
 
 .nav {
@@ -21,6 +30,12 @@ h4 {
 .card {
     background-color: rgba(240, 240, 240, 0);
     border-radius: 8px;
+    margin-bottom:10px;
+}
+
+.grupo-muscular {
+    font-size: 0.75em;
+    color:rgba(243, 80, 255, 1);
 }
 
 @media (max-width: 768px) {
@@ -37,7 +52,7 @@ h4 {
     }
 
     td {
-        font-size: 1.2em;
+        font-size: 1em;
     }
 
     .nav-tabs {
@@ -48,7 +63,7 @@ h4 {
     .refresh {
         margin-top: 20px;
         margin-left: 10px;
-        filter: drop-shadow(0px 0px 4px #fff) !important;
+        /*filter: drop-shadow(0px 0px 4px #fff) !important;*/
         color: #5CFAA9;
     }
 
@@ -69,6 +84,7 @@ h4 {
 
 table {
     font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
     width: 100%;
     border-collapse: collapse;
     border-spacing: 0;
@@ -81,12 +97,12 @@ table {
 
 th,
 td {
-    padding: 8px;
+    padding: 4px;
     text-align: center;
 }
 
 th {
-    background-color: rgba(240, 240, 240, 0.401);
+    background-color: rgba(240, 240, 240, 0.0);
     color: #FFFFFF;
 }
 
@@ -96,13 +112,13 @@ th {
 }
 
 th:first-child {
-    border-top-left-radius: 8px;
-    border-bottom-left-radius: 8px;
+    /* border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px; */
 }
 
 th:last-child {
-    border-top-right-radius: 8px;
-    border-bottom-right-radius: 8px;
+    /* border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px; */
 }
 
 th:first-child,
@@ -124,12 +140,28 @@ tr:last-child td {
 
 /* Estilos personalizados */
 .tp-select {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-style: italic;
+    font-size: 0.8em;
     border-radius: 20px;
     background-color: rgb(255, 255, 255);
     /* Color de fondo semi-transparente */
     color: rgb(0, 0, 0);
     /* Color de texto blanco */
     /* Opacidad del texto */
+}
+
+#contenido_semana {
+    border-top: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+#contenido_fin_de_semana {
+    border-top: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.contenido-por-dia tr {
+    font-size: 1.2em;
 }
 
 html body.bg-calendario {

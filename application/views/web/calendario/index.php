@@ -23,6 +23,9 @@
     <link rel="apple-touch-icon" href="<?php echo base_url(); ?>almacenamiento/logos/logo.jpg">
     <link rel=" shortcut icon" type="image/x-icon" href="<?php echo base_url(); ?>almacenamiento/logos/logo.jpg">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i%7CMuli:300,400,500,700" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <!-- BEGIN VENDOR CSS-->
     <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>app-assets/css/vendors.css">
     <!-- END VENDOR CSS-->
@@ -45,11 +48,11 @@
 
 </head>
 
-<body class="horizontal-layout bg-calendario horizontal-menu horizontal-menu-padding 2-columns   menu-expanded" data-open="hover" data-menu="horizontal-menu" data-col="2-columns">
+<body class="horizontal-layout bg-calendario horizontal-menu horizontal-menu-padding 2-columns menu-expanded p-1" data-open="hover" data-menu="horizontal-menu" data-col="2-columns">
 
     <!-- ////////////////////////////////////////////////////////////////////////////-->
 
-    <div class="app-content content center-layout mt-1">
+    <div class="app-content content center-layout">
         <div class="content-wrapper">
 
             <div class="content-header row">
@@ -67,7 +70,6 @@
             </div>
 
             <div class="content-body">
-
                 <!-- Start -->
                 <section id="basic-tabs-components">
 
@@ -93,18 +95,21 @@
                                             Se requiere seleccionar una disciplina válida.
                                         </div>
                                     </div>
-                                    <div class="col-lg-4 col-md-4 col-sm-12 d-flex align-items-center">
-                                        <a id="reload">
-                                            <h1 class="refresh">Actualizar</h1>
-                                        </a>
-                                    </div>
                                 </div>
                             </div>
 
                         </div>
                     </div>
 
-                    <div class="row match-height" id="tabla-container" style="display: block">
+                    <!--<div class="row">
+                        <div class="col-12 d-flex align center">
+                            <a id="reload">
+                                <hp class="refresh"><small>Actualizar</small></p>
+                            </a>
+                        </div>
+                    </div> -->
+
+                    <div class="row match-height mt-1" id="tabla-container" style="display: block">
                         <div class="col-lg-12 col-md-12 col-sm-12">
                             <div class="card card-transparent no-border">
                                 <ul class="nav nav-tabs">
@@ -129,7 +134,7 @@
                                                 <table class="semana responsive">
                                                     <thead>
                                                         <tr>
-                                                            <th class="blue lighten-3">Horario</th>
+                                                            <th class="white">Horario</th>
                                                             <th><a id="base-tablunes" data-toggle="tab" aria-controls="tablunes" href="#tablunes" class="day-link">Lun <br><?php echo date('d M', strtotime($fecha_lunes)); ?> </a></th>
                                                             <th><a id="base-tabmartes" data-toggle="tab" aria-controls="tabmartes" href="#tabmartes" class="day-link">Mar <br><?php echo date('d M', strtotime($fecha_lunes . ' +1 days')); ?></a></th>
                                                             <th><a id="base-tab3" data-toggle="tab" aria-controls="tab3" href="#tab3" class="day-link">Mie <br><?php echo date('d M', strtotime($fecha_lunes . ' +2 days')); ?></a></th>
@@ -142,12 +147,11 @@
                                                 </table>
 
                                                 <br>
-                                                <br>
 
                                                 <table class="semana">
                                                     <thead>
                                                         <tr>
-                                                            <th class="blue lighten-3">Horario</th>
+                                                            <th class="white">Horario</th>
                                                             <th class=""><a id="base-tab6" data-toggle="tab" aria-controls="tab6" href="#tab6" class="day-link">Sab <br><?php echo date('d M', strtotime($fecha_lunes . ' +5 days')); ?></a></th>
                                                             <th class=""><a id="base-tab7" data-toggle="tab" aria-controls="tab7" href="#tab7" class="day-link">Dom <br><?php echo date('d M', strtotime($fecha_domingo)); ?></a></th>
                                                         </tr>
