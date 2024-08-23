@@ -181,8 +181,10 @@ class Totalpass_lib
         return $this->call_api($url, 'POST', $data);
     }
 
-    public function actualizar_evento($event_id, $data)
+    public function actualizar_evento($disciplina_id, $event_id, $data)
     {
+        $this->disciplina_id = $disciplina_id;
+        $this->token_cargar($this->disciplina_id);
         $url = $this->totalpass_base_url . "/partner/events/$event_id";
         return $this->call_api($url, 'PUT', $data);
     }
