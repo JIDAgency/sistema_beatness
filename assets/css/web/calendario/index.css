@@ -146,10 +146,12 @@ tr:last-child td {
     font-size: 0.8em;
     border-radius: 20px;
     background-color: rgb(255, 255, 255);
+    text-transform: uppercase;
     /* Color de fondo semi-transparente */
     color: rgb(0, 0, 0);
     /* Color de texto blanco */
     /* Opacidad del texto */
+    margin-bottom:10px;
 }
 
 #contenido_semana {
@@ -161,7 +163,7 @@ tr:last-child td {
 }
 
 .contenido-por-dia tr {
-    font-size: 1.2em;
+    font-size: 1.5em;
 }
 
 html body.bg-calendario {
