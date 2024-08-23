@@ -48,7 +48,7 @@
 
 </head>
 
-<body class="horizontal-layout bg-calendario horizontal-menu horizontal-menu-padding 2-columns menu-expanded p-1" data-open="hover" data-menu="horizontal-menu" data-col="2-columns">
+<body class="horizontal-layout bg-calendario horizontal-menu horizontal-menu-padding 2-columns menu-expanded p-1 pt-3" data-open="hover" data-menu="horizontal-menu" data-col="2-columns">
 
     <!-- ////////////////////////////////////////////////////////////////////////////-->
 
@@ -553,7 +553,7 @@
                         </div>
                     </div>
 
-                    <div class="row col-lg-12 col-md-12 col-sm-12">
+                    <div class="row col-lg-12 col-md-12 col-sm-12 mb-4">
                         <div class="col-lg-12 col-md-12 col-12 text-center">
                             <h4 class="text-verdeb">#SEMANABEATNESS</h4>
                             <img src="<?php echo base_url('almacenamiento/calendario/platform.png') ?>" alt="" class="img-fluid">
