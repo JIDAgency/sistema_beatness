@@ -16,6 +16,181 @@ class Clases extends MY_Controller
         $this->load->model('filtros_model');
     }
 
+    public function crear()
+    {
+        $data['pagina_titulo'] = 'Nueva clase';
+        $data['pagina_subtitulo'] = 'Crear nueva clase';
+        $data['pagina_clases'] = true;
+        $data['menu_clases_activo'] = true;
+
+        $data['controlador'] = 'clases/crear';
+        $data['regresar_a'] = 'clases';
+        $controlador_js = "clases/crear";
+
+        $data['styles'] = array(
+            array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/extensions/datedropper.min.css'),
+            array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/extensions/timedropper.min.css'),
+            array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/forms/selects/select2.min.css'),
+        );
+        $data['scripts'] = array(
+            array('es_rel' => false, 'src' => 'https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js'),
+            array('es_rel' => false, 'src' => 'https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/additional-methods.js'),
+            array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/extensions/datedropper.min.js'),
+            array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/extensions/timedropper.min.js'),
+            array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/forms/select/select2.full.min.js'),
+            array('es_rel' => false, 'src' => base_url() . 'app-assets/js/scripts/forms/select/form-select2.js'),
+            array('es_rel' => true, 'src' => '' . $controlador_js . '.js'),
+        );
+
+        // Establecer validaciones
+        $this->form_validation->set_rules('disciplina_id', 'Disciplina', 'required');
+        $this->form_validation->set_rules('instructor_id', 'Instructor', 'required');
+        $this->form_validation->set_rules('cupo', 'Cupo', 'required');
+        $this->form_validation->set_rules('inicia_date', 'Fecha', 'required');
+        $this->form_validation->set_rules('inicia_time', 'Hora', 'required');
+        $this->form_validation->set_rules('distribucion_lugares', 'Distribución de lugares', 'required');
+        $this->form_validation->set_rules('intervalo_horas', 'Intervalo en horas', 'required');
+        $this->form_validation->set_rules('dificultad', 'Dificultad', 'required');
+
+        // Validar que existan usuarios en el rol de instructores
+        $instructores = $this->usuarios_model->obtener_todos_instructores();
+
+        if ($instructores->num_rows() == 0) {
+            $this->session->set_flashdata('MENSAJE_INFO', 'Es necesario que exista por lo menos algún instructor registrado para poder crear la clase.');
+            redirect('clases/index');
+        }
+
+        // Validar que existan disciplinas disponibles
+        $disciplinas = $this->disciplinas_model->get_lista_de_disciplinas_para_crear_y_editar_clases();
+
+        if ($disciplinas->num_rows() == 0) {
+            $this->session->set_flashdata('MENSAJE_INFO', 'Es necesario que exista por lo menos alguna disciplina disponible para poder crear la clase.');
+            redirect('clases/index');
+        }
+
+        $data['instructores'] = $instructores;
+        $data['disciplinas'] = $disciplinas;
+
+        if ($this->form_validation->run() == false) {
+            $this->construir_private_site_ui('clases/crear', $data);
+        } else {
+
+            $disciplina = $this->disciplinas_model->obtener_por_id($this->input->post('disciplina_id'))->row();
+            $instructor = $this->usuarios_model->obtener_instructor_por_id($this->input->post('instructor_id'))->row();
+
+            $valor = $disciplina->nombre;
+            // Separar la cadena en palabras
+            $palabras = explode(' ', $valor);
+
+            // Obtener la primera palabra
+            $primera_palabra = $palabras[0];
+
+            // Obtener las dos primeras letras de la primera palabra
+            $primeras_dos_letras = substr($primera_palabra, 0, 2);
+
+            // Obtener la última letra de la primera palabra
+            $ultima_letra = substr($primera_palabra, -1);
+
+            // Concatenar las letras para formar la nueva cadena
+            $cadena_resultante = $primeras_dos_letras . $ultima_letra;
+
+            $valor1 = $cadena_resultante;
+
+            $valor2 = $instructor->nombre; // Suponiendo que estás obteniendo el valor del select mediante un formulario POST
+            // Eliminar caracteres acentuados y especiales
+            $valor2 = preg_replace('/(á|é|í|ó|ú|ñ|ä|ë|ï|ö|\.|ü)/iu', '', $valor2);
+            // Conservar solo la primera letra de cada palabra y convertirla a mayúsculas
+            $valor2 = preg_replace_callback('/[A-Za-z]+/iu', function ($match) {
+                return strtoupper(trim($match[0])[0]);
+            }, $valor2);
+            // Eliminar espacios en blanco
+            $valor2 = preg_replace('/\s/', '', $valor2);
+
+            $valor3 = $this->input->post('inicia_date');
+            $valor3 = preg_replace('/\D/', '', $valor3);
+
+            $valor4 = $this->input->post('inicia_time');
+            $valor4 = preg_replace('/\D/', '', $valor4);
+
+            // $valor5 = $this->input->post('dificultad');
+            // $valor5 = preg_replace('/(á|é|í|ó|ú|ñ|ä|ë|ï|ö|\.|ü)/iu', '', $valor5);
+            // $valor5 = substr($valor5, 0, 2);
+
+            // $valor5 = $this->input->post('dificultad');
+            // $acentos = array('á', 'é', 'í', 'ó', 'ú', 'Á', 'É', 'Í', 'Ó', 'Ú');
+            // $sin_acentos = array('a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U');
+            // $valor5 = str_replace($acentos, $sin_acentos, $valor5);
+            // $valor5 = strtoupper(substr($valor5, 0, 2));
+
+            $valor = $this->input->post('dificultad');
+            // Separar la cadena en palabras
+            $palabras = explode(' ', $valor);
+
+            // Obtener la primera palabra
+            $primera_palabra = $palabras[0];
+            $segunda_palabra = $palabras[1];
+
+            // Obtener las dos primeras letras de la primera palabra
+            $primeras_dos_letras = substr($primera_palabra, 0, 2);
+
+            // Obtener la última letra de la primera palabra
+            $primera_letra = substr($segunda_palabra, 0, 1);
+
+            // Concatenar las letras para formar la nueva cadena
+            $cadena = $primeras_dos_letras . $primera_letra;
+
+            $valor5 = $cadena;
+
+            $identificador = $valor1 . $valor2 . $valor3 . $valor4 . '00' . $valor5;
+
+            $cupo_lugares = array();
+            // Crear un arreglo de arreglos para llevar un registro mas detallado del cupo
+            for ($i = 1; $i <= $this->input->post('cupo'); $i++) {
+                $lugar = array(
+                    'no_lugar' => $i,
+                    'esta_reservado' => false,
+                    'nombre_usuario' => '',
+                );
+
+                array_push($cupo_lugares, $lugar);
+            }
+
+            $cupo_lugares_json = json_encode($cupo_lugares);
+
+            if (strtotime($this->input->post('inicia_time')) <= strtotime('12:00')) {
+                $img_acceso = base_url() . 'almacenamiento/img_app/img_acceso/acceso-matutino.png';
+            } elseif (strtotime($this->input->post('inicia_time')) >= strtotime('12:01')) {
+                $img_acceso = base_url() . 'almacenamiento/img_app/img_acceso/acceso-vespertino.png';
+            }
+
+            $hora_de_incio = date('Y-m-d', strtotime(str_replace('/', '-', $this->input->post('inicia_date')))) . 'T' . $this->input->post('inicia_time');
+            $fecha_numerica_de_la_clase = date(DATE_ISO8601, strtotime($hora_de_incio));
+            // Preparar los datos a insertar
+            $data = array(
+                'identificador' => $identificador,
+                'disciplina_id' => $this->input->post('disciplina_id'),
+                'instructor_id' => $this->input->post('instructor_id'),
+                'cupo' => $this->input->post('cupo'),
+                'img_acceso' => $img_acceso,
+                'inicia' => date('Y-m-d', strtotime(str_replace('/', '-', $this->input->post('inicia_date')))) . 'T' . $this->input->post('inicia_time'),
+                'inicia_ionic' => $fecha_numerica_de_la_clase,
+                'intervalo_horas' => $this->input->post('intervalo_horas'),
+                'distribucion_imagen' => $this->input->post('distribucion_imagen'),
+                'distribucion_lugares' => $this->input->post('distribucion_lugares'),
+                'dificultad' => $this->input->post('dificultad'),
+                'cupo_lugares' => $cupo_lugares_json,
+            );
+
+            if ($this->clases_model->crear($data)) {
+                $this->session->set_flashdata('MENSAJE_EXITO', 'La clase se ha creado correctamente.');
+                redirect('clases/index');
+            }
+
+            // Si algo falla regresar a la vista de crear
+            $this->construir_private_site_ui('clases/crear', $data);
+        }
+    }
+
     function search_reservar()
     {
         $this->load->model('clases_model');
@@ -325,7 +500,6 @@ class Clases extends MY_Controller
         return false;
     }
 
-
     public function actualizar()
     {
         $identificador = $this->input->post('identificador');
@@ -597,175 +771,6 @@ class Clases extends MY_Controller
         );
 
         $this->construir_private_site_ui('clases/crear_clases', $data);
-    }
-
-    public function crear()
-    {
-        // Validar que existan usuarios en el rol de instructores
-        $instructores = $this->usuarios_model->obtener_todos_instructores();
-
-        if ($instructores->num_rows() == 0) {
-            $this->session->set_flashdata('MENSAJE_INFO', 'Es necesario que exista por lo menos algún instructor registrado para poder crear la clase.');
-            redirect('clases/index');
-        }
-
-        $data['instructores'] = $instructores;
-
-        // Validar que existan disciplinas disponibles
-        $disciplinas = $this->disciplinas_model->get_lista_de_disciplinas_para_crear_y_editar_clases();
-
-        if ($disciplinas->num_rows() == 0) {
-            $this->session->set_flashdata('MENSAJE_INFO', 'Es necesario que exista por lo menos alguna disciplina disponible para poder crear la clase.');
-            redirect('clases/index');
-        }
-
-        $data['disciplinas'] = $disciplinas;
-
-        $data['menu_clases_activo'] = true;
-        $data['pagina_titulo'] = 'Nueva clase';
-        $data['styles'] = array(
-            array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/extensions/datedropper.min.css'),
-            array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/extensions/timedropper.min.css'),
-            array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/forms/selects/select2.min.css'),
-        );
-        $data['scripts'] = array(
-            array('es_rel' => false, 'src' => 'https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js'),
-            array('es_rel' => false, 'src' => 'https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/additional-methods.js'),
-            array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/extensions/datedropper.min.js'),
-            array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/extensions/timedropper.min.js'),
-            array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/forms/select/select2.full.min.js'),
-            array('es_rel' => false, 'src' => base_url() . 'app-assets/js/scripts/forms/select/form-select2.js'),
-            array('es_rel' => true, 'src' => 'clases/crear.js'),
-        );
-
-        // Establecer validaciones
-        $this->form_validation->set_rules('disciplina_id', 'Disciplina', 'required');
-        $this->form_validation->set_rules('instructor_id', 'Instructor', 'required');
-        $this->form_validation->set_rules('cupo', 'Cupo', 'required');
-        $this->form_validation->set_rules('inicia_date', 'Fecha', 'required');
-        $this->form_validation->set_rules('inicia_time', 'Hora', 'required');
-        $this->form_validation->set_rules('distribucion_lugares', 'Distribución de lugares', 'required');
-        $this->form_validation->set_rules('intervalo_horas', 'Intervalo en horas', 'required');
-        $this->form_validation->set_rules('dificultad', 'Dificultad', 'required');
-
-        if ($this->form_validation->run() == false) {
-            $this->construir_private_site_ui('clases/crear', $data);
-        } else {
-
-            $disciplina = $this->disciplinas_model->obtener_por_id($this->input->post('disciplina_id'))->row();
-            $instructor = $this->usuarios_model->obtener_instructor_por_id($this->input->post('instructor_id'))->row();
-
-            $valor = $disciplina->nombre;
-            // Separar la cadena en palabras
-            $palabras = explode(' ', $valor);
-
-            // Obtener la primera palabra
-            $primera_palabra = $palabras[0];
-
-            // Obtener las dos primeras letras de la primera palabra
-            $primeras_dos_letras = substr($primera_palabra, 0, 2);
-
-            // Obtener la última letra de la primera palabra
-            $ultima_letra = substr($primera_palabra, -1);
-
-            // Concatenar las letras para formar la nueva cadena
-            $cadena_resultante = $primeras_dos_letras . $ultima_letra;
-
-            $valor1 = $cadena_resultante;
-
-            $valor2 = $instructor->nombre; // Suponiendo que estás obteniendo el valor del select mediante un formulario POST
-            // Eliminar caracteres acentuados y especiales
-            $valor2 = preg_replace('/(á|é|í|ó|ú|ñ|ä|ë|ï|ö|\.|ü)/iu', '', $valor2);
-            // Conservar solo la primera letra de cada palabra y convertirla a mayúsculas
-            $valor2 = preg_replace_callback('/[A-Za-z]+/iu', function ($match) {
-                return strtoupper(trim($match[0])[0]);
-            }, $valor2);
-            // Eliminar espacios en blanco
-            $valor2 = preg_replace('/\s/', '', $valor2);
-
-            $valor3 = $this->input->post('inicia_date');
-            $valor3 = preg_replace('/\D/', '', $valor3);
-
-            $valor4 = $this->input->post('inicia_time');
-            $valor4 = preg_replace('/\D/', '', $valor4);
-
-            // $valor5 = $this->input->post('dificultad');
-            // $valor5 = preg_replace('/(á|é|í|ó|ú|ñ|ä|ë|ï|ö|\.|ü)/iu', '', $valor5);
-            // $valor5 = substr($valor5, 0, 2);
-
-            // $valor5 = $this->input->post('dificultad');
-            // $acentos = array('á', 'é', 'í', 'ó', 'ú', 'Á', 'É', 'Í', 'Ó', 'Ú');
-            // $sin_acentos = array('a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U');
-            // $valor5 = str_replace($acentos, $sin_acentos, $valor5);
-            // $valor5 = strtoupper(substr($valor5, 0, 2));
-
-            $valor = $this->input->post('dificultad');
-            // Separar la cadena en palabras
-            $palabras = explode(' ', $valor);
-
-            // Obtener la primera palabra
-            $primera_palabra = $palabras[0];
-            $segunda_palabra = $palabras[1];
-
-            // Obtener las dos primeras letras de la primera palabra
-            $primeras_dos_letras = substr($primera_palabra, 0, 2);
-
-            // Obtener la última letra de la primera palabra
-            $primera_letra = substr($segunda_palabra, 0, 1);
-
-            // Concatenar las letras para formar la nueva cadena
-            $cadena = $primeras_dos_letras . $primera_letra;
-
-            $valor5 = $cadena;
-
-            $identificador = $valor1 . $valor2 . $valor3 . $valor4 . '00' . $valor5;
-
-            $cupo_lugares = array();
-            // Crear un arreglo de arreglos para llevar un registro mas detallado del cupo
-            for ($i = 1; $i <= $this->input->post('cupo'); $i++) {
-                $lugar = array(
-                    'no_lugar' => $i,
-                    'esta_reservado' => false,
-                    'nombre_usuario' => '',
-                );
-
-                array_push($cupo_lugares, $lugar);
-            }
-
-            $cupo_lugares_json = json_encode($cupo_lugares);
-
-            if (strtotime($this->input->post('inicia_time')) <= strtotime('12:00')) {
-                $img_acceso = base_url() . 'almacenamiento/img_app/img_acceso/acceso-matutino.png';
-            } elseif (strtotime($this->input->post('inicia_time')) >= strtotime('12:01')) {
-                $img_acceso = base_url() . 'almacenamiento/img_app/img_acceso/acceso-vespertino.png';
-            }
-
-            $hora_de_incio = date('Y-m-d', strtotime(str_replace('/', '-', $this->input->post('inicia_date')))) . 'T' . $this->input->post('inicia_time');
-            $fecha_numerica_de_la_clase = date(DATE_ISO8601, strtotime($hora_de_incio));
-            // Preparar los datos a insertar
-            $data = array(
-                'identificador' => $identificador,
-                'disciplina_id' => $this->input->post('disciplina_id'),
-                'instructor_id' => $this->input->post('instructor_id'),
-                'cupo' => $this->input->post('cupo'),
-                'img_acceso' => $img_acceso,
-                'inicia' => date('Y-m-d', strtotime(str_replace('/', '-', $this->input->post('inicia_date')))) . 'T' . $this->input->post('inicia_time'),
-                'inicia_ionic' => $fecha_numerica_de_la_clase,
-                'intervalo_horas' => $this->input->post('intervalo_horas'),
-                'distribucion_imagen' => $this->input->post('distribucion_imagen'),
-                'distribucion_lugares' => $this->input->post('distribucion_lugares'),
-                'dificultad' => $this->input->post('dificultad'),
-                'cupo_lugares' => $cupo_lugares_json,
-            );
-
-            if ($this->clases_model->crear($data)) {
-                $this->session->set_flashdata('MENSAJE_EXITO', 'La clase se ha creado correctamente.');
-                redirect('clases/index');
-            }
-
-            // Si algo falla regresar a la vista de crear
-            $this->construir_private_site_ui('clases/crear', $data);
-        }
     }
 
     public function editar($id = null)
@@ -1103,7 +1108,7 @@ class Clases extends MY_Controller
                                 }
 
                                 $this->session->set_flashdata('MENSAJE_EXITO', 'La reservación se ha realizado con éxito. Para ID ' . $this->input->post('usuario_id') . ' con el Lugar: ' . $this->input->post('no_lugar'));
-                                redirect('clases/reservar/'.$id);
+                                redirect('clases/reservar/' . $id);
                             }
                         }
                     }
