@@ -309,6 +309,10 @@ class Endpoint extends REST_Controller
                 continue;
             }
 
+            if ($plan->mostrar_en_app == 'no') {
+                continue;
+            }
+
             if (in_array($plan->codigo, $codigos_canjeados_array) or !$plan->codigo) {
                 if ($reservaciones_list) {
 
