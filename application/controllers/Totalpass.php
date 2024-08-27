@@ -141,8 +141,7 @@ class Totalpass extends MY_Controller
             $data[] = array(
                 'opciones' => $opciones,
                 'id' => $clase_value->id,
-                'totalpass_event_id' => !empty($clase_value->totalpass_event_id) ? $clase_value->totalpass_event_id : '<span class="text-muted">No cargada</span>',
-                'totalpass_eventOccurrenceUuid' => !empty($clase_value->totalpass_eventOccurrenceUuid) ? $clase_value->totalpass_eventOccurrenceUuid : '<span class="text-muted">No cargada</span>',
+                'totalpass_eventOccurrenceUuid' => !empty($clase_value->totalpass_eventOccurrenceUuid) ? '<span class="text-success">Registrada</span>' : '<span class="text-muted">Sin registro</span>',
                 'identificador' => $clase_value->identificador,
                 'disciplinas_nombre' => $clase_value->disciplinas_nombre,
                 'dificultad' => $clase_value->dificultad,
@@ -230,8 +229,7 @@ class Totalpass extends MY_Controller
             $data_3 = array(
                 'opciones' => $opciones,
                 'id' => $clase_actualizada_row->id,
-                'totalpass_event_id' => !empty($clase_actualizada_row->totalpass_event_id) ? $clase_actualizada_row->totalpass_event_id : '<span class="text-muted">No cargada</span>',
-                'totalpass_eventOccurrenceUuid' => !empty($clase_actualizada_row->totalpass_eventOccurrenceUuid) ? $clase_actualizada_row->totalpass_eventOccurrenceUuid : '<span class="text-muted">No cargada</span>',
+                'totalpass_eventOccurrenceUuid' => !empty($clase_actualizada_row->totalpass_eventOccurrenceUuid) ? '<span class="text-success">Registrada</span>' : '<span class="text-muted">Sin registro</span>',
                 'identificador' => $clase_actualizada_row->identificador,
                 'disciplinas_nombre' => $clase_actualizada_row->disciplinas_nombre,
                 'dificultad' => $clase_actualizada_row->dificultad,
@@ -323,8 +321,7 @@ class Totalpass extends MY_Controller
             $data_3 = array(
                 'opciones' => $opciones,
                 'id' => $clase_actualizada_row->id,
-                'totalpass_event_id' => !empty($clase_actualizada_row->totalpass_event_id) ? $clase_actualizada_row->totalpass_event_id : '<span class="text-muted">No cargada</span>',
-                'totalpass_eventOccurrenceUuid' => !empty($clase_actualizada_row->totalpass_eventOccurrenceUuid) ? $clase_actualizada_row->totalpass_eventOccurrenceUuid : '<span class="text-muted">No cargada</span>',
+                'totalpass_eventOccurrenceUuid' => !empty($clase_actualizada_row->totalpass_eventOccurrenceUuid) ? '<span class="text-success">Registrada</span>' : '<span class="text-muted">Sin registro</span>',
                 'identificador' => $clase_actualizada_row->identificador,
                 'disciplinas_nombre' => $clase_actualizada_row->disciplinas_nombre,
                 'dificultad' => $clase_actualizada_row->dificultad,
@@ -410,8 +407,7 @@ class Totalpass extends MY_Controller
             $data_2 = array(
                 'opciones' => $opciones,
                 'id' => $clase_actualizada_row->id,
-                'totalpass_event_id' => !empty($clase_actualizada_row->totalpass_event_id) ? $clase_actualizada_row->totalpass_event_id : '<span class="text-muted">No cargada</span>',
-                'totalpass_eventOccurrenceUuid' => !empty($clase_actualizada_row->totalpass_eventOccurrenceUuid) ? $clase_actualizada_row->totalpass_eventOccurrenceUuid : '<span class="text-muted">No cargada</span>',
+                'totalpass_eventOccurrenceUuid' => !empty($clase_actualizada_row->totalpass_eventOccurrenceUuid) ? '<span class="text-success">Registrada</span>' : '<span class="text-muted">Sin registro</span>',
                 'identificador' => $clase_actualizada_row->identificador,
                 'disciplinas_nombre' => $clase_actualizada_row->disciplinas_nombre,
                 'dificultad' => $clase_actualizada_row->dificultad,

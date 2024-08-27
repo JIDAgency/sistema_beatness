@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
         scrollX: true,
         deferRender: true,
         processing: true,
-        //order: [[2, "desc"]],
+        order: [[2, "desc"], [4, "asc"], [6, "asc"], [7, "asc"]],
         lengthMenu: [[25, 50, 100, 250, 500, -1], [25, 50, 100, 250, 500, "Todos"]],
         ajax: {
             url: `${methodCall}clases_obtener_activas`,
@@ -18,7 +18,6 @@ document.addEventListener('DOMContentLoaded', function () {
         columns: [
             { data: "opciones" },
             { data: "id" },
-            { data: "totalpass_event_id" },
             { data: "totalpass_eventOccurrenceUuid" },
             { data: "identificador" },
             { data: "disciplinas_nombre" },
@@ -91,7 +90,6 @@ async function manejar_evento(clase_id, accion, funcion) {
                 row.data({
                     opciones: updatedData.opciones,
                     id: updatedData.id,
-                    totalpass_event_id: updatedData.totalpass_event_id,
                     totalpass_eventOccurrenceUuid: updatedData.totalpass_eventOccurrenceUuid,
                     identificador: updatedData.identificador,
                     disciplinas_nombre: updatedData.disciplinas_nombre,

@@ -58,8 +58,7 @@
                                                     <tr>
                                                         <th>Opciones</th>
                                                         <th>#</th>
-                                                        <th>Totalpass Evento ID</th>
-                                                        <th>Totalpass Evento individual ID</th>
+                                                        <th>Totalpass</th>
                                                         <th>SKU</th>
                                                         <th>Disciplina</th>
                                                         <th>Grupo muscular</th>
