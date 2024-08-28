@@ -135,8 +135,24 @@ $(document).ready(function () {
     });
 
     function convertirFechaFormatoISO(fecha) {
-        let [dia, mes, anio] = fecha.split(' ')[0].split('/');
-        let [hora, minuto, segundo] = fecha.split(' ')[1].split(':');
+        // let [dia, mes, anio] = fecha.split(' ')[0].split('/');
+        // let [hora, minuto, segundo] = fecha.split(' ')[1].split(':');
+        // return `${anio}-${mes}-${dia}T${hora}:${minuto}`;
+
+        let partesFecha, dia, mes, anio, hora = '00', minuto = '00';
+
+        // Verificar si la cadena contiene un espacio
+        if (fecha.includes(' ')) {
+            // Si tiene espacio, significa que tiene fecha y hora
+            partesFecha = fecha.split(' ');
+
+            [dia, mes, anio] = partesFecha[0].split('/');
+            [hora, minuto] = partesFecha[1].split(':');
+        } else {
+            // Si no tiene espacio, solo tiene la fecha
+            [dia, mes, anio] = fecha.split('/');
+        }
+
         return `${anio}-${mes}-${dia}T${hora}:${minuto}`;
     }
 
