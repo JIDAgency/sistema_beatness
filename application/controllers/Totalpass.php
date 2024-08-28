@@ -110,6 +110,7 @@ class Totalpass extends MY_Controller
 
         $data['scripts'] = array(
             array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/tables/datatable/datatables.min.js'),
+            array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/extensions/moment.min.js'),
             array('es_rel' => true, 'src' => '' . $controlador_js . '.js'),
         );
 

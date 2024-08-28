@@ -3,6 +3,11 @@ let table;
 const actualUrl = document.URL;
 const methodCall = actualUrl.includes("index") ? "" : "";
 
+$.fn.dataTable.ext.errMode = 'throw'; // Configuración de manejo de errores de DataTables
+$.fn.dataTable.ext.type.order['time-pre'] = function (d) {
+    return moment(d, 'hh:mm A').format('HHmm');
+};
+
 document.addEventListener('DOMContentLoaded', function () {
     table = $('#table').DataTable({
         searching: true,
@@ -23,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function () {
             { data: "disciplinas_nombre" },
             { data: "dificultad" },
             { data: "fecha" },
-            { data: "horario" },
+            { data: "horario", type: "time" }, // Aplicar el tipo "time" a la columna de horarios
             { data: "instructores_nombre" },
             { data: "sucursales_locacion" },
             { data: "cupos" }
