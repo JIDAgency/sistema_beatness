@@ -275,11 +275,11 @@ class Clases extends MY_Controller
 
                 $opciones .= anchor('clases/editar/' . $clase->id, 'Editar');
             }
-            if ($clase->estatus == 'Activa') {
-                // $opciones .= '<a href="' . site_url('clases/duplicar_clase/' . $clase->id) . '"><span>Duplicar</span></a>';
-                $opciones .= ' | ';
-                $opciones .= '<a href="" class="clonar-row" data-id="' . $clase->id . '"><span>Duplicar</span></a>';
-            }
+            // if ($clase->estatus == 'Activa') {
+            //     // $opciones .= '<a href="' . site_url('clases/duplicar_clase/' . $clase->id) . '"><span>Duplicar</span></a>';
+            //     $opciones .= ' | ';
+            //     $opciones .= '<a href="" class="clonar-row" data-id="' . $clase->id . '"><span>Duplicar</span></a>';
+            // }
             if ($clase->reservado == 0) {
                 if ($clase->estatus == 'Activa') {
                     $opciones .= ' | ';
@@ -293,7 +293,10 @@ class Clases extends MY_Controller
             }
 
             $data[] = array(
+                'opciones' => $opciones,
                 'id' => $clase->id,
+                // 'estatus' => !empty($clase->estatus) ? ucwords($clase->estatus) : '',
+                'estatus' => !empty($clase->estatus) ? '<span class="' . $this->getStatusClass($clase->estatus) . '">' . ucwords($clase->estatus) . '</span>' : '',
                 'identificador' => !empty($clase->identificador) ? $clase->identificador : '',
                 'disciplina_id' => $clase->disciplina_nombre,
                 'dificultad' => !empty($clase->dificultad) ? mb_strtoupper($clase->dificultad) : '',
@@ -301,14 +304,12 @@ class Clases extends MY_Controller
                 'horario_esp' => !empty($fecha_espaniol) ? ucfirst($fecha_espaniol) : '',
                 'instructor_id' => !empty($clase->instructor_nombre) ? ($clase->instructor_nombre) : '',
                 'cupo' => !empty($clase->cupo) ? ucfirst($clase->cupo) : '',
-                'estatus' => !empty($clase->estatus) ? ucwords($clase->estatus) : '',
-                'intervalo_horas' => !empty($intervalo_horas) ? mb_strtoupper($intervalo_horas) : '',
+                // 'intervalo_horas' => !empty($intervalo_horas) ? mb_strtoupper($intervalo_horas) : '',
                 'cupo_restantes' => !empty($clase->cupo - $clase->reservado) ? $clase->cupo - $clase->reservado : '',
-                'cupo_original' => !empty($clase->cupo) ? ucfirst($clase->cupo) : '',
+                // 'cupo_original' => !empty($clase->cupo) ? ucfirst($clase->cupo) : '',
                 'cupo_reservado' => !empty($clase->reservado) ? ucfirst($clase->reservado) : 0,
                 'inasistencias' => !empty($clase->inasistencias) ? ucfirst($clase->inasistencias) : 0,
                 'sucursal' => !empty($clase->sucursal_nombre . ' [' . $clase->sucursal_locacion . ']') ? $clase->sucursal_nombre . ' [' . $clase->sucursal_locacion . ']' : '',
-                'opciones' => $opciones,
             );
         }
 
@@ -321,6 +322,21 @@ class Clases extends MY_Controller
 
         echo json_encode($result);
         exit();
+    }
+
+    // Función para obtener la clase CSS basada en el estatus
+    private function getStatusClass($status)
+    {
+        switch ($status) {
+            case 'Activa':
+                return 'text-success'; // Verde
+            case 'Cancelada':
+                return 'text-danger'; // Rojo
+            case 'Terminada':
+                return 'text-muted'; // Gris
+            default:
+                return ''; // Sin color
+        }
     }
 
     public function obtener_disciplinas()
