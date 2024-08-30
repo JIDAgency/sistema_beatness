@@ -4,8 +4,18 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class Clases_model extends CI_Model
 {
 
-    /** Funciones generales (Inicio) */
-    /** Funciones generales (Fin) */
+
+    function obtener_ultimas_10_clases()
+    {
+        $query = $this->db
+            ->select()
+            ->from('clases t1')
+            ->order_by("t1.id", "desc")
+            ->limit(10)
+            ->get();
+
+        return $query;
+    }
 
     /** Funciones de clases controller (Inicio) */
 

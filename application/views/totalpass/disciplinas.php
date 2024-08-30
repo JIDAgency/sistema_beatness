@@ -23,7 +23,7 @@
                     <div class="form-group">
                         <div class="btn-group" role="group" aria-label="Basic example">
                             <a class="btn btn-outline-grey btn-outline-lighten-1 btn-min-width" href="<?php echo site_url($regresar_a); ?>"><i class="fa fa-arrow-circle-left"></i>&nbsp;Volver</a>
-                            <a class="btn btn-outline-grey btn-min-width mr-1" href="<?php echo site_url('totalpass/clases'); ?>">Clases</a>
+                            <a class="btn btn-outline-secondary btn-min-width mr-1" href="<?php echo site_url('totalpass/clases'); ?>">Clases</a>
                         </div>
                     </div>
 

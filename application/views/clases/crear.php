@@ -1,14 +1,5 @@
 <div class="app-content content center-layout">
 	<div class="content-wrapper">
-
-		<div class="row">
-			<div class="col-12">
-				<div class="card card-vista-titulos">
-					<h3 class="text-white"><strong><?php echo $pagina_titulo; ?></strong></h3>
-				</div>
-			</div>
-		</div>
-
 		<div class="content-header row px-1 my-1">
 
 			<div class="content-header-left col-md-6 col-12">
@@ -30,251 +21,242 @@
 				<div class="media float-right">
 
 					<div class="form-group">
-						<!-- Outline button group with icons and text. -->
 						<div class="btn-group" role="group" aria-label="Basic example">
-							<a class="btn btn-outline-grey btn-outline-lighten-1 btn-min-width mr-1" href="<?php echo site_url($regresar_a); ?>"><i class="fa fa-arrow-circle-left"></i>&nbsp;Volver</a>
+							<a class="btn btn-outline-grey btn-outline-lighten-1 btn-min-width" href="<?php echo site_url($regresar_a); ?>"><i class="fa fa-arrow-circle-left"></i>&nbsp;Volver</a>
 						</div>
 					</div>
 
 				</div>
 
 			</div>
-
 		</div>
-		<div class="content-wrapper">
-			<div class="content-body">
-				<section>
-					<div class="row">
-						<div class="col-12">
-							<div class="card no-border">
-								<div class="card-header">
-									<h4 class="card-title">Nueva clase</h4>
-								</div>
-								<div class="card-content">
-									<div class="card-body">
-										<?php echo form_open('clases/crear', array('class' => 'form form-horizontal', 'id' => 'forma-crear-clase')); ?>
-										<div class="form-body">
-											<?php if (validation_errors()) : ?>
-												<div class="alert bg-danger alert-icon-left alert-dismissible mb-2 font-small-3" role="alert">
-													<span class="alert-icon"><i class="fa fa-thumbs-o-down"></i></span>
-													<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-														<span aria-hidden="true">×</span>
-													</button>
-													<?php echo validation_errors(); ?>
-												</div>
-											<?php endif ?>
-											<h4 class="form-section">Datos de la clase</h4>
-											<div class="row">
-												<input type="hidden" readonly="true" id="identificador" class="form-control" name="identificador" placeholder="Identificador" value="<?php echo set_value('identificador'); ?>">
-												<div class="col-md-6">
-													<div class="form-group row">
-														<label for="terminos_condiciones" class="col-md-3 label-control"><span class="red">*</span> Disciplina
-															para la clase</label>
-														<div class="col-md-9">
-															<select id="mySelect" name="disciplina_id" class="form-control">
-																<option value="">Seleccione la disciplina</option>
-																<?php foreach ($disciplinas->result() as $disciplina) : ?>
-																	<?php if ($disciplina->id != 1) : ?>
-																		<option value="<?php echo $disciplina->id; ?>" <?php echo set_select('disciplina_id', $disciplina->id); ?>>
-																			<?php echo $disciplina->nombre; ?>
-																		</option>
-																	<?php endif; ?>
-																<?php endforeach; ?>
-															</select>
+
+		<div class="content-body">
+			<section id="section">
+
+				<?php $this->load->view('_templates/mensajes_alerta.tpl.php'); ?>
+
+				<div class="row">
+					<div class="col-12">
+						<div class="card no-border">
+
+							<div class="card-header">
+								<h4 class="card-title"><?php echo $pagina_subtitulo; ?></h4>
+							</div>
+
+							<div class="card-content collapse show">
+								<div class="card-body card-dashboard">
+
+
+									<div class="row match-height">
+										<div class="col-xl-6 col-md-6 col-sm-6">
+											<?php foreach ($clases_list as $clase_key => $clase_value) : ?>
+												<p><?php echo $clase_value->id; ?></p>
+											<?php endforeach; ?>
+										</div>
+
+										<div class="col-xl-6 col-md-6 col-sm-6">
+
+											<?php echo form_open(uri_string(), array('class' => 'form form-horizontal', 'id' => 'forma-crear-clase')); ?>
+
+											<div class="form-body">
+												<h4 class="form-section">Datos de la clase</h4>
+												<div class="row">
+													<div class="col-xl-12 col-md-12 col-sm-12">
+
+														<div class="form-group">
+															<div class="row">
+																<label class="col-lg-12" for="disciplina_id">Disciplina <span class="red">*</span></label>
+																<div class="col-lg-12">
+																	<select id="disciplina_id" name="disciplina_id" class="form-control select2 custom-select" required>
+																		<option value="" <?php echo set_select('disciplina_id', '', set_value('disciplina_id') ? false : '' == $this->session->flashdata('disciplina_id')); ?>>Seleccione una disciplina…</option>
+																		<?php foreach ($disciplinas->result() as $disciplina_key => $disciplina_value) : ?>
+																			<?php if ($disciplina_value->id != 1) : ?>
+																				<option value="<?php echo $disciplina_value->id; ?>" <?php echo set_select('disciplina_id', $disciplina_value->id, set_value('disciplina_id') ? false : $disciplina_value->id == $this->session->flashdata('disciplina_id')); ?>><?php echo trim($disciplina_value->nombre); ?></option>
+																			<?php endif; ?>
+																		<?php endforeach; ?>
+																	</select>
+																	<div class="invalid-feedback">
+																		Se requiere una disciplina válida.
+																	</div>
+																</div>
+															</div>
 														</div>
+
 													</div>
-												</div>
-												<div class="col-md-6">
-													<div class="form-group row">
-														<label for="terminos_condiciones" class="col-md-3 label-control"><span class="red">*</span> Instructor
-															para la clase</label>
-														<div class="col-md-9">
-															<select id="mySelect2" name="instructor_id" class="select2 form-control info">
-																<option value="">Seleccione el instructor de esta clase</option>
-																<?php foreach ($instructores->result() as $instructor) : ?>
-																	<option value="<?php echo $instructor->id; ?>" <?php echo set_select('instructor_id', $instructor->id); ?>>
-																		<?php echo $instructor->nombre_completo . ' ' . $instructor->apellido_paterno . ' ' . $instructor->apellido_materno; ?>
-																	</option>
-																<?php endforeach; ?>
-															</select>
+
+													<div class="col-xl-12 col-md-12 col-sm-12">
+
+														<div class="form-group">
+															<div class="row">
+																<label class="col-lg-12" for="instructor_id">Coach <span class="red">*</span></label>
+																<div class="col-lg-12">
+																	<select id="instructor_id" name="instructor_id" class="form-control select2 custom-select" required>
+																		<option value="" <?php echo set_select('instructor_id', '', set_value('instructor_id') ? false : '' == $this->session->flashdata('instructor_id')); ?>>Seleccione una coach…</option>
+																		<?php foreach ($instructores->result() as $instructor_key => $instructor_value) : ?>
+																			<option value="<?php echo $instructor_value->id; ?>" <?php echo set_select('instructor_id', $instructor_value->id, set_value('instructor_id') ? false : $instructor_value->id == $this->session->flashdata('instructor_id')); ?>><?php echo trim('#' . $instructor_value->id . ' - ' . $instructor_value->nombre_completo . ' ' . $instructor_value->apellido_paterno . ' ' . $instructor_value->apellido_materno . ' - ' . $instructor_value->correo); ?></option>
+																		<?php endforeach; ?>
+																	</select>
+																	<div class="invalid-feedback">
+																		Se requiere una coach válida.
+																	</div>
+																</div>
+															</div>
 														</div>
+
+													</div>
+
+													<div class="col-xl-12 col-md-12 col-sm-12">
+
+														<div class="form-group">
+															<div class="row">
+																<label class="col-lg-12" for="dificultad">Grupo muscular <span class="red">*</span></label>
+																<div class="col-lg-12">
+																	<select id="dificultad" name="dificultad" class="form-control select2 custom-select" required>
+																		<option value="" <?php echo set_select('dificultad', '', set_value('dificultad') ? false : '' == $this->session->flashdata('dificultad')); ?>>Seleccione un grupo muscular…</option>
+																		<?php foreach (select_dificultad() as $dificultad_key => $dificultad_value) : ?>
+																			<option value="<?php echo $dificultad_value->valor; ?>" <?php echo $dificultad_value->activo == false ? '' : 'selected'; ?> <?php echo set_select('dificultad', $dificultad_value->valor, set_value('dificultad') ? false : $dificultad_value->valor == $this->session->flashdata('dificultad')); ?>><?php echo trim($dificultad_value->nombre); ?></option>
+																		<?php endforeach; ?>
+																	</select>
+																	<div class="invalid-feedback">
+																		Se requiere un grupo muscular válido.
+																	</div>
+																</div>
+															</div>
+														</div>
+
+													</div>
+
+													<div class="col-xl-6 col-md-6 col-sm-6">
+
+														<div class="form-group">
+															<div class="row">
+																<label class="col-lg-12 required-field" for="inicia_date">Fecha de clase</label>
+																<div class="col-lg-8">
+																	<input type="date" class="form-control" name="inicia_date" id="inicia_date" placeholder="Fecha de clase" value="<?php echo set_value('inicia_date') == false ? ($this->session->flashdata('inicia_date') ? $this->session->flashdata('inicia_date') : date('Y-m-d')) : set_value('inicia_date'); ?>" required>
+																	<div class="invalid-feedback">
+																		Se requiere una fecha de clase válida.
+																	</div>
+																</div>
+																<div class="col-lg-4">
+																	<input type="time" class="form-control" name="inicia_time" id="inicia_time" placeholder="Fecha de clase" value="<?php echo set_value('inicia_time') == false ? ($this->session->flashdata('inicia_time') ? $this->session->flashdata('inicia_time') : date('H:i')) : set_value('inicia_time'); ?>" required>
+																	<div class="invalid-feedback">
+																		Se requiere una fecha de clase válida.
+																	</div>
+																</div>
+															</div>
+														</div>
+
+													</div>
+
+													<div class="col-xl-6 col-md-6 col-sm-6">
+
+														<div class="form-group">
+															<div class="row">
+																<label class="col-lg-12 required-field" for="cupo">Cupo de clase</label>
+																<div class="col-lg-12">
+																	<input type="number" min="0" pattern="^[0-9]+" class="form-control" name="cupo" id="cupo" placeholder="Cupo de clase" value="<?php echo set_value('cupo') == false ? ($this->session->flashdata('cupo') ? $this->session->flashdata('cupo') : 20) : set_value('cupo'); ?>" required>
+																	<div class="invalid-feedback">
+																		Se requiere un cupo de clase válido.
+																	</div>
+																</div>
+															</div>
+														</div>
+
+													</div>
+
+													<div class="col-xl-6 col-md-6 col-sm-6">
+
+														<div class="form-group">
+															<div class="row">
+																<label class="col-lg-12" for="distribucion_imagen">Locación <span class="red">*</span></label>
+																<div class="col-lg-12">
+																	<select id="distribucion_imagen" name="distribucion_imagen" class="form-control select2 custom-select" required>
+																		<option value="<?php echo 'https://b3studio.mx/app_imgs/clases/clase-top-escenario.jpg'; ?>" selected <?php echo set_select('distribucion_imagen', 'https://b3studio.mx/app_imgs/clases/clase-top-escenario.jpg', set_value('distribucion_imagen') ? false : 'https://b3studio.mx/app_imgs/clases/clase-top-escenario.jpg' == $this->session->flashdata('distribucion_imagen')); ?>>Salón</option>
+																		<option value="<?php echo 'https://b3studio.mx/app_imgs/clases/clase-top-playa.jpg'; ?>" <?php echo set_select('distribucion_imagen', 'https://b3studio.mx/app_imgs/clases/clase-top-playa.jpg', set_value('distribucion_imagen') ? false : 'https://b3studio.mx/app_imgs/clases/clase-top-playa.jpg' == $this->session->flashdata('distribucion_imagen')); ?>>Playa</option>
+																		<option value="<?php echo 'https://b3studio.mx/app_imgs/clases/clase-top-rooftop.jpg'; ?>" <?php echo set_select('distribucion_imagen', 'https://b3studio.mx/app_imgs/clases/clase-top-rooftop.jpg', set_value('distribucion_imagen') ? false : 'https://b3studio.mx/app_imgs/clases/clase-top-rooftop.jpg' == $this->session->flashdata('distribucion_imagen')); ?>>RoofTop</option>
+																	</select>
+																	<div class="invalid-feedback">
+																		Se requiere una locación válida.
+																	</div>
+																</div>
+															</div>
+														</div>
+
+													</div>
+
+													<div class="col-xl-6 col-md-6 col-sm-6">
+
+														<div class="form-group">
+															<div class="row">
+																<label class="col-lg-12" for="distribucion_lugares">Distribución <span class="red">*</span></label>
+																<div class="col-lg-12">
+																	<select id="distribucion_lugares" name="distribucion_lugares" class="form-control select2 custom-select" required>
+																		<option value="<?php echo 'child-2'; ?>" <?php echo set_select('distribucion_lugares', 'child-2', set_value('distribucion_lugares') ? false : 'child-2' == $this->session->flashdata('distribucion_lugares')); ?>>Fila de 2</option>
+																		<option value="<?php echo 'child-3'; ?>" <?php echo set_select('distribucion_lugares', 'child-3', set_value('distribucion_lugares') ? false : 'child-3' == $this->session->flashdata('distribucion_lugares')); ?>>Fila de 3</option>
+																		<option value="<?php echo 'child-4'; ?>" <?php echo set_select('distribucion_lugares', 'child-4', set_value('distribucion_lugares') ? false : 'child-4' == $this->session->flashdata('distribucion_lugares')); ?>>Fila de 4</option>
+																		<option value="<?php echo 'child-5'; ?>" <?php echo set_select('distribucion_lugares', 'child-5', set_value('distribucion_lugares') ? false : 'child-5' == $this->session->flashdata('distribucion_lugares')); ?>>Fila de 5</option>
+																		<option value="<?php echo 'child-6'; ?>" <?php echo set_select('distribucion_lugares', 'child-6', set_value('distribucion_lugares') ? false : 'child-6' == $this->session->flashdata('distribucion_lugares')); ?>>Fila de 6</option>
+																		<option value="<?php echo 'child-7'; ?>" <?php echo set_select('distribucion_lugares', 'child-7', set_value('distribucion_lugares') ? false : 'child-7' == $this->session->flashdata('distribucion_lugares')); ?>>Fila de 7</option>
+																		<option value="<?php echo 'child-8'; ?>" <?php echo set_select('distribucion_lugares', 'child-8', set_value('distribucion_lugares') ? false : 'child-8' == $this->session->flashdata('distribucion_lugares')); ?>>Fila de 8</option>
+																		<option value="<?php echo 'child-9'; ?>" <?php echo set_select('distribucion_lugares', 'child-9', set_value('distribucion_lugares') ? false : 'child-9' == $this->session->flashdata('distribucion_lugares')); ?>>Fila de 9</option>
+																		<option value="<?php echo 'child-10'; ?>" selected <?php echo set_select('distribucion_lugares', 'child-10', set_value('distribucion_lugares') ? false : 'child-10' == $this->session->flashdata('distribucion_lugares')); ?>>Fila de 10</option>
+																		<option value="<?php echo 'child-11'; ?>" <?php echo set_select('distribucion_lugares', 'child-11', set_value('distribucion_lugares') ? false : 'child-11' == $this->session->flashdata('distribucion_lugares')); ?>>Fila de 11</option>
+																		<option value="<?php echo 'child-12'; ?>" <?php echo set_select('distribucion_lugares', 'child-12', set_value('distribucion_lugares') ? false : 'child-12' == $this->session->flashdata('distribucion_lugares')); ?>>Fila de 12</option>
+																	</select>
+																	<div class="invalid-feedback">
+																		Se requiere una distribución válida.
+																	</div>
+																</div>
+															</div>
+														</div>
+
+													</div>
+
+													<div class="col-xl-6 col-md-6 col-sm-6">
+
+														<div class="form-group">
+															<div class="row">
+																<label class="col-lg-12 required-field" for="intervalo_horas">No. de clases a consumir del plan</label>
+																<div class="col-lg-12">
+																	<input type="number" min="0" pattern="^[0-9]+" class="form-control" name="intervalo_horas" id="intervalo_horas" placeholder="No. de clases a consumir del plan" value="<?php echo set_value('intervalo_horas') == false ? ($this->session->flashdata('intervalo_horas') ? $this->session->flashdata('intervalo_horas') : 1) : set_value('intervalo_horas'); ?>" required>
+																	<div class="invalid-feedback">
+																		Se requiere un no. de clases a consumir del plan válido.
+																	</div>
+																</div>
+															</div>
+														</div>
+
+													</div>
+
+												</div>
+
+											</div>
+
+											<div class="row mt-3">
+												<div class="col-12">
+													<div class="form-group float-md-right">
+														<a class="btn btn-outline-grey btn-outline-lighten-1 btn-min-width mr-1" href="<?php echo site_url($regresar_a); ?>"><i class="fa fa-arrow-circle-left"></i>&nbsp;Volver</a>
+														<button class="btn btn-outline-secondary btn-min-width mr-1" type="submit">Guardar</button>
 													</div>
 												</div>
 											</div>
 
-											<div class="row">
-												<div class="col-md-6">
-													<div class="form-group row">
-														<label for="inicia" class="col-md-3 label-control"><span class="red">*</span> Fecha y hora de inicio</label>
-														<div class="col-md-5">
-															<input type="date" id="mySelect3" name="inicia_date" class="form-control" placeholder="Indique la fecha" value="<?php echo set_value('inicia_date') == false ? date('Y-m-d') : set_value('inicia_date'); ?>">
-														</div>
-														<div class="col-md-4">
-															<input type="time" id="mySelect4" name="inicia_time" class="form-control" placeholder="Indique la hora" value="<?php echo set_value('inicia_time') == false ? date('H:i') : set_value('inicia_time'); ?>">
-														</div>
-													</div>
-												</div>
-												<div class="col-md-6">
-													<div class="form-group row">
-														<label for="clases_incluidas" class="col-md-3 label-control"><span class="red">*</span> Seleccione la
-															dificultad</label>
-														<div class="col-md-9">
-															<select name="dificultad" class="form-control">
-																<option value="" <?php echo set_select('dificultad', '', set_value('dificultad') ? false : '' == $this->session->flashdata('dificultad')); ?>>Seleccione una dificultad…</option>
-																<?php foreach (select_dificultad() as $mostrar_key => $mostrar_row) : ?>
-																	<option value="<?php echo $mostrar_row->valor; ?>" <?php echo $mostrar_row->activo == false ? '' : 'selected'; ?> <?php echo set_select('dificultad', $mostrar_row->valor, set_value('dificultad') ? false : $mostrar_row->valor == $this->session->flashdata('dificultad')); ?>><?php echo trim($mostrar_row->nombre); ?></option>
-																<?php endforeach; ?>
-															</select>
-														</div>
-													</div>
-												</div>
-											</div>
-
-											<div class="row">
-												<div class="col-md-6">
-													<div class="form-group row">
-														<label for="cupo" class="col-md-3 label-control"><span class="red">*</span> Cupo</label>
-														<div class="col-md-4">
-															<input type="number" min="0" pattern="^[0-9]+" class="form-control" name="cupo" placeholder="Cupo" value="<?php echo set_value('cupo') == false ? 20 : set_value('cupo'); ?>">
-														</div>
-													</div>
-												</div>
-												<div class="col-md-6">
-													<div class="form-group row">
-														<label for="distribucion_imagen" class="col-md-3 label-control"><span class="red">*</span> Seleccione una locación de clase</label>
-														<div class="col-md-9">
-															<select name="distribucion_imagen" class="form-control">
-																<option value="">Seleccione una locación de clase...</option>
-																<option value="https://b3studio.mx/app_imgs/clases/clase-top-escenario.jpg" selected>Salon</option>
-																<option value="https://b3studio.mx/app_imgs/clases/clase-top-playa.jpg">Playa</option>
-																<option value="https://b3studio.mx/app_imgs/clases/clase-top-rooftop.jpg">RoofTop</option>
-															</select>
-														</div>
-													</div>
-												</div>
-											</div>
-
-											<div class="row">
-												<div class="col-md-6">
-													<div class="form-group row">
-														<label for="distribucion_lugares" class="col-md-3 label-control"><span class="red">*</span> Seleccione la distribución de lugares por fila...</label>
-														<div class="col-md-9">
-															<select name="distribucion_lugares" class="form-control">
-																<option value="">Seleccione la distribución de lugares por fila...</option>
-																<option value="child-2">2</option>
-																<option value="child-3">3</option>
-																<option value="child-4">4</option>
-																<option value="child-5">5</option>
-																<option value="child-6">6</option>
-																<option value="child-7">7</option>
-																<option value="child-8">8</option>
-																<option value="child-9">9</option>
-																<option value="child-10" selected>10</option>
-																<option value="child-11">11</option>
-																<option value="child-12">12</option>
-															</select>
-														</div>
-													</div>
-												</div>
-												<div class="col-md-6">
-													<div class="form-group row">
-														<label for="intervalo_horas" class="col-md-3 label-control"><span class="red">*</span> Clases a consumir del plan</label>
-														<div class="col-md-4">
-															<input type="number" min="0" pattern="^[0-9]+" name="intervalo_horas" class="form-control" placeholder="Clases a consumir" value="<?php echo set_value('intervalo_horas') == false ? 1 : set_value('intervalo_horas'); ?>">
-														</div>
-													</div>
-												</div>
-											</div>
-
-											<div class="row">
-												<div class="col-md-6">
-													<div class="form-group row">
-														<div class="col-md-4">
-															<input type="hidden" readonly="true" name="inicia_numero" id="inicia_numero" class="form-control" value="<?php echo set_value('inicia_numero'); ?>">
-														</div>
-													</div>
-												</div>
-											</div>
-
-											<div class="form-actions right">
-												<a href="<?php echo site_url('clases/index'); ?>" class="btn btn-secondary btn-sm">Cancelar</a>
-												<button type="submit" class="btn btn-secondary btn-sm">Guardar</button>
-											</div>
+											<?php echo form_close(); ?>
 
 										</div>
 
-										<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
-										<script>
-											var valor = "#";
-											var valor2 = "#";
-											var valor3 = "#";
-											var valor4 = "#";
-											var ids = "#";
-											var numero = "#";
-											$(function() {
-												$(document).on('keyup keypress blur change', '#mySelect', function() { //detectamos el evento change
-													valor = $(this).val(); //sacamos el valor del select
-													if (valor == "2") {
-														valor = "BK";
-													}
-													if (valor == "3") {
-														valor = "BX";
-													}
-													if (valor == "4") {
-														valor = "BD";
-													}
-													if (valor == "5") {
-														valor = "BKG";
-													}
-													if (valor == "6") {
-														valor = "BXG";
-													}
-													if (valor == "7") {
-														valor = "BDG";
-													}
-													ids = valor + valor2 + valor3 + valor4;
-													$('#myInput').val(ids); //le agregamos el valor al input (notese que el input debe tener un ID para que le caiga el valor)
-												});
-												$(document).on('keyup keypress blur change', '#mySelect2', function() { //detectamos el evento change
-													valor2 = $(this).children("option").filter(":selected").text(); //sacamos el valor del select
-													valor2 = valor2.replace(/(á|é|í|ó|ú|ñ|ä|ë|ï|ö|\.|ü)/gi, '');
-													valor2 = valor2.replace(/[A-Za-z]+/g, function(match) {
-														return (match.trim()[0]);
-													}).toUpperCase();
-													valor2 = valor2.replace(/\s/g, '')
-
-													ids = valor + valor2 + valor3 + valor4;
-													$('#myInput').val(ids); //le agregamos el valor al input (notese que el input debe tener un ID para que le caiga el valor)
-												});
-
-												$(document).on('keyup keypress blur change', '#mySelect3', function() { //detectamos el evento change
-													valor3 = $(this).val(); //sacamos el valor del select
-													valor3 = valor3.replace(/\D/g, '');
-													ids = valor + valor2 + valor3 + valor4;
-													numero = valor3 + valor4;
-													$('#myInput').val(ids); //le agregamos el valor al input (notese que el input debe tener un ID para que le caiga el valor)
-													$('#inicia_numero').val(numero);
-												});
-												$(document).on('keyup keypress blur change', '#mySelect4', function() { //detectamos el evento change
-													valor4 = $(this).val(); //sacamos el valor del select
-													valor4 = valor4.replace(/\D/g, '');
-													ids = valor + valor2 + valor3 + valor4;
-													numero = valor3 + valor4;
-													$('#myInput').val(ids); //le agregamos el valor al input (notese que el input debe tener un ID para que le caiga el valor)
-													$('#inicia_numero').val(numero);
-												});
-											});
-										</script>
-
-										<?php echo form_close(); ?>
 									</div>
+
 								</div>
 							</div>
+
 						</div>
 					</div>
-				</section>
-			</div>
+				</div>
+
+			</section>
 		</div>
+
 	</div>
 </div>

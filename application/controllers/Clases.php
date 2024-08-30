@@ -52,6 +52,8 @@ class Clases extends MY_Controller
         $this->form_validation->set_rules('intervalo_horas', 'Intervalo en horas', 'required');
         $this->form_validation->set_rules('dificultad', 'Dificultad', 'required');
 
+        $clases_list = $this->clases_model->obtener_ultimas_10_clases()->result();
+
         // Validar que existan usuarios en el rol de instructores
         $instructores = $this->usuarios_model->obtener_todos_instructores();
 
@@ -68,6 +70,7 @@ class Clases extends MY_Controller
             redirect('clases/index');
         }
 
+        $data['clases_list'] = $clases_list;
         $data['instructores'] = $instructores;
         $data['disciplinas'] = $disciplinas;
 
