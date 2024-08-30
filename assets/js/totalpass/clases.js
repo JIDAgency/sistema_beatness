@@ -105,6 +105,7 @@ async function manejar_evento(clase_id, accion, funcion) {
                     instructores_nombre: updatedData.instructores_nombre,
                     sucursales_locacion: updatedData.sucursales_locacion,
                     cupos: updatedData.cupos,
+                    estatus: updatedData.estatus
                 }).draw(false);
             } else {
                 console.error('Fila no encontrada para actualizar.');
