@@ -253,11 +253,6 @@ $select_dificultad = array(
         'activo'    => false,
     ),
     (object) array(
-        'nombre'    => 'PIERNA Y GLUTEO',
-        'valor'     => 'PIERNA Y GLUTEO',
-        'activo'    => false,
-    ),
-    (object) array(
         'nombre'    => 'PULL & PUSH',
         'valor'     => 'PULL & PUSH',
         'activo'    => false,

@@ -231,7 +231,7 @@ class Totalpass extends MY_Controller
             $data_3 = array(
                 'opciones' => $opciones,
                 'id' => $clase_actualizada_row->id,
-                'totalpass_eventOccurrenceUuid' => !empty($clase_actualizada_row->totalpass_eventOccurrenceUuid) ? '<span class="text-success">Registrada</span>' : '<span class="text-muted">Sin registro</span>',
+                'totalpass_eventOccurrenceUuid' => !empty($clase_actualizada_row->totalpass_eventOccurrenceUuid) ? '<span class="text-success">Registrada</span>' : '<span class="text-warning">Sin registro</span>',
                 'identificador' => $clase_actualizada_row->identificador,
                 'disciplinas_nombre' => $clase_actualizada_row->disciplinas_nombre,
                 'dificultad' => $clase_actualizada_row->dificultad,
@@ -239,7 +239,8 @@ class Totalpass extends MY_Controller
                 'horario' => date('h:i A', strtotime($clase_actualizada_row->inicia)),
                 'instructores_nombre' => $clase_actualizada_row->instructores_nombre,
                 'sucursales_locacion' => $clase_actualizada_row->sucursales_locacion,
-                'cupos' => $clase_actualizada_row->reservado . '/' . $clase_actualizada_row->cupo
+                'cupos' => $clase_actualizada_row->reservado . '/' . $clase_actualizada_row->cupo,
+                'estatus' => $clase_actualizada_row->estatus
             );
 
             $this->db->trans_commit();
@@ -323,7 +324,7 @@ class Totalpass extends MY_Controller
             $data_3 = array(
                 'opciones' => $opciones,
                 'id' => $clase_actualizada_row->id,
-                'totalpass_eventOccurrenceUuid' => !empty($clase_actualizada_row->totalpass_eventOccurrenceUuid) ? '<span class="text-success">Registrada</span>' : '<span class="text-muted">Sin registro</span>',
+                'totalpass_eventOccurrenceUuid' => !empty($clase_actualizada_row->totalpass_eventOccurrenceUuid) ? '<span class="text-success">Registrada</span>' : '<span class="text-warning">Sin registro</span>',
                 'identificador' => $clase_actualizada_row->identificador,
                 'disciplinas_nombre' => $clase_actualizada_row->disciplinas_nombre,
                 'dificultad' => $clase_actualizada_row->dificultad,
@@ -331,7 +332,8 @@ class Totalpass extends MY_Controller
                 'horario' => date('h:i A', strtotime($clase_actualizada_row->inicia)),
                 'instructores_nombre' => $clase_actualizada_row->instructores_nombre,
                 'sucursales_locacion' => $clase_actualizada_row->sucursales_locacion,
-                'cupos' => $clase_actualizada_row->reservado . '/' . $clase_actualizada_row->cupo
+                'cupos' => $clase_actualizada_row->reservado . '/' . $clase_actualizada_row->cupo,
+                'estatus' => $clase_actualizada_row->estatus
             );
 
             $this->db->trans_commit();
@@ -409,7 +411,7 @@ class Totalpass extends MY_Controller
             $data_2 = array(
                 'opciones' => $opciones,
                 'id' => $clase_actualizada_row->id,
-                'totalpass_eventOccurrenceUuid' => !empty($clase_actualizada_row->totalpass_eventOccurrenceUuid) ? '<span class="text-success">Registrada</span>' : '<span class="text-muted">Sin registro</span>',
+                'totalpass_eventOccurrenceUuid' => !empty($clase_actualizada_row->totalpass_eventOccurrenceUuid) ? '<span class="text-success">Registrada</span>' : '<span class="text-warning">Sin registro</span>',
                 'identificador' => $clase_actualizada_row->identificador,
                 'disciplinas_nombre' => $clase_actualizada_row->disciplinas_nombre,
                 'dificultad' => $clase_actualizada_row->dificultad,
@@ -417,7 +419,8 @@ class Totalpass extends MY_Controller
                 'horario' => date('h:i A', strtotime($clase_actualizada_row->inicia)),
                 'instructores_nombre' => $clase_actualizada_row->instructores_nombre,
                 'sucursales_locacion' => $clase_actualizada_row->sucursales_locacion,
-                'cupos' => $clase_actualizada_row->reservado . '/' . $clase_actualizada_row->cupo
+                'cupos' => $clase_actualizada_row->reservado . '/' . $clase_actualizada_row->cupo,
+                'estatus' => $clase_actualizada_row->estatus
             );
 
             $this->db->trans_commit();
