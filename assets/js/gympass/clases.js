@@ -1,36 +1,37 @@
+let table;
+
+const actualUrl = document.URL;
+const methodCall = actualUrl.includes("index") ? "" : "";
+
+$.fn.dataTable.ext.errMode = 'throw'; // Configuración de manejo de errores de DataTables
+$.fn.dataTable.ext.type.order['time-pre'] = function (d) {
+    return moment(d, 'hh:mm A').format('HHmm');
+};
+
 document.addEventListener('DOMContentLoaded', function () {
-    var table = $('#table').DataTable({
-        "searching": true,
-        "scrollX": true,
-        "deferRender": true,
-        'processing': true,
-        "order": [[6, "asc"]],
-        "lengthMenu": [[25, 50, 100, 250, 500, -1], [25, 50, 100, 250, 500, "Todos"]],
-        'language': {
-            "sProcessing": '<i class="fa fa-spinner spinner"></i> Cargando...',
-            "sLengthMenu": "Mostrar _MENU_",
-            "sZeroRecords": "No se encontraron resultados",
-            "sEmptyTable": "Ningún dato disponible en esta tabla =(",
-            "sInfo": "Mostrando del _START_ al _END_ de _TOTAL_",
-            "sInfoEmpty": "Mostrando del 0 al 0 de 0",
-            "sInfoFiltered": "(filtrado _MAX_)",
-            "sInfoPostFix": "",
-            "sSearch": "Buscar:",
-            "sUrl": "",
-            "sInfoThousands": ",",
-            "sLoadingRecords": "&nbsp;",
-            "oPaginate": {
-                "sFirst": "Primero",
-                "sLast": "Último",
-                "sNext": ">",
-                "sPrevious": "<"
-            },
-            "oAria": {
-                "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-                "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+    table = $('#table').DataTable({
+        searching: true,
+        scrollX: true,
+        deferRender: true,
+        processing: true,
+        order: [[2, "desc"], [4, "asc"], [6, "asc"], [7, "asc"]],
+        lengthMenu: [[25, 50, 100, 250, 500, -1], [25, 50, 100, 250, 500, "Todos"]],
+        language: {
+            sProcessing: '<i class="fa fa-spinner spinner"></i> Cargando...',
+            sLengthMenu: "Mostrar _MENU_",
+            sZeroRecords: "No se encontraron resultados",
+            sEmptyTable: "Ningún dato disponible en esta tabla =(",
+            sInfo: "Mostrando del _START_ al _END_ de _TOTAL_",
+            sInfoEmpty: "Mostrando del 0 al 0 de 0",
+            sInfoFiltered: "(filtrado _MAX_)",
+            sSearch: "Buscar:",
+            oPaginate: {
+                sFirst: "Primero",
+                sLast: "Último",
+                sNext: ">",
+                sPrevious: "<"
             }
         }
-
     });
 });
 

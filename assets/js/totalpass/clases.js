@@ -31,7 +31,8 @@ document.addEventListener('DOMContentLoaded', function () {
             { data: "horario", type: "time" }, // Aplicar el tipo "time" a la columna de horarios
             { data: "instructores_nombre" },
             { data: "sucursales_locacion" },
-            { data: "cupos" }
+            { data: "cupos" },
+            { data: "estatus" }
         ],
         language: {
             sProcessing: '<i class="fa fa-spinner spinner"></i> Cargando...',

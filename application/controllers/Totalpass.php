@@ -142,7 +142,7 @@ class Totalpass extends MY_Controller
             $data[] = array(
                 'opciones' => $opciones,
                 'id' => $clase_value->id,
-                'totalpass_eventOccurrenceUuid' => !empty($clase_value->totalpass_eventOccurrenceUuid) ? '<span class="text-success">Registrada</span>' : '<span class="text-muted">Sin registro</span>',
+                'totalpass_eventOccurrenceUuid' => !empty($clase_value->totalpass_eventOccurrenceUuid) ? '<span class="text-success">Registrada</span>' : '<span class="text-warning">Sin registro</span>',
                 'identificador' => $clase_value->identificador,
                 'disciplinas_nombre' => $clase_value->disciplinas_nombre,
                 'dificultad' => $clase_value->dificultad,
@@ -150,7 +150,8 @@ class Totalpass extends MY_Controller
                 'horario' => date('h:i A', strtotime($clase_value->inicia)),
                 'instructores_nombre' => $clase_value->instructores_nombre,
                 'sucursales_locacion' => $clase_value->sucursales_locacion,
-                'cupos' => $clase_value->reservado . '/' . $clase_value->cupo
+                'cupos' => $clase_value->reservado . '/' . $clase_value->cupo,
+                'estatus' => $clase_value->estatus
             );
         }
 

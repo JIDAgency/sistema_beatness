@@ -67,6 +67,7 @@
                                                         <th>Coach</th>
                                                         <th>Sucursal</th>
                                                         <th>Cupos</th>
+                                                        <th>Estatus</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
