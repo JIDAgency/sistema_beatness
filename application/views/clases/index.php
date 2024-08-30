@@ -75,20 +75,20 @@
 												<tr>
 													<th>Opciones</th>
 													<th>ID</th>
-													<th>Estatus</th>
 													<th>SKU</th>
 													<th>Disciplina</th>
-													<th>Dificultad</th>
+													<th>Grupo Muscular</th>
+													<th>Fecha</th>
 													<th>Horario</th>
-													<th>Horario</th>
-													<th>Instructor</th>
-													<th>Cupo</th>
+													<th>Coach</th>
+													<th>Cupos</th>
 													<!-- <th>N. Horas</th> -->
-													<th>Cupo restantes</th>
+													<!-- <th>Cupo restantes</th> -->
 													<!-- <th>Cupo original</th> -->
-													<th>Cupos reservados</th>
-													<th>Inasistencias</th>
+													<!-- <th>Cupos reservados</th> -->
+													<!-- <th>Inasistencias</th> -->
 													<th>Sucursal</th>
+													<th>Estatus</th>
 												</tr>
 											</thead>
 											<tbody>

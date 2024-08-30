@@ -295,24 +295,27 @@ class Clases extends MY_Controller
                 }
             }
 
+            $cupos_restantes = $clase->cupo - $clase->reservado;
+
             $data[] = array(
                 'opciones' => $opciones,
                 'id' => $clase->id,
                 // 'estatus' => !empty($clase->estatus) ? ucwords($clase->estatus) : '',
-                'estatus' => !empty($clase->estatus) ? '<span class="' . $this->getStatusClass($clase->estatus) . '">' . ucwords($clase->estatus) . '</span>' : '',
                 'identificador' => !empty($clase->identificador) ? $clase->identificador : '',
                 'disciplina_id' => $clase->disciplina_nombre,
                 'dificultad' => !empty($clase->dificultad) ? mb_strtoupper($clase->dificultad) : '',
-                'inicia' => (!empty($clase->inicia) ? date('d/m/Y H:i:s', strtotime($clase->inicia)) : ''),
-                'horario_esp' => !empty($fecha_espaniol) ? ucfirst($fecha_espaniol) : '',
+                'inicia' => (!empty($clase->inicia) ? date('Y-m-d', strtotime($clase->inicia)) : ''),
+                'horario' => (!empty($clase->inicia) ? date('h:i:s A', strtotime($clase->inicia)) : ''),
+                // 'horario_esp' => !empty($fecha_espaniol) ? ucfirst($fecha_espaniol) : '',
                 'instructor_id' => !empty($clase->instructor_nombre) ? ($clase->instructor_nombre) : '',
-                'cupo' => !empty($clase->cupo) ? ucfirst($clase->cupo) : '',
+                'cupo' => !empty($clase->cupo) ? ucfirst($cupos_restantes . ' / ' . $clase->cupo): '',
                 // 'intervalo_horas' => !empty($intervalo_horas) ? mb_strtoupper($intervalo_horas) : '',
-                'cupo_restantes' => !empty($clase->cupo - $clase->reservado) ? $clase->cupo - $clase->reservado : '',
+                // 'cupo_restantes' => !empty($clase->cupo - $clase->reservado) ? $clase->cupo - $clase->reservado : '',
                 // 'cupo_original' => !empty($clase->cupo) ? ucfirst($clase->cupo) : '',
-                'cupo_reservado' => !empty($clase->reservado) ? ucfirst($clase->reservado) : 0,
-                'inasistencias' => !empty($clase->inasistencias) ? ucfirst($clase->inasistencias) : 0,
+                // 'cupo_reservado' => !empty($clase->reservado) ? ucfirst($clase->reservado) : 0,
+                // 'inasistencias' => !empty($clase->inasistencias) ? ucfirst($clase->inasistencias) : 0,
                 'sucursal' => !empty($clase->sucursal_nombre . ' [' . $clase->sucursal_locacion . ']') ? $clase->sucursal_nombre . ' [' . $clase->sucursal_locacion . ']' : '',
+                'estatus' => !empty($clase->estatus) ? '<span class="' . $this->getStatusClass($clase->estatus) . '">' . ucwords($clase->estatus) . '</span>' : '',
             );
         }
 

@@ -32,20 +32,21 @@ $(document).ready(function () {
         "columns": [
             { "data": "opciones" },
             { "data": "id" },
-            { "data": "estatus" },
             { "data": "identificador" },
             { "data": "disciplina_id" },
             { "data": "dificultad" },
             { "data": "inicia" },
-            { "data": "horario_esp" },
+            { "data": "horario" },
+            // { "data": "horario_esp" },
             { "data": "instructor_id" },
             { "data": "cupo" },
             // { "data": "intervalo_horas" },
-            { "data": "cupo_restantes" },
+            // { "data": "cupo_restantes" },
             // { "data": "cupo_original" },
-            { "data": "cupo_reservado" },
-            { "data": "inasistencias" },
+            // { "data": "cupo_reservado" },
+            // { "data": "inasistencias" },
             { "data": "sucursal" },
+            { "data": "estatus" },
         ],
         "createdRow": createEditableCells,
         'language': {
@@ -622,7 +623,8 @@ async function obtener_opciones_select_dificultad() {
 }
 
 function createEditableCells(row, data, dataIndex) {
-    var columnsToEdit = [4, 5, 6, 8];
+    // var columnsToEdit = [4, 5, 6, 8];
+    var columnsToEdit = [];
     $.each(columnsToEdit, function (index, columnIndex) {
         $('td:eq(' + columnIndex + ')', row).addClass('editable-cell');
     });
