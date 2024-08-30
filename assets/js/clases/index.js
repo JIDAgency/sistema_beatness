@@ -30,7 +30,9 @@ $(document).ready(function () {
             "type": 'POST'
         },
         "columns": [
+            { "data": "opciones" },
             { "data": "id" },
+            { "data": "estatus" },
             { "data": "identificador" },
             { "data": "disciplina_id" },
             { "data": "dificultad" },
@@ -38,18 +40,16 @@ $(document).ready(function () {
             { "data": "horario_esp" },
             { "data": "instructor_id" },
             { "data": "cupo" },
-            { "data": "estatus" },
-            { "data": "intervalo_horas" },
+            // { "data": "intervalo_horas" },
             { "data": "cupo_restantes" },
-            { "data": "cupo_original" },
+            // { "data": "cupo_original" },
             { "data": "cupo_reservado" },
             { "data": "inasistencias" },
             { "data": "sucursal" },
-            { "data": "opciones" },
         ],
         "createdRow": createEditableCells,
         'language': {
-            "sProcessing": '<i class="fa fa-spinner spinner"></i> Cargando...',
+            'sProcessing': '<div class="loader-wrapper"><div class="loader"></div></div>',
             "sLengthMenu": "Mostrar _MENU_",
             "sZeroRecords": "No se encontraron resultados",
             "sEmptyTable": "Ningún dato disponible en esta tabla =(",
@@ -71,7 +71,8 @@ $(document).ready(function () {
                 "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
                 "sSortDescending": ": Activar para ordenar la columna de manera descendente"
             }
-        }
+        },
+        "dom": '<"top"lfi>rt<"bottom"p><"clear">',
 
     });
 
@@ -276,11 +277,11 @@ $(document).ready(function () {
 
                 // Encuentra la fila correspondiente usando el identificador antiguo
                 var row = table.rows().indexes().filter(function (idx) {
-                    return table.cell(idx, 1).data() == datos_fila_tabla.identificador;
+                    return table.cell(idx, 3).data() == datos_fila_tabla.identificador;
                 });
 
                 // Actualiza la celda 'identificador' con el nuevo valor
-                table.cell(row, 1).data(nuevoIdentificador).draw();
+                table.cell(row, 3).data(nuevoIdentificador).draw();
 
                 if (columna_nombre === 'inicia') {
                     var fecha = new Date(valor_nuevo_de_celda);
@@ -296,7 +297,7 @@ $(document).ready(function () {
                     // Formatear la fecha y hora en el formato deseado
                     var valor_formateado = `${dia} de ${mes} del ${año}\n${horas}:${minutos}:${segundos}`;
 
-                    table.cell(row, 5).data(valor_formateado).draw();
+                    table.cell(row, 7).data(valor_formateado).draw();
 
                     console.log('horario_esp actualizado en la DataTable');
                     console.log('valor nuevo (horario_esp): ' + valor_formateado);
@@ -621,7 +622,7 @@ async function obtener_opciones_select_dificultad() {
 }
 
 function createEditableCells(row, data, dataIndex) {
-    var columnsToEdit = [2, 3, 4, 6];
+    var columnsToEdit = [4, 5, 6, 8];
     $.each(columnsToEdit, function (index, columnIndex) {
         $('td:eq(' + columnIndex + ')', row).addClass('editable-cell');
     });

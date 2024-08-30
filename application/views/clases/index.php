@@ -73,7 +73,9 @@
 										<table id="table" class="table display nowrap table-striped table-bordered scroll-horizontal table-hover">
 											<thead>
 												<tr>
+													<th>Opciones</th>
 													<th>ID</th>
+													<th>Estatus</th>
 													<th>SKU</th>
 													<th>Disciplina</th>
 													<th>Dificultad</th>
@@ -81,14 +83,12 @@
 													<th>Horario</th>
 													<th>Instructor</th>
 													<th>Cupo</th>
-													<th>Estatus</th>
-													<th>N. Horas</th>
+													<!-- <th>N. Horas</th> -->
 													<th>Cupo restantes</th>
-													<th>Cupo original</th>
+													<!-- <th>Cupo original</th> -->
 													<th>Cupos reservados</th>
 													<th>Inasistencias</th>
 													<th>Sucursal</th>
-													<th>Opciones</th>
 												</tr>
 											</thead>
 											<tbody>

@@ -294,3 +294,46 @@ html body.bg-full-screen-image {
     background-color: rgba(255, 255, 255, 0.783);
     border: 1px solid #45AFDA;
 }
+
+/* JS: <div class="loader"></div> */
+.loader-wrapper {
+    position: fixed; /* Fija el loader en la pantalla */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999; /* Asegura que esté al frente de todo */
+}
+
+.loader {
+    width: 80px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background:
+        radial-gradient(farthest-side, rgb(36, 78, 147) 94%, #ffffff) top/8px 8px no-repeat,
+        conic-gradient(#ffffff 30%, rgb(36, 78, 147));
+    -webkit-mask: radial-gradient(farthest-side, #0000 calc(100% - 8px), #000000 0);
+    animation: l13 1s infinite linear;
+}
+
+@keyframes l13 {
+    100% {
+        transform: rotate(1turn);
+    }
+}
+
+div.dataTables_wrapper div.dataTables_length,
+div.dataTables_wrapper div.dataTables_info {
+    display: inline-block;
+    margin-right: 20px;
+    /* Ajusta según tus necesidades */
+    vertical-align: middle;
+    /* Asegura la alineación vertical */
+}
+
+div.dataTables_wrapper div.dataTables_filter {
+    float: right;
+}
