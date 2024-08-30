@@ -1,19 +1,19 @@
 $(function () {
-    jQuery.fn.dataTable.Api.register( 'sum()', function () {
-        return this.flatten().reduce( function ( a, b ) {
-            return (a*1) + (b*1); // cast values in-case they are strings
+    jQuery.fn.dataTable.Api.register('sum()', function () {
+        return this.flatten().reduce(function (a, b) {
+            return (a * 1) + (b * 1); // cast values in case they are strings
         });
     });
 
-	var table = $("#tabla-ventas").DataTable({
+    var table = $("#tabla-ventas").DataTable({
         "scrollX": true,
         "autoWidth": false,
         "deferRender": true,
         'processing': true,
-        "lengthMenu": [[100, 250, 500, -1],[100, 250, 500, "Todos"]],
+        'lengthMenu': [[100, 250, 500, -1], [100, 250, 500, "Todos"]],
         "dom": 'Bfrtip',
-        "buttons": ['pageLength','excel','copy'],    // adds the excel button
-        order: [[ 0, 'desc' ]],
+        "buttons": ['pageLength', 'excel', 'copy'], // adds the excel button
+        order: [[0, 'desc']],
         "language": {
             "search": "Buscar",
             "infoEmpty": "No hay registros que mostrar",
@@ -40,28 +40,56 @@ $(function () {
             }
         }
     });
-    
-    $("#tabla-ventas").on('search.dt', function() {
+
+    // Filtro por fecha
+    $.fn.dataTable.ext.search.push(
+        function (settings, data, dataIndex) {
+            var minDate = $('#fecha-venta').val();
+            var maxDate = $('#fecha-activacion').val();
+            var fechaVenta = data[16]; // Índice de la columna "Fecha de venta"
+
+            // Convertir las fechas de entrada a objetos Date
+            var min = minDate ? new Date(minDate + 'T00:00:00') : null;
+            var max = maxDate ? new Date(maxDate + 'T23:59:59') : null;
+            var fecha = new Date(fechaVenta);
+
+            // Comparar las fechas
+            if (
+                (min === null && max === null) ||
+                (min === null && fecha <= max) ||
+                (min <= fecha && max === null) ||
+                (min <= fecha && fecha <= max)
+            ) {
+                return true;
+            }
+            return false;
+        }
+    );
+
+    $("#fecha-venta, #fecha-activacion").on('change', function () {
+        table.draw();
+    });
+
+    $("#tabla-ventas").on('search.dt', function () {
         var rest = [], suma = 0;
-        var resultado = table.column( 6, {page:'current'} ).data();
-        
+        var resultado = table.column(6, { page: 'current' }).data();
+
         for (var i = 0; i < resultado.length; i++) {
-            rest[i] = resultado[i].replace( /[^\d\.]*/g, '');
+            rest[i] = resultado[i].replace(/[^\d\.]*/g, '');
             suma += parseFloat(rest[i]);
         }
-        
-        console.log(rest);
+
         document.getElementById("ttl").textContent = formatMoney(suma);
     });
 
     function formatMoney(n, c, d, t) {
         var c = isNaN(c = Math.abs(c)) ? 2 : c,
-          d = d == undefined ? "." : d,
-          t = t == undefined ? "," : t,
-          s = n < 0 ? "-" : "",
-          i = String(parseInt(n = Math.abs(Number(n) || 0).toFixed(c))),
-          j = (j = i.length) > 3 ? j % 3 : 0;
-      
+            d = d == undefined ? "." : d,
+            t = t == undefined ? "," : t,
+            s = n < 0 ? "-" : "",
+            i = String(parseInt(n = Math.abs(Number(n) || 0).toFixed(c))),
+            j = (j = i.length) > 3 ? j % 3 : 0;
+
         return "$" + s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
     };
 });
