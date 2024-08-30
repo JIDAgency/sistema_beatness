@@ -318,4 +318,31 @@ class Totalpass_model extends CI_Model
     }
 
     // ====== webhooks (Fin) ======
+
+    public function obtener_reservaciones()
+    {
+        $query = $this->db
+            ->where('t1.totalpass_slot_id IS NOT NULL')
+            //->where('t1.estatus', 'Terminada')
+            ->select("
+                t1.*,
+                CONCAT(COALESCE(t2.nombre_completo, 'N/D'), ' ', COALESCE(t2.apellido_paterno, 'N/D'), ' ', COALESCE(t2.apellido_materno, 'N/D')) as cliente_nombre,
+                t3.identificador as clase,
+                t3.inicia as horario,
+                t3.inicia_ionic as inicia_ionic,
+                t4.nombre as disciplina,
+                t5.nombre as asignaciones_nombre,
+                t6.nombre as sucursal_nombre,
+                t6.locacion as sucursal_locacion
+            ")
+            ->from('reservaciones t1')
+            ->join("usuarios t2", "t1.usuario_id = t2.id")
+            ->join("clases t3", "t1.clase_id = t3.id")
+            ->join("disciplinas t4", "t3.disciplina_id = t4.id")
+            ->join("asignaciones t5", "t1.asignaciones_id = t5.id")
+            ->join("sucursales t6", "t4.sucursal_id = t6.id")
+            ->get();
+
+        return $query;
+    }
 }

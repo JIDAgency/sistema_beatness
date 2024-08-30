@@ -9,8 +9,8 @@
     <meta name="facebook-domain-verification" content="hmo3j2doq28l4psfujdxqkw4g3b0uc"   />
 
     <link rel="apple-touch-icon" href="<?php echo base_url(); ?>almacenamiento/logos/open-graph.jpg">
-    <link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url(); ?>almacenamiento/logos/logo.jpg">
-    <!-- <link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url(); ?>app-assets/images/ico/favicon.ico"> -->
+    <link rel="icon" href="<?php echo base_url(); ?>almacenamiento/logos/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url(); ?>almacenamiento/logos/favicon.ico">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans: 300,300i,400,400i,600,600i,700,700i|Muli:300,400,500,700">
     <!-- BEGIN VENDOR CSS-->
     <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>app-assets/css/vendors.css">
@@ -31,9 +31,6 @@
     <meta name="description" content="<?php echo description(); ?>">
     <meta name="keywords" content="<?php echo keywords(); ?>">
     <meta name="author" content="<?php echo author(); ?>">
-
-    <link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url(); ?>almacenamiento/logos/logo.jpg">
-    <!-- <link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url(); ?>app-assets/images/ico/favicon.ico"> -->
 
     <title>
         <?php echo isset($titulo_pagina) ? $titulo_pagina . " | " : ""; ?><?php echo titulo(); ?><?php $lema = lema();

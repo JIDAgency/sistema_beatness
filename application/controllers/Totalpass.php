@@ -445,4 +445,32 @@ class Totalpass extends MY_Controller
     {
         $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
+
+    function reservaciones()
+    {
+
+        $data['pagina_titulo'] = 'Reservaciones';
+        $data['pagina_subtitulo'] = 'Reservaciones | Totalpass';
+        $data['pagina_totalpass'] = true;
+
+        $data['controlador'] = 'totalpass/reservaciones';
+        $data['regresar_a'] = 'totalpass';
+        $controlador_js = "totalpass/reservaciones";
+
+        $data['styles'] = array(
+            array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/tables/datatable/datatables.min.css'),
+        );
+
+        $data['scripts'] = array(
+            array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/tables/datatable/datatables.min.js'),
+            array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/extensions/moment.min.js'),
+            array('es_rel' => true, 'src' => '' . $controlador_js . '.js'),
+        );
+
+        $reservaciones_list = $this->totalpass_model->obtener_reservaciones()->result();
+
+        $data['reservaciones_list'] = $reservaciones_list;
+
+        $this->construir_private_site_ui('totalpass/reservaciones', $data);
+    }
 }
