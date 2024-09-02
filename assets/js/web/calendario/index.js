@@ -21,7 +21,7 @@ select.onchange = function () {
 
     disciplina_seleccionada = this.value;
 
-    if (disciplina_seleccionada == 10 || disciplina_seleccionada == 19) {
+    if (disciplina_seleccionada == 10) {
         document.getElementById('disciplina_titulo_lunes').innerHTML = "/ LEGS & BOOTY";
         document.getElementById('disciplina_titulo_martes').innerHTML = "/ UPPER BODY";
         document.getElementById('disciplina_titulo_miercoles').innerHTML = "/ KILLER ABS";
@@ -37,6 +37,22 @@ select.onchange = function () {
         document.getElementById('disciplina_titulo_viernesnext').innerHTML = "/ FULL BODY &#x1F525";
         document.getElementById('disciplina_titulo_sabadonext').innerHTML = "/ ABS & BOOTY &#x1F525";
         document.getElementById('disciplina_titulo_domingonext').innerHTML = "/ FULL BODY";
+    } else if(disciplina_seleccionada == 19) {
+        document.getElementById('disciplina_titulo_lunes').innerHTML = "";
+        document.getElementById('disciplina_titulo_martes').innerHTML = "";
+        document.getElementById('disciplina_titulo_miercoles').innerHTML = "";
+        document.getElementById('disciplina_titulo_jueves').innerHTML = "";
+        document.getElementById('disciplina_titulo_viernes').innerHTML = "";
+        document.getElementById('disciplina_titulo_sabado').innerHTML = "";
+        document.getElementById('disciplina_titulo_domingo').innerHTML = "";
+
+        document.getElementById('disciplina_titulo_lunesnext').innerHTML = "";
+        document.getElementById('disciplina_titulo_martesnext').innerHTML = "";
+        document.getElementById('disciplina_titulo_miercolesnext').innerHTML = "";
+        document.getElementById('disciplina_titulo_juevesnext').innerHTML = "";
+        document.getElementById('disciplina_titulo_viernesnext').innerHTML = "";
+        document.getElementById('disciplina_titulo_sabadonext').innerHTML = "";
+        document.getElementById('disciplina_titulo_domingonext').innerHTML = "";
     } else {
         document.getElementById('disciplina_titulo_lunes').innerHTML = "/ LEGS & BOOTY";
         document.getElementById('disciplina_titulo_martes').innerHTML = "/ PUSH DAY";
