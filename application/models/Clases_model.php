@@ -26,7 +26,7 @@ class Clases_model extends CI_Model
             ->order_by('hora_clase', 'asc') // Ordenar por fecha de inicio
             ->get();
 
-        return $query->result_array();
+        return $query;
     }
 
     /** Funciones de clases controller (Inicio) */

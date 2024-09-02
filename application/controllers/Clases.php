@@ -14,6 +14,7 @@ class Clases extends MY_Controller
         $this->load->model('reservaciones_model');
         $this->load->model('clases_en_linea_model');
         $this->load->model('filtros_model');
+        $this->load->model('clases_categorias_model');
     }
 
     public function crear()
@@ -54,6 +55,8 @@ class Clases extends MY_Controller
 
         $clases_list = $this->clases_model->obtener_clases_semana_actual_por_disciplina_id(3)->result();
 
+        $grupo_muscular_list = $this->clases_categorias_model->obtener_todas()->result();
+
         // Validar que existan usuarios en el rol de instructores
         $instructores = $this->usuarios_model->obtener_todos_instructores();
 
@@ -70,6 +73,7 @@ class Clases extends MY_Controller
             redirect('clases/index');
         }
 
+        $data['grupo_muscular_list'] = $grupo_muscular_list;
         $data['clases_list'] = $clases_list;
         $data['instructores'] = $instructores;
         $data['disciplinas'] = $disciplinas;
@@ -166,6 +170,9 @@ class Clases extends MY_Controller
                 $img_acceso = base_url() . 'almacenamiento/img_app/img_acceso/acceso-vespertino.png';
             }
 
+            $dificultad = $this->input->post('dificultad');
+            list($dificultad_id, $dificultad_nombre) = explode('|', $dificultad);
+
             $hora_de_incio = date('Y-m-d', strtotime(str_replace('/', '-', $this->input->post('inicia_date')))) . 'T' . $this->input->post('inicia_time');
             $fecha_numerica_de_la_clase = date(DATE_ISO8601, strtotime($hora_de_incio));
             // Preparar los datos a insertar
@@ -180,7 +187,8 @@ class Clases extends MY_Controller
                 'intervalo_horas' => $this->input->post('intervalo_horas'),
                 'distribucion_imagen' => $this->input->post('distribucion_imagen'),
                 'distribucion_lugares' => $this->input->post('distribucion_lugares'),
-                'dificultad' => $this->input->post('dificultad'),
+                'dificultad' => $dificultad_nombre,
+                'clase_categoria_id' => $dificultad_id,
                 'cupo_lugares' => $cupo_lugares_json,
             );
 
@@ -840,6 +848,9 @@ class Clases extends MY_Controller
             array('es_rel' => true, 'src' => 'clases/editar.js'),
         );
 
+        $grupo_muscular_list = $this->clases_categorias_model->obtener_todas()->result();
+        $data['grupo_muscular_list'] = $grupo_muscular_list;
+
         // Establecer validaciones
         $this->form_validation->set_rules('disciplina_id', 'Disciplina', 'required');
         $this->form_validation->set_rules('instructor_id', 'Instructor', 'required');
@@ -946,6 +957,9 @@ class Clases extends MY_Controller
                 $img_acceso = base_url() . 'almacenamiento/img_app/img_acceso/acceso-vespertino.png';
             }
 
+            $dificultad = $this->input->post('dificultad');
+            list($dificultad_id, $dificultad_nombre) = explode('|', $dificultad);
+
             if ($clase_existente and ($clase_existente->intervalo_horas == $this->input->post('intervalo_horas')) and ($clase_existente->distribucion_imagen == $this->input->post('distribucion_imagen')) and ($clase_existente->distribucion_lugares == $this->input->post('distribucion_lugares'))) {
                 $this->session->set_flashdata('MENSAJE_INFO', 'La clase con los nuevos datos ya existe.');
                 redirect('clases/index');
@@ -966,7 +980,8 @@ class Clases extends MY_Controller
                     'intervalo_horas' => $this->input->post('intervalo_horas'),
                     'distribucion_imagen' => $this->input->post('distribucion_imagen'),
                     'distribucion_lugares' => $this->input->post('distribucion_lugares'),
-                    'dificultad' => $this->input->post('dificultad'),
+                    'dificultad' => $dificultad_nombre,
+                    'clase_categoria_id' => $dificultad_id,
                 );
 
                 // Insertar nueva disciplina

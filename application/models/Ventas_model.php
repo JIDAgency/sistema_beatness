@@ -46,7 +46,6 @@ class Ventas_model extends CI_Model
                     ->join("asignaciones t5", "t1.asignacion_id = t5.id")
                     ->join("planes t6", "t5.plan_id = t6.id")
                     ->get();
-
             } elseif ($this->session->userdata('sucursal_asignada') == 3) {
                 $query = $this->db
                     ->where("DATE_FORMAT(t1.fecha_venta,'%Y-%m')", $mes_a_consultar)
@@ -199,7 +198,6 @@ class Ventas_model extends CI_Model
                     ->join("asignaciones t5", "t1.asignacion_id = t5.id")
                     ->join("planes t6", "t5.plan_id = t6.id")
                     ->get();
-
             } elseif ($this->session->userdata('sucursal_asignada') == 3) {
 
                 $query = $this->db
@@ -235,7 +233,6 @@ class Ventas_model extends CI_Model
                     ->join("asignaciones t5", "t1.asignacion_id = t5.id")
                     ->join("planes t6", "t5.plan_id = t6.id")
                     ->get();
-
             } elseif ($this->session->userdata('sucursal_asignada') == 5) {
 
                 $query = $this->db
@@ -276,7 +273,6 @@ class Ventas_model extends CI_Model
                     ->join("planes_disciplinas t7", "t6.id = t7.plan_id")
                     ->group_by('t1.id')
                     ->get();
-
             }
         } elseif (es_superadministrador() or es_administrador() or es_operaciones()) {
 
@@ -312,7 +308,6 @@ class Ventas_model extends CI_Model
                 ->join("asignaciones t5", "t1.asignacion_id = t5.id")
                 ->join("planes t6", "t5.plan_id = t6.id")
                 ->get();
-
         }
 
         return $query;

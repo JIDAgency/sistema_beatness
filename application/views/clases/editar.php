@@ -119,8 +119,10 @@
 													<div class="col-md-12">
 														<select name="dificultad" class="form-control">
 															<option value="" <?php echo set_select('dificultad', '', set_value('dificultad') ? false : '' == (!empty($this->session->flashdata('dificultad')) ? $this->session->flashdata('dificultad') : (!empty($clase_a_editar->dificultad) ? $clase_a_editar->dificultad : set_value('dificultad')))); ?>>Seleccione una opcion…</option>
-															<?php foreach (select_dificultad() as $key => $mostrar_row) : ?>
-																<option value="<?php echo $mostrar_row->valor; ?>" <?php echo set_select('dificultad', $mostrar_row->valor, set_value('dificultad') ? false : $mostrar_row->valor == (!empty($this->session->flashdata('dificultad')) ? $this->session->flashdata('dificultad') : (!empty($clase_a_editar->dificultad) ? $clase_a_editar->dificultad : set_value('dificultad')))); ?>><?php echo trim($mostrar_row->nombre); ?></option>
+															<?php foreach ($grupo_muscular_list as $key => $mostrar_row) : ?>
+																<option value="<?php echo $mostrar_row->id . '|' . $mostrar_row->nombre; ?>" <?php echo set_select('dificultad', $mostrar_row->id . '|' . $mostrar_row->nombre, set_value('dificultad') ? false : $mostrar_row->id == $this->session->flashdata('dificultad')); ?>>
+																	<?php echo trim($mostrar_row->nombre); ?>
+																</option>
 															<?php endforeach; ?>
 														</select>
 													</div>

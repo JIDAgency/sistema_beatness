@@ -114,8 +114,10 @@
 																<div class="col-lg-12">
 																	<select id="dificultad" name="dificultad" class="form-control select2 custom-select" required>
 																		<option value="" <?php echo set_select('dificultad', '', set_value('dificultad') ? false : '' == $this->session->flashdata('dificultad')); ?>>Seleccione un grupo muscular…</option>
-																		<?php foreach (select_dificultad() as $dificultad_key => $dificultad_value) : ?>
-																			<option value="<?php echo $dificultad_value->valor; ?>" <?php echo $dificultad_value->activo == false ? '' : 'selected'; ?> <?php echo set_select('dificultad', $dificultad_value->valor, set_value('dificultad') ? false : $dificultad_value->valor == $this->session->flashdata('dificultad')); ?>><?php echo trim($dificultad_value->nombre); ?></option>
+																		<?php foreach ($grupo_muscular_list as $dificultad_key => $dificultad_value) : ?>
+																			<option value="<?php echo $dificultad_value->id . '|' . $dificultad_value->nombre; ?>" <?php echo set_select('dificultad', $dificultad_value->id . '|' . $dificultad_value->nombre, set_value('dificultad') ? false : $dificultad_value->id == $this->session->flashdata('dificultad')); ?>>
+																				<?php echo trim($dificultad_value->nombre); ?>
+																			</option>
 																		<?php endforeach; ?>
 																	</select>
 																	<div class="invalid-feedback">
