@@ -52,7 +52,7 @@ class Clases extends MY_Controller
         $this->form_validation->set_rules('intervalo_horas', 'Intervalo en horas', 'required');
         $this->form_validation->set_rules('dificultad', 'Dificultad', 'required');
 
-        $clases_list = $this->clases_model->obtener_ultimas_10_clases()->result();
+        $clases_list = $this->clases_model->obtener_clases_semana_actual_por_disciplina_id(3)->result();
 
         // Validar que existan usuarios en el rol de instructores
         $instructores = $this->usuarios_model->obtener_todos_instructores();
@@ -308,7 +308,7 @@ class Clases extends MY_Controller
                 'horario' => (!empty($clase->inicia) ? date('h:i:s A', strtotime($clase->inicia)) : ''),
                 // 'horario_esp' => !empty($fecha_espaniol) ? ucfirst($fecha_espaniol) : '',
                 'instructor_id' => !empty($clase->instructor_nombre) ? ($clase->instructor_nombre) : '',
-                'cupo' => !empty($clase->cupo) ? ucfirst($cupos_restantes . ' / ' . $clase->cupo): '',
+                'cupo' => !empty($clase->cupo) ? ucfirst($cupos_restantes . ' / ' . $clase->cupo) : '',
                 // 'intervalo_horas' => !empty($intervalo_horas) ? mb_strtoupper($intervalo_horas) : '',
                 // 'cupo_restantes' => !empty($clase->cupo - $clase->reservado) ? $clase->cupo - $clase->reservado : '',
                 // 'cupo_original' => !empty($clase->cupo) ? ucfirst($clase->cupo) : '',
