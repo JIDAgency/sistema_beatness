@@ -202,6 +202,14 @@ class Clases extends MY_Controller
         }
     }
 
+    public function obtener_dificultades_por_disciplina()
+    {
+        $disciplina_id = $this->input->post('disciplina_id');
+        $dificultades = $this->clases_categorias_model->obtener_dificultades($disciplina_id)->result();
+
+        echo json_encode($dificultades);
+    }
+
     function search_reservar()
     {
         $this->load->model('clases_model');

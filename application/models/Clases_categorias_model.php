@@ -15,6 +15,19 @@ class Clases_categorias_model extends CI_Model
         return $query;
     }
 
+    public function obtener_dificultades($disciplina_id)
+    {
+        $query = $this->db
+            ->where('t1.disciplina_id', $disciplina_id)
+            ->select('t1.*,
+            t2.nombre as nombre_disciplina')
+            ->from("clases_categorias t1")
+            ->join("disciplinas t2", "t2.id = t1.disciplina_id")
+            ->get();
+
+        return $query;
+    }
+
     public function crear($data)
     {
         return $this->db->insert('clases_categorias', $data);
