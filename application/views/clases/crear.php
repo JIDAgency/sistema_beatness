@@ -49,11 +49,7 @@
 
 
 									<div class="row match-height">
-										<div class="col-xl-6 col-md-6 col-sm-6">
-											<?php foreach ($clases_list as $clase_key => $clase_value) : ?>
-												<p><?php echo $clase_value->id; ?></p>
-											<?php endforeach; ?>
-										</div>
+
 
 										<div class="col-xl-6 col-md-6 col-sm-6">
 
@@ -242,6 +238,12 @@
 											<?php echo form_close(); ?>
 
 										</div>
+
+										<!-- <div class="col-xl-6 col-md-6 col-sm-6">
+											<?php foreach ($clases_list as $clase_key => $clase_value) : ?>
+												<p><?php echo $clase_value->id; ?></p>
+											<?php endforeach; ?>
+										</div> -->
 
 									</div>
 
