@@ -10,10 +10,59 @@ var select_dificultad = [];
 
 // Configuraciones
 (actual_url.indexOf("index") < 0) ? method_call = "" : method_call = "";
+$.fn.dataTable.ext.errMode = 'throw'; // Configuración de manejo de errores de DataTables
 
-$(function () {
-	// Inicializar date dropper (si es necesario)
+$(document).ready(function () {
+	url = method_call + "obtener_calendario_crear"
 
+	// Inicializar
+	table = $('#table').DataTable({
+		"scrollX": true,
+		"deferRender": true,
+		'processing': true,
+		"order": [[0, "asc"]],
+		"lengthMenu": [[25, 50, 100, 250, 500, -1], [25, 50, 100, 250, 500, "Todos"]],
+		"ajax": {
+			"url": url,
+			"type": 'POST'
+		},
+		"columns": [
+			{ "data": "hora" },
+			{ "data": "clase_lunes" },
+			{ "data": "clase_martes" },
+			{ "data": "clase_miercoles" },
+			{ "data": "clase_jueves" },
+			{ "data": "clase_viernes" },
+			{ "data": "clase_sabado" },
+			{ "data": "clase_domingo" }
+		],
+		'language': {
+			'sProcessing': '<div class="loader-wrapper"><div class="loader"></div></div>',
+			"sLengthMenu": "Mostrar _MENU_",
+			"sZeroRecords": "No se encontraron resultados",
+			"sEmptyTable": "Ningún dato disponible en esta tabla =(",
+			"sInfo": "Mostrando del _START_ al _END_ de _TOTAL_",
+			"sInfoEmpty": "Mostrando del 0 al 0 de 0",
+			"sInfoFiltered": "(filtrado _MAX_)",
+			"sInfoPostFix": "",
+			"sSearch": "Buscar:",
+			"sUrl": "",
+			"sInfoThousands": ",",
+			"sLoadingRecords": "&nbsp;",
+			"oPaginate": {
+				"sFirst": "Primero",
+				"sLast": "Último",
+				"sNext": ">",
+				"sPrevious": "<"
+			},
+			"oAria": {
+				"sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+				"sSortDescending": ": Activar para ordenar la columna de manera descendente"
+			}
+		},
+		"dom": '<"top"lfi>rt<"bottom"p><"clear">',
+
+	});
 	// Establecer validaciones
 	$("#forma-crear-clase").validate({
 		rules: {
@@ -59,6 +108,75 @@ $(function () {
 			}
 		},
 		errorClass: "has-error"
+	});
+
+	$('#filtro_clase_sucursal').change(function () {
+		var sucursalSeleccionada = $(this).val();
+		$.ajax({
+			url: method_call + "guardar_seleccion",
+			method: 'POST',
+			data: {
+				filtro_clase_sucursal: sucursalSeleccionada
+			},
+			success: function (response) {
+				console.log(sucursalSeleccionada + ' Sucursal guardada en la sesión');
+				table.ajax.reload();
+
+				// Nueva solicitud AJAX para obtener las disciplinas de la sucursal seleccionada
+				$.ajax({
+					url: method_call + "obtener_disciplinas",
+					method: 'GET',
+					data: {
+						sucursal_id: sucursalSeleccionada // enviar el ID de la sucursal seleccionada
+					},
+					dataType: 'json',
+					success: function (data) {
+						var disciplinas = data; // Asumiendo que response.disciplinas contiene las disciplinas
+						var $disciplinaSelect = $('#filtro_clase_disciplina');
+
+						// Limpiar el select de disciplinas
+						$disciplinaSelect.empty();
+						$disciplinaSelect.append('<option value="0">Todas las disciplinas</option>');
+
+						// Agregar las nuevas opciones
+						if (Array.isArray(disciplinas)) {
+							$.each(disciplinas, function (index, disciplina) {
+								$disciplinaSelect.append('<option value="' + disciplina.id + '">' + disciplina.nombre + '</option>');
+							});
+						} else {
+							console.error('La respuesta no es un array');
+						}
+
+						// Actualizar el select2
+						$disciplinaSelect.select2();
+					},
+					error: function (jqXHR, textStatus, errorThrown) {
+						console.error('Error al obtener disciplinas: ' + textStatus, errorThrown);
+					}
+				});
+			},
+			error: function (jqXHR, textStatus, errorThrown) {
+				console.error('Error al guardar la sucursal: ' + textStatus, errorThrown);
+			}
+		});
+	});
+
+	$('#filtro_clase_disciplina').change(function () {
+		var disciplinaSeleccionada = $(this).val();
+		$.ajax({
+			url: method_call + "guardar_seleccion_disciplina",
+			method: 'POST',
+			data: {
+				filtro_clase_disciplina: disciplinaSeleccionada
+			},
+			success: function (response) {
+				console.log(disciplinaSeleccionada + ' Disciplina guardada en la sesión');
+				table.ajax.reload();
+			},
+			error: function (jqXHR, textStatus, errorThrown) {
+				console.error('Error al guardar la disciplina: ' + textStatus, errorThrown);
+			}
+		});
 	});
 
 	// Manejar el cambio de disciplina y actualizar las dificultades

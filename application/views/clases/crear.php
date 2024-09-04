@@ -49,7 +49,65 @@
 
 
 									<div class="row match-height">
+										<div class="col-xl-12 col-md-6 col-sm-6">
+											<form class="form">
+												<div class="form-body">
+													<h4 class="form-section">Calendario de clases</h4>
+													<div class="form-group">
+														<?php if ($this->session->userdata('rol_id') != '5') : ?>
+															<div class="row">
+																<div class="col-lg-3 col-md-3 col-sm-12">
+																	<div class="form-group">
+																		<h5 class="card-titlel"><i class="ft-filter"></i> Sucursal:</h5>
+																		<select id="filtro_clase_sucursal" name="filtro_clase_sucursal" class="select2 form-control">
+																			<option value="0">Todas las sucursales</option>
+																			<?php foreach ($sucursales_list as $key => $sucursal_row) : ?>
+																				<option value="<?= $sucursal_row->id; ?>" <?= ($this->session->userdata('filtro_clase_sucursal') == $sucursal_row->id) ? 'selected' : '' ?>>
+																					<?= $sucursal_row->locacion; ?>
+																				</option>
+																			<?php endforeach; ?>
+																		</select>
+																	</div>
+																</div>
 
+																<div class="col-lg-3 col-md-3 col-sm-12">
+																	<div class="form-group">
+																		<h5 class="card-titlel"><i class="ft-filter"></i> Disciplina:</h5>
+																		<select id="filtro_clase_disciplina" name="filtro_clase_disciplina" class="select2 form-control">
+																			<option value="0">Todas las disciplinas</option>
+																			<?php foreach ($disciplinas_list as $key => $disciplina_row) : ?>
+																				<option value="<?= $disciplina_row->id; ?>" <?= ($this->session->userdata('filtro_clase_disciplina') == $disciplina_row->id) ? 'selected' : '' ?>>
+																					<?= $disciplina_row->nombre; ?>
+																				</option>
+																			<?php endforeach; ?>
+																		</select>
+																	</div>
+																</div>
+															</div>
+														<?php endif; ?>
+
+														<div class="table-responsive">
+															<table id="table" class="table display nowrap table-striped table-bordered scroll-horizontal table-hover">
+																<thead>
+																	<tr>
+																		<th>Horario</th>
+																		<th>Lunes</th>
+																		<th>Martes</th>
+																		<th>Miércoles</th>
+																		<th>Jueves</th>
+																		<th>Viernes</th>
+																		<th>Sábado</th>
+																		<th>Domingo</th>
+																	</tr>
+																</thead>
+																<tbody>
+																</tbody>
+															</table>
+														</div>
+													</div>
+												</div>
+											</form>
+										</div>
 
 										<div class="col-xl-6 col-md-6 col-sm-6">
 
@@ -226,7 +284,7 @@
 
 											</div>
 
-											<div class="row mt-3">
+											<div class="row mt-3 float-lg-right">
 												<div class="col-12">
 													<div class="form-group float-md-right">
 														<a class="btn btn-outline-grey btn-outline-lighten-1 btn-min-width mr-1" href="<?php echo site_url($regresar_a); ?>"><i class="fa fa-arrow-circle-left"></i>&nbsp;Volver</a>
@@ -236,17 +294,40 @@
 											</div>
 
 											<?php echo form_close(); ?>
-
 										</div>
 
-										<!-- <div class="col-xl-6 col-md-6 col-sm-6">
-											<?php foreach ($clases_list as $clase_key => $clase_value) : ?>
-												<p><?php echo $clase_value->id; ?></p>
-											<?php endforeach; ?>
-										</div> -->
-
+										<div class="col-xl-6 col-md-6 col-sm-6">
+											<form class="form">
+												<div class="form-body">
+													<h4 class="form-section">Ultimas 5 clases registradas</h4>
+													<div class="form-group">
+														<div class="table-responsive">
+															<table class="table">
+																<thead>
+																	<tr>
+																		<th>#</th>
+																		<th>Disciplina</th>
+																		<th>Dificultad</th>
+																		<th>Fecha y Hora</th>
+																	</tr>
+																</thead>
+																<tbody>
+																	<?php foreach ($clases_list as $clase_key => $clase_value) : ?>
+																		<tr>
+																			<td><?php echo $clase_value->id; ?></td>
+																			<td><?php echo $clase_value->disciplina_nombre; ?></td>
+																			<td><?php echo $clase_value->dificultad; ?></td>
+																			<td><?php echo $clase_value->inicia; ?></td>
+																		</tr>
+																	<?php endforeach; ?>
+																</tbody>
+															</table>
+														</div>
+													</div>
+												</div>
+											</form>
+										</div>
 									</div>
-
 								</div>
 							</div>
 

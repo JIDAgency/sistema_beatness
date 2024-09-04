@@ -31,6 +31,7 @@ class Clases extends MY_Controller
         $data['styles'] = array(
             array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/extensions/datedropper.min.css'),
             array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/extensions/timedropper.min.css'),
+            array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/tables/datatable/datatables.min.css'),
             array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/forms/selects/select2.min.css'),
         );
         $data['scripts'] = array(
@@ -38,6 +39,7 @@ class Clases extends MY_Controller
             array('es_rel' => false, 'src' => 'https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/additional-methods.js'),
             array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/extensions/datedropper.min.js'),
             array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/extensions/timedropper.min.js'),
+            array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/tables/datatable/datatables.min.js'),
             array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/forms/select/select2.full.min.js'),
             array('es_rel' => false, 'src' => base_url() . 'app-assets/js/scripts/forms/select/form-select2.js'),
             array('es_rel' => true, 'src' => '' . $controlador_js . '.js'),
@@ -53,7 +55,7 @@ class Clases extends MY_Controller
         $this->form_validation->set_rules('intervalo_horas', 'Intervalo en horas', 'required');
         $this->form_validation->set_rules('dificultad', 'Dificultad', 'required');
 
-        $clases_list = $this->clases_model->obtener_clases_semana_actual_por_disciplina_id(3)->result();
+        $clases_list = $this->clases_model->obtener_ultimas_5_clases()->result();
 
         $grupo_muscular_list = $this->clases_categorias_model->obtener_todas()->result();
 
@@ -72,6 +74,12 @@ class Clases extends MY_Controller
             $this->session->set_flashdata('MENSAJE_INFO', 'Es necesario que exista por lo menos alguna disciplina disponible para poder crear la clase.');
             redirect('clases/index');
         }
+
+        $sucursales_list = $this->filtros_model->obtener_sucursales()->result();
+        $disciplinas_list = $this->filtros_model->obtener_disciplinas()->result();
+
+        $data['sucursales_list'] = $sucursales_list;
+        $data['disciplinas_list'] = $disciplinas_list;
 
         $data['grupo_muscular_list'] = $grupo_muscular_list;
         $data['clases_list'] = $clases_list;
@@ -200,6 +208,98 @@ class Clases extends MY_Controller
             // Si algo falla regresar a la vista de crear
             $this->construir_private_site_ui('clases/crear', $data);
         }
+    }
+
+    public function obtener_calendario_crear()
+    {
+        $draw = intval($this->input->post('draw'));
+        // $calendario = $this->clases_model->obtener_calendario_crear()->result();
+
+        if (($this->session->userdata('filtro_clase_sucursal') != 0) and ($this->session->userdata('filtro_clase_disciplina') == 0)) {
+            $calendario = $this->clases_model->obtener_calendario_crear_por_sucursal($this->session->userdata('filtro_clase_disciplina'));
+        } else if ((($this->session->userdata('filtro_clase_sucursal') == null) and ($this->session->userdata('filtro_clase_disciplina') != null)) || (($this->session->userdata('filtro_clase_sucursal') == 0) and ($this->session->userdata('filtro_clase_disciplina') != 0))) {
+            $calendario = $this->clases_model->obtener_calendario_crear_por_disciplina($this->session->userdata('filtro_clase_disciplina'));
+        } else if (($this->session->userdata('filtro_clase_sucursal') != null) and ($this->session->userdata('filtro_clase_disciplina') != null) and ($this->session->userdata('filtro_clase_sucursal') != 0) and ($this->session->userdata('filtro_clase_disciplina') != 0)) {
+            $calendario = $this->clases_model->obtener_calendario_crear_por_sucursal_disciplina($this->session->userdata('filtro_clase_disciplina'), $this->session->userdata('filtro_clase_sucursal'));
+        } else if ((($this->session->userdata('filtro_clase_sucursal') == null) and ($this->session->userdata('filtro_clase_disciplina') == null)) || (($this->session->userdata('filtro_clase_sucursal') == 0) and ($this->session->userdata('filtro_clase_disciplina') == 0))) {
+            $calendario = $this->clases_model->obtener_calendario_crear();
+        }
+
+        $data = [];
+        // Inicializar array con días de la semana
+        $dias_semana = [
+            'clase_lunes' => [],
+            'clase_martes' => [],
+            'clase_miercoles' => [],
+            'clase_jueves' => [],
+            'clase_viernes' => [],
+            'clase_sabado' => [],
+            'clase_domingo' => []
+        ];
+
+        foreach ($calendario->result() as $clase) {
+            $hora = date('h:i A', strtotime($clase->inicia)); // Formatear hora
+            $dia_semana = strtolower(date('N', strtotime($clase->inicia))); // Obtener el día de la semana (1 para lunes, 7 para domingo)
+
+            switch ($dia_semana) {
+                case 1:
+                    $dias_semana['clase_lunes'][$hora] = $clase->instructor_nombre;
+                    break;
+                case 2:
+                    $dias_semana['clase_martes'][$hora] = $clase->instructor_nombre;
+                    break;
+                case 3:
+                    $dias_semana['clase_miercoles'][$hora] = $clase->instructor_nombre;
+                    break;
+                case 4:
+                    $dias_semana['clase_jueves'][$hora] = $clase->instructor_nombre;
+                    break;
+                case 5:
+                    $dias_semana['clase_viernes'][$hora] = $clase->instructor_nombre;
+                    break;
+                case 6:
+                    $dias_semana['clase_sabado'][$hora] = $clase->instructor_nombre;
+                    break;
+                case 7:
+                    $dias_semana['clase_domingo'][$hora] = $clase->instructor_nombre;
+                    break;
+            }
+        }
+
+        // Crear un array que combine todos los horarios posibles de lunes a domingo
+        $todos_los_horarios = array_merge(
+            $dias_semana['clase_lunes'],
+            $dias_semana['clase_martes'],
+            $dias_semana['clase_miercoles'],
+            $dias_semana['clase_jueves'],
+            $dias_semana['clase_viernes'],
+            $dias_semana['clase_sabado'],
+            $dias_semana['clase_domingo']
+        );
+
+        // Generar el arreglo final de datos para la tabla
+        foreach ($todos_los_horarios as $hora => $instructor) {
+            $data[] = [
+                'hora' => $hora,
+                'clase_lunes' => $dias_semana['clase_lunes'][$hora] ?? '',
+                'clase_martes' => $dias_semana['clase_martes'][$hora] ?? '',
+                'clase_miercoles' => $dias_semana['clase_miercoles'][$hora] ?? '',
+                'clase_jueves' => $dias_semana['clase_jueves'][$hora] ?? '',
+                'clase_viernes' => $dias_semana['clase_viernes'][$hora] ?? '',
+                'clase_sabado' => $dias_semana['clase_sabado'][$hora] ?? '',
+                'clase_domingo' => $dias_semana['clase_domingo'][$hora] ?? ''
+            ];
+        }
+
+        $result = array(
+            'draw' => $draw,
+            'recordsTotal' => $calendario->num_rows(),
+            'recordsFiltered' => $calendario->num_rows(),
+            'data' => $data
+        );
+
+        echo json_encode($result);
+        exit();
     }
 
     public function obtener_dificultades_por_disciplina()
