@@ -27,6 +27,7 @@ class Calendario_model extends CI_Model
             ->where('DATE_FORMAT(t1.inicia,"%Y-%m-%d") >=', $fecha_inicio_semana)
             ->where('DATE_FORMAT(t1.inicia,"%Y-%m-%d") <=', $fecha_fin_semana)
             ->where('t1.disciplina_id', $disciplina_id)
+            ->where('t1.estatus !=', 'Cancelada')
             ->select('
                 t1.*,
                 DATE_FORMAT(t1.inicia,"%H:%i") as hora_clase,
@@ -51,6 +52,7 @@ class Calendario_model extends CI_Model
             ->where('DATE_FORMAT(t1.inicia,"%Y-%m-%d") >=', $fecha_inicio_semana)
             ->where('DATE_FORMAT(t1.inicia,"%Y-%m-%d") <=', $fecha_fin_semana)
             ->where('t1.disciplina_id', $disciplina_id)
+            ->where('t1.estatus !=', 'Cancelada')
             ->select('
                 t1.*,
                 DATE_FORMAT(t1.inicia,"%H:%i") as hora_clase,
@@ -76,6 +78,7 @@ class Calendario_model extends CI_Model
             ->where('DATE_FORMAT(t1.inicia,"%Y-%m-%d") >=', $fecha_inicio_semana)
             ->where('DATE_FORMAT(t1.inicia,"%Y-%m-%d") <=', $fecha_fin_semana)
             ->where('t1.disciplina_id', $disciplina_id)
+            ->where('t1.estatus !=', 'Cancelada')
             ->select('
                 t1.*,
                 DATE_FORMAT(t1.inicia,"%H:%i") as hora_clase,
@@ -100,6 +103,7 @@ class Calendario_model extends CI_Model
             ->where('DATE_FORMAT(t1.inicia,"%Y-%m-%d") >=', $fecha_inicio_semana)
             ->where('DATE_FORMAT(t1.inicia,"%Y-%m-%d") <=', $fecha_fin_semana)
             ->where('t1.disciplina_id', $disciplina_id)
+            ->where('t1.estatus !=', 'Cancelada')
             ->select('
                 t1.*,
                 DATE_FORMAT(t1.inicia,"%H:%i") as hora_clase,
