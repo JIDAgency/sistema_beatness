@@ -51,6 +51,138 @@ class Clases_model extends CI_Model
         return $query;
     }
 
+    public function obtener_ultimas_5_clases_por_sucursal($sucursal_id = null)
+    {
+        $date = new DateTime("now");
+        $curr_date = $date->format('Y-m');
+
+        // Fecha actual
+        $hoy = date('Y-m-d');
+
+        // Fecha de inicio de la semana (lunes)
+        $inicio_semana = date('Y-m-d', strtotime('monday this week', strtotime($hoy)));
+
+        // Fecha de fin de la semana (domingo)
+        $fin_semana = date('Y-m-d', strtotime('sunday this week', strtotime($hoy)));
+
+        if ($this->session->userdata('filtro_clase_sucursal') != null) {
+            $sucursal_id = $this->session->userdata('filtro_clase_sucursal');
+        }
+
+        $query = $this->db
+            ->where('t3.id', $sucursal_id)
+            ->select("
+                t1.*,
+                t2.nombre as disciplina_nombre,
+                t3.nombre as sucursal_nombre,
+                t3.locacion as sucursal_locacion,
+                CONCAT(COALESCE(t4.nombre_completo, 'N/D'), ' ', COALESCE(t4.apellido_paterno, 'N/D')) as instructor_nombre
+            ")
+            ->from('clases t1')
+            ->join("disciplinas t2", "t1.disciplina_id = t2.id")
+            ->join("sucursales t3", "t2.sucursal_id = t3.id")
+            ->join("usuarios t4", "t1.instructor_id = t4.id")
+            ->order_by("t1.id", "asc")
+            ->limit(5)
+            ->get();
+
+        return $query;
+    }
+
+    public function obtener_ultimas_5_clases_por_disciplina($disciplina_id = null)
+    {
+        $date = new DateTime("now");
+        $curr_date = $date->format('Y-m');
+
+        // Fecha actual
+        $hoy = date('Y-m-d');
+
+        // Fecha de inicio de la semana (lunes)
+        $inicio_semana = date('Y-m-d', strtotime('monday this week', strtotime($hoy)));
+
+        // Fecha de fin de la semana (domingo)
+        $fin_semana = date('Y-m-d', strtotime('sunday this week', strtotime($hoy)));
+
+        if ($this->session->userdata('filtro_clase_disciplina') != null) {
+            $disciplina_id = $this->session->userdata('filtro_clase_disciplina');
+        }
+
+        if (!$disciplina_id) {
+            $query = $this->db
+                ->select("
+                    t1.*,
+                    t2.nombre as disciplina_nombre,
+                    t3.nombre as sucursal_nombre,
+                    t3.locacion as sucursal_locacion,
+                    CONCAT(COALESCE(t4.nombre_completo, 'N/D'), ' ', COALESCE(t4.apellido_paterno, 'N/D')) as instructor_nombre
+                ")
+                ->from('clases t1')
+                ->join("disciplinas t2", "t1.disciplina_id = t2.id")
+                ->join("sucursales t3", "t2.sucursal_id = t3.id")
+                ->join("usuarios t4", "t1.instructor_id = t4.id")
+                ->order_by("t1.id", "asc") // Ordenar por fecha sin hora
+                ->get();
+        } else {
+            $query = $this->db
+                ->where('t2.id', $disciplina_id)
+                ->select("
+                    t1.*,
+                    t2.nombre as disciplina_nombre,
+                    t3.nombre as sucursal_nombre,
+                    t3.locacion as sucursal_locacion,
+                    CONCAT(COALESCE(t4.nombre_completo, 'N/D'), ' ', COALESCE(t4.apellido_paterno, 'N/D')) as instructor_nombre
+                ")
+                ->from('clases t1')
+                ->join("disciplinas t2", "t1.disciplina_id = t2.id")
+                ->join("sucursales t3", "t2.sucursal_id = t3.id")
+                ->join("usuarios t4", "t1.instructor_id = t4.id")
+                ->order_by("t1.id", "asc")
+                ->limit(5)
+                ->get();
+        }
+
+        return $query;
+    }
+
+    public function obtener_ultimas_5_clases_por_sucursal_disciplina($sucursal_id = null, $disciplina_id = null)
+    {
+        $date = new DateTime("now");
+        $curr_date = $date->format('Y-m');
+
+        // Fecha actual
+        $hoy = date('Y-m-d');
+
+        // Fecha de inicio de la semana (lunes)
+        $inicio_semana = date('Y-m-d', strtotime('monday this week', strtotime($hoy)));
+
+        // Fecha de fin de la semana (domingo)
+        $fin_semana = date('Y-m-d', strtotime('sunday this week', strtotime($hoy)));
+
+        if ($this->session->userdata('filtro_clase_sucursal') != null) {
+            $sucursal_id = $this->session->userdata('filtro_clase_sucursal');
+            $disciplina_id = $this->session->userdata('filtro_clase_disciplina');
+        }
+        $query = $this->db
+            ->where('t2.sucursal_id', $sucursal_id)
+            ->where('t2.id', $disciplina_id)
+            ->select("
+                    t1.*,
+                    t2.nombre as disciplina_nombre,
+                    t3.nombre as sucursal_nombre,
+                    t3.locacion as sucursal_locacion,
+                    CONCAT(COALESCE(t4.nombre_completo, 'N/D'), ' ', COALESCE(t4.apellido_paterno, 'N/D')) as instructor_nombre
+                ")
+            ->from('clases t1')
+            ->join("disciplinas t2", "t1.disciplina_id = t2.id")
+            ->join("sucursales t3", "t2.sucursal_id = t3.id")
+            ->join("usuarios t4", "t1.instructor_id = t4.id")
+            ->order_by("t1.id", "asc")
+            ->limit(5)
+            ->get();
+
+        return $query;
+    }
+
     function obtener_calendario_crear()
     {
         // Fecha actual

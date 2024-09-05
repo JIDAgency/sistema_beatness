@@ -110,6 +110,45 @@ $(document).ready(function () {
 		errorClass: "has-error"
 	});
 
+	// Actualización de tabla con filtros
+	function actualizarTabla() {
+		var sucursalSeleccionada = $('#filtro_clase_sucursal').val();
+		var disciplinaSeleccionada = $('#filtro_clase_disciplina').val();
+
+		$.ajax({
+			url: method_call + "obtener_clases_filtradas", // URL que obtiene las clases filtradas
+			method: 'GET',
+			data: {
+				filtro_clase_sucursal: sucursalSeleccionada,
+				filtro_clase_disciplina: disciplinaSeleccionada
+			},
+			dataType: 'json',
+			success: function (response) {
+				var $tablaBody = $('#tablelist tbody');
+				$tablaBody.empty(); // Limpiar la tabla
+
+				// Verifica si hay clases en la respuesta
+				if (Array.isArray(response.clases) && response.clases.length > 0) {
+					$.each(response.clases, function (index, clase) {
+						var nuevaFila = '<tr>' +
+							'<td>' + clase.id + '</td>' +
+							'<td>' + clase.disciplina_nombre + '</td>' +
+							'<td>' + clase.dificultad + '</td>' +
+							'<td>' + clase.inicia + '</td>' +
+							'</tr>';
+						$tablaBody.append(nuevaFila); // Agregar fila a la tabla
+					});
+				} else {
+					// Si no hay clases, muestra un mensaje
+					$tablaBody.append('<tr><td colspan="4">No se encontraron clases para los filtros seleccionados.</td></tr>');
+				}
+			},
+			error: function (jqXHR, textStatus, errorThrown) {
+				console.error('Error al obtener las clases: ' + textStatus, errorThrown);
+			}
+		});
+	}
+
 	$('#filtro_clase_sucursal').change(function () {
 		var sucursalSeleccionada = $(this).val();
 		$.ajax({
@@ -121,6 +160,7 @@ $(document).ready(function () {
 			success: function (response) {
 				console.log(sucursalSeleccionada + ' Sucursal guardada en la sesión');
 				table.ajax.reload();
+				actualizarTabla(); // Actualizar la tabla después de cambiar el filtro
 
 				// Nueva solicitud AJAX para obtener las disciplinas de la sucursal seleccionada
 				$.ajax({
@@ -172,6 +212,7 @@ $(document).ready(function () {
 			success: function (response) {
 				console.log(disciplinaSeleccionada + ' Disciplina guardada en la sesión');
 				table.ajax.reload();
+				actualizarTabla(); // Actualizar la tabla después de cambiar el filtro
 			},
 			error: function (jqXHR, textStatus, errorThrown) {
 				console.error('Error al guardar la disciplina: ' + textStatus, errorThrown);

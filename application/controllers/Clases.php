@@ -55,7 +55,17 @@ class Clases extends MY_Controller
         $this->form_validation->set_rules('intervalo_horas', 'Intervalo en horas', 'required');
         $this->form_validation->set_rules('dificultad', 'Dificultad', 'required');
 
-        $clases_list = $this->clases_model->obtener_ultimas_5_clases()->result();
+        if (($this->session->userdata('filtro_clase_sucursal') != 0) and ($this->session->userdata('filtro_clase_disciplina') == 0)) {
+            $clases_list = $this->clases_model->obtener_ultimas_5_clases_por_sucursal($this->session->userdata('filtro_clase_disciplina'))->result();
+        } else if ((($this->session->userdata('filtro_clase_sucursal') == null) and ($this->session->userdata('filtro_clase_disciplina') != null)) || (($this->session->userdata('filtro_clase_sucursal') == 0) and ($this->session->userdata('filtro_clase_disciplina') != 0))) {
+            $clases_list = $this->clases_model->obtener_ultimas_5_clases_por_disciplina($this->session->userdata('filtro_clase_disciplina'))->result();
+        } else if (($this->session->userdata('filtro_clase_sucursal') != null) and ($this->session->userdata('filtro_clase_disciplina') != null) and ($this->session->userdata('filtro_clase_sucursal') != 0) and ($this->session->userdata('filtro_clase_disciplina') != 0)) {
+            $clases_list = $this->clases_model->obtener_ultimas_5_clases_por_sucursal_disciplina($this->session->userdata('filtro_clase_disciplina'), $this->session->userdata('filtro_clase_sucursal'))->result();
+        } else if ((($this->session->userdata('filtro_clase_sucursal') == null) and ($this->session->userdata('filtro_clase_disciplina') == null)) || (($this->session->userdata('filtro_clase_sucursal') == 0) and ($this->session->userdata('filtro_clase_disciplina') == 0))) {
+            $clases_list = $this->clases_model->obtener_ultimas_5_clases()->result();
+        }
+
+        // $clases_list = $this->clases_model->obtener_ultimas_5_clases()->result();
 
         $grupo_muscular_list = $this->clases_categorias_model->obtener_todas()->result();
 
@@ -208,6 +218,26 @@ class Clases extends MY_Controller
             // Si algo falla regresar a la vista de crear
             $this->construir_private_site_ui('clases/crear', $data);
         }
+    }
+
+    public function obtener_clases_filtradas() {
+        $sucursal_id = $this->input->get('filtro_clase_sucursal');
+        $disciplina_id = $this->input->get('filtro_clase_disciplina');
+    
+        if (($this->session->userdata('filtro_clase_sucursal') != 0) and ($this->session->userdata('filtro_clase_disciplina') == 0)) {
+            $clases_list = $this->clases_model->obtener_ultimas_5_clases_por_sucursal($this->session->userdata('filtro_clase_disciplina'))->result();
+        } else if ((($this->session->userdata('filtro_clase_sucursal') == null) and ($this->session->userdata('filtro_clase_disciplina') != null)) || (($this->session->userdata('filtro_clase_sucursal') == 0) and ($this->session->userdata('filtro_clase_disciplina') != 0))) {
+            $clases_list = $this->clases_model->obtener_ultimas_5_clases_por_disciplina($this->session->userdata('filtro_clase_disciplina'))->result();
+        } else if (($this->session->userdata('filtro_clase_sucursal') != null) and ($this->session->userdata('filtro_clase_disciplina') != null) and ($this->session->userdata('filtro_clase_sucursal') != 0) and ($this->session->userdata('filtro_clase_disciplina') != 0)) {
+            $clases_list = $this->clases_model->obtener_ultimas_5_clases_por_sucursal_disciplina($this->session->userdata('filtro_clase_disciplina'), $this->session->userdata('filtro_clase_sucursal'))->result();
+        } else if ((($this->session->userdata('filtro_clase_sucursal') == null) and ($this->session->userdata('filtro_clase_disciplina') == null)) || (($this->session->userdata('filtro_clase_sucursal') == 0) and ($this->session->userdata('filtro_clase_disciplina') == 0))) {
+            $clases_list = $this->clases_model->obtener_ultimas_5_clases()->result();
+        }
+    
+        $clases = $clases_list;
+    
+        // Enviar la respuesta en formato JSON
+        echo json_encode(['clases' => $clases]);
     }
 
     public function obtener_calendario_crear()

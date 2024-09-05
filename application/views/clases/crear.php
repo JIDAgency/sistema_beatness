@@ -302,7 +302,7 @@
 													<h4 class="form-section">Ultimas 5 clases registradas</h4>
 													<div class="form-group">
 														<div class="table-responsive">
-															<table class="table">
+															<table class="table" id="tablelist">
 																<thead>
 																	<tr>
 																		<th>#</th>
