@@ -7,7 +7,7 @@ class Reportes extends MY_Controller
 	{
 		parent::__construct();
 
-        $this->load->model('clases_model');
+		$this->load->model('clases_model');
 		$this->load->model('reportes_model');
 	}
 
@@ -37,6 +37,25 @@ class Reportes extends MY_Controller
 		$data['reporte_4'] = $this->reportes_model->reporte_4();
 		$data['reporte_5'] = $this->reportes_model->reporte_5();
 		$data['reporte_6'] = $this->reportes_model->reporte_6();
+
+		$obtener_usuarios_que_compraron_primera_clase = $this->reportes_model->obtener_usuarios_que_compraron_primera_clase();
+		$obtener_usuarios_que_compraron_primera_clase_y_compraron_otro_plan = $this->reportes_model->obtener_usuarios_que_compraron_primera_clase_y_compraron_otro_plan();
+
+		$data["obtener_usuarios_que_compraron_primera_clase"] = $obtener_usuarios_que_compraron_primera_clase;
+		$data["obtener_usuarios_que_compraron_primera_clase_y_compraron_otro_plan"] = $obtener_usuarios_que_compraron_primera_clase_y_compraron_otro_plan;
+
+
+		$obtener_usuarios_que_compraron_primera_clase_puebla = $this->reportes_model->obtener_usuarios_que_compraron_primera_clase_puebla();
+		$obtener_usuarios_que_compraron_primera_clase_y_compraron_otro_plan_puebla = $this->reportes_model->obtener_usuarios_que_compraron_primera_clase_y_compraron_otro_plan_puebla();
+
+		$data["obtener_usuarios_que_compraron_primera_clase_puebla"] = $obtener_usuarios_que_compraron_primera_clase_puebla;
+		$data["obtener_usuarios_que_compraron_primera_clase_y_compraron_otro_plan_puebla"] = $obtener_usuarios_que_compraron_primera_clase_y_compraron_otro_plan_puebla;
+
+		$obtener_usuarios_que_compraron_primera_clase_polanco = $this->reportes_model->obtener_usuarios_que_compraron_primera_clase_polanco();
+		$obtener_usuarios_que_compraron_primera_clase_y_compraron_otro_plan_polanco = $this->reportes_model->obtener_usuarios_que_compraron_primera_clase_y_compraron_otro_plan_polanco();
+
+		$data["obtener_usuarios_que_compraron_primera_clase_polanco"] = $obtener_usuarios_que_compraron_primera_clase_polanco;
+		$data["obtener_usuarios_que_compraron_primera_clase_y_compraron_otro_plan_polanco"] = $obtener_usuarios_que_compraron_primera_clase_y_compraron_otro_plan_polanco;
 
 		// Planes
 		$data["reporte_planes"] = $this->reportes_model->obtene_reporte_planes();

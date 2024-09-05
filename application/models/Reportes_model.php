@@ -3,6 +3,165 @@
 class Reportes_model extends CI_Model
 {
 
+    public function obtener_usuarios_que_compraron_primera_clase()
+    {
+        $query = $this->db
+            ->select("t1.*")
+            ->from("usuarios t1")
+            ->join("ventas t2", "t2.usuario_id = t1.id")
+            ->join("asignaciones t3", "t3.id = t2.asignacion_id")
+            ->join("planes t4", "t4.id = t3.plan_id")
+            ->where('DATE_FORMAT(t2.fecha_venta,"%Y-%m")', date('Y-m', strtotime('2024-08')))
+            ->where_in('t4.nombre', array('PRIMERA CLASE PUEBLA', 'PRIMERA CLASE POLANCO'))
+            ->where('t2.estatus !=', 'Cancelada')
+            ->get();
+
+        $num_rows = $query->num_rows();
+
+        return $num_rows;
+    }
+
+    public function obtener_usuarios_que_compraron_primera_clase_y_compraron_otro_plan()
+    {
+        $subquery = $this->db
+            ->select("t1.id")
+            ->from("usuarios t1")
+            ->join("ventas t2", "t2.usuario_id = t1.id")
+            ->join("asignaciones t3", "t3.id = t2.asignacion_id")
+            ->join("planes t4", "t4.id = t3.plan_id")
+            ->where('DATE_FORMAT(t2.fecha_venta,"%Y-%m")', date('Y-m', strtotime('2024-08')))
+            ->where_in('t4.nombre', array('PRIMERA CLASE PUEBLA', 'PRIMERA CLASE POLANCO'))
+            ->where('t2.estatus !=', 'Cancelada')
+            ->group_by("t1.id")
+            ->get_compiled_select();
+
+        $query = $this->db
+            ->select("t1.*, COUNT(t2.id) as total_compras")
+            ->from("usuarios t1")
+            ->join("ventas t2", "t2.usuario_id = t1.id")
+            ->join("asignaciones t3", "t3.id = t2.asignacion_id")
+            ->join("planes t4", "t4.id = t3.plan_id")
+            ->where("t1.id IN ($subquery)", null, false)
+            ->where_not_in('t4.nombre', array('PRIMERA CLASE PUEBLA', 'PRIMERA CLASE POLANCO'))
+            ->group_by("t1.id")
+            ->having("total_compras >", 1)
+            ->get();
+
+        $num_rows = $query->num_rows();
+
+        return $num_rows;
+    }
+
+    public function obtener_usuarios_que_compraron_primera_clase_puebla()
+    {
+        $query = $this->db
+            ->select("t1.*")
+            ->from("usuarios t1")
+            ->join("ventas t2", "t2.usuario_id = t1.id")
+            ->join("asignaciones t3", "t3.id = t2.asignacion_id")
+            ->join("planes t4", "t4.id = t3.plan_id")
+            ->where('DATE_FORMAT(t2.fecha_venta,"%Y-%m")', date('Y-m', strtotime('2024-08')))
+            ->where_in('t4.nombre', array('PRIMERA CLASE PUEBLA', 'PRIMERA CLASE POLANCO'))
+            ->where('t4.sucursal_id', 2)
+            ->where('t2.estatus !=', 'Cancelada')
+            ->get();
+
+        $num_rows = $query->num_rows();
+
+        return $num_rows;
+    }
+
+    public function obtener_usuarios_que_compraron_primera_clase_y_compraron_otro_plan_puebla()
+    {
+        $subquery = $this->db
+            ->select("t1.id")
+            ->from("usuarios t1")
+            ->join("ventas t2", "t2.usuario_id = t1.id")
+            ->join("asignaciones t3", "t3.id = t2.asignacion_id")
+            ->join("planes t4", "t4.id = t3.plan_id")
+            ->where('DATE_FORMAT(t2.fecha_venta,"%Y-%m")', date('Y-m', strtotime('2024-08')))
+            ->where_in('t4.nombre', array('PRIMERA CLASE PUEBLA', 'PRIMERA CLASE POLANCO'))
+            ->where('t4.sucursal_id', 2)
+            ->where('t2.estatus !=', 'Cancelada')
+            ->group_by("t1.id")
+            ->get_compiled_select();
+
+        $query = $this->db
+            ->select("t1.*, COUNT(t2.id) as total_compras")
+            ->from("usuarios t1")
+            ->join("ventas t2", "t2.usuario_id = t1.id")
+            ->join("asignaciones t3", "t3.id = t2.asignacion_id")
+            ->join("planes t4", "t4.id = t3.plan_id")
+            ->where("t1.id IN ($subquery)", null, false)
+            ->where_not_in('t4.nombre', array('PRIMERA CLASE PUEBLA', 'PRIMERA CLASE POLANCO'))
+            ->group_by("t1.id")
+            ->having("total_compras >", 1)
+            ->get();
+
+        $num_rows = $query->num_rows();
+
+        return $num_rows;
+    }
+
+    public function obtener_usuarios_que_compraron_primera_clase_polanco()
+    {
+        $query = $this->db
+            ->select("t1.*")
+            ->from("usuarios t1")
+            ->join("ventas t2", "t2.usuario_id = t1.id")
+            ->join("asignaciones t3", "t3.id = t2.asignacion_id")
+            ->join("planes t4", "t4.id = t3.plan_id")
+            ->where('DATE_FORMAT(t2.fecha_venta,"%Y-%m")', date('Y-m', strtotime('2024-08')))
+            ->where_in('t4.nombre', array('PRIMERA CLASE PUEBLA', 'PRIMERA CLASE POLANCO'))
+            ->where('t4.sucursal_id', 3)
+            ->where('t2.estatus !=', 'Cancelada')
+            ->get();
+
+        $num_rows = $query->num_rows();
+
+        return $num_rows;
+    }
+
+    public function obtener_usuarios_que_compraron_primera_clase_y_compraron_otro_plan_polanco()
+    {
+        $subquery = $this->db
+            ->select("t1.id")
+            ->from("usuarios t1")
+            ->join("ventas t2", "t2.usuario_id = t1.id")
+            ->join("asignaciones t3", "t3.id = t2.asignacion_id")
+            ->join("planes t4", "t4.id = t3.plan_id")
+            ->where('DATE_FORMAT(t2.fecha_venta,"%Y-%m")', date('Y-m', strtotime('2024-08')))
+            ->where_in('t4.nombre', array('PRIMERA CLASE PUEBLA', 'PRIMERA CLASE POLANCO'))
+            ->where('t4.sucursal_id', 3)
+            ->where('t2.estatus !=', 'Cancelada')
+            ->group_by("t1.id")
+            ->get_compiled_select();
+
+        $query = $this->db
+            ->select("t1.*, COUNT(t2.id) as total_compras")
+            ->from("usuarios t1")
+            ->join("ventas t2", "t2.usuario_id = t1.id")
+            ->join("asignaciones t3", "t3.id = t2.asignacion_id")
+            ->join("planes t4", "t4.id = t3.plan_id")
+            ->where("t1.id IN ($subquery)", null, false)
+            ->where_not_in('t4.nombre', array('PRIMERA CLASE PUEBLA', 'PRIMERA CLASE POLANCO'))
+            ->group_by("t1.id")
+            ->having("total_compras >", 1)
+            ->get();
+
+        $num_rows = $query->num_rows();
+
+        return $num_rows;
+    }
+
+
+
+
+
+
+
+
+
     function obtener_reporte_de_instructores_entre_fechas($fecha_inicio, $fecha_fin)
     {
         $query = $this->db

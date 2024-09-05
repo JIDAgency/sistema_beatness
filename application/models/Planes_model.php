@@ -1,8 +1,25 @@
-<?php
-defined('BASEPATH') or exit('No direct script access allowed');
+<?php defined('BASEPATH') or exit('No direct script access allowed');
 
 class Planes_model extends CI_Model
 {
+
+    // ===> Endpoint Stripe (Inicio)
+    public function obtener_plan_por_id_para_stripe($id)
+    {
+        $query = $this->db
+            ->where('t1.id', $id)
+            ->select('
+                t1.*,
+                t2.motor_pago as sucursales_motor_pago
+            ')
+            ->from('planes t1')
+            ->join('sucursales t2', 't2.id = t1.sucursal_id', 'left')
+            ->get();
+
+        return $query;
+    }
+
+    // ===> Endpoint Stripe (Fin)
 
     /** Nuevos metodos */
 
@@ -218,7 +235,8 @@ class Planes_model extends CI_Model
                 t1.*,
                 t3.sucursal_id as disciplinas_sucursal_id,
                 t4.categoria_id as rel_planes_categorias_categoria_id,
-                t5.url_whatsapp as sucursales_url_whatsapp
+                t5.url_whatsapp as sucursales_url_whatsapp,
+                t5.motor_pago as sucursales_motor_pago
             ')
             ->from('planes t1')
             ->join('planes_disciplinas t2', 't2.plan_id = t1.id')

@@ -32,6 +32,132 @@ class Endpoint extends REST_Controller
         $this->load->model("ventas_model");
     }
 
+    public function cargo_con_stripe_post()
+    {
+
+        $datos_post = $this->post();
+        $asignaciones_id = null;
+
+        $usuario_valido = $this->_autenticar_usuario($datos_post['token'], $datos_post['usuario_id']);
+
+        // Es necesario el id del plan y el id del usuario al cual se le va a asignar dicho plan, además del
+        // source id y del id del dispositivo
+        if (!$datos_post['plan_id'] || !$datos_post['usuario_id'] || !$datos_post['card_token']) {
+            $this->response(array(
+                'error' => true,
+                'mostrar_mensaje' => true,
+                'titulo' => 'No se realizó el cargo',
+                'mensaje' => 'envío de datos inválidos'
+            ), REST_Controller::HTTP_BAD_REQUEST);
+        }
+
+        // Obtener plan_row del plan a agregar
+        $plan_row = $this->planes_model->obtener_plan_por_id_para_stripe($datos_post['plan_id'])->row();
+
+        if (!$plan_row) {
+            $this->response(array(
+                'error' => true,
+                'mostrar_mensaje' => true,
+                'titulo' => 'No se realizó el cargo',
+                'mensaje' => 'El plan que intenta agregar ya no existe'
+            ), REST_Controller::HTTP_NOT_FOUND);
+        }
+
+        $disciplinas = $this->planes_model->obtener_disciplinas_por_plan_id($plan_row->id)->result();
+
+        $disciplinas_array = array();
+
+        foreach ($disciplinas as $key => $value) {
+            array_push($disciplinas_array, $value->disciplina_id);
+        }
+
+        $this->load->library('stripe_lib', array('sucursal_motor_pago' => $plan_row->sucursales_motor_pago));
+
+        $resultado_cargo = $this->stripe_lib->cargo(
+            bcmul($plan_row->costo, 100),
+            $plan_row->nombre,
+            null,
+            $plan_row->sku,
+            $usuario_valido->correo,
+            $datos_post['card_token']
+        );
+
+        if (!$resultado_cargo['error']) {
+
+            if (!$this->asignaciones_model->crear(array(
+                'usuario_id' => $usuario_valido->id,
+                'plan_id' => $plan_row->id,
+                'nombre' => $plan_row->nombre,
+                'clases_incluidas' => $plan_row->clases_incluidas,
+                'disciplinas' => implode('|', $disciplinas_array),
+                'vigencia_en_dias' => $plan_row->vigencia_en_dias,
+                'es_ilimitado' => !empty($plan_row->es_ilimitado) ? $plan_row->es_ilimitado : 'no',
+                'fecha_activacion' => date('Y-m-d H:i:s'),
+                'esta_activo' => 1
+            ))) {
+                //$this->mensaje_del_sistema('MENSAJE_ERROR', 'Ha ocurrido un error, por favor intentelo mas tarde. (2)', 'usuario/shop');
+                $this->response(array(
+                    'error' => true,
+                    'mostrar_mensaje' => true,
+                    'titulo' => 'No se realizó el cargo',
+                    'mensaje' => 'Ha ocurrido un error, por favor intentelo mas tarde. (2)'
+                ), REST_Controller::HTTP_BAD_REQUEST);
+            }
+
+            $asignacion_row = $this->asignaciones_model->obtener_por_id($this->db->insert_id())->row();
+
+            if (!$this->ventas_model->crear(array(
+                'concepto' => $plan_row->nombre,
+                'usuario_id' => $usuario_valido->id,
+                'asignacion_id' => $asignacion_row->id,
+                'asignaciones_id' => $asignaciones_id,
+                'metodo_id' => 10,
+                'costo' => $plan_row->costo,
+                'cantidad' => 1,
+                'total' => $plan_row->costo,
+                'vendedor' => 'Compra desde la aplicación'
+            ))) {
+                //$this->mensaje_del_sistema('MENSAJE_ERROR', 'Ha ocurrido un error, por favor intentelo mas tarde. (3)', 'usuario/shop');
+                $this->response(array(
+                    'error' => true,
+                    'mostrar_mensaje' => true,
+                    'titulo' => 'No se realizó el cargo',
+                    'mensaje' => 'Ha ocurrido un error, por favor intentelo mas tarde. (3)'
+                ), REST_Controller::HTTP_BAD_REQUEST);
+            }
+
+            $this->response(array(
+                'mensaje' => 'El plan se agregó correctamente al cliente'
+            ), REST_Controller::HTTP_CREATED);
+        } else {
+            //$this->mensaje_del_sistema('MENSAJE_ERROR', 'Compra error', 'usuario/inicio');
+            $this->response(array(
+                'error' => true,
+                'mostrar_mensaje' => true,
+                'titulo' => 'No se realizó el cargo',
+                'mensaje' => $resultado_cargo['mensaje']
+            ), REST_Controller::HTTP_BAD_REQUEST);
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     // ====== Perfil (Inicio) ======
     /**
      * Obtiene los datos del usuario autenticado
@@ -347,6 +473,7 @@ class Endpoint extends REST_Controller
                     $plan_con_disciplinas->disciplinas_sucursal_id = $plan->disciplinas_sucursal_id;
                     $plan_con_disciplinas->rel_planes_categorias_categoria_id = $plan->rel_planes_categorias_categoria_id;
                     $plan_con_disciplinas->sucursales_url_whatsapp = $plan->sucursales_url_whatsapp;
+                    $plan_con_disciplinas->sucursales_motor_pago = $plan->sucursales_motor_pago;
                 } elseif (!$reservaciones_list) {
 
                     $plan_con_disciplinas = new stdClass();
@@ -380,6 +507,7 @@ class Endpoint extends REST_Controller
                     $plan_con_disciplinas->disciplinas_sucursal_id = $plan->disciplinas_sucursal_id;
                     $plan_con_disciplinas->rel_planes_categorias_categoria_id = $plan->rel_planes_categorias_categoria_id;
                     $plan_con_disciplinas->sucursales_url_whatsapp = $plan->sucursales_url_whatsapp;
+                    $plan_con_disciplinas->sucursales_motor_pago = $plan->sucursales_motor_pago;
                 }
             }
         }
