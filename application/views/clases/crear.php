@@ -47,72 +47,11 @@
 							<div class="card-content collapse show">
 								<div class="card-body card-dashboard">
 
-
 									<div class="row match-height">
-										<div class="col-xl-12 col-md-6 col-sm-6">
-											<form class="form">
-												<div class="form-body">
-													<h4 class="form-section">Calendario de clases</h4>
-													<div class="form-group">
-														<?php if ($this->session->userdata('rol_id') != '5') : ?>
-															<div class="row">
-																<div class="col-lg-3 col-md-3 col-sm-12">
-																	<div class="form-group">
-																		<h5 class="card-titlel"><i class="ft-filter"></i> Sucursal:</h5>
-																		<select id="filtro_clase_sucursal" name="filtro_clase_sucursal" class="select2 form-control">
-																			<option value="0">Todas las sucursales</option>
-																			<?php foreach ($sucursales_list as $key => $sucursal_row) : ?>
-																				<option value="<?= $sucursal_row->id; ?>" <?= ($this->session->userdata('filtro_clase_sucursal') == $sucursal_row->id) ? 'selected' : '' ?>>
-																					<?= $sucursal_row->locacion; ?>
-																				</option>
-																			<?php endforeach; ?>
-																		</select>
-																	</div>
-																</div>
 
-																<div class="col-lg-3 col-md-3 col-sm-12">
-																	<div class="form-group">
-																		<h5 class="card-titlel"><i class="ft-filter"></i> Disciplina:</h5>
-																		<select id="filtro_clase_disciplina" name="filtro_clase_disciplina" class="select2 form-control">
-																			<option value="0">Todas las disciplinas</option>
-																			<?php foreach ($disciplinas_list as $key => $disciplina_row) : ?>
-																				<option value="<?= $disciplina_row->id; ?>" <?= ($this->session->userdata('filtro_clase_disciplina') == $disciplina_row->id) ? 'selected' : '' ?>>
-																					<?= $disciplina_row->nombre; ?>
-																				</option>
-																			<?php endforeach; ?>
-																		</select>
-																	</div>
-																</div>
-															</div>
-														<?php endif; ?>
-
-														<div class="table-responsive">
-															<table id="table" class="table display nowrap table-striped table-bordered scroll-horizontal table-hover">
-																<thead>
-																	<tr>
-																		<th>Horario</th>
-																		<th>Lunes</th>
-																		<th>Martes</th>
-																		<th>Miércoles</th>
-																		<th>Jueves</th>
-																		<th>Viernes</th>
-																		<th>Sábado</th>
-																		<th>Domingo</th>
-																	</tr>
-																</thead>
-																<tbody>
-																</tbody>
-															</table>
-														</div>
-													</div>
-												</div>
-											</form>
-										</div>
-
-										<div class="col-xl-6 col-md-6 col-sm-6">
+										<div class="col-xl-5 col-md-12 col-sm-12">
 
 											<?php echo form_open(uri_string(), array('class' => 'form form-horizontal', 'id' => 'forma-crear-clase')); ?>
-
 											<div class="form-body">
 												<h4 class="form-section">Datos de la clase</h4>
 												<div class="row">
@@ -143,6 +82,24 @@
 
 														<div class="form-group">
 															<div class="row">
+																<label class="col-lg-12" for="dificultad">Grupo muscular <span class="red">*</span> <small class="text-muted">(Primero seleccione una disciplina)</small></label>
+																<div class="col-lg-12">
+																	<select id="dificultad" name="dificultad" class="form-control select2 custom-select" required>
+																		<option value="" <?php echo set_select('dificultad', '', set_value('dificultad') ? false : '' == $this->session->flashdata('dificultad')); ?> class="text-warning">Seleccione un grupo muscular…</option>
+																	</select>
+																	<div class="invalid-feedback">
+																		Se requiere un grupo muscular válido.
+																	</div>
+																</div>
+															</div>
+														</div>
+
+													</div>
+
+													<div class="col-xl-12 col-md-12 col-sm-12">
+
+														<div class="form-group">
+															<div class="row">
 																<label class="col-lg-12" for="instructor_id">Coach <span class="red">*</span></label>
 																<div class="col-lg-12">
 																	<select id="instructor_id" name="instructor_id" class="form-control select2 custom-select" required>
@@ -160,36 +117,18 @@
 
 													</div>
 
-													<div class="col-xl-12 col-md-12 col-sm-12">
-
-														<div class="form-group">
-															<div class="row">
-																<label class="col-lg-12" for="dificultad">Grupo muscular <span class="red">*</span> <small class="text-muted">(Primero seleccione una disciplina)</small></label>
-																<div class="col-lg-12">
-																	<select id="dificultad" name="dificultad" class="form-control select2 custom-select" required>
-																		<option value="" <?php echo set_select('dificultad', '', set_value('dificultad') ? false : '' == $this->session->flashdata('dificultad')); ?> class="text-warning">Seleccione un grupo muscular…</option>
-																	</select>
-																	<div class="invalid-feedback">
-																		Se requiere un grupo muscular válido.
-																	</div>
-																</div>
-															</div>
-														</div>
-
-													</div>
-
 													<div class="col-xl-6 col-md-6 col-sm-6">
 
 														<div class="form-group">
 															<div class="row">
 																<label class="col-lg-12 required-field" for="inicia_date">Fecha de clase</label>
-																<div class="col-lg-8">
+																<div class="col-lg-6">
 																	<input type="date" class="form-control" name="inicia_date" id="inicia_date" placeholder="Fecha de clase" value="<?php echo set_value('inicia_date') == false ? ($this->session->flashdata('inicia_date') ? $this->session->flashdata('inicia_date') : date('Y-m-d')) : set_value('inicia_date'); ?>" required>
 																	<div class="invalid-feedback">
 																		Se requiere una fecha de clase válida.
 																	</div>
 																</div>
-																<div class="col-lg-4">
+																<div class="col-lg-6">
 																	<input type="time" class="form-control" name="inicia_time" id="inicia_time" placeholder="Fecha de clase" value="<?php echo set_value('inicia_time') == false ? ($this->session->flashdata('inicia_time') ? $this->session->flashdata('inicia_time') : date('H:i')) : set_value('inicia_time'); ?>" required>
 																	<div class="invalid-feedback">
 																		Se requiere una fecha de clase válida.
@@ -296,13 +235,45 @@
 											<?php echo form_close(); ?>
 										</div>
 
-										<div class="col-xl-6 col-md-6 col-sm-6">
+										<div class="col-xl-7 col-md-12 col-sm-12">
+											<?php if ($this->session->userdata('rol_id') != '5') : ?>
+												<div class="row">
+													<div class="col-lg-3 col-md-3 col-sm-12">
+														<div class="form-group">
+															<h5 class="card-titlel"><i class="ft-filter"></i> Filtro sucursal:</h5>
+															<select id="filtro_clase_sucursal" name="filtro_clase_sucursal" class="select2 form-control">
+																<option value="0">Todas las sucursales</option>
+																<?php foreach ($sucursales_list as $key => $sucursal_row) : ?>
+																	<option value="<?= $sucursal_row->id; ?>" <?= ($this->session->userdata('filtro_clase_sucursal') == $sucursal_row->id) ? 'selected' : '' ?>>
+																		<?= $sucursal_row->locacion; ?>
+																	</option>
+																<?php endforeach; ?>
+															</select>
+														</div>
+													</div>
+
+													<div class="col-lg-3 col-md-3 col-sm-12">
+														<div class="form-group">
+															<h5 class="card-titlel"><i class="ft-filter"></i> Filtro disciplina:</h5>
+															<select id="filtro_clase_disciplina" name="filtro_clase_disciplina" class="select2 form-control">
+																<option value="0">Todas las disciplinas</option>
+																<?php foreach ($disciplinas_list as $key => $disciplina_row) : ?>
+																	<option value="<?= $disciplina_row->id; ?>" <?= ($this->session->userdata('filtro_clase_disciplina') == $disciplina_row->id) ? 'selected' : '' ?>>
+																		<?= $disciplina_row->nombre; ?>
+																	</option>
+																<?php endforeach; ?>
+															</select>
+														</div>
+													</div>
+												</div>
+											<?php endif; ?>
+
 											<form class="form">
 												<div class="form-body">
 													<h4 class="form-section">Ultimas 5 clases registradas</h4>
 													<div class="form-group">
 														<div class="table-responsive">
-															<table class="table" id="tablelist">
+															<table id="tablelist" class="table display nowrap table-striped scroll-horizontal table-hover">
 																<thead>
 																	<tr>
 																		<th>Opciones</th>
@@ -330,7 +301,36 @@
 													</div>
 												</div>
 											</form>
+
+											<hr>
+
+											<form class="form">
+												<div class="form-body">
+													<h4 class="form-section">Calendario de clases</h4>
+													<div class="form-group">
+														<div class="table-responsive">
+															<table id="table" class="table display nowrap table-striped scroll-horizontal table-hover">
+																<thead>
+																	<tr>
+																		<th>Horario</th>
+																		<th>Lunes</th>
+																		<th>Martes</th>
+																		<th>Miércoles</th>
+																		<th>Jueves</th>
+																		<th>Viernes</th>
+																		<th>Sábado</th>
+																		<th>Domingo</th>
+																	</tr>
+																</thead>
+																<tbody>
+																</tbody>
+															</table>
+														</div>
+													</div>
+												</div>
+											</form>
 										</div>
+
 									</div>
 								</div>
 							</div>
