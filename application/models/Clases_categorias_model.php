@@ -28,6 +28,17 @@ class Clases_categorias_model extends CI_Model
         return $query;
     }
 
+    public function obtener_nombre_dificultad_por_id($dificultad_id) 
+    {
+        $query = $this->db
+            ->where('t1.id', $dificultad_id)
+            ->select('t1.nombre')
+            ->from('clases_categorias t1')
+            ->get();
+
+        return $query;
+    }
+
     public function crear($data)
     {
         return $this->db->insert('clases_categorias', $data);

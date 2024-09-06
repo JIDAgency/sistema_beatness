@@ -305,18 +305,22 @@
 															<table class="table" id="tablelist">
 																<thead>
 																	<tr>
+																		<th>Opciones</th>
 																		<th>#</th>
 																		<th>Disciplina</th>
 																		<th>Dificultad</th>
+																		<th>Instructor</th>
 																		<th>Fecha y Hora</th>
 																	</tr>
 																</thead>
 																<tbody>
 																	<?php foreach ($clases_list as $clase_key => $clase_value) : ?>
 																		<tr>
+																			<td><a href="javascript:copiar_datos(<?php echo htmlspecialchars(json_encode($clase_value), ENT_QUOTES, 'UTF-8'); ?>)">Duplicar</a></td>
 																			<td><?php echo $clase_value->id; ?></td>
 																			<td><?php echo $clase_value->disciplina_nombre; ?></td>
 																			<td><?php echo $clase_value->dificultad; ?></td>
+																			<td><?php echo $clase_value->instructor_nombre; ?></td>
 																			<td><?php echo $clase_value->inicia; ?></td>
 																		</tr>
 																	<?php endforeach; ?>

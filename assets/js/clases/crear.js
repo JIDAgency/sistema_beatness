@@ -40,7 +40,7 @@ $(document).ready(function () {
 			'sProcessing': '<div class="loader-wrapper"><div class="loader"></div></div>',
 			"sLengthMenu": "Mostrar _MENU_",
 			"sZeroRecords": "No se encontraron resultados",
-			"sEmptyTable": "Ningún dato disponible en esta tabla =(",
+			"sEmptyTable": "Por favor filtre una disciplina",
 			"sInfo": "Mostrando del _START_ al _END_ de _TOTAL_",
 			"sInfoEmpty": "Mostrando del 0 al 0 de 0",
 			"sInfoFiltered": "(filtrado _MAX_)",
@@ -130,10 +130,14 @@ $(document).ready(function () {
 				// Verifica si hay clases en la respuesta
 				if (Array.isArray(response.clases) && response.clases.length > 0) {
 					$.each(response.clases, function (index, clase) {
+						var datosClase = JSON.stringify(clase).replace(/"/g, '&quot;'); // Escapar comillas dobles
+
 						var nuevaFila = '<tr>' +
+							'<td><a href="javascript:copiar_datos(' + datosClase + ')">Duplicar</a></td>' +
 							'<td>' + clase.id + '</td>' +
 							'<td>' + clase.disciplina_nombre + '</td>' +
 							'<td>' + clase.dificultad + '</td>' +
+							'<td>' + clase.instructor_nombre + '</td>' +
 							'<td>' + clase.inicia + '</td>' +
 							'</tr>';
 						$tablaBody.append(nuevaFila); // Agregar fila a la tabla
@@ -240,10 +244,34 @@ $(document).ready(function () {
 					$('#dificultad').append('<option value="">Seleccione un grupo muscular…</option>');
 
 					$.each(response, function (index, value) {
-						$('#dificultad').append('<option value="' + value.id + '|' + value.nombre + '">' + value.nombre + '</option>');
+						$('#dificultad').append('<option value="' + value.id + '">' + value.nombre + '</option>');
 					});
 				}
 			});
 		}
 	});
 });
+
+function copiar_datos(clase) {
+	$('#disciplina_id').val(clase.disciplina_id).trigger('change');
+	$('#instructor_id').val(clase.instructor_id).trigger('change');
+
+	var inicia = clase.inicia;
+	var [fecha, hora] = inicia.split(' ');
+
+	$('#inicia_date').val(fecha).trigger('change');
+
+	$('#inicia_time').val(hora).trigger('change');
+
+	document.getElementById('cupo').value = clase.cupo;
+
+	$('#distribucion_imagen').val(clase.distribucion_imagen).trigger('change');
+
+	$('#distribucion_lugares').val(clase.distribucion_lugares).trigger('change');
+
+	document.getElementById('intervalo_horas').value = clase.intervalo_horas;
+
+	setTimeout(function () {
+		$('#dificultad').val(clase.clase_categoria_id).trigger('change');
+	}, 800);
+}

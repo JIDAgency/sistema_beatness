@@ -188,8 +188,10 @@ class Clases extends MY_Controller
                 $img_acceso = base_url() . 'almacenamiento/img_app/img_acceso/acceso-vespertino.png';
             }
 
-            $dificultad = $this->input->post('dificultad');
-            list($dificultad_id, $dificultad_nombre) = explode('|', $dificultad);
+            $dificultad_id = $this->input->post('dificultad');
+            // list($dificultad_id, $dificultad_nombre) = explode('|', $dificultad);
+
+            $dificulta_nombre = $this->clases_categorias_model->obtener_nombre_dificultad_por_id($dificultad_id)->row();
 
             $hora_de_incio = date('Y-m-d', strtotime(str_replace('/', '-', $this->input->post('inicia_date')))) . 'T' . $this->input->post('inicia_time');
             $fecha_numerica_de_la_clase = date(DATE_ISO8601, strtotime($hora_de_incio));
@@ -205,14 +207,14 @@ class Clases extends MY_Controller
                 'intervalo_horas' => $this->input->post('intervalo_horas'),
                 'distribucion_imagen' => $this->input->post('distribucion_imagen'),
                 'distribucion_lugares' => $this->input->post('distribucion_lugares'),
-                'dificultad' => $dificultad_nombre,
+                'dificultad' => $dificulta_nombre->nombre,
                 'clase_categoria_id' => $dificultad_id,
                 'cupo_lugares' => $cupo_lugares_json,
             );
 
             if ($this->clases_model->crear($data)) {
                 $this->session->set_flashdata('MENSAJE_EXITO', 'La clase se ha creado correctamente.');
-                redirect('clases/index');
+                redirect('clases/crear');
             }
 
             // Si algo falla regresar a la vista de crear
