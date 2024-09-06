@@ -105,7 +105,7 @@ class Clases extends MY_Controller
             }
         }
 
-        $data['dias_semana'] = $dias_semana; 
+        $data['dias_semana'] = $dias_semana;
 
         if (($this->session->userdata('filtro_clase_sucursal') != 0) and ($this->session->userdata('filtro_clase_disciplina') == 0)) {
             $clases_list = $this->clases_model->obtener_ultimas_5_clases_por_sucursal($this->session->userdata('filtro_clase_disciplina'))->result();
@@ -415,12 +415,35 @@ class Clases extends MY_Controller
         $data['regresar_a'] = 'inicio';
         $controlador_js = 'clases/index';
 
+        // Obtener la semana actual (Lunes - Domingo)
+        $current_week_start = new DateTime();
+        $current_week_start->modify('monday this week');
+        $current_week_end = clone $current_week_start;
+        $current_week_end->modify('sunday this week');
+
+        $current_week = $current_week_start->format('Y-m-d') . ' al ' . $current_week_end->format('Y-m-d');
+
+        // Obtener la semana siguiente (Lunes - Domingo)
+        $next_week_start = new DateTime();
+        $next_week_start->modify('monday next week');
+        $next_week_end = clone $next_week_start;
+        $next_week_end->modify('sunday next week');
+
+        $next_week = $next_week_start->format('Y-m-d') . ' al ' . $next_week_end->format('Y-m-d');
+
+        // Pasar las semanas al select
+        $data['weeks'] = [
+            'actual' => $current_week,
+            'siguiente' => $next_week
+        ];
+
         $data['styles'] = array(
             array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/tables/datatable/datatables.min.css'),
             array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/forms/selects/select2.min.css'),
         );
         $data['scripts'] = array(
             array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/tables/datatable/datatables.min.js'),
+            array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/extensions/moment.min.js'),
             array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/forms/select/select2.full.min.js'),
             array('es_rel' => false, 'src' => base_url() . 'app-assets/js/scripts/forms/select/form-select2.js'),
             array('es_rel' => true, 'src' => '' . $controlador_js . '.js'),
@@ -441,13 +464,43 @@ class Clases extends MY_Controller
         $start = intval($this->input->post('start'));
         $length = intval($this->input->post('length'));
 
-        if (($this->session->userdata('filtro_clase_sucursal') != 0) and ($this->session->userdata('filtro_clase_disciplina') == 0)) {
-            $clases_list = $this->clases_model->obtener_todas_para_front_con_detalle_por_sucursal($this->session->userdata('filtro_clase_disciplina'));
-        } else if ((($this->session->userdata('filtro_clase_sucursal') == null) and ($this->session->userdata('filtro_clase_disciplina') != null)) || (($this->session->userdata('filtro_clase_sucursal') == 0) and ($this->session->userdata('filtro_clase_disciplina') != 0))) {
-            $clases_list = $this->clases_model->obtener_todas_para_front_con_detalle_por_disciplina($this->session->userdata('filtro_clase_disciplina'));
-        } else if (($this->session->userdata('filtro_clase_sucursal') != null) and ($this->session->userdata('filtro_clase_disciplina') != null) and ($this->session->userdata('filtro_clase_sucursal') != 0) and ($this->session->userdata('filtro_clase_disciplina') != 0)) {
-            $clases_list = $this->clases_model->obtener_todas_para_front_con_detalle_por_sucursal_disciplina($this->session->userdata('filtro_clase_disciplina'), $this->session->userdata('filtro_clase_sucursal'));
-        } else if ((($this->session->userdata('filtro_clase_sucursal') == null) and ($this->session->userdata('filtro_clase_disciplina') == null)) || (($this->session->userdata('filtro_clase_sucursal') == 0) and ($this->session->userdata('filtro_clase_disciplina') == 0))) {
+        // if (($this->session->userdata('filtro_clase_sucursal') != 0) and ($this->session->userdata('filtro_clase_disciplina') == 0)) {
+        //     $clases_list = $this->clases_model->obtener_todas_para_front_con_detalle_por_sucursal($this->session->userdata('filtro_clase_sucursal'));
+        // } else if ((($this->session->userdata('filtro_clase_sucursal') == null) and ($this->session->userdata('filtro_clase_disciplina') != null)) || (($this->session->userdata('filtro_clase_sucursal') == 0) and ($this->session->userdata('filtro_clase_disciplina') != 0))) {
+        //     $clases_list = $this->clases_model->obtener_todas_para_front_con_detalle_por_disciplina($this->session->userdata('filtro_clase_disciplina'));
+        // } else if (($this->session->userdata('filtro_clase_sucursal') != null) and ($this->session->userdata('filtro_clase_disciplina') != null) and ($this->session->userdata('filtro_clase_sucursal') != 0) and ($this->session->userdata('filtro_clase_disciplina') != 0)) {
+        //     $clases_list = $this->clases_model->obtener_todas_para_front_con_detalle_por_sucursal_disciplina($this->session->userdata('filtro_clase_disciplina'), $this->session->userdata('filtro_clase_sucursal'));
+        // } else if ((($this->session->userdata('filtro_clase_sucursal') == null) and ($this->session->userdata('filtro_clase_disciplina') == null)) || (($this->session->userdata('filtro_clase_sucursal') == 0) and ($this->session->userdata('filtro_clase_disciplina') == 0))) {
+        //     $clases_list = $this->clases_model->obtener_todas_para_front_con_detalle();
+        // }
+
+        $sucursal = $this->session->userdata('filtro_clase_sucursal') ?: null;
+        $disciplina = $this->session->userdata('filtro_clase_disciplina') ?: null;
+        $semana = $this->session->userdata('filtro_clase_semana') ?: null;
+
+        if ($sucursal !== null && $disciplina === null && $semana === null) { // Sucursal seleccionada, sin disciplina y sin semana
+
+            $clases_list = $this->clases_model->obtener_todas_para_front_con_detalle_por_sucursal($sucursal);
+        } elseif ($sucursal !== null && $disciplina !== null && $semana === null) { // Sucursal y disciplina seleccionadas, sin semana
+
+            $clases_list = $this->clases_model->obtener_todas_para_front_con_detalle_por_sucursal_disciplina($disciplina, $sucursal);
+        } elseif ($sucursal !== null && $disciplina === null && $semana !== null) { // Sucursal seleccionada y semana seleccionada
+
+            $clases_list = $this->clases_model->obtener_todas_para_front_con_detalle_por_sucursal_semana($sucursal, $semana);
+        } elseif ($disciplina !== null && $sucursal === null && $semana === null) { // Disciplina seleccionada, sin sucursal y sin semana
+
+            $clases_list = $this->clases_model->obtener_todas_para_front_con_detalle_por_disciplina($disciplina);
+        } elseif ($disciplina !== null && $sucursal === null && $semana !== null) { // Disciplina y Semana seleccionada sin sucursal
+
+            $clases_list = $this->clases_model->obtener_todas_para_front_con_detalle_por_disciplina_semana($disciplina, $semana);
+        } elseif ($semana !== null && $sucursal === null && $disciplina === null) { // Solo la semana seleccionada, sin sucursal ni disciplina
+
+            $clases_list = $this->clases_model->obtener_todas_para_front_con_detalle_por_semana($semana);
+        } elseif ($sucursal !== null && $disciplina !== null && $semana !== null) { // Todos los filtros seleccionados
+
+            $clases_list = $this->clases_model->obtener_todas_para_front_con_detalle_por_sucursal_disciplina_semana($sucursal, $disciplina, $semana);
+        } else { // Sin filtros o valores por defecto
+
             $clases_list = $this->clases_model->obtener_todas_para_front_con_detalle();
         }
 
@@ -506,7 +559,7 @@ class Clases extends MY_Controller
                 'disciplina_id' => $clase->disciplina_nombre,
                 'dificultad' => !empty($clase->dificultad) ? mb_strtoupper($clase->dificultad) : '',
                 'inicia' => (!empty($clase->inicia) ? date('Y-m-d', strtotime($clase->inicia)) : ''),
-                'horario' => (!empty($clase->inicia) ? date('h:i:s A', strtotime($clase->inicia)) : ''),
+                'horario' => (!empty($clase->inicia) ? date('h:i A', strtotime($clase->inicia)) : ''),
                 // 'horario_esp' => !empty($fecha_espaniol) ? ucfirst($fecha_espaniol) : '',
                 'instructor_id' => !empty($clase->instructor_nombre) ? ($clase->instructor_nombre) : '',
                 'cupo' => !empty($clase->cupo) ? ucfirst($cupos_restantes . ' / ' . $clase->cupo) : '',
@@ -590,6 +643,21 @@ class Clases extends MY_Controller
 
             $disciplina_seleccionada = $this->input->post('filtro_clase_disciplina');
             $this->session->set_userdata('filtro_clase_disciplina', $disciplina_seleccionada);
+
+            echo json_encode(['status' => 'success']);
+
+            $this->construir_private_site_ui('clases/index');
+        } else {
+            show_error('Acceso no permitido', 403);
+        }
+    }
+
+    public function guardar_seleccion_semana()
+    {
+        if ($this->input->is_ajax_request()) {
+
+            $semana_seleccionada = $this->input->post('filtro_clase_semana');
+            $this->session->set_userdata('filtro_clase_semana', $semana_seleccionada);
 
             echo json_encode(['status' => 'success']);
 

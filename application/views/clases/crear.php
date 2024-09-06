@@ -309,7 +309,7 @@
 													<h4 class="form-section">Calendario de clases</h4>
 													<div class="form-group">
 														<div class="table-responsive">
-															<table id="" class="table display nowrap table-striped scroll-horizontal table-hover">
+															<table id="tablacalen" class="table display nowrap table-striped scroll-horizontal table-hover">
 																<thead>
 																	<tr>
 																		<th>Horario</th>

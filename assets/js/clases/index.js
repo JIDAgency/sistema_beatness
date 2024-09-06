@@ -11,6 +11,9 @@ var select_dificultad = [];
 // Configuraciones
 (actual_url.indexOf("index") < 0) ? method_call = "clases/" : method_call = "";
 $.fn.dataTable.ext.errMode = 'throw'; // Configuración de manejo de errores de DataTables
+$.fn.dataTable.ext.type.order['time-pre'] = function (d) {
+    return moment(d, 'hh:mm A').format('HHmm');
+};
 
 $(document).ready(function () {
     url = method_call + "obtener_tabla_index"
@@ -23,7 +26,7 @@ $(document).ready(function () {
         "scrollX": true,
         "deferRender": true,
         'processing': true,
-        "order": [[0, "desc"]],
+        "order": [[1, "desc"], [3, "asc"], [5, "asc"], [6, "asc"]],
         "lengthMenu": [[25, 50, 100, 250, 500, -1], [25, 50, 100, 250, 500, "Todos"]],
         "ajax": {
             "url": url,
@@ -36,7 +39,7 @@ $(document).ready(function () {
             { "data": "disciplina_id" },
             { "data": "dificultad" },
             { "data": "inicia" },
-            { "data": "horario" },
+            { "data": "horario", type: "time" },
             // { "data": "horario_esp" },
             { "data": "instructor_id" },
             { "data": "cupo" },
@@ -396,6 +399,24 @@ $(document).ready(function () {
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 console.error('Error al guardar la disciplina: ' + textStatus, errorThrown);
+            }
+        });
+    });
+
+    $('#filtro_clase_semana').change(function () {
+        var semanaSeleccionada = $(this).val();
+        $.ajax({
+            url: method_call + "guardar_seleccion_semana",
+            method: 'POST',
+            data: {
+                filtro_clase_semana: semanaSeleccionada
+            },
+            success: function (response) {
+                console.log(semanaSeleccionada + ' Semana guardada en la sesión');
+                table.ajax.reload();
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.error('Error al guardar la semana: ' + textStatus, errorThrown);
             }
         });
     });
