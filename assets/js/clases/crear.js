@@ -191,7 +191,7 @@ $(document).ready(function () {
 					});
 				} else {
 					// Si no hay horarios, muestra un mensaje
-					$tablaBody.append('<tr><td colspan="8">No se encontraron horarios para los filtros seleccionados.</td></tr>');
+					$tablaBody.append('<tr class="text-beatness"><td colspan="8" class="text-center"><h4>Por favor filtre una disciplina.</h4></td></tr>');
 				}
 			},
 			error: function (jqXHR, textStatus, errorThrown) {

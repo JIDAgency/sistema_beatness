@@ -341,3 +341,12 @@ div.dataTables_wrapper div.dataTables_filter {
 .text-warning {
     color: red !important;
 }
+
+.bg-beatness {
+    background-color: rgb(28, 0, 48);
+    color: rgb(0, 228, 255);
+}
+
+.text-beatness {
+    color: rgb(0, 228, 255);
+}
