@@ -309,7 +309,7 @@
 													<h4 class="form-section">Calendario de clases</h4>
 													<div class="form-group">
 														<div class="table-responsive">
-															<table id="table" class="table display nowrap table-striped scroll-horizontal table-hover">
+															<table id="" class="table display nowrap table-striped scroll-horizontal table-hover">
 																<thead>
 																	<tr>
 																		<th>Horario</th>
@@ -323,6 +323,34 @@
 																	</tr>
 																</thead>
 																<tbody>
+																	<?php
+																	// Obtener todas las horas únicas en los horarios
+																	$horas = array_unique(array_merge(
+																		array_keys($dias_semana['clase_lunes']),
+																		array_keys($dias_semana['clase_martes']),
+																		array_keys($dias_semana['clase_miercoles']),
+																		array_keys($dias_semana['clase_jueves']),
+																		array_keys($dias_semana['clase_viernes']),
+																		array_keys($dias_semana['clase_sabado']),
+																		array_keys($dias_semana['clase_domingo'])
+																	));
+
+																	// Ordenar las horas cronológicamente
+																	sort($horas);
+
+																	// Iterar sobre las horas y mostrar la información correspondiente para cada día
+																	foreach ($horas as $hora) : ?>
+																		<tr>
+																			<td><?= $hora; ?></td>
+																			<td><?= isset($dias_semana['clase_lunes'][$hora]) ? $dias_semana['clase_lunes'][$hora] : ''; ?></td>
+																			<td><?= isset($dias_semana['clase_martes'][$hora]) ? $dias_semana['clase_martes'][$hora] : ''; ?></td>
+																			<td><?= isset($dias_semana['clase_miercoles'][$hora]) ? $dias_semana['clase_miercoles'][$hora] : ''; ?></td>
+																			<td><?= isset($dias_semana['clase_jueves'][$hora]) ? $dias_semana['clase_jueves'][$hora] : ''; ?></td>
+																			<td><?= isset($dias_semana['clase_viernes'][$hora]) ? $dias_semana['clase_viernes'][$hora] : ''; ?></td>
+																			<td><?= isset($dias_semana['clase_sabado'][$hora]) ? $dias_semana['clase_sabado'][$hora] : ''; ?></td>
+																			<td><?= isset($dias_semana['clase_domingo'][$hora]) ? $dias_semana['clase_domingo'][$hora] : ''; ?></td>
+																		</tr>
+																	<?php endforeach; ?>
 																</tbody>
 															</table>
 														</div>

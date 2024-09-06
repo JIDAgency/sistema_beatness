@@ -56,6 +56,58 @@ class Clases extends MY_Controller
         $this->form_validation->set_rules('dificultad', 'Dificultad', 'required');
 
         if (($this->session->userdata('filtro_clase_sucursal') != 0) and ($this->session->userdata('filtro_clase_disciplina') == 0)) {
+            $calendario = $this->clases_model->obtener_calendario_crear_por_sucursal($this->session->userdata('filtro_clase_disciplina'));
+        } else if ((($this->session->userdata('filtro_clase_sucursal') == null) and ($this->session->userdata('filtro_clase_disciplina') != null)) || (($this->session->userdata('filtro_clase_sucursal') == 0) and ($this->session->userdata('filtro_clase_disciplina') != 0))) {
+            $calendario = $this->clases_model->obtener_calendario_crear_por_disciplina($this->session->userdata('filtro_clase_disciplina'));
+        } else if (($this->session->userdata('filtro_clase_sucursal') != null) and ($this->session->userdata('filtro_clase_disciplina') != null) and ($this->session->userdata('filtro_clase_sucursal') != 0) and ($this->session->userdata('filtro_clase_disciplina') != 0)) {
+            $calendario = $this->clases_model->obtener_calendario_crear_por_sucursal_disciplina($this->session->userdata('filtro_clase_disciplina'), $this->session->userdata('filtro_clase_sucursal'));
+        } else if ((($this->session->userdata('filtro_clase_sucursal') == null) and ($this->session->userdata('filtro_clase_disciplina') == null)) || (($this->session->userdata('filtro_clase_sucursal') == 0) and ($this->session->userdata('filtro_clase_disciplina') == 0))) {
+            $calendario = $this->clases_model->obtener_calendario_crear();
+        }
+
+        // Inicializar array con días de la semana
+        $dias_semana = [
+            'clase_lunes' => [],
+            'clase_martes' => [],
+            'clase_miercoles' => [],
+            'clase_jueves' => [],
+            'clase_viernes' => [],
+            'clase_sabado' => [],
+            'clase_domingo' => []
+        ];
+
+        foreach ($calendario->result() as $clase) {
+            $hora = date('h:i A', strtotime($clase->inicia)); // Formatear hora
+            $dia_semana = strtolower(date('N', strtotime($clase->inicia))); // Obtener el día de la semana (1 para lunes, 7 para domingo)
+
+            switch ($dia_semana) {
+                case 1:
+                    $dias_semana['clase_lunes'][$hora] = $clase->instructor_nombre;
+                    break;
+                case 2:
+                    $dias_semana['clase_martes'][$hora] = $clase->instructor_nombre;
+                    break;
+                case 3:
+                    $dias_semana['clase_miercoles'][$hora] = $clase->instructor_nombre;
+                    break;
+                case 4:
+                    $dias_semana['clase_jueves'][$hora] = $clase->instructor_nombre;
+                    break;
+                case 5:
+                    $dias_semana['clase_viernes'][$hora] = $clase->instructor_nombre;
+                    break;
+                case 6:
+                    $dias_semana['clase_sabado'][$hora] = $clase->instructor_nombre;
+                    break;
+                case 7:
+                    $dias_semana['clase_domingo'][$hora] = $clase->instructor_nombre;
+                    break;
+            }
+        }
+
+        $data['dias_semana'] = $dias_semana; 
+
+        if (($this->session->userdata('filtro_clase_sucursal') != 0) and ($this->session->userdata('filtro_clase_disciplina') == 0)) {
             $clases_list = $this->clases_model->obtener_ultimas_5_clases_por_sucursal($this->session->userdata('filtro_clase_disciplina'))->result();
         } else if ((($this->session->userdata('filtro_clase_sucursal') == null) and ($this->session->userdata('filtro_clase_disciplina') != null)) || (($this->session->userdata('filtro_clase_sucursal') == 0) and ($this->session->userdata('filtro_clase_disciplina') != 0))) {
             $clases_list = $this->clases_model->obtener_ultimas_5_clases_por_disciplina($this->session->userdata('filtro_clase_disciplina'))->result();
@@ -222,10 +274,11 @@ class Clases extends MY_Controller
         }
     }
 
-    public function obtener_clases_filtradas() {
+    public function obtener_clases_filtradas()
+    {
         $sucursal_id = $this->input->get('filtro_clase_sucursal');
         $disciplina_id = $this->input->get('filtro_clase_disciplina');
-    
+
         if (($this->session->userdata('filtro_clase_sucursal') != 0) and ($this->session->userdata('filtro_clase_disciplina') == 0)) {
             $clases_list = $this->clases_model->obtener_ultimas_5_clases_por_sucursal($this->session->userdata('filtro_clase_disciplina'))->result();
         } else if ((($this->session->userdata('filtro_clase_sucursal') == null) and ($this->session->userdata('filtro_clase_disciplina') != null)) || (($this->session->userdata('filtro_clase_sucursal') == 0) and ($this->session->userdata('filtro_clase_disciplina') != 0))) {
@@ -235,9 +288,9 @@ class Clases extends MY_Controller
         } else if ((($this->session->userdata('filtro_clase_sucursal') == null) and ($this->session->userdata('filtro_clase_disciplina') == null)) || (($this->session->userdata('filtro_clase_sucursal') == 0) and ($this->session->userdata('filtro_clase_disciplina') == 0))) {
             $clases_list = $this->clases_model->obtener_ultimas_5_clases()->result();
         }
-    
+
         $clases = $clases_list;
-    
+
         // Enviar la respuesta en formato JSON
         echo json_encode(['clases' => $clases]);
     }
