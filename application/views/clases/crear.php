@@ -242,7 +242,7 @@
 														<div class="form-group">
 															<h5 class="card-titlel"><i class="ft-filter"></i> Filtro sucursal:</h5>
 															<select id="filtro_clase_sucursal" name="filtro_clase_sucursal" class="select2 form-control">
-																<option value="0">Todas las sucursales</option>
+																<option value="">Todas las sucursales</option>
 																<?php foreach ($sucursales_list as $key => $sucursal_row) : ?>
 																	<option value="<?= $sucursal_row->id; ?>" <?= ($this->session->userdata('filtro_clase_sucursal') == $sucursal_row->id) ? 'selected' : '' ?>>
 																		<?= $sucursal_row->locacion; ?>
@@ -256,12 +256,27 @@
 														<div class="form-group">
 															<h5 class="card-titlel"><i class="ft-filter"></i> Filtro disciplina:</h5>
 															<select id="filtro_clase_disciplina" name="filtro_clase_disciplina" class="select2 form-control">
-																<option value="0">Todas las disciplinas</option>
+																<option value="">Todas las disciplinas</option>
 																<?php foreach ($disciplinas_list as $key => $disciplina_row) : ?>
 																	<option value="<?= $disciplina_row->id; ?>" <?= ($this->session->userdata('filtro_clase_disciplina') == $disciplina_row->id) ? 'selected' : '' ?>>
 																		<?= $disciplina_row->nombre; ?>
 																	</option>
 																<?php endforeach; ?>
+															</select>
+														</div>
+													</div>
+
+													<div class="col-lg-3 col-md-3 col-sm-12">
+														<div class="form-group">
+															<h5 class="card-titlel"><i class="ft-filter"></i> Semana:</h5>
+															<select id="filtro_clase_semana" name="filtro_clase_semana" class="select2 form-control">
+																<option value="">Seleccionar semana</option>
+																<option value="actual" <?= ($this->session->userdata('filtro_clase_semana') == 'actual') ? 'selected' : '' ?>>
+																	Semana actual (<?= $weeks['actual']; ?>)
+																</option>
+																<option value="siguiente" <?= ($this->session->userdata('filtro_clase_semana') == 'siguiente') ? 'selected' : '' ?>>
+																	Semana siguiente (<?= $weeks['siguiente']; ?>)
+																</option>
 															</select>
 														</div>
 													</div>
@@ -324,7 +339,7 @@
 																</thead>
 																<tbody>
 																	<?php
-																	// Obtener todas las horas únicas en los horarios
+																	// Obtener todas las horas únicas en los horarios para cada día de la semana
 																	$horas = array_unique(array_merge(
 																		array_keys($dias_semana['clase_lunes']),
 																		array_keys($dias_semana['clase_martes']),
@@ -338,7 +353,7 @@
 																	// Ordenar las horas cronológicamente
 																	sort($horas);
 
-																	// Iterar sobre las horas y mostrar la información correspondiente para cada día
+																	// Iterar sobre cada hora y mostrar la información correspondiente para cada día de la semana
 																	foreach ($horas as $hora) : ?>
 																		<tr>
 																			<td><?= $hora; ?></td>
@@ -353,6 +368,7 @@
 																	<?php endforeach; ?>
 																</tbody>
 															</table>
+
 														</div>
 													</div>
 												</div>

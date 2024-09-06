@@ -114,13 +114,15 @@ $(document).ready(function () {
 	function actualizarTabla() {
 		var sucursalSeleccionada = $('#filtro_clase_sucursal').val();
 		var disciplinaSeleccionada = $('#filtro_clase_disciplina').val();
+		var semanaSeleccionada = $('#filtro_clase_semana').val(); // Filtro de semana (si aplica)
 
 		$.ajax({
 			url: method_call + "obtener_clases_filtradas", // URL que obtiene las clases filtradas
 			method: 'GET',
 			data: {
 				filtro_clase_sucursal: sucursalSeleccionada,
-				filtro_clase_disciplina: disciplinaSeleccionada
+				filtro_clase_disciplina: disciplinaSeleccionada,
+				filtro_clase_semana: semanaSeleccionada // Añadir filtro de semana
 			},
 			dataType: 'json',
 			success: function (response) {
@@ -153,6 +155,52 @@ $(document).ready(function () {
 		});
 	}
 
+	function actualizarTablaHorarios() {
+		var sucursalSeleccionada = $('#filtro_clase_sucursal').val();
+		var disciplinaSeleccionada = $('#filtro_clase_disciplina').val();
+		var semanaSeleccionada = $('#filtro_clase_semana').val();
+
+		$.ajax({
+			url: method_call + "obtener_horarios_clases",  // URL del método en el backend
+			method: 'POST',  // Usamos POST en lugar de GET
+			data: {
+				filtro_clase_sucursal: sucursalSeleccionada,
+				filtro_clase_disciplina: disciplinaSeleccionada,
+				filtro_clase_semana: semanaSeleccionada,
+				draw: 1  // Agrega el parámetro draw si lo usas en el backend
+			},
+			dataType: 'json',
+			success: function (response) {
+				var $tablaBody = $('#tablacalen tbody');
+				$tablaBody.empty();  // Limpiar la tabla antes de agregar los nuevos datos
+
+				// Verifica si hay horarios en la respuesta
+				if (Array.isArray(response.data) && response.data.length > 0) {
+					$.each(response.data, function (index, horario) {
+						var nuevaFila = '<tr>' +
+							'<td>' + horario.hora + '</td>' +
+							'<td>' + (horario.clase_lunes || '') + '</td>' +
+							'<td>' + (horario.clase_martes || '') + '</td>' +
+							'<td>' + (horario.clase_miercoles || '') + '</td>' +
+							'<td>' + (horario.clase_jueves || '') + '</td>' +
+							'<td>' + (horario.clase_viernes || '') + '</td>' +
+							'<td>' + (horario.clase_sabado || '') + '</td>' +
+							'<td>' + (horario.clase_domingo || '') + '</td>' +
+							'</tr>';
+						$tablaBody.append(nuevaFila);  // Agregar fila a la tabla
+					});
+				} else {
+					// Si no hay horarios, muestra un mensaje
+					$tablaBody.append('<tr><td colspan="8">No se encontraron horarios para los filtros seleccionados.</td></tr>');
+				}
+			},
+			error: function (jqXHR, textStatus, errorThrown) {
+				console.error('Error al obtener los horarios: ' + textStatus, errorThrown);
+			}
+		});
+	}
+
+	// FILTROS PARA GUARDAR EN SESIÓN INICIO
 	$('#filtro_clase_sucursal').change(function () {
 		var sucursalSeleccionada = $(this).val();
 		$.ajax({
@@ -165,6 +213,7 @@ $(document).ready(function () {
 				console.log(sucursalSeleccionada + ' Sucursal guardada en la sesión');
 				table.ajax.reload();
 				actualizarTabla(); // Actualizar la tabla después de cambiar el filtro
+				actualizarTablaHorarios(); // Actualizar la tabla después de cambiar el filtro
 
 				// Nueva solicitud AJAX para obtener las disciplinas de la sucursal seleccionada
 				$.ajax({
@@ -217,6 +266,7 @@ $(document).ready(function () {
 				console.log(disciplinaSeleccionada + ' Disciplina guardada en la sesión');
 				table.ajax.reload();
 				actualizarTabla(); // Actualizar la tabla después de cambiar el filtro
+				actualizarTablaHorarios(); // Actualizar la tabla después de cambiar el filtro
 			},
 			error: function (jqXHR, textStatus, errorThrown) {
 				console.error('Error al guardar la disciplina: ' + textStatus, errorThrown);
@@ -224,7 +274,28 @@ $(document).ready(function () {
 		});
 	});
 
-	// Manejar el cambio de disciplina y actualizar las dificultades
+	$('#filtro_clase_semana').change(function () {
+		var semanaSeleccionada = $(this).val();
+		$.ajax({
+			url: method_call + "guardar_seleccion_semana",
+			method: 'POST',
+			data: {
+				filtro_clase_semana: semanaSeleccionada
+			},
+			success: function (response) {
+				console.log(semanaSeleccionada + ' Semana guardada en la sesión');
+				table.ajax.reload();
+				actualizarTabla(); // Actualizar la tabla después de cambiar el filtro
+				actualizarTablaHorarios(); // Actualizar la tabla después de cambiar el filtro
+			},
+			error: function (jqXHR, textStatus, errorThrown) {
+				console.error('Error al guardar la semana: ' + textStatus, errorThrown);
+			}
+		});
+	});
+	// FILTROS PARA GUARDAR EN SESIÓN FIN
+
+	// SELECT DE DISCIPLINA Y DIFICULTAD INICIO
 	$('#disciplina_id').change(function () {
 		var disciplina_id = $(this).val();
 
@@ -250,6 +321,7 @@ $(document).ready(function () {
 			});
 		}
 	});
+	// SELECT DE DISCIPLINA Y DIFICULTAD FIN
 });
 
 function copiar_datos(clase) {

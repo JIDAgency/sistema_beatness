@@ -77,6 +77,207 @@ class Clases_model extends CI_Model
         return $query;
     }
 
+    public function obtener_ultimas_5_clases_por_sucursal_semana($sucursal_id = null, $semana = null)
+    {
+        if ($this->session->userdata('filtro_clase_sucursal') != null) {
+            $sucursal_id = $this->session->userdata('filtro_clase_sucursal');
+            $semana = $this->session->userdata('filtro_clase_semana');
+        }
+
+        // Determina las fechas de inicio y fin de la semana
+        if ($semana === 'actual') {
+            $start_date = new DateTime();
+            $start_date->modify('monday this week');
+            $end_date = clone $start_date;
+            $end_date->modify('sunday this week');
+        } elseif ($semana === 'siguiente') {
+            $start_date = new DateTime();
+            $start_date->modify('monday next week');
+            $end_date = clone $start_date;
+            $end_date->modify('sunday next week');
+        } else {
+            return [];
+        }
+
+        $query = $this->db
+            // ->where("DATE_FORMAT(t1.inicia,'%Y-%m-%d') >=", date('Y-m-d', strtotime('-15 days')))
+            ->where('t3.id', $sucursal_id)
+            ->where("t1.inicia >=", $start_date->format('Y-m-d 00:00:00'))
+            ->where("t1.inicia <=", $end_date->format('Y-m-d 23:59:59'))
+            ->select("
+                t1.*,
+                t2.nombre as disciplina_nombre,
+                t3.nombre as sucursal_nombre,
+                t3.locacion as sucursal_locacion,
+                CONCAT(COALESCE(t4.nombre_completo, 'N/D'), ' ', COALESCE(t4.apellido_paterno, 'N/D')) as instructor_nombre
+            ")
+            ->from('clases t1')
+            ->join("disciplinas t2", "t1.disciplina_id = t2.id")
+            ->join("sucursales t3", "t2.sucursal_id = t3.id")
+            ->join("usuarios t4", "t1.instructor_id = t4.id")
+            ->order_by("t1.id", "desc")
+            ->limit(5)
+            ->get();
+
+        return $query;
+    }
+
+    public function obtener_ultimas_5_clases_por_disciplina_semana($disciplina_id = null, $semana = null)
+    {
+        if ($this->session->userdata('filtro_clase_disciplina') != null) {
+            $disciplina_id = $this->session->userdata('filtro_clase_disciplina');
+            $semana = $this->session->userdata('filtro_clase_semana');
+        }
+
+        // Determina las fechas de inicio y fin de la semana
+        if ($semana === 'actual') {
+            $start_date = new DateTime();
+            $start_date->modify('monday this week');
+            $end_date = clone $start_date;
+            $end_date->modify('sunday this week');
+        } elseif ($semana === 'siguiente') {
+            $start_date = new DateTime();
+            $start_date->modify('monday next week');
+            $end_date = clone $start_date;
+            $end_date->modify('sunday next week');
+        } else {
+            return [];
+        }
+
+        if (!$disciplina_id) {
+            $query = $this->db
+                ->where("DATE_FORMAT(t1.inicia,'%Y-%m-%d') >=", date('Y-m-d', strtotime('-15 days')))
+                ->select("
+                t1.*,
+                t2.nombre as disciplina_nombre,
+                t3.nombre as sucursal_nombre,
+                t3.locacion as sucursal_locacion,
+                CONCAT(COALESCE(t4.nombre_completo, 'N/D'), ' ', COALESCE(t4.apellido_paterno, 'N/D')) as instructor_nombre
+            ")
+                ->from('clases t1')
+                ->join("disciplinas t2", "t1.disciplina_id = t2.id")
+                ->join("sucursales t3", "t2.sucursal_id = t3.id")
+                ->join("usuarios t4", "t1.instructor_id = t4.id")
+                ->order_by("t1.id", "desc")
+                ->limit(5)
+                ->get();
+        } else {
+            $query = $this->db
+                ->where("DATE_FORMAT(t1.inicia,'%Y-%m-%d') >=", date('Y-m-d', strtotime('-15 days')))
+                ->where('t2.id', $disciplina_id)
+                ->where("t1.inicia >=", $start_date->format('Y-m-d 00:00:00'))
+                ->where("t1.inicia <=", $end_date->format('Y-m-d 23:59:59'))
+                ->select("
+                        t1.*,
+                        t2.nombre as disciplina_nombre,
+                        t3.nombre as sucursal_nombre,
+                        t3.locacion as sucursal_locacion,
+                        CONCAT(COALESCE(t4.nombre_completo, 'N/D'), ' ', COALESCE(t4.apellido_paterno, 'N/D')) as instructor_nombre
+                    ")
+                ->from('clases t1')
+                ->join("disciplinas t2", "t1.disciplina_id = t2.id")
+                ->join("sucursales t3", "t2.sucursal_id = t3.id")
+                ->join("usuarios t4", "t1.instructor_id = t4.id")
+                ->order_by("t1.id", "desc")
+                ->limit(5)
+                ->get();
+        }
+
+        return $query;
+    }
+
+    public function obtener_ultimas_5_clases_por_semana($semana = null)
+    {
+        if ($this->session->userdata('filtro_clase_semana') != null) {
+            $semana = $this->session->userdata('filtro_clase_semana');
+        }
+
+        // Determina las fechas de inicio y fin de la semana
+        if ($semana === 'actual') {
+            $start_date = new DateTime();
+            $start_date->modify('monday this week');
+            $end_date = clone $start_date;
+            $end_date->modify('sunday this week');
+        } elseif ($semana === 'siguiente') {
+            $start_date = new DateTime();
+            $start_date->modify('monday next week');
+            $end_date = clone $start_date;
+            $end_date->modify('sunday next week');
+        } else {
+            return [];
+        }
+
+        $query = $this->db
+            ->where("t1.inicia >=", $start_date->format('Y-m-d 00:00:00'))
+            ->where("t1.inicia <=", $end_date->format('Y-m-d 23:59:59'))
+            ->select("
+                t1.*,
+                t2.nombre as disciplina_nombre,
+                t3.nombre as sucursal_nombre,
+                t3.locacion as sucursal_locacion,
+                CONCAT(COALESCE(t4.nombre_completo, 'N/D'), ' ', COALESCE(t4.apellido_paterno, 'N/D')) as instructor_nombre
+            ")
+            ->from('clases t1')
+            ->join("disciplinas t2", "t1.disciplina_id = t2.id")
+            ->join("sucursales t3", "t2.sucursal_id = t3.id")
+            ->join("usuarios t4", "t1.instructor_id = t4.id")
+            ->order_by("t1.id", "desc")
+            ->limit(5)
+            ->get();
+
+        return $query;
+    }
+
+    public function obtener_ultimas_5_clases_por_sucursal_disciplina_semana($sucursal_id = null, $disciplina_id = null, $semana = null)
+    {
+        $date = new DateTime("now");
+        $curr_date = $date->format('Y-m');
+
+        if ($this->session->userdata('filtro_clase_sucursal') != null) {
+            $sucursal_id = $this->session->userdata('filtro_clase_sucursal');
+            $disciplina_id = $this->session->userdata('filtro_clase_disciplina');
+            $semana = $this->session->userdata('filtro_clase_semana');
+        }
+
+        // Determina las fechas de inicio y fin de la semana
+        if ($semana === 'actual') {
+            $start_date = new DateTime();
+            $start_date->modify('monday this week');
+            $end_date = clone $start_date;
+            $end_date->modify('sunday this week');
+        } elseif ($semana === 'siguiente') {
+            $start_date = new DateTime();
+            $start_date->modify('monday next week');
+            $end_date = clone $start_date;
+            $end_date->modify('sunday next week');
+        } else {
+            return [];
+        }
+
+        $query = $this->db
+            ->where("DATE_FORMAT(t1.inicia,'%Y-%m-%d') >=", date('Y-m-d', strtotime('-15 days')))
+            ->where('t2.sucursal_id', $sucursal_id)
+            ->where('t2.id', $disciplina_id)
+            ->where("t1.inicia >=", $start_date->format('Y-m-d 00:00:00'))
+            ->where("t1.inicia <=", $end_date->format('Y-m-d 23:59:59'))
+            ->select("
+                t1.*,
+                t2.nombre as disciplina_nombre,
+                t3.nombre as sucursal_nombre,
+                t3.locacion as sucursal_locacion,
+                CONCAT(COALESCE(t4.nombre_completo, 'N/D'), ' ', COALESCE(t4.apellido_paterno, 'N/D')) as instructor_nombre
+            ")
+            ->from('clases t1')
+            ->join("disciplinas t2", "t1.disciplina_id = t2.id")
+            ->join("sucursales t3", "t2.sucursal_id = t3.id")
+            ->join("usuarios t4", "t1.instructor_id = t4.id")
+            ->order_by("t1.id", "desc")
+            ->limit(5)
+            ->get();
+
+        return $query;
+    }
+
     public function obtener_ultimas_5_clases_por_disciplina($disciplina_id = null)
     {
         if ($this->session->userdata('filtro_clase_disciplina') != null) {
@@ -318,6 +519,203 @@ class Clases_model extends CI_Model
         return $query;
     }
 
+    public function obtener_calendario_crear_por_sucursal_semana($sucursal_id = null, $semana = null)
+    {
+        if ($this->session->userdata('filtro_clase_sucursal') != null) {
+            $sucursal_id = $this->session->userdata('filtro_clase_sucursal');
+            $semana = $this->session->userdata('filtro_clase_semana');
+        }
+
+        // Determina las fechas de inicio y fin de la semana
+        if ($semana === 'actual') {
+            $start_date = new DateTime();
+            $start_date->modify('monday this week');
+            $end_date = clone $start_date;
+            $end_date->modify('sunday this week');
+        } elseif ($semana === 'siguiente') {
+            $start_date = new DateTime();
+            $start_date->modify('monday next week');
+            $end_date = clone $start_date;
+            $end_date->modify('sunday next week');
+        } else {
+            return [];
+        }
+
+        $query = $this->db
+            // ->where("DATE_FORMAT(t1.inicia,'%Y-%m-%d') >=", date('Y-m-d', strtotime('-15 days')))
+            ->where('t3.id', $sucursal_id)
+            ->select("
+                t1.*,
+                t2.nombre as disciplina_nombre,
+                t3.nombre as sucursal_nombre,
+                t3.locacion as sucursal_locacion,
+                CONCAT(COALESCE(t4.nombre_completo, 'N/D'), ' ', COALESCE(t4.apellido_paterno, 'N/D')) as instructor_nombre
+            ")
+            ->from('clases t1')
+            ->join("disciplinas t2", "t1.disciplina_id = t2.id")
+            ->join("sucursales t3", "t2.sucursal_id = t3.id")
+            ->join("usuarios t4", "t1.instructor_id = t4.id")
+            ->where("t1.inicia >=", $start_date->format('Y-m-d 00:00:00'))
+            ->where("t1.inicia <=", $end_date->format('Y-m-d 23:59:59'))
+            ->order_by("t1.inicia", "asc") // Ordenar por fecha sin hora
+            ->get();
+
+        return $query;
+    }
+
+    public function obtener_calendario_crear_por_disciplina_semana($disciplina_id = null, $semana = null)
+    {
+        if ($this->session->userdata('filtro_clase_disciplina') != null) {
+            $disciplina_id = $this->session->userdata('filtro_clase_disciplina');
+            $semana = $this->session->userdata('filtro_clase_semana');
+        }
+
+        // Determina las fechas de inicio y fin de la semana
+        if ($semana === 'actual') {
+            $start_date = new DateTime();
+            $start_date->modify('monday this week');
+            $end_date = clone $start_date;
+            $end_date->modify('sunday this week');
+        } elseif ($semana === 'siguiente') {
+            $start_date = new DateTime();
+            $start_date->modify('monday next week');
+            $end_date = clone $start_date;
+            $end_date->modify('sunday next week');
+        } else {
+            return [];
+        }
+
+        if (!$disciplina_id) {
+            $query = $this->db
+                ->where("DATE_FORMAT(t1.inicia,'%Y-%m-%d') >=", date('Y-m-d', strtotime('-15 days')))
+                ->select("
+                t1.*,
+                t2.nombre as disciplina_nombre,
+                t3.nombre as sucursal_nombre,
+                t3.locacion as sucursal_locacion,
+                CONCAT(COALESCE(t4.nombre_completo, 'N/D'), ' ', COALESCE(t4.apellido_paterno, 'N/D')) as instructor_nombre
+            ")
+                ->from('clases t1')
+                ->join("disciplinas t2", "t1.disciplina_id = t2.id")
+                ->join("sucursales t3", "t2.sucursal_id = t3.id")
+                ->join("usuarios t4", "t1.instructor_id = t4.id")
+                ->where("t1.inicia >=", $start_date->format('Y-m-d 00:00:00'))
+                ->where("t1.inicia <=", $end_date->format('Y-m-d 23:59:59'))
+                ->order_by("t1.inicia", "asc") // Ordenar por fecha sin hora
+                ->get();
+        } else {
+            $query = $this->db
+                ->where("DATE_FORMAT(t1.inicia,'%Y-%m-%d') >=", date('Y-m-d', strtotime('-15 days')))
+                ->where('t2.id', $disciplina_id)
+                ->select("
+                        t1.*,
+                        t2.nombre as disciplina_nombre,
+                        t3.nombre as sucursal_nombre,
+                        t3.locacion as sucursal_locacion,
+                        CONCAT(COALESCE(t4.nombre_completo, 'N/D'), ' ', COALESCE(t4.apellido_paterno, 'N/D')) as instructor_nombre
+                    ")
+                ->from('clases t1')
+                ->join("disciplinas t2", "t1.disciplina_id = t2.id")
+                ->join("sucursales t3", "t2.sucursal_id = t3.id")
+                ->join("usuarios t4", "t1.instructor_id = t4.id")
+                ->where("t1.inicia >=", $start_date->format('Y-m-d 00:00:00'))
+                ->where("t1.inicia <=", $end_date->format('Y-m-d 23:59:59'))
+                ->order_by("t1.inicia", "asc") // Ordenar por fecha sin hora
+                ->get();
+        }
+
+        return $query;
+    }
+
+    public function obtener_calendario_crear_por_semana($semana = null)
+    {
+        if ($this->session->userdata('filtro_clase_semana') != null) {
+            $semana = $this->session->userdata('filtro_clase_semana');
+        }
+
+        // Determina las fechas de inicio y fin de la semana
+        if ($semana === 'actual') {
+            $start_date = new DateTime();
+            $start_date->modify('monday this week');
+            $end_date = clone $start_date;
+            $end_date->modify('sunday this week');
+        } elseif ($semana === 'siguiente') {
+            $start_date = new DateTime();
+            $start_date->modify('monday next week');
+            $end_date = clone $start_date;
+            $end_date->modify('sunday next week');
+        } else {
+            return [];
+        }
+
+        $query = $this->db
+            ->select("
+                t1.*,
+                t2.nombre as disciplina_nombre,
+                t3.nombre as sucursal_nombre,
+                t3.locacion as sucursal_locacion,
+                CONCAT(COALESCE(t4.nombre_completo, 'N/D'), ' ', COALESCE(t4.apellido_paterno, 'N/D')) as instructor_nombre
+            ")
+            ->from('clases t1')
+            ->join("disciplinas t2", "t1.disciplina_id = t2.id")
+            ->join("sucursales t3", "t2.sucursal_id = t3.id")
+            ->join("usuarios t4", "t1.instructor_id = t4.id")
+            ->where("t1.inicia >=", $start_date->format('Y-m-d 00:00:00'))
+            ->where("t1.inicia <=", $end_date->format('Y-m-d 23:59:59'))
+            ->order_by("t1.inicia", "asc") // Ordenar por fecha sin hora
+            ->get();
+
+        return $query;
+    }
+
+    public function obtener_calendario_crear_por_sucursal_disciplina_semana($sucursal_id = null, $disciplina_id = null, $semana = null)
+    {
+        $date = new DateTime("now");
+        $curr_date = $date->format('Y-m');
+
+        if ($this->session->userdata('filtro_clase_sucursal') != null) {
+            $sucursal_id = $this->session->userdata('filtro_clase_sucursal');
+            $disciplina_id = $this->session->userdata('filtro_clase_disciplina');
+            $semana = $this->session->userdata('filtro_clase_semana');
+        }
+
+        // Determina las fechas de inicio y fin de la semana
+        if ($semana === 'actual') {
+            $start_date = new DateTime();
+            $start_date->modify('monday this week');
+            $end_date = clone $start_date;
+            $end_date->modify('sunday this week');
+        } elseif ($semana === 'siguiente') {
+            $start_date = new DateTime();
+            $start_date->modify('monday next week');
+            $end_date = clone $start_date;
+            $end_date->modify('sunday next week');
+        } else {
+            return [];
+        }
+
+        $query = $this->db
+            ->where("DATE_FORMAT(t1.inicia,'%Y-%m-%d') >=", date('Y-m-d', strtotime('-15 days')))
+            ->where('t2.sucursal_id', $sucursal_id)
+            ->where('t2.id', $disciplina_id)
+            ->select("
+                t1.*,
+                t2.nombre as disciplina_nombre,
+                t3.nombre as sucursal_nombre,
+                t3.locacion as sucursal_locacion,
+                CONCAT(COALESCE(t4.nombre_completo, 'N/D'), ' ', COALESCE(t4.apellido_paterno, 'N/D')) as instructor_nombre
+            ")
+            ->from('clases t1')
+            ->join("disciplinas t2", "t1.disciplina_id = t2.id")
+            ->join("sucursales t3", "t2.sucursal_id = t3.id")
+            ->join("usuarios t4", "t1.instructor_id = t4.id")
+            ->where("t1.inicia >=", $start_date->format('Y-m-d 00:00:00'))
+            ->where("t1.inicia <=", $end_date->format('Y-m-d 23:59:59'))
+            ->order_by("t1.inicia", "asc") // Ordenar por fecha sin hora
+            ->get();
+
+        return $query;
+    }
     /** Funciones de clases controller (Inicio) */
 
     public function obtener_todas_para_front_con_detalle($sucursal_id = null)
