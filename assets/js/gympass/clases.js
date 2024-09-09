@@ -57,6 +57,11 @@ function modal_registrar_clase(id, data) {
                 let option = document.createElement("option");
                 option.value = categoria.id;
                 option.text = `${categoria.nombre} - ${categoria.disciplinas_nombre}`;
+
+                if (data.clase_categoria_id === categoria.id) {
+                    option.selected = true;
+                }
+
                 categoriaSelect.appendChild(option);
             });
         })

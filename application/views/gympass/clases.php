@@ -91,6 +91,7 @@
                                                                         'disciplina_id' => $clase_value->disciplina_id,
                                                                         'disciplinas_nombre' => $clase_value->disciplinas_nombre,
                                                                         'dificultad' => $clase_value->dificultad,
+                                                                        'clase_categoria_id' => $clase_value->clase_categoria_id,
                                                                         'disciplinas_gympass_gym_id' => $clase_value->disciplinas_gympass_gym_id,
                                                                         'disciplinas_gympass_product_id' => $clase_value->disciplinas_gympass_product_id,
                                                                         'gympass_slot_id' => $clase_value->gympass_slot_id,

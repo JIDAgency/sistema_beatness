@@ -238,7 +238,7 @@
 										<div class="col-xl-7 col-md-12 col-sm-12">
 											<?php if ($this->session->userdata('rol_id') != '5') : ?>
 												<div class="row">
-													<div class="col-lg-3 col-md-3 col-sm-12">
+													<div class="col-lg-4 col-md-4 col-sm-12">
 														<div class="form-group">
 															<h5 class="card-titlel"><i class="ft-filter"></i> Filtro sucursal:</h5>
 															<select id="filtro_clase_sucursal" name="filtro_clase_sucursal" class="select2 form-control">
@@ -252,7 +252,7 @@
 														</div>
 													</div>
 
-													<div class="col-lg-3 col-md-3 col-sm-12">
+													<div class="col-lg-4 col-md-4 col-sm-12">
 														<div class="form-group">
 															<h5 class="card-titlel"><i class="ft-filter"></i> Filtro disciplina:</h5>
 															<select id="filtro_clase_disciplina" name="filtro_clase_disciplina" class="select2 form-control">
@@ -266,7 +266,7 @@
 														</div>
 													</div>
 
-													<div class="col-lg-3 col-md-3 col-sm-12">
+													<div class="col-lg-4 col-md-4 col-sm-12">
 														<div class="form-group">
 															<h5 class="card-titlel"><i class="ft-filter"></i> Semana:</h5>
 															<select id="filtro_clase_semana" name="filtro_clase_semana" class="select2 form-control">
