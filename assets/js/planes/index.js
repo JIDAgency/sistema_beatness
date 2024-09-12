@@ -35,6 +35,7 @@ $(function () {
             { "data": "es_primera" },
             { "data": "es_estudiante" },
             { "data": "es_empresarial" },
+            { "data": "pagar_en" },
             { "data": "listar_activo" },
             { "data": "listar_opciones" },
         ],

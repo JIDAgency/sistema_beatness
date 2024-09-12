@@ -66,6 +66,7 @@
 													<th>Primera compra</th>
 													<th>Solo estudiantes</th>
 													<th>Solo empresarial</th>
+													<th>Se pagara en</th>
 													<th>Activo</th>
 													<th>Opciones</th>
 												</tr>

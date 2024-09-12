@@ -112,6 +112,25 @@
 													</div>
 
 													<div class="form-group row col-lg-12 col-md-12 col-sm-12">
+														<label for="pagar_en" class="col-md-12">Pagar en: <span class="red">*</span></label>
+														<div class="col-md-12">
+															<select name="pagar_en" id="pagar_en" class="form-control">
+																<option value="" <?php echo set_select('pagar_en', '', set_value('pagar_en') ? false : '' == (!empty($this->session->flashdata('pagar_en')) ? $this->session->flashdata('pagar_en') : (!empty($plan_a_editar->pagar_en) ? $plan_a_editar->pagar_en : set_value('pagar_en')))); ?>>Seleccione una opcion…</option>
+																<?php foreach (select_pagar_en() as $key => $mostrar_row) : ?>
+																	<option value="<?php echo $mostrar_row->valor; ?>" <?php echo set_select('pagar_en', $mostrar_row->valor, set_value('pagar_en') ? false : $mostrar_row->valor == (!empty($this->session->flashdata('pagar_en')) ? $this->session->flashdata('pagar_en') : (!empty($plan_a_editar->pagar_en) ? $plan_a_editar->pagar_en : set_value('pagar_en')))); ?>><?php echo trim($mostrar_row->nombre); ?></option>
+																<?php endforeach; ?>
+															</select>
+														</div>
+													</div>
+
+													<div class="form-group row col-lg-12 col-md-12 col-sm-12" id="urlPago" style="display: none;">
+														<label for="url_pago" class="col-md-12">URL de pago&nbsp;<span class="red">*</span></label>
+														<div class="col-md-12">
+															<input type="text" class="form-control" name="url_pago" placeholder="URL de pago" value="<?php echo set_value('url_pago') == false ? $plan_a_editar->url_pago : set_value('url_pago'); ?>">
+														</div>
+													</div>
+
+													<div class="form-group row col-lg-12 col-md-12 col-sm-12">
 														<label for="activado" class="col-md-12">Activo <span class="red">*</span></label>
 														<div class="col-md-12">
 															<select name="activado" id="activado" class="form-control">

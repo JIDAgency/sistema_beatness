@@ -49,6 +49,7 @@ class Planes_model extends CI_Model
                 t1.es_primera,
                 t1.es_estudiante,
                 t1.es_empresarial,
+                t1.pagar_en,
                 t1.activado as listar_activo,
             ")
             ->from('planes t1')

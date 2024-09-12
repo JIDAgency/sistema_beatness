@@ -269,3 +269,9 @@ if (!function_exists('select_mostrar_clase')) {
         return get_instance()->config->item('select_mostrar_clase');
     }
 }
+
+if (!function_exists('select_pagar_en')) {
+    function select_pagar_en() {
+        return get_instance()->config->item('select_pagar_en');
+    }
+}

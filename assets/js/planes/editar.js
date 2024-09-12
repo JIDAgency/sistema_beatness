@@ -1,3 +1,23 @@
+document.addEventListener('DOMContentLoaded', function() {
+	var pagarEnSelect = document.getElementById('pagar_en');
+	var urlPago = document.getElementById('urlPago');
+
+	pagarEnSelect.addEventListener('change', function() {
+		console.log(this.value);
+		console.log(pagarEnSelect.value);
+		if (pagarEnSelect.value === 'url') { // Ajusta este valor según corresponda al valor de "si" en tu select
+			urlPago.style.display = 'block';
+		} else {
+			urlPago.style.display = 'none';
+		}
+	});
+
+	// Verificar el valor inicial al cargar la página
+	if (pagarEnSelect.value === 'url') { // Ajusta este valor según corresponda al valor de "si" en tu select
+		urlPago.style.display = 'block';
+	}
+});
+
 $(function () {
 
 	// Inicializar el plugin del select

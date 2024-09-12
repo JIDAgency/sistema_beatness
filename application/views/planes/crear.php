@@ -118,11 +118,28 @@
 												</div>
 
 												<div class="form-group">
+													<label for="pagar_en">Pagar en: <span class="red">*</span></label>
+													<select name="pagar_en" id="pagar_en" class="form-control">
+														<option value="" <?php echo set_select('pagar_en', '', set_value('pagar_en') ? false : '' == $this->session->flashdata('pagar_en')); ?>>Seleccione una opcion…</option>
+														<?php foreach (select_pagar_en() as $mostrar_key => $mostrar_row) : ?>
+															<option value="<?php echo $mostrar_row->valor; ?>" <?php echo $mostrar_row->activo == false ? '' : 'selected'; ?> <?php echo set_select('pagar_en', $mostrar_row->valor, set_value('pagar_en') ? false : $mostrar_row->valor == $this->session->flashdata('pagar_en')); ?>><?php echo trim($mostrar_row->nombre); ?></option>
+														<?php endforeach; ?>
+													</select>
+												</div>
+
+												<div class="form-group row" id="urlPago" style="display: none;">
+													<label for="tipo" class="col-md-12">url de pago <span class="red">*</span></label>
+													<div class="col-md-12">
+														<input type="text" name="url_pago" class="form-control" placeholder="url de pago" value="<?php echo set_value('url_pago'); ?>">
+													</div>
+												</div>
+
+												<div class="form-group">
 													<label for="activado">Activado <span class="red">*</span></label>
 													<select name="activado" id="activado" class="form-control">
 														<option value="" <?php echo set_select('activado', '', set_value('activado') ? false : '' == $this->session->flashdata('activado')); ?>>Seleccione una opcion…</option>
 														<?php foreach (select_activo() as $mostrar_key => $mostrar_row) : ?>
-															<option value="<?php echo $mostrar_row->valor; ?>" <?php echo $mostrar_row->activado == false ? '' : 'selected'; ?> <?php echo set_select('activado', $mostrar_row->valor, set_value('activado') ? false : $mostrar_row->valor == $this->session->flashdata('activado')); ?>><?php echo trim($mostrar_row->nombre); ?></option>
+															<option value="<?php echo $mostrar_row->valor; ?>" <?php echo $mostrar_row->activo == false ? '' : 'selected'; ?> <?php echo set_select('activado', $mostrar_row->valor, set_value('activado') ? false : $mostrar_row->valor == $this->session->flashdata('activado')); ?>><?php echo trim($mostrar_row->nombre); ?></option>
 														<?php endforeach; ?>
 													</select>
 												</div>

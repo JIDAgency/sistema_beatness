@@ -317,3 +317,17 @@ $select_activo = array(
 );
 
 $config['select_activo'] = $select_activo;
+
+$select_pagar_en = array(
+    (object) array(
+        'nombre'   => 'app',
+        'valor'    => 'app',
+        'activo'   => false
+    ),
+    (object) array(
+        'nombre'   => 'url',
+        'valor'    => 'url',
+        'activo'   => false
+    )
+);
+$config['select_pagar_en'] = $select_pagar_en;

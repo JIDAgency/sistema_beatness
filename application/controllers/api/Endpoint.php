@@ -454,6 +454,8 @@ class Endpoint extends REST_Controller
                     $plan_con_disciplinas->subscripcion = $plan->subscripcion;
                     $plan_con_disciplinas->terminos_condiciones = $plan->terminos_condiciones;
                     $plan_con_disciplinas->url_infoventa = $plan->url_infoventa;
+                    $plan_con_disciplinas->pagar_en = $plan->pagar_en;
+                    $plan_con_disciplinas->url_pago = $plan->url_pago;
 
                     $disciplinas = $this->planes_model->obtener_disciplinas_con_detalle_por_plan_id($plan->id)->result();
 
@@ -488,6 +490,9 @@ class Endpoint extends REST_Controller
                     $plan_con_disciplinas->subscripcion = $plan->subscripcion;
                     $plan_con_disciplinas->terminos_condiciones = $plan->terminos_condiciones;
                     $plan_con_disciplinas->url_infoventa = $plan->url_infoventa;
+                    $plan_con_disciplinas->pagar_en = $plan->pagar_en;
+                    $plan_con_disciplinas->url_pago = $plan->url_pago;
+
 
                     $disciplinas = $this->planes_model->obtener_disciplinas_con_detalle_por_plan_id($plan->id)->result();
 
