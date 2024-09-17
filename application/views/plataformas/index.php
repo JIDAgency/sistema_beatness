@@ -4,7 +4,7 @@
 
             <div class="col-xl-12 col-md-12 col-sm-12 text-center pt-2 pb-2">
                 <h2>
-                    Reserva directo en tu plataforma favorita encuéntranos como:
+                    Reserva directo en tu plataforma favorita encuéntranos como:
                     <br>
                     <br>
                     <b>“Beatness polanco” y “Beatness Puebla”</b>
