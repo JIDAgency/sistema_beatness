@@ -53,7 +53,9 @@ class Reportes_ventas extends MY_Controller
         $todas_las_ventas_registradas = $this->ventas_model->obtener_todas();
         $todas_las_ventas_registradas_puebla = $this->ventas_model->obtener_ventas_puebla();
         $todas_las_ventas_registradas_polanco = $this->ventas_model->obtener_ventas_polanco();
+        $metodos_pago = $this->metodos_model->obtener_para_filtro()->result();
 
+        $data['metodos_pago'] = $metodos_pago;
         $data['todas_las_ventas_registradas'] = $todas_las_ventas_registradas;
         $data['todas_las_ventas_registradas_puebla'] = $todas_las_ventas_registradas_puebla;
         $data['todas_las_ventas_registradas_polanco'] = $todas_las_ventas_registradas_polanco;
@@ -121,7 +123,9 @@ class Reportes_ventas extends MY_Controller
 
         $todas_las_ventas_registradas = $this->ventas_model->obtener_todas();
         $todas_las_ventas_registradas_puebla = $this->ventas_model->obtener_ventas_puebla();
+        $metodos_pago = $this->metodos_model->obtener_para_filtro()->result();
 
+        $data['metodos_pago'] = $metodos_pago;
         $data['todas_las_ventas_registradas'] = $todas_las_ventas_registradas;
         $data['todas_las_ventas_registradas_puebla'] = $todas_las_ventas_registradas_puebla;
 
@@ -180,7 +184,9 @@ class Reportes_ventas extends MY_Controller
 
         $todas_las_ventas_registradas = $this->ventas_model->obtener_todas();
         $todas_las_ventas_registradas_polanco = $this->ventas_model->obtener_ventas_polanco();
+        $metodos_pago = $this->metodos_model->obtener_para_filtro()->result();
 
+        $data['metodos_pago'] = $metodos_pago;
         $data['todas_las_ventas_registradas'] = $todas_las_ventas_registradas;
         $data['todas_las_ventas_registradas_polanco'] = $todas_las_ventas_registradas_polanco;
 

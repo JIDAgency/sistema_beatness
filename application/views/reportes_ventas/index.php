@@ -54,6 +54,17 @@
 											<input type="date" id="fecha-activacion" name="fecha-activacion" class="form-control">
 										</div>
 									</div>
+									<div class="col-4">
+										<div class="form-group">
+											<label for="metodo-pago-puebla">Método de pago:</label>
+											<select name="metodo-pago-puebla" id="metodo-pago-puebla" class="form-control">
+												<option value="">Selecciones un método de pago...</option>
+												<?php foreach ($metodos_pago as $key => $metodo_pago) : ?>
+													<option value="<?php echo $metodo_pago->nombre ?>"><?php echo $metodo_pago->nombre ?></option>
+												<?php endforeach; ?>
+											</select>
+										</div>
+									</div>
 								</div>
 								<br>
 								<table id="tabla-ventas" class="table display nowrap table-striped table-bordered scroll-horizontal table-hover">
@@ -175,6 +186,17 @@
 										<div class="form-group">
 											<label for="fecha-activacion-polanco">Hasta:</label>
 											<input type="date" id="fecha-activacion-polanco" name="fecha-activacion-polanco" class="form-control">
+										</div>
+									</div>
+									<div class="col-4">
+										<div class="form-group">
+											<label for="metodo-pago-polanco">Método de pago:</label>
+											<select name="metodo-pago-polanco" id="metodo-pago-polanco" class="form-control">
+												<option value="">Selecciones un método de pago...</option>
+												<?php foreach ($metodos_pago as $key => $metodo_pago) : ?>
+													<option value="<?php echo $metodo_pago->nombre ?>"><?php echo $metodo_pago->nombre ?></option>
+												<?php endforeach; ?>
+											</select>
 										</div>
 									</div>
 								</div>

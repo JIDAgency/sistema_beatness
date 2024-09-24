@@ -12,7 +12,7 @@ $(function () {
         'processing': true,
         'lengthMenu': [[25, 100, 250, 500, -1], [25, 100, 250, 500, "Todos"]],
         "dom": 'Bfrtip',
-        "buttons ": ['pageLength', 'excel', 'copy'], // adds the excel button
+        "buttons": ['pageLength', 'excel', 'copy'], // adds the excel button
         order: [[0, 'desc']],
         "language": {
             "search": "Buscar",
@@ -62,7 +62,7 @@ $(function () {
                 "next": ">",
                 "previous": "<"
             },
-            "buttons": {
+            "buttons2": {
                 "pageLength": {
                     _: "Mostrar %d",
                     '-1': "Mostrar ∞"
@@ -74,6 +74,26 @@ $(function () {
                 },
                 "copyTitle": 'Copiar al portapapeles',
             }
+        }
+    });
+
+    // Filtrar por método de pago
+    $('#metodo-pago-puebla').on('change', function () {
+        var metodoPago = $(this).val();  // Obtener el valor seleccionado
+        if (metodoPago) {
+            table.column(2).search('^' + metodoPago + '$', true, false).draw();  // Aplicar búsqueda exacta en la columna de método de pago (columna 2)
+        } else {
+            table.column(2).search('').draw();  // Limpiar filtro si no hay selección
+        }
+    });
+
+    // Filtrar por método de pago
+    $('#metodo-pago-polanco').on('change', function () {
+        var metodoPago = $(this).val();  // Obtener el valor seleccionado
+        if (metodoPago) {
+            tablepolanco.column(2).search('^' + metodoPago + '$', true, false).draw();  // Aplicar búsqueda exacta en la columna de método de pago (columna 2)
+        } else {
+            tablepolanco.column(2).search('').draw();  // Limpiar filtro si no hay selección
         }
     });
 

@@ -41,6 +41,16 @@ $(function () {
         }
     });
 
+    // Filtrar por método de pago
+    $('#metodo-pago').on('change', function () {
+        var metodoPago = $(this).val();  // Obtener el valor seleccionado
+        if (metodoPago) {
+            tablepolanco.column(2).search('^' + metodoPago + '$', true, false).draw();  // Aplicar búsqueda exacta en la columna de método de pago (columna 2)
+        } else {
+            tablepolanco.column(2).search('').draw();  // Limpiar filtro si no hay selección
+        }
+    });
+
     // Filtro por fecha
     $.fn.dataTable.ext.search.push(
         function (settings, data, dataIndex) {

@@ -9,6 +9,16 @@ class Metodos_model extends CI_Model {
         return $query;
     }
 
+    public function obtener_para_filtro() {
+        $query = $this->db
+            ->distinct()  // Asegura que los resultados sean únicos
+            ->select("t1.metodo_id, t2.*")
+            ->from('ventas t1')
+            ->join('metodos_pago t2', 't1.metodo_id = t2.id')
+            ->get();
+        return $query;
+    }
+
     public function obtener_todos_los_activos() {
         $query = $this->db
             ->where('estatus', 'activo')

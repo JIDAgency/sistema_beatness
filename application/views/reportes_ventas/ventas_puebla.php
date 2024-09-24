@@ -45,6 +45,17 @@
                                             <input type="date" id="fecha-activacion" name="fecha-activacion" class="form-control">
                                         </div>
                                     </div>
+                                    <div class="col-4">
+                                        <div class="form-group">
+                                            <label for="metodo-pago">Método de pago:</label>
+                                            <select name="metodo-pago" id="metodo-pago" class="form-control">
+                                                <option value="">Selecciones un método de pago...</option>
+                                                <?php foreach ($metodos_pago as $key => $metodo_pago) :?>
+                                                    <option value="<?php echo $metodo_pago->nombre?>"><?php echo $metodo_pago->nombre?></option>
+                                                <?php endforeach;?>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
                                 <br>
                                 <table id="tabla-ventas" class="table display nowrap table-striped table-bordered scroll-horizontal table-hover">
