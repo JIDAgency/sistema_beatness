@@ -33,7 +33,6 @@
 								</ul>
 							</div>
 						</div>
-						<hr>
 						<div class="card-content collapse show">
 							<div class="card-body card-dashboard">
 								<h1>Ventas de sucursal Puebla</h1>

@@ -45,9 +45,9 @@ class Reportes_ventas extends MY_Controller
         $fecha_actual = (new DateTime(date('Y-m-d')))->modify('first day of next month');
         $intervalo = DateInterval::createFromDateString('1 month');
         $periodo = new DatePeriod($fecha_inicio, $intervalo, $fecha_actual);
-        
+
         foreach ($periodo as $meses_del_periodo) {
-            array_push($meses_b3,$meses_del_periodo->format("Y-m"));
+            array_push($meses_b3, $meses_del_periodo->format("Y-m"));
         }
 
         $todas_las_ventas_registradas = $this->ventas_model->obtener_todas();
@@ -59,19 +59,19 @@ class Reportes_ventas extends MY_Controller
         $data['todas_las_ventas_registradas_polanco'] = $todas_las_ventas_registradas_polanco;
 
         //Recorrido de todas las ventas PUEBLA
-        foreach($todas_las_ventas_registradas->result() as $ventas_row){
+        foreach ($todas_las_ventas_registradas->result() as $ventas_row) {
             //El total de historico de todas las ventas PUEBLA
             $total_de_ventas = $total_de_ventas + $ventas_row->total;
         }
 
         //Recorrido de todas las ventas PUEBLA
-        foreach($todas_las_ventas_registradas_puebla->result() as $ventas_row){
+        foreach ($todas_las_ventas_registradas_puebla->result() as $ventas_row) {
             //El total de historico de todas las ventas PUEBLA
             $total_de_ventas_puebla = $total_de_ventas_puebla + $ventas_row->total;
         }
 
         //Recorrido de todas las ventas POLANCO
-        foreach($todas_las_ventas_registradas_polanco->result() as $ventas_row){
+        foreach ($todas_las_ventas_registradas_polanco->result() as $ventas_row) {
             //El total de historico de todas las ventas POLANCO
             $total_de_ventas_polanco = $total_de_ventas_polanco + $ventas_row->total;
         }
@@ -82,6 +82,124 @@ class Reportes_ventas extends MY_Controller
         $data['total_de_ventas_polanco'] = $total_de_ventas_polanco;
 
         $this->construir_private_site_ui('reportes_ventas/index', $data);
+    }
+
+    public function ventas_puebla()
+    {
+        $data['menu_reportes_ventas_activo'] = true;
+        $data['pagina_titulo'] = 'Reportes de ventas Puebla ';
+        $data['mensaje_exito'] = $this->session->flashdata('MENSAJE_EXITO');
+        $data['mensaje_info'] = $this->session->flashdata('MENSAJE_INFO');
+        $data['mensaje_error'] = $this->session->flashdata('MENSAJE_ERROR');
+
+        // Cargar estilos y scripts
+        $data['styles'] = array(
+            array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/tables/datatable/datatables.min.css'),
+            array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/tables/extensions/responsive.dataTables.min.css'),
+        );
+        $data['scripts'] = array(
+            array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/tables/datatable/datatables.min.js'),
+            array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js'),
+            array('es_rel' => true, 'src' => 'reportes_ventas/ventas_puebla.js'),
+        );
+
+        //Variables
+        $total_de_ventas = 0;
+        $total_de_ventas_puebla = 0;
+        $meses_b3 = array();
+        $total_meses_b3 = array();
+
+        //Obtener los meses del inicio 2019-01-14 en adelante
+        $fecha_inicio = (new DateTime('2019-1-14'))->modify('first day of this month');
+        $fecha_actual = (new DateTime(date('Y-m-d')))->modify('first day of next month');
+        $intervalo = DateInterval::createFromDateString('1 month');
+        $periodo = new DatePeriod($fecha_inicio, $intervalo, $fecha_actual);
+
+        foreach ($periodo as $meses_del_periodo) {
+            array_push($meses_b3, $meses_del_periodo->format("Y-m"));
+        }
+
+        $todas_las_ventas_registradas = $this->ventas_model->obtener_todas();
+        $todas_las_ventas_registradas_puebla = $this->ventas_model->obtener_ventas_puebla();
+
+        $data['todas_las_ventas_registradas'] = $todas_las_ventas_registradas;
+        $data['todas_las_ventas_registradas_puebla'] = $todas_las_ventas_registradas_puebla;
+
+        //Recorrido de todas las ventas PUEBLA
+        foreach ($todas_las_ventas_registradas->result() as $ventas_row) {
+            //El total de historico de todas las ventas PUEBLA
+            $total_de_ventas = $total_de_ventas + $ventas_row->total;
+        }
+
+        //Recorrido de todas las ventas PUEBLA
+        foreach ($todas_las_ventas_registradas_puebla->result() as $ventas_row) {
+            //El total de historico de todas las ventas PUEBLA
+            $total_de_ventas_puebla = $total_de_ventas_puebla + $ventas_row->total;
+        }
+
+        $data['total_de_ventas'] = $total_de_ventas;
+        $data['total_de_ventas_puebla'] = $total_de_ventas_puebla;
+
+        $this->construir_private_site_ui('reportes_ventas/ventas_puebla', $data);
+    }
+
+    public function ventas_polanco()
+    {
+        $data['menu_reportes_ventas_activo'] = true;
+        $data['pagina_titulo'] = 'Reportes de ventas Polanco ';
+        $data['mensaje_exito'] = $this->session->flashdata('MENSAJE_EXITO');
+        $data['mensaje_info'] = $this->session->flashdata('MENSAJE_INFO');
+        $data['mensaje_error'] = $this->session->flashdata('MENSAJE_ERROR');
+
+        // Cargar estilos y scripts
+        $data['styles'] = array(
+            array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/tables/datatable/datatables.min.css'),
+            array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/tables/extensions/responsive.dataTables.min.css'),
+        );
+        $data['scripts'] = array(
+            array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/tables/datatable/datatables.min.js'),
+            array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js'),
+            array('es_rel' => true, 'src' => 'reportes_ventas/ventas_polanco.js'),
+        );
+
+        //Variables
+        $total_de_ventas = 0;
+        $total_de_ventas_polanco = 0;
+        $meses_b3 = array();
+        $total_meses_b3 = array();
+
+        //Obtener los meses del inicio 2019-01-14 en adelante
+        $fecha_inicio = (new DateTime('2019-1-14'))->modify('first day of this month');
+        $fecha_actual = (new DateTime(date('Y-m-d')))->modify('first day of next month');
+        $intervalo = DateInterval::createFromDateString('1 month');
+        $periodo = new DatePeriod($fecha_inicio, $intervalo, $fecha_actual);
+
+        foreach ($periodo as $meses_del_periodo) {
+            array_push($meses_b3, $meses_del_periodo->format("Y-m"));
+        }
+
+        $todas_las_ventas_registradas = $this->ventas_model->obtener_todas();
+        $todas_las_ventas_registradas_polanco = $this->ventas_model->obtener_ventas_polanco();
+
+        $data['todas_las_ventas_registradas'] = $todas_las_ventas_registradas;
+        $data['todas_las_ventas_registradas_polanco'] = $todas_las_ventas_registradas_polanco;
+
+        //Recorrido de todas las ventas polanco
+        foreach ($todas_las_ventas_registradas->result() as $ventas_row) {
+            //El total de historico de todas las ventas polanco
+            $total_de_ventas = $total_de_ventas + $ventas_row->total;
+        }
+
+        //Recorrido de todas las ventas polanco
+        foreach ($todas_las_ventas_registradas_polanco->result() as $ventas_row) {
+            //El total de historico de todas las ventas polanco
+            $total_de_ventas_polanco = $total_de_ventas_polanco + $ventas_row->total;
+        }
+
+        $data['total_de_ventas'] = $total_de_ventas;
+        $data['total_de_ventas_polanco'] = $total_de_ventas_polanco;
+
+        $this->construir_private_site_ui('reportes_ventas/ventas_polanco', $data);
     }
 
     public function cancelar($id = null)
@@ -136,7 +254,7 @@ class Reportes_ventas extends MY_Controller
         );
 
         if ($this->ventas_model->editar($venta_a_cancelar->id, $data_venta)) {
-            $this->session->set_flashdata('MENSAJE_EXITO', 'La CANCELACIÓN venta #'.$venta_a_cancelar->id.' se ha hecho correctamente.');
+            $this->session->set_flashdata('MENSAJE_EXITO', 'La CANCELACIÓN venta #' . $venta_a_cancelar->id . ' se ha hecho correctamente.');
             redirect('reportes_ventas/index');
         }
 
@@ -145,13 +263,13 @@ class Reportes_ventas extends MY_Controller
     }
 
 
-    function debug_to_console($data = null) {
+    function debug_to_console($data = null)
+    {
 
         $output = $data;
 
-        if ( is_array( $output ) )
-        {
-            $output = implode( ',', $output);
+        if (is_array($output)) {
+            $output = implode(',', $output);
         }
 
         echo "<script>console.log( 'Que vas a probar: " . $output . "' );</script>";

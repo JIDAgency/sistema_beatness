@@ -151,6 +151,9 @@
                             <li data-menu=""><a class="dropdown-item" href="<?php echo site_url('ventas/frontdesk'); ?>" data-toggle="dropdown">Ventas del día</a></li>
                             <li data-menu=""><a class="dropdown-item" href="<?php echo site_url('ventas/suscripciones'); ?>" data-toggle="dropdown">Suscripciones</a></li>
                             <li data-menu=""><a class="dropdown-item" href="<?php echo site_url('reportes_ventas'); ?>" data-toggle="dropdown">Registros de ventas</a></li>
+                            <hr>
+                            <li data-menu=""><a class="dropdown-item" href="<?php echo site_url('reportes_ventas/ventas_puebla'); ?>" data-toggle="dropdown">Registros de ventas Puebla</a></li>
+                            <li data-menu=""><a class="dropdown-item" href="<?php echo site_url('reportes_ventas/ventas_polanco'); ?>" data-toggle="dropdown">Registros de ventas Polanco</a></li>
                         </ul>
                     </li>
 
@@ -216,6 +219,9 @@
                             <li data-menu=""><a class="dropdown-item" href="<?php echo site_url('ventas/frontdesk'); ?>" data-toggle="dropdown">Ventas del día</a></li>
                             <li data-menu=""><a class="dropdown-item" href="<?php echo site_url('ventas/suscripciones'); ?>" data-toggle="dropdown">Suscripciones</a></li>
                             <li data-menu=""><a class="dropdown-item" href="<?php echo site_url('reportes_ventas'); ?>" data-toggle="dropdown">Registros de ventas</a></li>
+                            <hr>
+                            <li data-menu=""><a class="dropdown-item" href="<?php echo site_url('reportes_ventas/ventas_puebla'); ?>" data-toggle="dropdown">Registros de ventas Puebla</a></li>
+                            <li data-menu=""><a class="dropdown-item" href="<?php echo site_url('reportes_ventas/ventas_polanco'); ?>" data-toggle="dropdown">Registros de ventas Polanco</a></li>
                         </ul>
                     </li>
 
