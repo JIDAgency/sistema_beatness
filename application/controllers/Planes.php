@@ -224,7 +224,8 @@ class Planes extends MY_Controller
             $this->form_validation->set_rules('es_estudiante', 'es_estudiante', 'required');
             $this->form_validation->set_rules('es_empresarial', 'es_empresarial', 'required');
             $this->form_validation->set_rules('pagar_en', 'pagar_en', 'required');
-            $this->form_validation->set_rules('url_pago', 'url_pago', 'required');
+            $this->form_validation->set_rules('url_pago', 'url_pago', 'trim');
+            $this->form_validation->set_rules('mostrar_en_app', 'mostrar_en_app', 'required');
             $this->form_validation->set_rules('activado', 'activado', 'required');
             $this->form_validation->set_rules('codigo', 'Código', 'trim');
             $this->form_validation->set_rules('url_infoventa', 'Imagen de información', 'trim');
@@ -315,6 +316,7 @@ class Planes extends MY_Controller
                     'es_empresarial' => $this->input->post('es_empresarial'),
                     'pagar_en' => $this->input->post('pagar_en'),
                     'url_pago' => $this->input->post('url_pago'),
+                    'mostrar_en_app' => $this->input->post('mostrar_en_app'),
                     'activado' => $this->input->post('activado'),
                     'codigo' => $this->input->post('codigo'),
                     'terminos_condiciones' => $this->input->post('terminos_condiciones'),
@@ -391,7 +393,8 @@ class Planes extends MY_Controller
             $this->form_validation->set_rules('es_estudiante', 'Es estudiante', 'trim|required');
             $this->form_validation->set_rules('es_empresarial', 'Pertenece a una empresa', 'trim|required');
             $this->form_validation->set_rules('pagar_en', 'Pagar en', 'trim|required');
-            $this->form_validation->set_rules('url_pago', 'URL de pago', 'trim|required');
+            $this->form_validation->set_rules('url_pago', 'URL de pago', 'trim');
+            $this->form_validation->set_rules('mostrar_en_app', 'Mostrar en APP', 'trim|required');
             $this->form_validation->set_rules('activado', 'Activado', 'trim|required');
             $this->form_validation->set_rules('codigo', 'Código', 'trim');
             $this->form_validation->set_rules('disciplinas[]', 'disciplinas', 'trim');
@@ -480,6 +483,7 @@ class Planes extends MY_Controller
                     'es_empresarial' => $this->input->post('es_empresarial'),
                     'pagar_en' => $this->input->post('pagar_en'),
                     'url_pago' => $this->input->post('url_pago'),
+                    'mostrar_en_app' => $this->input->post('mostrar_en_app'),
                     'activado' => $this->input->post('activado'),
                     'codigo' => $this->input->post('codigo'),
                     'terminos_condiciones' => $this->input->post('terminos_condiciones'),

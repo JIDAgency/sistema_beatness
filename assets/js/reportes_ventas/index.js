@@ -10,7 +10,43 @@ $(function () {
         "autoWidth": false,
         "deferRender": true,
         'processing': true,
-        'lengthMenu': [[100, 250, 500, -1], [100, 250, 500, "Todos"]],
+        'lengthMenu': [[25, 100, 250, 500, -1], [25, 100, 250, 500, "Todos"]],
+        "dom": 'Bfrtip',
+        "buttons": ['pageLength', 'excel', 'copy'], // adds the excel button
+        order: [[0, 'desc']],
+        "language": {
+            "search": "Buscar",
+            "infoEmpty": "No hay registros que mostrar",
+            "infoFiltered": " - ( filtrado de _MAX_ registros )",
+            "zeroRecords": "No hay registros que mostrar",
+            "info": "Mostrando _START_ a _END_ de _TOTAL_ registros",
+            "paginate": {
+                "first": "«",
+                "last": "»",
+                "next": ">",
+                "previous": "<"
+            },
+            "buttons": {
+                "pageLength": {
+                    _: "Mostrar %d",
+                    '-1': "Mostrar ∞"
+                },
+                "copy": 'Copiar',
+                "copySuccess": {
+                    1: "Copio una fila al portapapeles",
+                    _: "Copio %d filas al portapapeles"
+                },
+                "copyTitle": 'Copiar al portapapeles',
+            }
+        }
+    });
+
+    var tablepolanco = $("#tabla-ventas-polanco").DataTable({
+        "scrollX": true,
+        "autoWidth": false,
+        "deferRender": true,
+        'processing': true,
+        'lengthMenu': [[25, 100, 250, 500, -1], [25, 100, 250, 500, "Todos"]],
         "dom": 'Bfrtip',
         "buttons": ['pageLength', 'excel', 'copy'], // adds the excel button
         order: [[0, 'desc']],
@@ -66,8 +102,37 @@ $(function () {
         }
     );
 
+    // Filtro por fecha
+    $.fn.dataTable.ext.search.push(
+        function (settings, data, dataIndex) {
+            var minDate = $('#fecha-venta-polanco').val();
+            var maxDate = $('#fecha-activacion-polanco').val();
+            var fechaVenta = data[16]; // Índice de la columna "Fecha de venta"
+
+            // Convertir las fechas de entrada a objetos Date
+            var min = minDate ? new Date(minDate + 'T00:00:00') : null;
+            var max = maxDate ? new Date(maxDate + 'T23:59:59') : null;
+            var fecha = new Date(fechaVenta);
+
+            // Comparar las fechas
+            if (
+                (min === null && max === null) ||
+                (min === null && fecha <= max) ||
+                (min <= fecha && max === null) ||
+                (min <= fecha && fecha <= max)
+            ) {
+                return true;
+            }
+            return false;
+        }
+    );
+
     $("#fecha-venta, #fecha-activacion").on('change', function () {
         table.draw();
+    });
+
+    $("#fecha-venta-polanco, #fecha-activacion-polanco").on('change', function () {
+        tablepolanco.draw();
     });
 
     $("#tabla-ventas").on('search.dt', function () {
@@ -80,6 +145,18 @@ $(function () {
         }
 
         document.getElementById("ttl").textContent = formatMoney(suma);
+    });
+
+    $("#tabla-ventas-polanco").on('search.dt', function () {
+        var rest = [], suma = 0;
+        var resultado = tablepolanco.column(6, { page: 'current' }).data();
+
+        for (var i = 0; i < resultado.length; i++) {
+            rest[i] = resultado[i].replace(/[^\d\.]*/g, '');
+            suma += parseFloat(rest[i]);
+        }
+
+        document.getElementById("ttlpolanco").textContent = formatMoney(suma);
     });
 
     function formatMoney(n, c, d, t) {

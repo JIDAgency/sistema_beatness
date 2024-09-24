@@ -629,6 +629,90 @@ class Ventas_model extends CI_Model
         return $resultados;
     }
 
+    public function obtener_ventas_puebla()
+    {
+        // Para la columna `t5.locacion`
+        $this->db->group_start()
+            ->where("t5.locacion", 'Puebla Paseo del Sur')
+            ->or_where("t5.locacion", 'Cloud')
+            ->group_end();
+
+        // Condición para `t2.nombre` que no contenga 'POLANCO', 'POL', 'CDMX'
+        $this->db->group_start()
+            ->not_like("t2.nombre", 'POLANCO')
+            ->not_like("t2.nombre", 'POL')
+            ->not_like("t2.nombre", 'CDMX')
+            ->group_end();
+
+        // Condición para `t1.concepto` que no contenga 'POLANCO', 'POL', 'CDMX'
+        $this->db->group_start()
+            ->not_like("t1.concepto", 'POLANCO')
+            ->not_like("t1.concepto", 'POL')
+            ->not_like("t1.concepto", 'CDMX')
+            ->group_end();
+
+        // Agregar el select y la obtención de resultados
+        $this->db->select("t1.*,
+        t2.clases_incluidas as clases_incluidas,
+        t2.clases_usadas as clases_usadas,
+        t2.vigencia_en_dias as vigencia_en_dias,
+        t2.fecha_activacion as fecha_activacion,
+        CONCAT(COALESCE(t3.nombre_completo, 'N/D'), ' ', COALESCE(t3.apellido_paterno, 'N/D'), ' ', COALESCE(t3.apellido_materno, 'N/D')) as usuario,
+        t5.locacion as sucursales_locacion,
+        t4.nombre as metodo");
+
+        $this->db->from("ventas t1");
+        $this->db->join("asignaciones t2", "t1.asignacion_id = t2.id");
+        $this->db->join("usuarios t3", "t1.usuario_id = t3.id");
+        $this->db->join("metodos_pago t4", "t1.metodo_id = t4.id");
+        $this->db->join("sucursales t5", "t1.sucursal_id = t5.id");
+
+        $resultados = $this->db->get();
+        return $resultados;
+    }
+
+    public function obtener_ventas_polanco()
+    {
+        // Para la columna `t5.locacion`
+        $this->db->group_start()
+            ->where("t5.locacion", 'CDMX Polanco')
+            ->or_where("t5.locacion", 'Cloud')
+            ->group_end();
+
+        // Para la columna `t2.nombre`, buscar si contiene la palabra 'PUEBLA' o 'PUE'
+        $this->db->group_start()
+            ->like("t2.nombre", 'POLANCO')
+            ->or_like("t2.nombre", 'POL')
+            ->or_like("t2.nombre", 'CDMX')
+            ->group_end();
+
+        // Para la columna `t1.concepto`, buscar si contiene la palabra 'PUEBLA' o 'PUE'
+        $this->db->group_start()
+            ->like("t1.concepto", 'POLANCO')
+            ->or_like("t1.concepto", 'POL')
+            ->or_like("t1.concepto", 'CDMX')
+            ->group_end();
+
+        // Agregar el select y la obtención de resultados
+        $this->db->select("t1.*,
+        t2.clases_incluidas as clases_incluidas,
+        t2.clases_usadas as clases_usadas,
+        t2.vigencia_en_dias as vigencia_en_dias,
+        t2.fecha_activacion as fecha_activacion,
+        CONCAT(COALESCE(t3.nombre_completo, 'N/D'), ' ', COALESCE(t3.apellido_paterno, 'N/D'), ' ', COALESCE(t3.apellido_materno, 'N/D')) as usuario,
+        t5.locacion as sucursales_locacion,
+        t4.nombre as metodo");
+
+        $this->db->from("ventas t1");
+        $this->db->join("asignaciones t2", "t1.asignacion_id = t2.id");
+        $this->db->join("usuarios t3", "t1.usuario_id = t3.id");
+        $this->db->join("metodos_pago t4", "t1.metodo_id = t4.id");
+        $this->db->join("sucursales t5", "t1.sucursal_id = t5.id");
+
+        $resultados = $this->db->get();
+        return $resultados;
+    }
+
     public function obtener_todas_para_front()
     {
         $this->db->select("t1.*,

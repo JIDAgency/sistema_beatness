@@ -35,6 +35,8 @@ class Reportes_ventas extends MY_Controller
 
         //Variables
         $total_de_ventas = 0;
+        $total_de_ventas_puebla = 0;
+        $total_de_ventas_polanco = 0;
         $meses_b3 = array();
         $total_meses_b3 = array();
 
@@ -49,19 +51,35 @@ class Reportes_ventas extends MY_Controller
         }
 
         $todas_las_ventas_registradas = $this->ventas_model->obtener_todas();
+        $todas_las_ventas_registradas_puebla = $this->ventas_model->obtener_ventas_puebla();
+        $todas_las_ventas_registradas_polanco = $this->ventas_model->obtener_ventas_polanco();
 
         $data['todas_las_ventas_registradas'] = $todas_las_ventas_registradas;
+        $data['todas_las_ventas_registradas_puebla'] = $todas_las_ventas_registradas_puebla;
+        $data['todas_las_ventas_registradas_polanco'] = $todas_las_ventas_registradas_polanco;
 
-        //Recorrido de todas las ventas
+        //Recorrido de todas las ventas PUEBLA
         foreach($todas_las_ventas_registradas->result() as $ventas_row){
-
-            //El total de historico de todas las ventas
+            //El total de historico de todas las ventas PUEBLA
             $total_de_ventas = $total_de_ventas + $ventas_row->total;
+        }
 
-            
+        //Recorrido de todas las ventas PUEBLA
+        foreach($todas_las_ventas_registradas_puebla->result() as $ventas_row){
+            //El total de historico de todas las ventas PUEBLA
+            $total_de_ventas_puebla = $total_de_ventas_puebla + $ventas_row->total;
+        }
+
+        //Recorrido de todas las ventas POLANCO
+        foreach($todas_las_ventas_registradas_polanco->result() as $ventas_row){
+            //El total de historico de todas las ventas POLANCO
+            $total_de_ventas_polanco = $total_de_ventas_polanco + $ventas_row->total;
         }
 
         $data['total_de_ventas'] = $total_de_ventas;
+        $data['total_de_ventas_2'] = $total_de_ventas_puebla + $total_de_ventas_polanco;
+        $data['total_de_ventas_puebla'] = $total_de_ventas_puebla;
+        $data['total_de_ventas_polanco'] = $total_de_ventas_polanco;
 
         $this->construir_private_site_ui('reportes_ventas/index', $data);
     }
@@ -122,6 +140,7 @@ class Reportes_ventas extends MY_Controller
             redirect('reportes_ventas/index');
         }
 
+        $data[] = '';
         $this->construir_private_site_ui('reportes_ventas/crear_personalizada', $data);
     }
 
