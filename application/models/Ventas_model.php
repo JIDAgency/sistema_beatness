@@ -659,13 +659,19 @@ class Ventas_model extends CI_Model
         t2.fecha_activacion as fecha_activacion,
         CONCAT(COALESCE(t3.nombre_completo, 'N/D'), ' ', COALESCE(t3.apellido_paterno, 'N/D'), ' ', COALESCE(t3.apellido_materno, 'N/D')) as usuario,
         t5.locacion as sucursales_locacion,
-        t4.nombre as metodo");
+        t4.nombre as metodo,");
 
         $this->db->from("ventas t1");
         $this->db->join("asignaciones t2", "t1.asignacion_id = t2.id");
         $this->db->join("usuarios t3", "t1.usuario_id = t3.id");
         $this->db->join("metodos_pago t4", "t1.metodo_id = t4.id");
-        $this->db->join("sucursales t5", "t1.sucursal_id = t5.id");
+
+        // Aquí usaremos FIND_IN_SET para validar los IDs de disciplinas
+        $this->db->join("disciplinas t6", "FIND_IN_SET(t6.id, REPLACE(t2.disciplinas, '|', ',')) > 0");
+        $this->db->join("sucursales t5", "t6.sucursal_id = t5.id");
+
+        // Agrupar por el ID de la venta para evitar duplicados
+        $this->db->group_by('t1.id');
 
         $resultados = $this->db->get();
         return $resultados;
@@ -707,7 +713,13 @@ class Ventas_model extends CI_Model
         $this->db->join("asignaciones t2", "t1.asignacion_id = t2.id");
         $this->db->join("usuarios t3", "t1.usuario_id = t3.id");
         $this->db->join("metodos_pago t4", "t1.metodo_id = t4.id");
-        $this->db->join("sucursales t5", "t1.sucursal_id = t5.id");
+
+        // Aquí usaremos FIND_IN_SET para validar los IDs de disciplinas
+        $this->db->join("disciplinas t6", "FIND_IN_SET(t6.id, REPLACE(t2.disciplinas, '|', ',')) > 0");
+        $this->db->join("sucursales t5", "t6.sucursal_id = t5.id");
+
+        // Agrupar por el ID de la venta para evitar duplicados
+        $this->db->group_by('t1.id');
 
         $resultados = $this->db->get();
         return $resultados;
