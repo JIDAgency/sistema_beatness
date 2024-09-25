@@ -58,7 +58,7 @@
 										<div class="form-group">
 											<label for="metodo-pago-puebla">Método de pago:</label>
 											<select name="metodo-pago-puebla" id="metodo-pago-puebla" class="form-control">
-												<option value="">Selecciones un método de pago...</option>
+												<option value="">Todos</option>
 												<?php foreach ($metodos_pago as $key => $metodo_pago) : ?>
 													<option value="<?php echo $metodo_pago->nombre ?>"><?php echo $metodo_pago->nombre ?></option>
 												<?php endforeach; ?>
@@ -192,7 +192,7 @@
 										<div class="form-group">
 											<label for="metodo-pago-polanco">Método de pago:</label>
 											<select name="metodo-pago-polanco" id="metodo-pago-polanco" class="form-control">
-												<option value="">Selecciones un método de pago...</option>
+												<option value="">Todos</option>
 												<?php foreach ($metodos_pago as $key => $metodo_pago) : ?>
 													<option value="<?php echo $metodo_pago->nombre ?>"><?php echo $metodo_pago->nombre ?></option>
 												<?php endforeach; ?>

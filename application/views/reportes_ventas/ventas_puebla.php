@@ -49,7 +49,7 @@
                                         <div class="form-group">
                                             <label for="metodo-pago">Método de pago:</label>
                                             <select name="metodo-pago" id="metodo-pago" class="form-control">
-                                                <option value="">Selecciones un método de pago...</option>
+                                                <option value="">Todos</option>
                                                 <?php foreach ($metodos_pago as $key => $metodo_pago) :?>
                                                     <option value="<?php echo $metodo_pago->nombre?>"><?php echo $metodo_pago->nombre?></option>
                                                 <?php endforeach;?>
