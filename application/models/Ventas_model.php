@@ -671,7 +671,21 @@ class Ventas_model extends CI_Model
         $this->db->join("sucursales t5", "t6.sucursal_id = t5.id");
 
         // Agrupar por el ID de la venta para evitar duplicados
-        $this->db->group_by('t1.id');
+        // $this->db->group_by('t1.id');
+
+        // Agrupar por todas las columnas que no están agregadas
+        $this->db->group_by([
+            't1.id',                 // ID de la venta
+            't2.clases_incluidas',    // Clases incluidas
+            't2.clases_usadas',       // Clases usadas
+            't2.vigencia_en_dias',    // Vigencia en días
+            't2.fecha_activacion',    // Fecha de activación
+            't5.locacion',            // Locación de la sucursal
+            't4.nombre',              // Método de pago
+            't3.nombre_completo',     // Nombre del usuario
+            't3.apellido_paterno',    // Apellido paterno del usuario
+            't3.apellido_materno'     // Apellido materno del usuario
+        ]);
 
         $resultados = $this->db->get();
         return $resultados;
@@ -719,7 +733,21 @@ class Ventas_model extends CI_Model
         $this->db->join("sucursales t5", "t6.sucursal_id = t5.id");
 
         // Agrupar por el ID de la venta para evitar duplicados
-        $this->db->group_by('t1.id');
+        // $this->db->group_by('t1.id');
+
+        // Agrupar por todas las columnas no agregadas
+        $this->db->group_by([
+            't1.id',                 // ID de la venta
+            't2.clases_incluidas',    // Clases incluidas
+            't2.clases_usadas',       // Clases usadas
+            't2.vigencia_en_dias',    // Vigencia en días
+            't2.fecha_activacion',    // Fecha de activación
+            't5.locacion',            // Locación de la sucursal
+            't4.nombre',              // Método de pago
+            't3.nombre_completo',     // Nombre del usuario
+            't3.apellido_paterno',    // Apellido paterno del usuario
+            't3.apellido_materno'     // Apellido materno del usuario
+        ]);
 
         $resultados = $this->db->get();
         return $resultados;
