@@ -43,7 +43,7 @@ $(document).ready(function () {
             // { "data": "horario_esp" },
             { "data": "instructor_id" },
             { "data": "cupo" },
-            // { "data": "intervalo_horas" },
+            { "data": "intervalo_horas" },
             // { "data": "cupo_restantes" },
             // { "data": "cupo_original" },
             // { "data": "cupo_reservado" },

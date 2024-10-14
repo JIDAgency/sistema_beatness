@@ -207,9 +207,9 @@
 
 														<div class="form-group">
 															<div class="row">
-																<label class="col-lg-12 required-field" for="intervalo_horas">No. de clases a consumir del plan</label>
+																<label class="col-lg-12" for="intervalo_horas">No. de clases a consumir del plan</label>
 																<div class="col-lg-12">
-																	<input type="number" min="0" pattern="^[0-9]+" class="form-control" name="intervalo_horas" id="intervalo_horas" placeholder="No. de clases a consumir del plan" value="<?php echo set_value('intervalo_horas') == false ? ($this->session->flashdata('intervalo_horas') ? $this->session->flashdata('intervalo_horas') : 1) : set_value('intervalo_horas'); ?>" required>
+																	<input type="number" min="0" pattern="^[0-9]+" class="form-control" name="intervalo_horas" id="intervalo_horas" placeholder="No. de clases a consumir del plan" value="<?php echo set_value('intervalo_horas') == false ? ($this->session->flashdata('intervalo_horas') ? $this->session->flashdata('intervalo_horas') : 1) : set_value('intervalo_horas'); ?>" disabled>
 																	<div class="invalid-feedback">
 																		Se requiere un no. de clases a consumir del plan válido.
 																	</div>

@@ -74,7 +74,7 @@ class Clases extends MY_Controller
         $this->form_validation->set_rules('inicia_date', 'Fecha', 'required');
         $this->form_validation->set_rules('inicia_time', 'Hora', 'required');
         $this->form_validation->set_rules('distribucion_lugares', 'Distribución de lugares', 'required');
-        $this->form_validation->set_rules('intervalo_horas', 'Intervalo en horas', 'required');
+        // $this->form_validation->set_rules('intervalo_horas', 'Intervalo en horas');
         $this->form_validation->set_rules('dificultad', 'Dificultad', 'required');
 
         $sucursal = $this->session->userdata('filtro_clase_sucursal') ?: null;
@@ -316,7 +316,7 @@ class Clases extends MY_Controller
                 'img_acceso' => $img_acceso,
                 'inicia' => date('Y-m-d', strtotime(str_replace('/', '-', $this->input->post('inicia_date')))) . 'T' . $this->input->post('inicia_time'),
                 'inicia_ionic' => $fecha_numerica_de_la_clase,
-                'intervalo_horas' => $this->input->post('intervalo_horas'),
+                'intervalo_horas' => 1,
                 'distribucion_imagen' => $this->input->post('distribucion_imagen'),
                 'distribucion_lugares' => $this->input->post('distribucion_lugares'),
                 'dificultad' => $dificulta_nombre->nombre,
@@ -694,11 +694,12 @@ class Clases extends MY_Controller
             $fecha = strtotime($clase->inicia);
             $fecha_espaniol = strftime("%d de %B del %Y<br>%T", $fecha);
 
-            if ($clase->intervalo_horas != 1) {
-                $intervalo_horas = $clase->intervalo_horas . " hrs.";
-            } else {
-                $intervalo_horas = $clase->intervalo_horas . " hr.";
-            }
+            // if ($clase->intervalo_horas != 1) {
+            //     $intervalo_horas = $clase->intervalo_horas;
+            // } else {
+            //     $intervalo_horas = $clase->intervalo_horas;
+            // }
+            $intervalo_horas = $clase->intervalo_horas;
 
             $opciones = '';
             $fecha_de_clase = '';
@@ -747,7 +748,7 @@ class Clases extends MY_Controller
                 // 'horario_esp' => !empty($fecha_espaniol) ? ucfirst($fecha_espaniol) : '',
                 'instructor_id' => !empty($clase->instructor_nombre) ? ($clase->instructor_nombre) : '',
                 'cupo' => !empty($clase->cupo) ? ucfirst($cupos_restantes . ' / ' . $clase->cupo) : '',
-                // 'intervalo_horas' => !empty($intervalo_horas) ? mb_strtoupper($intervalo_horas) : '',
+                'intervalo_horas' => !empty($intervalo_horas) ? mb_strtoupper($intervalo_horas) : '',
                 // 'cupo_restantes' => !empty($clase->cupo - $clase->reservado) ? $clase->cupo - $clase->reservado : '',
                 // 'cupo_original' => !empty($clase->cupo) ? ucfirst($clase->cupo) : '',
                 // 'cupo_reservado' => !empty($clase->reservado) ? ucfirst($clase->reservado) : 0,

@@ -97,7 +97,7 @@
 													<th>Horario</th>
 													<th>Coach</th>
 													<th>Cupos</th>
-													<!-- <th>N. Horas</th> -->
+													<th>Numero de clases a consumir</th>
 													<!-- <th>Cupo restantes</th> -->
 													<!-- <th>Cupo original</th> -->
 													<!-- <th>Cupos reservados</th> -->
