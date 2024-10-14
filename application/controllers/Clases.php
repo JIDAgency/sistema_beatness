@@ -1297,6 +1297,9 @@ class Clases extends MY_Controller
         $grupo_muscular_list = $this->clases_categorias_model->obtener_todas()->result();
         $data['grupo_muscular_list'] = $grupo_muscular_list;
 
+        // $disciplina_id = $this->input->post('disciplina_id');
+        // $dificultades = $this->clases_categorias_model->obtener_dificultades($disciplina_id)->result();
+
         // Establecer validaciones
         $this->form_validation->set_rules('disciplina_id', 'Disciplina', 'required');
         $this->form_validation->set_rules('instructor_id', 'Instructor', 'required');
@@ -1305,7 +1308,7 @@ class Clases extends MY_Controller
         $this->form_validation->set_rules('inicia_time', 'Hora', 'required');
         $this->form_validation->set_rules('intervalo_horas', 'Intervalo en horas', 'required');
         $this->form_validation->set_rules('distribucion_lugares', 'Distribución de lugares', 'required');
-        //$this->form_validation->set_rules('dificultad', 'Dificultad', 'required');
+        $this->form_validation->set_rules('dificultad', 'Dificultad', 'required');
 
         if ($this->input->post()) {
             $id = $this->input->post('id');
@@ -1403,8 +1406,10 @@ class Clases extends MY_Controller
                 $img_acceso = base_url() . 'almacenamiento/img_app/img_acceso/acceso-vespertino.png';
             }
 
-            $dificultad = $this->input->post('dificultad');
-            list($dificultad_id, $dificultad_nombre) = explode('|', $dificultad);
+            // $dificultad = $this->input->post('dificultad');
+            // list($dificultad_id, $dificultad_nombre) = explode('|', $dificultad);
+
+            $dificultad = $this->clases_categorias_model->obtener_nombre_dificultad($this->input->post('dificultad'))->row();
 
             if ($clase_existente and ($clase_existente->intervalo_horas == $this->input->post('intervalo_horas')) and ($clase_existente->distribucion_imagen == $this->input->post('distribucion_imagen')) and ($clase_existente->distribucion_lugares == $this->input->post('distribucion_lugares'))) {
                 $this->session->set_flashdata('MENSAJE_INFO', 'La clase con los nuevos datos ya existe.');
@@ -1426,8 +1431,8 @@ class Clases extends MY_Controller
                     'intervalo_horas' => $this->input->post('intervalo_horas'),
                     'distribucion_imagen' => $this->input->post('distribucion_imagen'),
                     'distribucion_lugares' => $this->input->post('distribucion_lugares'),
-                    'dificultad' => $dificultad_nombre,
-                    'clase_categoria_id' => $dificultad_id,
+                    'dificultad' => $dificultad->nombre,
+                    'clase_categoria_id' => $this->input->post('dificultad'),
                 );
 
                 // Insertar nueva disciplina
