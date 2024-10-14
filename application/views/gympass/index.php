@@ -1,14 +1,5 @@
 <div class="app-content content center-layout">
     <div class="content-wrapper">
-
-        <div class="row">
-            <div class="col-12">
-                <div class="card card-vista-titulos">
-                    <h3 class="text-white"><strong><?php echo $pagina_titulo; ?></strong></h3>
-                </div>
-            </div>
-        </div>
-
         <div class="content-header row px-1 my-1">
 
             <div class="content-header-left col-md-6 col-12">

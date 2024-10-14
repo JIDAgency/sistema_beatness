@@ -1,14 +1,5 @@
 <div class="app-content content center-layout">
     <div class="content-wrapper">
-
-        <div class="row">
-            <div class="col-12">
-                <div class="card card-vista-titulos">
-                    <h3 class="text-white"><strong><?php echo $pagina_titulo; ?></strong></h3>
-                </div>
-            </div>
-        </div>
-
         <div class="content-header row px-1 my-1">
 
             <div class="content-header-left col-md-6 col-12">
@@ -58,6 +49,8 @@
                             <div class="card-content collapse show">
                                 <div class="card-body card-dashboard">
 
+                                    <p name="mensaje_en_pantalla" id="mensaje_en_pantalla"></p>
+
                                     <div class="row match-height">
 
                                         <div class="col-xl-8 col-md-8 col-sm-12">
@@ -79,7 +72,11 @@
                                                             <td><?php echo $disciplina->nombre; ?></td>
                                                             <td>
                                                                 <select class="form-control" id="select-<?php echo $disciplina->id; ?>" onchange="actualizar_disciplina(<?php echo $disciplina->id; ?>, this.value)">
-                                                                    <option value="0,0">Aún no asignado</option>
+                                                                    <?php if ($disciplina->gympass_product_id) : ?>
+                                                                        <option value="0,0">-- Sin asignar --*</option>
+                                                                    <?php else : ?>
+                                                                        <option value="0,0">-- Sin asignar --</option>
+                                                                    <?php endif; ?>
                                                                     <?php foreach ($list_products as $product) : ?>
                                                                         <option value="<?php echo $product->product_id . ',' . $product->gym_id; ?>" <?php echo ($product->product_id == $disciplina->gympass_product_id) ? 'selected' : ''; ?>>
                                                                             <?php echo $product->name . ' (ID: ' . $product->product_id . ')'; ?>
@@ -125,7 +122,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                 </div>
                             </div>
 

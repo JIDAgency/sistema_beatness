@@ -1,3 +1,5 @@
+const mensaje_en_pantalla = document.querySelector('#mensaje_en_pantalla');
+
 document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('select').forEach(function (select) {
         select.setAttribute('data-previous', select.value);
@@ -81,8 +83,10 @@ function actualizar_disciplina(disciplina_id, value) {
     let gympass_product_id = parts[0];
     let gympass_gym_id = parts[1];
 
+    mostrar_mensaje('<i class="fa fa-spinner spinner"></i> Procesando...', 'text-warning');
+
     if (gympass_product_id === valor_anterior) {
-        alert('No se realizaron cambios en el ID de Gympass.');
+        mostrar_mensaje('No se realizaron cambios en el ID de Gympass.', 'text-error');
         return;
     }
 
@@ -94,14 +98,19 @@ function actualizar_disciplina(disciplina_id, value) {
         .then(response => response.json())
         .then(data => {
             if (data.status === 'success') {
-                alert('ID de Gympass actualizado correctamente.');
+                mostrar_mensaje('ID de Gympass actualizado correctamente.', 'text-success');
                 select.setAttribute('data-previous', gympass_product_id);
             } else {
                 throw new Error(data.message);
             }
         })
         .catch(error => {
-            alert('Error al actualizar ID de Gympass: ' + error.message);
+            mostrar_mensaje('Error al actualizar ID de Gympass: ' + error.message, 'text-error');
             select.value = valor_anterior;
         });
+}
+
+function mostrar_mensaje(message, estilo) {
+    mensaje_en_pantalla.innerHTML = `${message}`;
+    mensaje_en_pantalla.className = `${estilo}`;
 }

@@ -14,7 +14,7 @@ class Gympass extends MY_Controller
     public function disciplinas()
     {
         $data['pagina_titulo'] = 'Disciplinas';
-        $data['pagina_subtitulo'] = 'Disciplinas | Gympass';
+        $data['pagina_subtitulo'] = 'Disciplinas | Wellhub';
         $data['pagina_gympass'] = true;
 
         $data['controlador'] = 'gympass';
@@ -98,16 +98,16 @@ class Gympass extends MY_Controller
         ];
 
         if ($this->wellhub_model->disciplina_editar($disciplina_id, $data)) {
-            $this->output_json(['status' => 'success', 'message' => 'ID de Gympass actualizado correctamente.']);
+            $this->output_json(['status' => 'success', 'message' => 'ID de Wellhub actualizado correctamente.']);
         } else {
-            $this->output_json(['status' => 'error', 'message' => 'Error al actualizar el ID de Gympass.']);
+            $this->output_json(['status' => 'error', 'message' => 'Error al actualizar el ID de Wellhub.']);
         }
     }
 
     function categorias()
     {
         $data['pagina_titulo'] = 'Categorías';
-        $data['pagina_subtitulo'] = 'Categorías | Gympass';
+        $data['pagina_subtitulo'] = 'Categorías | Wellhub';
         $data['pagina_gympass'] = true;
 
         $data['controlador'] = 'gympass/categorias';
@@ -148,7 +148,7 @@ class Gympass extends MY_Controller
             $categoria_row = $this->wellhub_model->categorias_obtener_por_id($id)->row();
 
             if (empty($categoria_row->gympass_class_id)) {
-                $this->output_json(['status' => 'error', 'message' => 'Esta categoría de clase aún no está vinculada a Gympass.']);
+                $this->output_json(['status' => 'error', 'message' => 'Esta categoría de clase aún no está vinculada a Wellhub.']);
                 return;
             }
 
@@ -158,12 +158,12 @@ class Gympass extends MY_Controller
             }
 
             if (empty($categoria_row->disciplinas_gympass_gym_id)) {
-                $this->output_json(['status' => 'error', 'message' => 'Esta sucursal de clase aún no está vinculada a Gympass.']);
+                $this->output_json(['status' => 'error', 'message' => 'Esta sucursal de clase aún no está vinculada a Wellhub.']);
                 return;
             }
 
             if (empty($categoria_row->disciplinas_gympass_product_id)) {
-                $this->output_json(['status' => 'error', 'message' => 'Esta disciplina de clase aún no está vinculada a Gympass.']);
+                $this->output_json(['status' => 'error', 'message' => 'Esta disciplina de clase aún no está vinculada a Wellhub.']);
                 return;
             }
 
@@ -206,10 +206,10 @@ class Gympass extends MY_Controller
 
                 $this->wellhub_model->categoria_actualizar_por_id($categoria_row->id, array('gympass_json' => json_encode($data_in, JSON_UNESCAPED_UNICODE)));
 
-                $this->output_json(['status' => 'success', 'message' => 'Categorías de Gympass actualizada correctamente.']);
+                $this->output_json(['status' => 'success', 'message' => 'Categorías de Wellhub actualizada correctamente.']);
             }
         } catch (Exception $e) {
-            $this->output_json(['status' => 'error', 'message' => 'Error al actualizar la Categorías de Gympass: ' . $e->getMessage()]);
+            $this->output_json(['status' => 'error', 'message' => 'Error al actualizar la Categorías de Wellhub: ' . $e->getMessage()]);
         }
     }
 
@@ -231,7 +231,7 @@ class Gympass extends MY_Controller
             $categoria_row = $this->wellhub_model->categorias_obtener_por_id($id)->row();
 
             if (!empty($categoria_row->gympass_class_id)) {
-                $this->output_json(['status' => 'error', 'message' => 'Esta Categoría ya se encuentra registrada en Gympass.']);
+                $this->output_json(['status' => 'error', 'message' => 'Esta Categoría ya se encuentra registrada en Wellhub.']);
                 return;
             }
 
@@ -241,12 +241,12 @@ class Gympass extends MY_Controller
             }
 
             if (empty($categoria_row->disciplinas_gympass_gym_id)) {
-                $this->output_json(['status' => 'error', 'message' => 'Esta sucursal de clase aún no está vinculada a Gympass.']);
+                $this->output_json(['status' => 'error', 'message' => 'Esta sucursal de clase aún no está vinculada a Wellhub.']);
                 return;
             }
 
             if (empty($categoria_row->disciplinas_gympass_product_id)) {
-                $this->output_json(['status' => 'error', 'message' => 'Esta disciplina de clase aún no está vinculada a Gympass.']);
+                $this->output_json(['status' => 'error', 'message' => 'Esta disciplina de clase aún no está vinculada a Wellhub.']);
                 return;
             }
 
@@ -272,17 +272,17 @@ class Gympass extends MY_Controller
 
                 $this->wellhub_model->categoria_actualizar_por_id($categoria_row->id, array('gympass_class_id' => $response['classes'][0]['id'], 'gympass_json' => json_encode($response, JSON_UNESCAPED_UNICODE)));
 
-                $this->output_json(['status' => 'success', 'message' => 'Categorías de Gympass registrada correctamente.']);
+                $this->output_json(['status' => 'success', 'message' => 'Categorías de Wellhub registrada correctamente.']);
             }
         } catch (Exception $e) {
-            $this->output_json(['status' => 'error', 'message' => 'Error al registrar la Categorías de Gympass: ' . $e->getMessage()]);
+            $this->output_json(['status' => 'error', 'message' => 'Error al registrar la Categorías de Wellhub: ' . $e->getMessage()]);
         }
     }
 
     public function clases()
     {
         $data['pagina_titulo'] = 'Clases';
-        $data['pagina_subtitulo'] = 'Clases | Gympass';
+        $data['pagina_subtitulo'] = 'Clases | Wellhub';
         $data['pagina_gympass'] = true;
 
         $data['controlador'] = 'gympass/clases';
@@ -346,7 +346,7 @@ class Gympass extends MY_Controller
             }
 
             if (!empty($clase_row->gympass_slot_id)) {
-                throw new Exception('Esta clase ya se encuentra registrada en Gympass.', 1002);
+                throw new Exception('Esta clase ya se encuentra registrada en Wellhub.', 1002);
             }
 
             $categoria_row = $this->wellhub_model->categorias_obtener_por_id($categoria)->row();
@@ -356,15 +356,15 @@ class Gympass extends MY_Controller
             }
 
             if (empty($categoria_row->gympass_class_id)) {
-                throw new Exception('La categoría especificada no tiene un Gympass Class ID asociado.', 1001);
+                throw new Exception('La categoría especificada no tiene un Wellhub Class ID asociado.', 1001);
             }
 
             if (empty($categoria_row->disciplinas_gympass_gym_id)) {
-                throw new Exception('Esta sucursal de clase aún no está vinculada a Gympass.', 1001);
+                throw new Exception('Esta sucursal de clase aún no está vinculada a Wellhub.', 1001);
             }
 
             if (empty($categoria_row->disciplinas_gympass_product_id)) {
-                throw new Exception('Esta disciplina de clase aún no está vinculada a Gympass.', 1001);
+                throw new Exception('Esta disciplina de clase aún no está vinculada a Wellhub.', 1001);
             }
 
             $class_datetime = $clase_row->inicia;
@@ -412,11 +412,11 @@ class Gympass extends MY_Controller
             $response = $this->gympass_lib->post_create_slot($categoria_row->disciplinas_gympass_gym_id, $categoria_row->gympass_class_id, $data_1);
 
             if (!is_array($response) || isset($response['error']) && $response['error'] === true) {
-                throw new Exception("Error: " . ($response['message'] ?? 'Respuesta inválida de Gympass.'), 1001);
+                throw new Exception("Error: " . ($response['message'] ?? 'Respuesta inválida de Wellhub.'), 1001);
             }
 
             if (empty($response['results']) || !isset($response['results'][0]['id'])) {
-                throw new Exception("La respuesta de Gympass no contiene un ID de slot válido.", 1001);
+                throw new Exception("La respuesta de Wellhub no contiene un ID de slot válido.", 1001);
             }
 
             $data_2 = array(
@@ -435,7 +435,7 @@ class Gympass extends MY_Controller
                 throw new Exception('La transacción falló al completar la operación.', 1001);
             }
 
-            $this->mensaje_del_sistema('MENSAJE_EXITO', 'La clase se ha registrado en Gympass correctamente.', 'gympass/clases');
+            $this->mensaje_del_sistema('MENSAJE_EXITO', 'La clase se ha registrado en Wellhub correctamente.', 'gympass/clases');
         } catch (Exception $e) {
             $this->db->trans_rollback();
             $mensaje_tipo = ($e->getCode() === 1002) ? 'MENSAJE_INFO' : 'MENSAJE_ERROR';
@@ -465,7 +465,7 @@ class Gympass extends MY_Controller
             }
 
             if (empty($clase_row->gympass_slot_id)) {
-                throw new Exception('Esta clase no se encuentra registrada en Gympass.', 1002);
+                throw new Exception('Esta clase no se encuentra registrada en Wellhub.', 1002);
             }
 
             $categoria_row = $this->wellhub_model->categorias_obtener_por_id($clase_row->categoria_id)->row();
@@ -475,15 +475,15 @@ class Gympass extends MY_Controller
             }
 
             if (empty($categoria_row->gympass_class_id)) {
-                throw new Exception('La categoría especificada no tiene un Gympass Class ID asociado.', 1001);
+                throw new Exception('La categoría especificada no tiene un Wellhub Class ID asociado.', 1001);
             }
 
             if (empty($categoria_row->disciplinas_gympass_gym_id)) {
-                throw new Exception('Esta sucursal de clase aún no está vinculada a Gympass.', 1001);
+                throw new Exception('Esta sucursal de clase aún no está vinculada a Wellhub.', 1001);
             }
 
             if (empty($categoria_row->disciplinas_gympass_product_id)) {
-                throw new Exception('Esta disciplina de clase aún no está vinculada a Gympass.', 1001);
+                throw new Exception('Esta disciplina de clase aún no está vinculada a Wellhub.', 1001);
             }
 
             $class_datetime = $clase_row->inicia;
@@ -532,11 +532,11 @@ class Gympass extends MY_Controller
             $response = $this->gympass_lib->put_update_slot($categoria_row->disciplinas_gympass_gym_id, $categoria_row->gympass_class_id, $clase_row->gympass_slot_id, $data_1);
 
             if (!is_array($response) || isset($response['error']) && $response['error'] === true) {
-                throw new Exception("Error: " . ($response['message'] ?? 'Respuesta inválida de Gympass.'), 1001);
+                throw new Exception("Error: " . ($response['message'] ?? 'Respuesta inválida de Wellhub.'), 1001);
             }
 
             if (empty($response['results']) || !isset($response['results'][0]['id'])) {
-                throw new Exception("La respuesta de Gympass no contiene un ID de slot válido.", 1001);
+                throw new Exception("La respuesta de Wellhub no contiene un ID de slot válido.", 1001);
             }
 
             $data_2 = array(
@@ -553,7 +553,7 @@ class Gympass extends MY_Controller
                 throw new Exception('La transacción falló al completar la operación.', 1001);
             }
 
-            $this->output_json(array('status' => 'success', 'message' => 'La clase se ha actualizado en Gympass correctamente.'));
+            $this->output_json(array('status' => 'success', 'message' => 'La clase se ha actualizado en Wellhub correctamente.'));
         } catch (Exception $e) {
             $this->db->trans_rollback();
             $mensaje_tipo = ($e->getCode() === 1002) ? 'info' : 'error';
@@ -583,7 +583,7 @@ class Gympass extends MY_Controller
             }
 
             if (empty($clase_row->gympass_slot_id)) {
-                throw new Exception('Esta clase no se encuentra registrada en Gympass.', 1002);
+                throw new Exception('Esta clase no se encuentra registrada en Wellhub.', 1002);
             }
 
             $categoria_row = $this->wellhub_model->categorias_obtener_por_id($clase_row->categoria_id)->row();
@@ -593,21 +593,21 @@ class Gympass extends MY_Controller
             }
 
             if (empty($categoria_row->gympass_class_id)) {
-                throw new Exception('La categoría especificada no tiene un Gympass Class ID asociado.', 1001);
+                throw new Exception('La categoría especificada no tiene un Wellhub Class ID asociado.', 1001);
             }
 
             if (empty($categoria_row->disciplinas_gympass_gym_id)) {
-                throw new Exception('Esta sucursal de clase aún no está vinculada a Gympass.', 1001);
+                throw new Exception('Esta sucursal de clase aún no está vinculada a Wellhub.', 1001);
             }
 
             if (empty($categoria_row->disciplinas_gympass_product_id)) {
-                throw new Exception('Esta disciplina de clase aún no está vinculada a Gympass.', 1001);
+                throw new Exception('Esta disciplina de clase aún no está vinculada a Wellhub.', 1001);
             }
 
             $response = $this->gympass_lib->delete_slot($categoria_row->disciplinas_gympass_gym_id, $categoria_row->gympass_class_id, $clase_row->gympass_slot_id);
 
             if (!empty($response) || isset($response['error']) && $response['error'] === true) {
-                throw new Exception("Error: " . ($response['message'] ?? 'Respuesta inválida de Gympass.'), 1001);
+                throw new Exception("Error: " . ($response['message'] ?? 'Respuesta inválida de Wellhub.'), 1001);
             }
 
             $data_2 = array(
@@ -626,7 +626,7 @@ class Gympass extends MY_Controller
                 throw new Exception('La transacción falló al completar la operación.', 1001);
             }
 
-            $this->output_json(array('status' => 'success', 'message' => 'La clase se ha eliminado en Gympass correctamente.'));
+            $this->output_json(array('status' => 'success', 'message' => 'La clase se ha eliminado en Wellhub correctamente.'));
         } catch (Exception $e) {
             $this->db->trans_rollback();
             $mensaje_tipo = ($e->getCode() === 1002) ? 'info' : 'error';
@@ -656,7 +656,7 @@ class Gympass extends MY_Controller
             }
 
             if (empty($clase_row->gympass_slot_id)) {
-                throw new Exception('Esta clase no se encuentra registrada en Gympass.', 1002);
+                throw new Exception('Esta clase no se encuentra registrada en Wellhub.', 1002);
             }
 
             $categoria_row = $this->wellhub_model->categorias_obtener_por_id($clase_row->categoria_id)->row();
@@ -666,15 +666,15 @@ class Gympass extends MY_Controller
             }
 
             if (empty($categoria_row->gympass_class_id)) {
-                throw new Exception('La categoría especificada no tiene un Gympass Class ID asociado.', 1001);
+                throw new Exception('La categoría especificada no tiene un Wellhub Class ID asociado.', 1001);
             }
 
             if (empty($categoria_row->disciplinas_gympass_gym_id)) {
-                throw new Exception('Esta sucursal de clase aún no está vinculada a Gympass.', 1001);
+                throw new Exception('Esta sucursal de clase aún no está vinculada a Wellhub.', 1001);
             }
 
             if (empty($categoria_row->disciplinas_gympass_product_id)) {
-                throw new Exception('Esta disciplina de clase aún no está vinculada a Gympass.', 1001);
+                throw new Exception('Esta disciplina de clase aún no está vinculada a Wellhub.', 1001);
             }
 
             $data_1 = array(
@@ -685,7 +685,7 @@ class Gympass extends MY_Controller
             $response = $this->gympass_lib->patch_update_slot($categoria_row->disciplinas_gympass_gym_id, $categoria_row->gympass_class_id, $clase_row->gympass_slot_id, $data_1);
 
             if (!empty($response) || isset($response['error']) && $response['error'] === true) {
-                throw new Exception("Error: " . ($response['message'] ?? 'Respuesta inválida de Gympass.'), 1001);
+                throw new Exception("Error: " . ($response['message'] ?? 'Respuesta inválida de Wellhub.'), 1001);
             }
 
             $this->db->trans_complete();
@@ -694,7 +694,7 @@ class Gympass extends MY_Controller
                 throw new Exception('La transacción falló al completar la operación.', 1001);
             }
 
-            $this->output_json(array('status' => 'success', 'message' => 'La clase se ha actualizado en Gympass correctamente.'));
+            $this->output_json(array('status' => 'success', 'message' => 'La clase se ha actualizado en Wellhub correctamente.'));
         } catch (Exception $e) {
             $this->db->trans_rollback();
             $mensaje_tipo = ($e->getCode() === 1002) ? 'info' : 'error';
@@ -709,8 +709,8 @@ class Gympass extends MY_Controller
 
     public function index()
     {
-        $data['pagina_titulo'] = 'Gympass';
-        $data['pagina_subtitulo'] = 'Gympass';
+        $data['pagina_titulo'] = 'Wellhub';
+        $data['pagina_subtitulo'] = 'Wellhub';
         $data['pagina_gympass'] = true;
 
         $data['controlador'] = 'gympass';
