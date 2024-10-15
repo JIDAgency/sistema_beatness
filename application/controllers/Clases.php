@@ -1282,6 +1282,7 @@ class Clases extends MY_Controller
         $data['styles'] = array(
             array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/extensions/datedropper.min.css'),
             array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/extensions/timedropper.min.css'),
+            array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/tables/datatable/datatables.min.css'),
             array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/forms/selects/select2.min.css'),
         );
         $data['scripts'] = array(
@@ -1289,6 +1290,7 @@ class Clases extends MY_Controller
             array('es_rel' => false, 'src' => 'https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/additional-methods.js'),
             array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/extensions/datedropper.min.js'),
             array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/extensions/timedropper.min.js'),
+            array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/tables/datatable/datatables.min.js'),
             array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/forms/select/select2.full.min.js'),
             array('es_rel' => false, 'src' => base_url() . 'app-assets/js/scripts/forms/select/form-select2.js'),
             array('es_rel' => true, 'src' => 'clases/editar.js'),

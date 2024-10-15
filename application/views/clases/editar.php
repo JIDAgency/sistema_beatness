@@ -48,36 +48,37 @@
 
 												<div class="row">
 													<div class="col-xl-12 col-md-12 col-sm-12">
-														<div class="form-group row">
-															<label for="terminos_condiciones" class="col-md-12"> Disciplina<span class="red">*</span></label>
-															<div class="col-md-12">
-																<select id="disciplina_id" name="disciplina_id" class="form-control select2 custom-select">
-																	<option value="">Seleccione la disciplina</option>
-																	<?php foreach ($disciplinas->result() as $disciplina) : ?>
-																		<?php
-																		if ($clase_a_editar->subdisciplina_id > 0) {
-																			$disciplina_que_se_editara = $clase_a_editar->subdisciplina_id;
-																		} else {
-																			$disciplina_que_se_editara = $clase_a_editar->disciplina_id;
-																		}
-																		?>
-																		<?php if ($disciplina->id != 1) : ?>
-																			<option value="<?php echo $disciplina->id; ?>" <?php echo set_select('disciplina_id', $disciplina_que_se_editara, set_value('disciplina_id') ? false : $disciplina->id == $disciplina_que_se_editara); ?>>
-																				<?php echo $disciplina->nombre; ?>
-																			</option>
-																		<?php endif; ?>
-																	<?php endforeach; ?>
-																</select>
+														<div class="form-group">
+															<div class="row">
+																<label for="terminos_condiciones" class="col-md-12"> Disciplina<span class="red">*</span></label>
+																<div class="col-md-12">
+																	<select id="disciplina_id" name="disciplina_id" class="form-control select2 custom-select">
+																		<option value="">Seleccione la disciplina</option>
+																		<?php foreach ($disciplinas->result() as $disciplina) : ?>
+																			<?php
+																			if ($clase_a_editar->subdisciplina_id > 0) {
+																				$disciplina_que_se_editara = $clase_a_editar->subdisciplina_id;
+																			} else {
+																				$disciplina_que_se_editara = $clase_a_editar->disciplina_id;
+																			}
+																			?>
+																			<?php if ($disciplina->id != 1) : ?>
+																				<option value="<?php echo $disciplina->id; ?>" <?php echo set_select('disciplina_id', $disciplina_que_se_editara, set_value('disciplina_id') ? false : $disciplina->id == $disciplina_que_se_editara); ?>>
+																					<?php echo $disciplina->nombre; ?>
+																				</option>
+																			<?php endif; ?>
+																		<?php endforeach; ?>
+																	</select>
+																</div>
 															</div>
 														</div>
-													</div>
+													</div>	
 
 													<div class="col-xl-12 col-md-12 col-sm-12">
 														<div class="form-group row">
 															<label for="dificultad" class="col-md-12"> Grupo muscular<span class="red">*</span></label>
 															<div class="col-md-12">
 																<select id="dificultad" name="dificultad" class="form-control select2 custom-select">
-																	<option value="" <?php echo set_select('dificultad', '', set_value('dificultad') ? false : '' == (!empty($this->session->flashdata('dificultad')) ? $this->session->flashdata('dificultad') : (!empty($clase_a_editar->dificultad) ? $clase_a_editar->dificultad : set_value('dificultad')))); ?>>Seleccione una opcion…</option>
 																	<?php foreach ($grupo_muscular_list as $key => $mostrar_row) : ?>
 																		<option value="<?php echo $mostrar_row->id; ?>" <?php echo set_select('dificultad', $clase_a_editar->dificultad, set_value('dificultad') ? false : $mostrar_row->nombre == $clase_a_editar->dificultad); ?>>
 																			<?php echo trim($mostrar_row->nombre); ?>
