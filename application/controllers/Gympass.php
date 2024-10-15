@@ -279,6 +279,55 @@ class Gympass extends MY_Controller
         }
     }
 
+    public function eliminar_categoria()
+    {
+        try {
+            if ($this->input->method(true) != 'POST') {
+                $this->output_json(['status' => 'error', 'message' => 'Método de solicitud no válido.']);
+                return;
+            }
+
+            $id = $this->input->post('id');
+
+            if (empty($id)) {
+                $this->output_json(['status' => 'error', 'message' => 'Faltan parámetros.']);
+                return;
+            }
+
+            $categoria_row = $this->wellhub_model->categorias_obtener_por_id($id)->row();
+
+            if (empty($categoria_row->gympass_class_id)) {
+                $this->output_json(['status' => 'error', 'message' => 'Esta categoría de clase aún no está vinculada a Wellhub.']);
+                return;
+            }
+
+            if (empty($categoria_row->disciplina_id)) {
+                $this->output_json(['status' => 'error', 'message' => 'Esta categoría de clase aún no está vinculada a una Disciplina.']);
+                return;
+            }
+
+            if (empty($categoria_row->disciplinas_gympass_gym_id)) {
+                $this->output_json(['status' => 'error', 'message' => 'Esta sucursal de clase aún no está vinculada a Wellhub.']);
+                return;
+            }
+
+            if (empty($categoria_row->disciplinas_gympass_product_id)) {
+                $this->output_json(['status' => 'error', 'message' => 'Esta disciplina de clase aún no está vinculada a Wellhub.']);
+                return;
+            }
+
+            if (!$this->wellhub_model->categoria_actualizar_por_id($categoria_row->id, array('gympass_class_id' => null, 'gympass_json' => json_encode(array('Se desvinculo de la categoría:' . $categoria_row->gympass_class_id), JSON_UNESCAPED_UNICODE)))) {
+                $this->output_json(['status' => 'error', 'message' => 'Error al eliminar la Categorías de Wellhub']);
+            }
+
+            $this->output_json(['status' => 'success', 'message' => 'Categorías de Wellhub eliminada correctamente.']);
+        } catch (Exception $e) {
+            $this->output_json(['status' => 'error', 'message' => 'Error al eliminar la Categorías de Wellhub: ' . $e->getMessage()]);
+        }
+    }
+
+
+
     public function clases()
     {
         $data['pagina_titulo'] = 'Clases';

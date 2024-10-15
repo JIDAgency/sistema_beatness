@@ -86,7 +86,7 @@ function actualizar_disciplina(disciplina_id, value) {
     mostrar_mensaje('<i class="fa fa-spinner spinner"></i> Procesando...', 'text-warning');
 
     if (gympass_product_id === valor_anterior) {
-        mostrar_mensaje('No se realizaron cambios en el ID de Gympass.', 'text-error');
+        mostrar_mensaje('No se realizaron cambios en el ID de Gympass.', 'text-danger');
         return;
     }
 
@@ -105,7 +105,7 @@ function actualizar_disciplina(disciplina_id, value) {
             }
         })
         .catch(error => {
-            mostrar_mensaje('Error al actualizar ID de Gympass: ' + error.message, 'text-error');
+            mostrar_mensaje('Error al actualizar ID de Gympass: ' + error.message, 'text-danger');
             select.value = valor_anterior;
         });
 }

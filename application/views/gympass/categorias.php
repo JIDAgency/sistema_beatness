@@ -1,16 +1,6 @@
 <div class="app-content content center-layout">
     <div class="content-wrapper">
-
-        <div class="row">
-            <div class="col-12">
-                <div class="card card-vista-titulos">
-                    <h3 class="text-white"><strong><?php echo $pagina_titulo; ?></strong></h3>
-                </div>
-            </div>
-        </div>
-
         <div class="content-header row px-1 my-1">
-
             <div class="content-header-left col-md-6 col-12">
 
                 <div class="row breadcrumbs-top">
@@ -58,9 +48,12 @@
                             <div class="card-content collapse show">
                                 <div class="card-body card-dashboard">
 
+                                    <p name="mensaje_en_pantalla" id="mensaje_en_pantalla"></p>
+
                                     <table name="table" id="table" class="table display nowrap table-striped table-bordered scroll-horizontal table-hover">
                                         <thead>
                                             <tr>
+                                                <th>Opciones</th>
                                                 <th>#</th>
                                                 <th>Nombre</th>
                                                 <th>Disciplina</th>
@@ -69,7 +62,6 @@
                                                 <th>Gympass Class ID</th>
                                                 <th>Descripción</th>
                                                 <th>Nota</th>
-                                                <th>Opciones</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -79,9 +71,12 @@
                                                     $opciones = '<a href="javascript:registrar(' . $categoria_value->id . ')">Registrar</a>';
                                                 } else {
                                                     $opciones = '<a href="javascript:actualizar(' . $categoria_value->id . ')">Actualizar</a>';
+                                                    $opciones .= ' | ';
+                                                    $opciones .= '<a href="javascript:eliminar(' . $categoria_value->id . ')">Eliminar</a>';
                                                 }
                                                 ?>
                                                 <tr>
+                                                    <td><?php echo $opciones; ?></td>
                                                     <td><?php echo $categoria_key + 1; ?></td>
                                                     <td><?php echo $categoria_value->nombre; ?></td>
                                                     <td><?php echo $categoria_value->disciplinas_nombre; ?></td>
@@ -90,7 +85,6 @@
                                                     <td><?php echo $categoria_value->gympass_class_id; ?></td>
                                                     <td><?php echo $categoria_value->descripcion; ?></td>
                                                     <td><?php echo $categoria_value->nota; ?></td>
-                                                    <td><?php echo $opciones; ?></td>
                                                 </tr>
 
                                             <?php endforeach; ?>
