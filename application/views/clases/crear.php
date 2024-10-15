@@ -121,7 +121,7 @@
 
 														<div class="form-group">
 															<div class="row">
-																<label class="col-lg-12 required-field" for="inicia_date">Fecha de clase</label>
+																<label class="col-lg-12 required-field" for="inicia_date">Fecha de clase<span class="red">*</span></label>
 																<div class="col-lg-6">
 																	<input type="date" class="form-control" name="inicia_date" id="inicia_date" placeholder="Fecha de clase" value="<?php echo set_value('inicia_date') == false ? ($this->session->flashdata('inicia_date') ? $this->session->flashdata('inicia_date') : date('Y-m-d')) : set_value('inicia_date'); ?>" required>
 																	<div class="invalid-feedback">
@@ -143,7 +143,7 @@
 
 														<div class="form-group">
 															<div class="row">
-																<label class="col-lg-12 required-field" for="cupo">Cupo de clase</label>
+																<label class="col-lg-12 required-field" for="cupo">Cupo de clase<span class="red">*</span></label>
 																<div class="col-lg-12">
 																	<input type="number" min="0" pattern="^[0-9]+" class="form-control" name="cupo" id="cupo" placeholder="Cupo de clase" value="<?php echo set_value('cupo') == false ? ($this->session->flashdata('cupo') ? $this->session->flashdata('cupo') : 20) : set_value('cupo'); ?>" required>
 																	<div class="invalid-feedback">
@@ -207,7 +207,7 @@
 
 														<div class="form-group">
 															<div class="row">
-																<label class="col-lg-12" for="intervalo_horas">No. de clases a consumir del plan</label>
+																<label class="col-lg-12" for="intervalo_horas">No. de clases a consumir del plan<span class="red">*</span></label>
 																<div class="col-lg-12">
 																	<input type="number" min="0" pattern="^[0-9]+" class="form-control" name="intervalo_horas" id="intervalo_horas" placeholder="No. de clases a consumir del plan" value="<?php echo set_value('intervalo_horas') == false ? ($this->session->flashdata('intervalo_horas') ? $this->session->flashdata('intervalo_horas') : 1) : set_value('intervalo_horas'); ?>" disabled>
 																	<div class="invalid-feedback">

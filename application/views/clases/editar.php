@@ -111,7 +111,7 @@
 
 													<div class="col-xl-6 col-md-6 col-sm-12">
 														<div class="form-group row">
-															<label for="inicia" class="col-md-12"><span class="red">*</span> Fecha de clase<span class="red">*</span></label>
+															<label for="inicia" class="col-md-12"> Fecha de clase<span class="red">*</span></label>
 															<div class="col-md-7">
 																<input type="date" id="mySelect3" name="inicia_date" class="form-control" placeholder="Indique la fecha" value="<?php echo set_value('inicia') == false ? date('Y-m-d', strtotime($clase_a_editar->inicia)) : date('Y-m-d', strtotime(set_value('inicia'))); ?>">
 															</div>
@@ -123,7 +123,7 @@
 
 													<div class="col-xl-6 col-md-6 col-sm-12">
 														<div class="form-group row">
-															<label for="cupo" class="col-md-12"><span class="red">*</span> Cupo de clase<span class="red">*</span></label>
+															<label for="cupo" class="col-md-12"> Cupo de clase<span class="red">*</span></label>
 															<div class="col-md-12">
 																<input type="number" readonly="true" min="0" pattern="^[0-9]+" class="form-control" name="cupo" placeholder="Cupo" value="<?php echo set_value('cupo') == false ? $clase_a_editar->cupo : set_value('cupo'); ?>">
 															</div>
@@ -167,7 +167,7 @@
 													</div>
 													<div class="col-xl-12 col-md-12 col-sm-12">
 														<div class="form-group row">
-															<label for="intervalo_horas" class="col-md-12"> No. de clases a consumir del plan</label>
+															<label for="intervalo_horas" class="col-md-12"> No. de clases a consumir del plan<span class="red">*</span></label>
 															<div class="col-md-12">
 																<input type="number" min="0" pattern="^[0-9]+" name="intervalo_horas" class="form-control" placeholder="Clases a consumir" value="<?php echo set_value('intervalo_horas') == false ? $clase_a_editar->intervalo_horas : set_value('intervalo_horas'); ?>">
 															</div>

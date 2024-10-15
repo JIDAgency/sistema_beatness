@@ -74,7 +74,7 @@ class Clases extends MY_Controller
         $this->form_validation->set_rules('inicia_date', 'Fecha', 'required');
         $this->form_validation->set_rules('inicia_time', 'Hora', 'required');
         $this->form_validation->set_rules('distribucion_lugares', 'Distribución de lugares', 'required');
-        // $this->form_validation->set_rules('intervalo_horas', 'Intervalo en horas');
+        $this->form_validation->set_rules('intervalo_horas', 'Intervalo en horas');
         $this->form_validation->set_rules('dificultad', 'Dificultad', 'required');
 
         $sucursal = $this->session->userdata('filtro_clase_sucursal') ?: null;
