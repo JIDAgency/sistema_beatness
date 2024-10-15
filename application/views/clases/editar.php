@@ -27,7 +27,7 @@
 
 									<div class="row match-height">
 
-										<div class="col-xl-5 col-md-12 col-sm-12">
+										<div class="col-xl-6 col-md-6 col-sm-12">
 											<?php echo form_open('clases/editar', array('class' => 'form form-horizontal', 'id' => 'forma-editar-clase')); ?>
 											<input type="hidden" name="id" value="<?php echo $clase_a_editar->id; ?>">
 											<div class="form-body">
@@ -246,7 +246,7 @@
 
 											<?php echo form_close(); ?>
 										</div>
-										<div class="col-xl-7 col-md-12 col-sm-12">
+										<div class="col-xl-6 col-md-6 col-sm-12">
 											<form class="form">
 												<div class="form-body">
 													<h4 class="form-section">Cupos</h4>
