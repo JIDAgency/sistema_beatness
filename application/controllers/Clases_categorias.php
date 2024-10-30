@@ -59,9 +59,9 @@ class Clases_categorias extends MY_Controller
                 'id' => $clase->id,
                 'nombre' => !empty($clase->nombre) ? mb_strtoupper($clase->nombre) : '',
                 'disciplina_id' => $clase->nombre_disciplina,
+                'gympass_class_id' => !empty($clase->gympass_class_id) ? '<a href="'.site_url('gympass/categorias').'"><span class="text-success">Registrada</span></a>' : '<a href="'.site_url('gympass/categorias').'"><span class="text-warning">Sin registro</span></a>',
                 'descripcion' => !empty($clase->descripcion) ? ($clase->descripcion) : '',
                 'nota' => !empty($clase->nota) ? ucfirst($clase->nota) : '',
-                'gympass_class_id' => !empty($clase->gympass_class_id) ? mb_strtoupper($clase->gympass_class_id) : '',
                 'estatus' => !empty($clase->estatus) ? ucwords($clase->estatus) : '',
                 'opciones' => $opciones,
             );
