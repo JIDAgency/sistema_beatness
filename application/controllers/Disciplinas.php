@@ -9,6 +9,7 @@ class Disciplinas extends MY_Controller
         parent::__construct();
         $this->load->model('disciplinas_model');
         $this->load->model('sucursales_model');
+        $this->load->model('clases_categorias_model');
     }
 
     public function index()
@@ -113,7 +114,25 @@ class Disciplinas extends MY_Controller
             );
 
             if ($this->disciplinas_model->crear($data)) {
-                $this->session->set_flashdata('MENSAJE_EXITO', 'La disciplina se ha creado correctamente.');
+                // $this->session->set_flashdata('MENSAJE_EXITO', 'La disciplina se ha creado correctamente.');
+                // redirect('disciplinas/index');
+                $disciplina = $this->disciplinas_model->get_ultima_disciplina();
+
+                $categorias = ['ABS & BOOTY', 'ARMS & BOOTY', 'BOOTY', 'BÁSICO', 'CHEST & TRICEP', 'FULL BODY', 'KILLER ABS', 'LEG DAY', 'LEGS & BOOTY', 'PULL DAY', 'PUSH DAY', 'SHOULDER & ARMS', 'UPPER BODY'];
+
+                foreach ($categorias as $categoria) {
+                    $data = array(
+                        'disciplina_id' => $disciplina->id,
+                        'nombre' => $categoria,
+                        'descripcion' =>'',
+                        'nota' => '',
+                        'estatus' => 'activo',
+                    );
+
+                    $this->clases_categorias_model->crear($data);
+                }
+
+                $this->session->set_flashdata('MENSAJE_EXITO', 'La disciplina y sus grupos musculares se han creado correctamente.');
                 redirect('disciplinas/index');
             }
 

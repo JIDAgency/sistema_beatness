@@ -39,6 +39,21 @@ class Disciplinas_model extends CI_Model
         return $query;
     }
 
+    /** Obtener todos los registros de la tabla de disciplinas */
+    // public function get_ultima_disciplina()
+    // {
+    //     $query = $this->db->get('disciplinas');
+    //     return $query;
+    // }
+
+    public function get_ultima_disciplina()
+    {
+        $this->db->order_by('id', 'DESC');
+        $this->db->limit(1);
+        $query = $this->db->get('disciplinas');
+        return $query->row(); // Utilizamos row() para obtener un solo resultado
+    }
+
     /** Obtener todas las disciplinas con la sucursal limitada a datos específicos*/
     public function get_lista_de_todas_las_disciplinas_limitada()
     {
@@ -159,7 +174,8 @@ class Disciplinas_model extends CI_Model
         return $this->db->update('disciplinas', $data);
     }
 
-    public function obtener_disciplinas_por_id($id) {
+    public function obtener_disciplinas_por_id($id)
+    {
         $this->db->where_in('id', $id);
         $query = $this->db->get('disciplinas');
         return $query->result();
