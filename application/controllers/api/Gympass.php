@@ -991,6 +991,7 @@ class Gympass extends REST_Controller
                 } else {
                     $data_4 = array(
                         'wellhub_webhooks_evento_id' => !empty($webhook_row->evento_id) ? $webhook_row->evento_id : null,
+                        'wellhub_product_id' => !empty($gym['product']['id']) ? $gym['product']['id'] : null,
                         'usuario_id' => !empty($cliente_row->id) ? $cliente_row->id : null,
                         'venta_id' => !empty($venta_row->id) ? $venta_row->id : null,
                         'asignacion_id' => !empty($asignacion_row->id) ? $asignacion_row->id : null,
