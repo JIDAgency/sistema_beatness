@@ -40,6 +40,16 @@ class Wellhub_model extends CI_Model
 
         return $query->num_rows() > 0;
     }
+
+    public function disciplinas_obtener_por_gympass_product_id($gympass_product_id)
+    {
+        $query = $this->db
+            ->from('disciplinas')
+            ->where('gympass_product_id', $gympass_product_id)
+            ->get();
+
+        return $query;
+    }
     // ====== disciplinas (Fin) ======
 
     // ====== planes (Inicio) ======
@@ -354,4 +364,44 @@ class Wellhub_model extends CI_Model
 
         return $query;
     }
+
+    // ====== checkin (Inicio) ======
+
+    public function checkin_insertar($data)
+    {
+        $query = $this->db
+            ->insert('checkin', $data);
+
+        return $query;
+    }
+
+    public function checkin_actualizar($id, $data)
+    {
+        $query = $this->db
+            ->where('id', $id)
+            ->update('checkin', $data);
+
+        return $query;
+    }
+
+    public function checkin_obtener_por_id($id)
+    {
+        $query = $this->db
+            ->where('id', $id)
+            ->get('checkin');
+
+        return $query;
+    }
+
+    public function checkin_obtener_por_wellhub_webhooks_evento_id($wellhub_webhooks_evento_id)
+    {
+        $query = $this->db
+            ->where('wellhub_webhooks_evento_id', $wellhub_webhooks_evento_id)
+            ->get('checkin');
+
+        return $query;
+    }
+
+    // ====== checkin (Fin) ======
+
 }

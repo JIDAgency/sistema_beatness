@@ -38,12 +38,20 @@ class Gympass extends REST_Controller
 
             $this->db->trans_start();
 
-            $validar_webhook = $this->wellhub_model->webhook_obtener_por_evento_id(isset($body_post['event_data']['event_id']) ? $body_post['event_data']['event_id'] : (isset($body_post['event_data']['booking']['booking_number']) ? $body_post['event_data']['booking']['booking_number'] : null))->row();
+            $validar_webhook = $this->wellhub_model->webhook_obtener_por_evento_id(
+                isset($body_post['event_data']['event_id']) ?
+                    $body_post['event_data']['event_id'] : (isset($body_post['event_data']['booking']['booking_number']) ?
+                        $body_post['event_data']['booking']['booking_number'] : (isset($body_post['event_data']['user']['unique_token']) ?
+                            $body_post['event_data']['user']['unique_token'] . '-' . $body_post['event_data']['gym']['id'] . '-' . $body_post['event_data']['gym']['product']['id'] . '-' . $body_post['event_data']['timestamp'] :
+                            $body_post['event_type'] . '-' . $body_post['event_data']['timestamp']))
+            )->row();
 
             if (!$validar_webhook) {
                 $data_1 = array(
                     'evento_tipo' => isset($body_post['event_type']) ? $body_post['event_type'] : null,
-                    'evento_id' => isset($body_post['event_data']['event_id']) ? $body_post['event_data']['event_id'] : (isset($body_post['event_data']['booking']['booking_number']) ? $body_post['event_data']['booking']['booking_number'] : null),
+                    'evento_id' => isset($body_post['event_data']['event_id']) ? $body_post['event_data']['event_id'] : (isset($body_post['event_data']['booking']['booking_number']) ? $body_post['event_data']['booking']['booking_number'] : (isset($body_post['event_data']['user']['unique_token']) ?
+                        $body_post['event_data']['user']['unique_token'] . '-' . $body_post['event_data']['gym']['id'] . '-' . $body_post['event_data']['gym']['product']['id'] . '-' . $body_post['event_data']['timestamp'] :
+                        $body_post['event_type'] . '-' . $body_post['event_data']['timestamp'])),
                     'contenido' => json_encode($body_post, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
                     'intentos' => 1
                 );
@@ -805,6 +813,226 @@ class Gympass extends REST_Controller
                 );
 
                 $this->wellhub_model->webhook_actualizar_por_id($webhook_row->id, $data_3);
+
+                $this->response(REST_Controller::HTTP_OK);
+            } catch (Exception $e) {
+                $this->db->trans_rollback();
+
+                $this->response(array(
+                    'error' => true,
+                    'message' => $e->getMessage(),
+                ), REST_Controller::HTTP_BAD_REQUEST);
+            }
+        }
+
+        if ($webhook_row->evento_tipo == 'checkin') {
+
+            try {
+                $flar_validar_cliente = false;
+                $user = $webhook_contenido['event_data']['user'];
+                $gym = $webhook_contenido['event_data']['gym'];
+
+                if (!empty($user['unique_token'])) {
+                    $cliente_row = $this->wellhub_model->obtener_cliente_por_gympass_user_id($user['unique_token'])->row();
+                    if (!empty($cliente_row)) {
+                        $flar_validar_cliente = true;
+                    }
+                }
+
+                if (!$flar_validar_cliente && !empty($user['email'])) {
+                    $cliente_row = $this->wellhub_model->obtener_cliente_por_email($user['email'])->row();
+                    if (!empty($cliente_row)) {
+                        $flar_validar_cliente = true;
+
+                        $data_1 = ['gympass_user_id' => $user['unique_token'] ?? null];
+                        if (!$this->wellhub_model->actualizar_usuario_por_id($cliente_row->id, $data_1)) {
+                            throw new Exception('No se pudo vincular la cuenta del usuario con Gympass. Por favor, inténtelo de nuevo.');
+                        }
+                    }
+                }
+
+                if (!$flar_validar_cliente) {
+                    $nombre_completo = $user['name'] ?? '';
+                    $nombre_dividido = $this->dividir_nombre($nombre_completo);
+
+                    $data_1 = [
+                        'gympass_user_id' => $user['unique_token'] ?? null,
+                        'nombre_completo' => $nombre_dividido['nombre'] ?? '',
+                        'apellido_paterno' => $nombre_dividido['apellido_paterno'] ?? '',
+                        'apellido_materno' => $nombre_dividido['apellido_materno'] ?? '',
+                        'correo' => $user['email'] ?? null,
+                        'no_telefono' => $user['phone_number'] ?? null,
+                        'contrasena_hash' => password_hash('temporal', PASSWORD_DEFAULT),
+                        'rol_id' => 1, // Este usuario pertenece al rol con id 1 (Cliente)
+                        'es_estudiante' => 'no',
+                        'es_estudiante_vigencia' => date('Y-m-d'),
+                        'fecha_nacimiento' => date('Y-m-d'),
+                        'rfc' => null,
+                        'genero' => 'M',
+                        'calle' => null,
+                        'numero' => null,
+                        'colonia' => null,
+                        'ciudad' => null,
+                        'estado' => null,
+                        'pais' => null,
+                        'nombre_imagen_avatar' => 'default.jpg',
+                        'dominio' => 'beatness'
+                    ];
+
+                    if (!$this->wellhub_model->insertar_usuario($data_1)) {
+                        throw new Exception('No se pudo registrar el usuario en el sistema. Por favor, inténtelo de nuevo.');
+                    }
+
+                    $cliente_row = $this->wellhub_model->obtener_cliente_por_gympass_user_id($user['unique_token'])->row();
+                }
+
+                if (!$cliente_row) {
+                    throw new Exception('El usuario no fue encontrado en el sistema. Por favor, verifique los datos proporcionados.');
+                }
+
+                $checkin_validacion = $this->wellhub_model->checkin_obtener_por_wellhub_webhooks_evento_id($webhook_row->evento_id)->row();
+
+                $flag_asignacion = false;
+                $flag_venta = false;
+                $flag_checkin = false;
+
+                if ($checkin_validacion) {
+                    if ($checkin_validacion->estatus_validacion == 'si') {
+                        throw new Exception('El check-in ya ha sido validado previamente. No es necesario volver a validarlo.');
+                    }
+
+                    if (!empty($checkin_validacion->asignacion_id)) {
+                        $flag_asignacion = true;
+                    }
+
+                    if (!empty($checkin_validacion->venta_id)) {
+                        $flag_venta = true;
+                    }
+
+                    $flag_checkin = true;
+                }
+
+                if ($flag_asignacion) {
+                    $asignacion_row = $this->wellhub_model->asignacion_obtener_por_id($checkin_validacion->asignacion_id)->row();
+                } else {
+                    $disciplinas_list = $this->wellhub_model->disciplinas_obtener_por_gympass_product_id($gym['product']['id'])->result();
+
+                    if (!$disciplinas_list) {
+                        throw new Exception('No se encontraron disciplinas asociadas al producto de Gympass. Por favor, verifique los datos proporcionados.');
+                    }
+
+                    $array_disciplinas = [];
+                    foreach ($disciplinas_list as $disciplina_key => $disciplina_value) {
+                        array_push($array_disciplinas, $disciplina_value->id);
+                        $sucursal_seleccionada = $disciplina_value->sucursal_id;
+                    }
+
+                    $this->db->trans_complete();
+
+                    if ($this->db->trans_status() === false) {
+                        throw new Exception('La transacción falló al completar la operación. Por favor, inténtelo de nuevo.');
+                    }
+
+                    $data_2 = array(
+                        'usuario_id' => $cliente_row->id,
+                        'plan_id' => 1,
+                        'nombre' => 'CHECKIN GYMPASS ' . $gym['title'],
+                        'clases_incluidas' => 1,
+                        'disciplinas' => implode('|', $array_disciplinas),
+                        'vigencia_en_dias' => 7,
+                        'es_ilimitado' => 'no',
+                        'esta_activo' => '1',
+                        'fecha_activacion' => date('Y-m-d', strtotime(str_replace('/', '-', $this->input->post('inicia_date')))) . 'T' . $this->input->post('inicia_time'),
+                    );
+
+                    if (!$this->wellhub_model->asignacion_insertar($data_2)) {
+                        throw new Exception('No se pudo crear la asignación para este check-in. Por favor, inténtelo de nuevo.');
+                    }
+
+                    $asginacion_id = $this->db->insert_id();
+
+                    $asignacion_row = $this->wellhub_model->asignacion_obtener_por_id($asginacion_id)->row();
+                }
+
+                if (!$asignacion_row) {
+                    throw new Exception('No se pudo obtener la asignación para este check-in. Por favor, inténtelo de nuevo.');
+                }
+
+                if ($flag_venta) {
+                    $venta_row = $this->wellhub_model->venta_obtener_por_id($checkin_validacion->venta_id)->row();
+                } else {
+                    $data_3 = array(
+                        'concepto' => $asignacion_row->nombre,
+                        'sucursal_id' => $sucursal_seleccionada,
+                        'usuario_id' => $cliente_row->id,
+                        'asignacion_id' => $asignacion_row->id,
+                        'metodo_id' => 9,
+                        'costo' => 90,
+                        'cantidad' => 1,
+                        'total' => 90,
+                        'vendedor' => '35 - GYMPASS ',
+                    );
+
+                    if (!$this->wellhub_model->venta_insertar($data_3)) {
+                        throw new Exception('No se pudo registrar la venta para este check-in. Por favor, inténtelo de nuevo.');
+                    }
+
+                    $venta_id = $this->db->insert_id();
+
+                    $venta_row = $this->wellhub_model->venta_obtener_por_id($venta_id)->row();
+                }
+
+                if (!$venta_row) {
+                    throw new Exception('No se pudo obtener la venta registrada. Por favor, inténtelo de nuevo.');
+                }
+
+                if ($flag_checkin) {
+                    $checkin_row = $this->wellhub_model->checkin_obtener_por_id($checkin_validacion->id)->row();
+                } else {
+                    $data_4 = array(
+                        'wellhub_webhooks_evento_id' => !empty($webhook_row->evento_id) ? $webhook_row->evento_id : null,
+                        'usuario_id' => !empty($cliente_row->id) ? $cliente_row->id : null,
+                        'venta_id' => !empty($venta_row->id) ? $venta_row->id : null,
+                        'asignacion_id' => !empty($asignacion_row->id) ? $asignacion_row->id : null,
+                        'descripcion' => (!empty($gym['title']) ? $gym['title'] : null) . ', ' . (!empty($gym['product']['description']) ? $gym['product']['description'] : null),
+                        'timestamp' => !empty($webhook_contenido['event_data']['timestamp']) ? $webhook_contenido['event_data']['timestamp'] : null,
+                        'estatus_validacion' => 'no',
+                        'estatus' => 'activo'
+                    );
+
+                    if (!$this->wellhub_model->checkin_insertar($data_4)) {
+                        throw new Exception('No se pudo registrar el check-in. Por favor, inténtelo de nuevo.', 1010);
+                    }
+
+                    $checkin_id = $this->db->insert_id();
+
+                    $checkin_row = $this->wellhub_model->checkin_obtener_por_id($checkin_id)->row();
+                }
+
+                if (!$checkin_row) {
+                    throw new Exception('No se pudo obtener el registro de check-in. Por favor, inténtelo de nuevo.');
+                }
+
+                $this->db->trans_complete();
+
+                if ($this->db->trans_status() === false) {
+                    throw new Exception('La transacción falló al completar la operación. Por favor, inténtelo de nuevo.');
+                }
+
+                $data_result = array(
+                    "gympass_id" => $cliente_row->gympass_user_id,
+                );
+
+                $response = $this->gympass_lib->post_access_validate($gym['id'], $data_result);
+
+                $data_5 = array(
+                    'data' => !empty($webhook_row->data) ? $webhook_row->data . ',' . json_encode($data_result) : json_encode($data_result),
+                    'respuesta' => !empty($webhook_row->respuesta) ? $webhook_row->respuesta . ',' . json_encode($response) : json_encode($response),
+                );
+
+                $this->wellhub_model->webhook_actualizar_por_id($webhook_row->id, $data_5);
+
+                $this->wellhub_model->checkin_actualizar($checkin_row->id, array('estatus_validacion' => 'si'));
 
                 $this->response(REST_Controller::HTTP_OK);
             } catch (Exception $e) {

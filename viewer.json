@@ -1,0 +1,26 @@
+{
+    "event_data": {
+        "user": {
+            "unique_token": "1000000000001",
+            "first_name": "Mike",
+            "last_name": "Hightower",
+            "email": "mike@mail.com",
+            "phone_number": "+15165930060"
+        },
+        "location": {
+            "lat": 40.68906,
+            "lon": -74.044636
+        },
+        "gym": {
+            "id": 495971,
+            "title": "Beatness Cycling - Polanca",
+            "product": {
+                "id": 546936,
+                "description": "Nona Cycling Class",
+                "pass_type_number": 1
+            }
+        },
+        "timestamp": 1730401141173
+    },
+    "event_type": "checkin"
+}
