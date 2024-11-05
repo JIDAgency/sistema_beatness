@@ -32,13 +32,15 @@
 												<tr>
 													<th>Opciones</th>
 													<th>ID</th>
-													<th>Disciplina</th>
+													<!-- <th>Disciplina</th> -->
 													<th>Usuario</th>
+													<th>Correo</th>
+													<th>Usuario ID</th>
 													<th>Venta</th>
 													<th>Asignación</th>
 													<th>Reservación</th>
 													<th>Descripción</th>
-													<th>Hora</th>
+													<!-- <th>Hora</th> -->
 													<th>Estatus</th>
 													<th>Fecha de registro</th>
 												</tr>

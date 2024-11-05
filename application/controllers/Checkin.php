@@ -55,25 +55,31 @@ class Checkin extends MY_Controller
 
             $opciones = '';
 
-            $opciones = '<a href="javascript:modal_registrar_checkin(' . $checkin->wellhub_product_id . ', ' . htmlspecialchars(json_encode(array(
-                'usuario' => $checkin->usuario_id,
-                'venta' => $checkin->venta_id,
-                'asignacion' => $checkin->asignacion_id,
-                'id' => $checkin->id,
-            )), ENT_QUOTES, 'UTF-8') . ');">Checkin</a>';
+            if ($checkin->reservacion_id) {
+                $opciones = '<span class="text-success">Checkin registrado</span>';
+            } else {
+                $opciones = '<a href="javascript:modal_registrar_checkin(' . $checkin->wellhub_product_id . ', ' . htmlspecialchars(json_encode(array(
+                    'usuario' => $checkin->usuario_id,
+                    'venta' => $checkin->venta_id,
+                    'asignacion' => $checkin->asignacion_id,
+                    'id' => $checkin->id,
+                )), ENT_QUOTES, 'UTF-8') . ');">Checkin</a>';
+            }
 
             $data[] = array(
                 'opciones' => $opciones,
                 'id' => $checkin->id,
-                'disciplina_wellhub' => $checkin->wellhub_product_id,
-                'usuario_id' => !empty($checkin->nombre_usuario) ? $checkin->nombre_usuario . '|' . $checkin->correo . '| #' . $checkin->usuario_id : '',
-                'venta_id' => !empty($checkin->venta_id) ? $checkin->venta_id : '',
-                'asignacion_id' => !empty($checkin->asignacion_id) ? $checkin->asignacion_id : '',
+                // 'disciplina_wellhub' => $checkin->wellhub_product_id,
+                'usuario_nombre' => !empty($checkin->nombre_usuario) ? $checkin->nombre_usuario : '',
+                'usuario_correo' => !empty($checkin->correo) ? $checkin->correo : '',
+                'usuario_id' => !empty($checkin->usuario_id) ? '#' . $checkin->usuario_id : '',
+                'venta_id' => !empty($checkin->venta_id) ? '#' . $checkin->venta_id : '',
+                'asignacion_id' => !empty($checkin->asignacion_id) ? '#' . $checkin->asignacion_id : '',
                 'reservacion_id' => !empty($checkin->reservacion_id) ? '<span class="text-success">Reservado</span>' : '<span class="text-danger">Sin reservar</span>',
                 'descripcion' => !empty($checkin->descripcion) ? $checkin->descripcion : '',
-                'timestamp' => !empty($checkin->timestamp) ? $checkin->timestamp : '',
-                'estatus' => !empty($checkin->estatus) ? $checkin->estatus : '',
-                'fecha_registro' => (!empty($checkin->fecha_registro) ? date('h:i A', strtotime($checkin->fecha_registro)) : ''),
+                // 'timestamp' => !empty($checkin->timestamp) ? $checkin->timestamp : '',
+                'estatus' => !empty($checkin->estatus) ? strtoupper($checkin->estatus) : '',
+                'fecha_registro' => (!empty($checkin->fecha_registro) ? date('d-m-Y h:i A', strtotime($checkin->fecha_registro)) : ''),
             );
         }
 
