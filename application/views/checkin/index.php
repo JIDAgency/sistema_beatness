@@ -1,3 +1,5 @@
+<?php $this->load->view('modals/checkin/registro_checkin'); ?>
+
 <div class="app-content content center-layout mt-2">
 	<div class="content-wrapper">
 		<div class="content-header row">
@@ -30,7 +32,10 @@
 												<tr>
 													<th>Opciones</th>
 													<th>ID</th>
+													<th>Disciplina</th>
 													<th>Usuario</th>
+													<th>Venta</th>
+													<th>Asignación</th>
 													<th>Reservación</th>
 													<th>Descripción</th>
 													<th>Hora</th>

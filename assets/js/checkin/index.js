@@ -4,12 +4,15 @@ var actual_url = document.URL;
 var method_call = "";
 var url;
 
+
 // Configuraciones
 (actual_url.indexOf("index") < 0) ? method_call = "checkin/" : method_call = "";
 $.fn.dataTable.ext.errMode = 'throw'; // Configuración de manejo de errores de DataTables
 $.fn.dataTable.ext.type.order['time-pre'] = function (d) {
     return moment(d, 'hh:mm A').format('HHmm');
 };
+console.log(actual_url);
+console.log(method_call);
 
 $(document).ready(function () {
     url = method_call + "obtener_tabla_index"
@@ -28,7 +31,10 @@ $(document).ready(function () {
         "columns": [
             { "data": "opciones" },
             { "data": "id" },
+            { "data": "disciplina_wellhub" },
             { "data": "usuario_id" },
+            { "data": "venta_id" },
+            { "data": "asignacion_id" },
             { "data": "reservacion_id" },
             { "data": "descripcion" },
             { "data": "timestamp" },
@@ -74,3 +80,129 @@ $(document).ready(function () {
     }).container().appendTo($('#buttons'));
 
 });
+
+// function modal_registrar_checkin(disciplina, data) {
+//     $('#modal_registrar_checkin').modal('show');
+
+//     fetch(actual_url + `/clases_por_semana/${disciplina}`)
+//         .then(response => response.json())
+//         .then(clases => {
+//             let categoriaSelect = document.getElementById("disciplinas");
+//             let detallesContainer = document.getElementById("claseDetalles");
+//             categoriaSelect.innerHTML = ''; // Limpiar contenido previo
+//             detallesContainer.innerHTML = '<p>Selecciona una clase para ver los detalles.</p>';
+
+//             // Iterar sobre las clases y crear un elemento tipo "tab" para cada una
+//             clases.forEach(clase => {
+//                 let liElement = document.createElement("li");
+//                 liElement.className = 'list-group-item list-group-item-action';
+//                 liElement.textContent = `${clase.inicia} - ${clase.instructor_nombre}`;
+
+//                 // Manejar el clic en la pestaña para mostrar detalles de la clase
+//                 liElement.addEventListener("click", () => {
+//                     detallesContainer.innerHTML = `
+//                         <h5>${clase.disciplina_nombre}</h5>
+//                         <p><strong>producto:</strong> ${disciplina}</p>
+//                         <p><strong>usuario:</strong> ${data.usuario}</p>
+//                         <p><strong>venta:</strong> ${data.venta}</p>
+//                         <p><strong>asigacion:</strong> ${data.asignacion}</p>
+//                         <p><strong>clase:</strong> ${clase.id}</p>
+//                         <p><strong>Instructor:</strong> ${clase.instructor_nombre}</p>
+//                         <p><strong>Fecha y hora:</strong> ${clase.inicia}</p>
+//                     `;
+//                 });
+
+//                 categoriaSelect.appendChild(liElement);
+//             });
+//         })
+//         .catch(error => {
+//             console.error('Error al obtener las clases:', error);
+//         });
+// }
+
+let selectedClassData = null;
+
+function modal_registrar_checkin(disciplina, data) {
+    $('#modal_registrar_checkin').modal('show');
+
+    fetch(actual_url + `/clases_por_semana/${disciplina}`)
+        .then(response => response.json())
+        .then(clases => {
+            let categoriaSelect = document.getElementById("disciplinas");
+            let detallesContainer = document.getElementById("claseDetalles");
+            categoriaSelect.innerHTML = ''; 
+            detallesContainer.innerHTML = '<p>Selecciona una clase para ver los detalles.</p>';
+
+            // Iterar sobre las clases y crear un elemento tipo "tab" para cada una
+            clases.forEach(clase => {
+                let liElement = document.createElement("li");
+                liElement.className = 'list-group-item list-group-item-action';
+                liElement.textContent = `${clase.inicia} - ${clase.instructor_nombre}`;
+
+                // Manejar el clic en la pestaña para mostrar detalles de la clase
+                liElement.addEventListener("click", () => {
+                    selectedClassData = {
+                        disciplina: disciplina,
+                        id: data.id,
+                        usuario: data.usuario,
+                        venta: data.venta,
+                        asignacion: data.asignacion,
+                        clase_id: clase.id,
+                        instructor_nombre: clase.instructor_nombre,
+                        fecha_hora: clase.inicia,
+                        cupos: clase.cupo_lugares
+                    };
+
+                    detallesContainer.innerHTML = `
+                        <h5>${clase.disciplina_nombre}</h5>
+                        <p><strong>producto:</strong> ${disciplina}</p>
+                        <p><strong>id:</strong> ${data.id}</p>
+                        <p><strong>usuario:</strong> ${data.usuario}</p>
+                        <p><strong>venta:</strong> ${data.venta}</p>
+                        <p><strong>asigacion:</strong> ${data.asignacion}</p>
+                        <p><strong>clase:</strong> ${clase.id}</p>
+                        <p><strong>Instructor:</strong> ${clase.instructor_nombre}</p>
+                        <p><strong>Fecha y hora:</strong> ${clase.inicia}</p>
+                    `;
+                });
+
+                categoriaSelect.appendChild(liElement);
+            });
+        })
+        .catch(error => {
+            console.error('Error al obtener las clases:', error);
+        });
+}
+
+// Enviar datos al controlador al hacer clic en "Registrar"
+document.getElementById("form_registrar_clase").addEventListener("submit", function (event) {
+    event.preventDefault(); // Evitar que el formulario se envíe de forma tradicional
+
+    if (selectedClassData) {
+        console.log(actual_url + `/registrar_checkin_en_reservacion_y_clase`)
+        fetch(actual_url + `/registrar_checkin_en_reservacion_y_clase`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams(selectedClassData)
+        })
+        .then(response => response.json())
+        .then(result => {
+            // Lógica después de registrar el check-in
+            if (result.success) {
+                alert('Check-in registrado exitosamente');
+                $('#modal_registrar_checkin').modal('hide'); // Cerrar el modal
+            } else {
+                alert('Error al registrar el check-in');
+            }
+        })
+        .catch(error => {
+            console.error('Error al enviar el formulario:', error);
+            alert('Hubo un problema al registrar el check-in.');
+        });
+    } else {
+        alert('Selecciona una clase antes de registrar el check-in.');
+    }
+});
+

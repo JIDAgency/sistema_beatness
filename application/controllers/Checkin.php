@@ -8,6 +8,8 @@ class Checkin extends MY_Controller
     {
         parent::__construct();
         $this->load->model('checkin_model');
+        $this->load->model('clases_model');
+        $this->load->model('reservaciones_model');
     }
 
     public function index()
@@ -47,19 +49,31 @@ class Checkin extends MY_Controller
 
         $data = [];
 
+
+
         foreach ($checkin_list->result() as $checkin) {
 
             $opciones = '';
 
+            $opciones = '<a href="javascript:modal_registrar_checkin(' . $checkin->wellhub_product_id . ', ' . htmlspecialchars(json_encode(array(
+                'usuario' => $checkin->usuario_id,
+                'venta' => $checkin->venta_id,
+                'asignacion' => $checkin->asignacion_id,
+                'id' => $checkin->id,
+            )), ENT_QUOTES, 'UTF-8') . ');">Checkin</a>';
+
             $data[] = array(
                 'opciones' => $opciones,
                 'id' => $checkin->id,
-                'usuario_id' => !empty($checkin->usuario_id) ? $checkin->usuario_id : '',
-                'reservacion_id' => !empty($checkin->reservacion_id) ? $checkin->reservacion_id : '',
+                'disciplina_wellhub' => $checkin->wellhub_product_id,
+                'usuario_id' => !empty($checkin->nombre_usuario) ? $checkin->nombre_usuario . '|' . $checkin->correo . '| #' . $checkin->usuario_id : '',
+                'venta_id' => !empty($checkin->venta_id) ? $checkin->venta_id : '',
+                'asignacion_id' => !empty($checkin->asignacion_id) ? $checkin->asignacion_id : '',
+                'reservacion_id' => !empty($checkin->reservacion_id) ? '<span class="text-success">Reservado</span>' : '<span class="text-danger">Sin reservar</span>',
                 'descripcion' => !empty($checkin->descripcion) ? $checkin->descripcion : '',
                 'timestamp' => !empty($checkin->timestamp) ? $checkin->timestamp : '',
                 'estatus' => !empty($checkin->estatus) ? $checkin->estatus : '',
-                'fecha_registro' =>  (!empty($checkin->fecha_registro) ? date('h:i A', strtotime($checkin->fecha_registro)) : ''),
+                'fecha_registro' => (!empty($checkin->fecha_registro) ? date('h:i A', strtotime($checkin->fecha_registro)) : ''),
             );
         }
 
@@ -72,5 +86,102 @@ class Checkin extends MY_Controller
 
         echo json_encode($result);
         exit();
+    }
+
+    public function clases_por_semana($disciplina)
+    {
+        $clases = $this->clases_model->clases_por_semana($disciplina)->result();
+
+        echo json_encode(array_values($clases));
+    }
+
+    public function registrar_checkin_en_reservacion_y_clase()
+    {
+        $disciplina = $this->input->post('disciplina');
+        $id = $this->input->post('id');
+        $usuario = $this->input->post('usuario');
+        $venta = $this->input->post('venta');
+        $asignacion = $this->input->post('asignacion');
+        $clase_id = $this->input->post('clase_id');
+        $instructor_nombre = $this->input->post('instructor_nombre');
+        $fecha_hora = $this->input->post('fecha_hora');
+        $cupos = $this->input->post('cupos');
+
+        // $disciplina = isset($data['disciplina']) ? $data['disciplina'] : null;
+        // $id = isset($data['id']) ? $data['id'] : null;
+        // $usuario = isset($data['usuario']) ? $data['usuario'] : null;
+        // $venta = isset($data['venta']) ? $data['venta'] : null;
+        // $asignacion = isset($data['asignacion']) ? $data['asignacion'] : null;
+        // $clase_id = isset($data['clase_id']) ? $data['clase_id'] : null;
+        // $instructor_nombre = isset($data['instructor_nombre']) ? $data['instructor_nombre'] : null;
+        // $fecha_hora = isset($data['fecha_hora']) ? $data['fecha_hora'] : null;
+        // $cupos = isset($data['cupos']) ? $data['cupos'] : null;
+
+        $cupo_lugares = json_decode($cupos);
+        usort($cupo_lugares, function ($a, $b) {
+            return $b->no_lugar - $a->no_lugar;
+        });
+
+        $lugar_reservado = false;
+        $no_lugar_reservado = 0;
+
+        foreach ($cupo_lugares as &$lugar) {
+            if (!$lugar->esta_reservado) {
+                $lugar->esta_reservado = true;
+                $lugar->nombre_usuario = $usuario;
+                $no_lugar_reservado = $lugar->no_lugar;
+                $lugar_reservado = true;
+                break;
+            }
+        }
+
+        if (!$lugar_reservado) {
+            throw new Exception('No hay lugares disponibles para esta clase. Por favor, seleccione otra clase.', 1001);
+        }
+
+        usort($cupo_lugares, function ($a, $b) {
+            return $a->no_lugar - $b->no_lugar;
+        });
+
+        $cupos = json_encode($cupo_lugares);
+
+        $clase = $this->clases_model->editar(
+            $clase_id,
+            array(
+                'cupo_lugares' => $cupos
+            )
+        );
+
+        if (!$clase) {
+            echo json_encode(['success' => false, 'message' => 'Error al guardar en la base de datos']);
+        }
+
+        $reservacion = $this->reservaciones_model->crear(
+            array(
+                'usuario_id' => $usuario,
+                'clase_id' => $clase_id,
+                'asignaciones_id' => $asignacion,
+                'no_lugar' => $no_lugar_reservado,
+            )
+        );
+
+        // Responder en JSON según el resultado
+        if (!$reservacion) {
+            echo json_encode(['success' => false, 'message' => 'Error al guardar en la base de datos']);
+        }
+
+        $reservacion_checkin = $this->checkin_model->actualizar(
+            $id,
+            array(
+                'reservacion_id' => 1,
+            )
+        );
+
+        // Responder en JSON según el resultado
+        if (!$reservacion_checkin) {
+            echo json_encode(['success' => false, 'message' => 'Error al guardar en la base de datos']);
+        }
+
+        echo json_encode(['success' => true]);
     }
 }

@@ -1292,4 +1292,30 @@ class Clases_model extends CI_Model
             ->get();
         return $query;
     }
+
+    public function clases_por_semana($disciplina)
+    {
+        // Calcular la fecha de inicio y fin (7 días antes y 7 días después de hoy)
+        $fecha_inicio_periodo = date('Y-m-d', strtotime('-7 days'));
+        $fecha_fin_periodo = date('Y-m-d', strtotime('+7 days'));
+
+        // Consulta para obtener las clases en el periodo de 7 días antes y 7 días después
+        $query = $this->db
+            ->where('DATE_FORMAT(t1.inicia, "%Y-%m-%d") >=', $fecha_inicio_periodo)
+            ->where('DATE_FORMAT(t1.inicia, "%Y-%m-%d") <=', $fecha_fin_periodo)
+            ->where('t3.gympass_product_id', $disciplina)
+            ->select('
+            t1.*,
+            t3.nombre as disciplina_nombre,
+            DATE_FORMAT(t1.inicia, "%H:%i") as hora_clase,
+            CONCAT(COALESCE(t2.nombre_completo, "N/D")) as instructor_nombre
+        ')
+            ->from('clases t1')
+            ->join("usuarios t2", "t2.id = t1.instructor_id")
+            ->join('disciplinas t3', "t3.id = t1.disciplina_id")
+            ->order_by('hora_clase', 'asc') // Ordenar por hora de inicio
+            ->get();
+
+        return $query;
+    }
 }

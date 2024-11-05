@@ -297,7 +297,8 @@ html body.bg-full-screen-image {
 
 /* JS: <div class="loader"></div> */
 .loader-wrapper {
-    position: fixed; /* Fija el loader en la pantalla */
+    position: fixed;
+    /* Fija el loader en la pantalla */
     top: 0;
     left: 0;
     width: 100%;
@@ -305,7 +306,8 @@ html body.bg-full-screen-image {
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 9999; /* Asegura que esté al frente de todo */
+    z-index: 9999;
+    /* Asegura que esté al frente de todo */
 }
 
 .loader {
@@ -349,4 +351,46 @@ div.dataTables_wrapper div.dataTables_filter {
 
 .text-beatness {
     color: rgb(0, 228, 255);
+}
+
+.modal-content {
+    height: 700px;
+    /* Ajusta esta altura a lo que prefieras */
+    overflow-y: auto;
+    /* Habilita el desplazamiento vertical si el contenido excede la altura */
+}
+
+.este {
+    height: 40em;
+    line-height: 1em;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    width: 100%;
+    border-right: 1px solid;
+}
+
+.badge {
+    display: inline-block;
+    padding: 0.5em 0.75em;
+    margin: 0.2em;
+    border-radius: 12px;
+    font-size: 0.85em;
+}
+
+.badge-disponible {
+    background-color: #28a745;
+    /* Verde para disponible */
+    color: white;
+}
+
+.badge-reservado {
+    background-color: #dc3545;
+    /* Rojo para reservado */
+    color: white;
+}
+
+.cupos-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3em;
 }
