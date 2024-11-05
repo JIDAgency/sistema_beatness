@@ -33,6 +33,21 @@ class Reservaciones_model extends CI_Model
                           ");
     }
 
+    public function obetener_id_para_checkin($usuario, $clase_id, $asignacion, $no_lugar_reservado)
+    {
+        $query = $this->db
+            ->where('t1.usuario_id', $usuario)
+            ->where('t1.clase_id', $clase_id)
+            ->where('t1.asignaciones_id', $asignacion)
+            ->where('t1.no_lugar', $no_lugar_reservado)
+            ->select('t1.id')
+            ->from('reservaciones t1')
+            ->limit(1)
+            ->get();
+
+        return $query;
+    }
+
     public function obtener_todas_para_front_con_detalle($sucursal_id = null)
     {
 

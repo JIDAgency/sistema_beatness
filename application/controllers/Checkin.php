@@ -107,16 +107,6 @@ class Checkin extends MY_Controller
         $fecha_hora = $this->input->post('fecha_hora');
         $cupos = $this->input->post('cupos');
 
-        // $disciplina = isset($data['disciplina']) ? $data['disciplina'] : null;
-        // $id = isset($data['id']) ? $data['id'] : null;
-        // $usuario = isset($data['usuario']) ? $data['usuario'] : null;
-        // $venta = isset($data['venta']) ? $data['venta'] : null;
-        // $asignacion = isset($data['asignacion']) ? $data['asignacion'] : null;
-        // $clase_id = isset($data['clase_id']) ? $data['clase_id'] : null;
-        // $instructor_nombre = isset($data['instructor_nombre']) ? $data['instructor_nombre'] : null;
-        // $fecha_hora = isset($data['fecha_hora']) ? $data['fecha_hora'] : null;
-        // $cupos = isset($data['cupos']) ? $data['cupos'] : null;
-
         $cupo_lugares = json_decode($cupos);
         usort($cupo_lugares, function ($a, $b) {
             return $b->no_lugar - $a->no_lugar;
@@ -139,15 +129,19 @@ class Checkin extends MY_Controller
             throw new Exception('No hay lugares disponibles para esta clase. Por favor, seleccione otra clase.', 1001);
         }
 
+        $clase_a_reservar = $this->clases_model->obtener_todas_con_detalle_por_id($clase_id)->row();
+
         usort($cupo_lugares, function ($a, $b) {
             return $a->no_lugar - $b->no_lugar;
         });
 
         $cupos = json_encode($cupo_lugares);
+        $reservado = $clase_a_reservar->reservado + 1;
 
         $clase = $this->clases_model->editar(
             $clase_id,
             array(
+                'reservado' => $reservado,
                 'cupo_lugares' => $cupos
             )
         );
@@ -170,10 +164,12 @@ class Checkin extends MY_Controller
             echo json_encode(['success' => false, 'message' => 'Error al guardar en la base de datos']);
         }
 
+        $reservacion_id = $this->reservaciones_model->obetener_id_para_checkin($usuario, $clase_id, $asignacion, $no_lugar_reservado)->row();
+
         $reservacion_checkin = $this->checkin_model->actualizar(
             $id,
             array(
-                'reservacion_id' => 1,
+                'reservacion_id' => $reservacion_id->id,
             )
         );
 
