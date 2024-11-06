@@ -56,7 +56,7 @@ class Checkin extends MY_Controller
             $opciones = '';
 
             if ($checkin->reservacion_id) {
-                $opciones = '<span class="text-success">Checkin registrado</span>';
+                $opciones = '';
             } else {
                 $opciones = '<a href="javascript:modal_registrar_checkin(' . $checkin->wellhub_product_id . ', ' . htmlspecialchars(json_encode(array(
                     'usuario' => $checkin->usuario_id,
