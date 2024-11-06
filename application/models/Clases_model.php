@@ -1296,8 +1296,8 @@ class Clases_model extends CI_Model
     public function clases_por_semana($disciplina)
     {
         // Calcular la fecha de inicio y fin (7 días antes y 7 días después de hoy)
-        $fecha_inicio_periodo = date('Y-m-d', strtotime('-7 days'));
-        $fecha_fin_periodo = date('Y-m-d', strtotime('+7 days'));
+        $fecha_inicio_periodo = date('Y-m-d', strtotime('-2 days'));
+        $fecha_fin_periodo = date('Y-m-d', strtotime('+2 days'));
 
         // Consulta para obtener las clases en el periodo de 7 días antes y 7 días después
         $query = $this->db
