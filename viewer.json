@@ -1,26 +1,19 @@
 {
     "event_data": {
         "user": {
-            "unique_token": "1000000000001",
-            "first_name": "Mike",
-            "last_name": "Hightower",
-            "email": "mike@mail.com",
-            "phone_number": "+15165930060"
+            "unique_token": "3408814162905",
+            "name": "Jessica Maythe Brito Aquino",
+            "email": "may_jes@hotmail.com",
+            "phone_number": "9999999999"
         },
-        "location": {
-            "lat": 40.68906,
-            "lon": -74.044636
+        "slot": {
+            "id": 116906528,
+            "gym_id": 495971,
+            "class_id": 3509205,
+            "booking_number": "BK_MYRKCB5"
         },
-        "gym": {
-            "id": 495971,
-            "title": "Beatness Cycling - Polanca",
-            "product": {
-                "id": 546936,
-                "description": "Nona Cycling Class",
-                "pass_type_number": 1
-            }
-        },
-        "timestamp": 1730401141173
+        "timestamp": 1730737140065,
+        "event_id": "360be8eb-d5e2-434e-9a1f-01980d11bd35"
     },
-    "event_type": "checkin"
+    "event_type": "booking-requested"
 }

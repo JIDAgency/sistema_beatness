@@ -14,25 +14,25 @@ class Gympass_lib
         $this->CI = &get_instance();
         $this->CI->load->helper('file');
 
-        // $this->gympass_base_url = 'https://api.partners.gympass.com';
-        // $this->gympass_api_key = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI4NjIyMjUwNS05ZDM0LTRlODItOGY5ZS0wZTE1MTI0YTQ3Y2EiLCJpYXQiOjE3MTg2MjQxOTQsImlzcyI6ImlhbS51cy5neW1wYXNzLmNsb3VkIiwic3ViIjoiODYyMjI1MDUtOWQzNC00ZTgyLThmOWUtMGUxNTEyNGE0N2NhIn0.gGUd_IUegwTy-_WqaXTgXtXBFc9EpHXpqcnykzc5J54';
-        // $this->gympass_gym_id = null;
-        // // $this->gympass_gym_id = 482157;
-        // $this->gympass_partner_id = 'b806bd77-d913-4046-a6e7-8fba7b34d277';
-        // $this->gympass_system_id = 81;
-        // $this->gympass_secret_key = 'marca_fuerza_vigor_bienestar_meta_equipo';
-        // $this->gympass_access_control_base_url = 'https://api.partners.gympass.com';
-        // $this->gympass_access_control_api_key = $this->gympass_api_key;
-
-        $this->gympass_base_url = 'https://apitesting.partners.gympass.com';
-        $this->gympass_api_key = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyNjYzNGFmYy1kZjE4LTQ1MzctYjEzMC1hM2VlZjY2ODVhN2IiLCJpc3MiOiJwYXJ0bmVycy10ZXN0aW5nLWlhbS51cy5zdGcuZ3ltcGFzcy5jbG91ZCIsImlhdCI6MTcxMzk3NTE3NSwianRpIjoiMjY2MzRhZmMtZGYxOC00NTM3LWIxMzAtYTNlZWY2Njg1YTdiIn0.FArt7ha1fJuNihB9Am0y_858duLbNU8ghQe0XQI78ZM';
-        $this->gympass_gym_id = 60;
+        $this->gympass_base_url = 'https://api.partners.gympass.com';
+        $this->gympass_api_key = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI4NjIyMjUwNS05ZDM0LTRlODItOGY5ZS0wZTE1MTI0YTQ3Y2EiLCJpYXQiOjE3MTg2MjQxOTQsImlzcyI6ImlhbS51cy5neW1wYXNzLmNsb3VkIiwic3ViIjoiODYyMjI1MDUtOWQzNC00ZTgyLThmOWUtMGUxNTEyNGE0N2NhIn0.gGUd_IUegwTy-_WqaXTgXtXBFc9EpHXpqcnykzc5J54';
+        $this->gympass_gym_id = null;
+        // $this->gympass_gym_id = 482157;
         $this->gympass_partner_id = 'b806bd77-d913-4046-a6e7-8fba7b34d277';
         $this->gympass_system_id = 81;
-        $this->gympass_secret_key = 'office_eagle_consider';
-        $this->gympass_access_control_base_url = 'https://apitesting.partners.gympass.com';
-        // $this->gympass_access_control_api_key = 'testkey';
+        $this->gympass_secret_key = 'marca_fuerza_vigor_bienestar_meta_equipo';
+        $this->gympass_access_control_base_url = 'https://api.partners.gympass.com';
         $this->gympass_access_control_api_key = $this->gympass_api_key;
+
+        // $this->gympass_base_url = 'https://apitesting.partners.gympass.com';
+        // $this->gympass_api_key = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyNjYzNGFmYy1kZjE4LTQ1MzctYjEzMC1hM2VlZjY2ODVhN2IiLCJpc3MiOiJwYXJ0bmVycy10ZXN0aW5nLWlhbS51cy5zdGcuZ3ltcGFzcy5jbG91ZCIsImlhdCI6MTcxMzk3NTE3NSwianRpIjoiMjY2MzRhZmMtZGYxOC00NTM3LWIxMzAtYTNlZWY2Njg1YTdiIn0.FArt7ha1fJuNihB9Am0y_858duLbNU8ghQe0XQI78ZM';
+        // $this->gympass_gym_id = 60;
+        // $this->gympass_partner_id = 'b806bd77-d913-4046-a6e7-8fba7b34d277';
+        // $this->gympass_system_id = 81;
+        // $this->gympass_secret_key = 'office_eagle_consider';
+        // $this->gympass_access_control_base_url = 'https://apitesting.partners.gympass.com';
+        // // $this->gympass_access_control_api_key = 'testkey';
+        // $this->gympass_access_control_api_key = $this->gympass_api_key;
 
         // PRODUCT ID = 120
         // CLASS ID = 1799 para push day

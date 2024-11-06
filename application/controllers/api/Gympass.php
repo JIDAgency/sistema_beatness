@@ -852,7 +852,33 @@ class Gympass extends REST_Controller
                 }
 
                 if (!$flar_validar_cliente) {
-                    $nombre_completo = $user['name'] ?? '';
+                    // Manejar diferentes formatos de nombre
+                    if (isset($user['name']) && !empty($user['name'])) {
+                        // Caso donde el nombre completo está en 'name'
+                        $nombre_completo = $user['name'];
+                    } else {
+                        // Caso donde el nombre está dividido en 'first_name', 'middle_name' y 'last_name'
+                        $nombre_partes = [];
+
+                        if (!empty($user['first_name'])) {
+                            $nombre_partes[] = $user['first_name'];
+                        }
+
+                        if (!empty($user['middle_name'])) {
+                            $nombre_partes[] = $user['middle_name'];
+                        }
+
+                        if (!empty($user['last_name'])) {
+                            $nombre_partes[] = $user['last_name'];
+                        }
+
+                        $nombre_completo = implode(' ', $nombre_partes);
+                    }
+
+                    if (empty($nombre_completo)) {
+                        throw new Exception('El nombre del usuario no está disponible en los datos proporcionados.');
+                    }
+
                     $nombre_dividido = $this->dividir_nombre($nombre_completo);
 
                     $data_1 = [
