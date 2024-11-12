@@ -84,6 +84,20 @@ function clases_list_renderizar(clases, disciplina, data) {
     disciplinas_seleccionadas.innerHTML = '';
     detalles_contenedor.innerHTML = '<p>Selecciona una clase para ver los detalles.</p>';
 
+    const detalles_usuario = document.getElementById("detalles_usuario");
+    detalles_usuario.innerHTML = `
+        <h5>DATOS DEL USUARIO</h5>
+        <p><strong>Id:</strong> ${data.usuarioid}</p>
+        <p><strong>Nombre:</strong> ${data.usuario}</p>
+        <p><strong>Correo:</strong> ${data.usuariocorreo}</p>
+        <br>
+        <h5>DATOS DE VENTA</h5>
+        <p><strong>Id:</strong> ${data.ventaid}</p>
+        <p><strong>Venta:</strong> ${data.venta}</p>
+        <p><strong>Total:</strong> $${data.ventatotal}</p>
+        <p><strong>Fecha de venta:</strong> ${data.ventafecha}</p>
+    `;
+
     clases.forEach(clase => {
         const lista_element = document.createElement("li");
         lista_element.className = 'list-group-item list-group-item-action';

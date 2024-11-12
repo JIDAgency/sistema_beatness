@@ -36,6 +36,8 @@
                             <div name="detalles_contenedor" id="detalles_contenedor" class="text-justify">
                                 <p>Selecciona una clase para ver los detalles.</p>
                             </div>
+                            <div name="detalles_usuario" id="detalles_usuario" class="text-justify mt-5">
+                            </div>
                         </div>
                     </div>
                 </div>

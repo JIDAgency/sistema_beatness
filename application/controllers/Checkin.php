@@ -49,8 +49,6 @@ class Checkin extends MY_Controller
 
         $data = [];
 
-
-
         foreach ($checkin_list->result() as $checkin) {
 
             $opciones = '';
@@ -59,8 +57,13 @@ class Checkin extends MY_Controller
                 $opciones = '';
             } else {
                 $opciones = '<a href="javascript:modal_registrar_checkin(' . $checkin->wellhub_product_id . ', ' . htmlspecialchars(json_encode(array(
-                    'usuario' => $checkin->usuario_id,
-                    'venta' => $checkin->venta_id,
+                    'usuarioid' => $checkin->usuario_id,
+                    'usuario' => $checkin->nombre_usuario,
+                    'usuariocorreo' => $checkin->correo,
+                    'ventaid' => $checkin->venta_id,
+                    'venta' => $checkin->venta_concepto,
+                    'ventatotal' => $checkin->venta_total,
+                    'ventafecha' => $checkin->fecha_venta,
                     'asignacion' => $checkin->asignacion_id,
                     'id' => $checkin->id,
                 )), ENT_QUOTES, 'UTF-8') . ');">Checkin</a>';

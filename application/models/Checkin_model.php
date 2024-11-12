@@ -16,9 +16,13 @@ class Checkin_model extends CI_Model
                 CONCAT(COALESCE(t2.nombre_completo, \'N/D\'), \' \', COALESCE(t2.apellido_paterno, \'N/D\'), \' \', COALESCE(t2.apellido_materno, \'N/D\')) AS nombre_usuario,
                 t2.nombre_imagen_avatar as usuario_nombre_imagen_avatar,
                 t2.correo,
+                t3.concepto as venta_concepto,
+                t3.total as venta_total,
+                t3.fecha_venta,
                 ')
             ->from('checkin as t1')
             ->join('usuarios as t2', 't2.id = t1.usuario_id')
+            ->join('ventas as t3', 't3.id = t1.venta_id')
             ->get();
         return $query;
     }
