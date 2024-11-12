@@ -2567,7 +2567,7 @@ class Ventas extends MY_Controller
         /*if ($venta_a_cancelar) {
         $this->session->set_flashdata('MENSAJE_INFO', 'Si se pudo encontrar la venta que desea cancelar.');
         redirect($regresar_a);
-    }*/
+        }*/
 
         $asignacion_a_cancelar = $this->asignaciones_model->obtener_por_id($venta_a_cancelar->asignacion_id)->row();
 
@@ -2578,7 +2578,7 @@ class Ventas extends MY_Controller
         /*if ($asignacion_a_cancelar) {
         $this->session->set_flashdata('MENSAJE_INFO', 'Si se pudo encontrar la asignacion que desea cancelar.');
         redirect($regresar_a);
-    }*/
+        }*/
 
         if ($asignacion_a_cancelar->clases_usadas > 0) {
             $this->session->set_flashdata('MENSAJE_ERROR', 'El usuario ya ha realizado reservaciones con este plan, por favor primero cancele las reservaciones si es que estas no han caducado.');
@@ -2587,7 +2587,7 @@ class Ventas extends MY_Controller
         /*if ($asignacion_a_cancelar->clases_usadas == 0) {
         $this->session->set_flashdata('MENSAJE_INFO', 'No hay reservaciones con este plan');
         redirect($regresar_a);
-    }*/
+        }*/
 
         if ($asignacion_a_cancelar->suscripcion_estatus_del_pago == 'pagado') {
             $data_asignacion = array(
@@ -3006,5 +3006,20 @@ class Ventas extends MY_Controller
         }
 
         return $num_letrammd;
+    }
+
+    public function actualizar()
+    {
+        $id = $this->input->post('id');
+        $columna = $this->input->post('columna');
+        $nuevoValor = $this->input->post('nuevoValor');
+
+        $data_1 = array(
+            $columna => $nuevoValor,
+        );
+
+        $this->ventas_model->actualizar_venta_por_id($id, $data_1);
+
+        echo json_encode(array('status' => 'success', 'message' => 'Dato actualizado'));
     }
 }

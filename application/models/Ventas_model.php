@@ -879,5 +879,14 @@ class Ventas_model extends CI_Model
 
         return $query;
     }
+
+    public function actualizar_venta_por_id($id, $data)
+    {
+        $query = $this->db
+            ->where('id', $id)
+            ->update('ventas', $data);
+
+        return $query;
+    }
     /** Métodos para las ventas de suscripciones [Fin] */
 }
