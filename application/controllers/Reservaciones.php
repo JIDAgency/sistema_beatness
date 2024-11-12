@@ -83,10 +83,11 @@ class Reservaciones extends MY_Controller {
         $fecha_clase = $clase_a_modificar->inicia;
         $fecha_limite_clase = strtotime($fecha_clase);
 
-        if (strtotime('-72 hours', strtotime('now')) > $fecha_limite_clase) {
-            $this->session->set_flashdata('MENSAJE_ERROR', 'La clase ya ha transcurrido hace 48 horas, por lo que no se puede cancelar la reservación.');
-            redirect('reservaciones/index');
-        } /*else{
+        // if (strtotime('-72 hours', strtotime('now')) > $fecha_limite_clase) {
+        //     $this->session->set_flashdata('MENSAJE_ERROR', 'La clase ya ha transcurrido hace 48 horas, por lo que no se puede cancelar la reservación.');
+        //     redirect('reservaciones/index');
+        // } 
+        /*else{
             $this->session->set_flashdata('MENSAJE_INFO', 'La clase aun no ha transcurrido, por lo que Si se puede cancelar la reservación.. '.$fecha_vigencia);
             redirect('reservaciones/index');
         }*/
