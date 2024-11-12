@@ -78,7 +78,7 @@ class Checkin extends MY_Controller
                 'reservacion_id' => !empty($checkin->reservacion_id) ? '<span class="text-success">Reservado</span>' : '<span class="text-danger">Sin reservar</span>',
                 'descripcion' => !empty($checkin->descripcion) ? $checkin->descripcion : '',
                 // 'timestamp' => !empty($checkin->timestamp) ? $checkin->timestamp : '',
-                'estatus' => !empty($checkin->estatus) ? strtoupper($checkin->estatus) : '',
+                'estatus' => !empty($checkin->estatus) ? ucfirst($checkin->estatus) : '',
                 'fecha_registro' => (!empty($checkin->fecha_registro) ? date('d-m-Y h:i A', strtotime($checkin->fecha_registro)) : ''),
             );
         }
@@ -96,7 +96,7 @@ class Checkin extends MY_Controller
 
     public function clases_por_semana($disciplina)
     {
-        $clases = $this->clases_model->clases_por_semana($disciplina)->result();
+        $clases = $this->checkin_model->clases_por_semana($disciplina)->result();
 
         echo json_encode(array_values($clases));
     }
