@@ -95,7 +95,9 @@ function clases_list_renderizar(clases, disciplina, data) {
         <p><strong>Id:</strong> ${data.ventaid}</p>
         <p><strong>Venta:</strong> ${data.venta}</p>
         <p><strong>Total:</strong> $${data.ventatotal}</p>
-        <p><strong>Fecha de venta:</strong> ${data.ventafecha}</p>
+        <labe for="costo"><strong>Costo nuevo(Opcional): </strong></label>
+        <input type="number" class="form-control" name="costo" id="costo" placeholder="Costo nuevo">
+        <p class="mt-1"><strong>Fecha de venta:</strong> ${data.ventafecha}</p>
     `;
 
     clases.forEach(clase => {
@@ -128,8 +130,8 @@ function clases_seleccionar(element, clase, disciplina, data) {
     selectedClassData = {
         disciplina,
         id: data.id,
-        usuario: data.usuario,
-        venta: data.venta,
+        usuario: data.usuarioid,
+        ventaid: data.ventaid,
         asignacion: data.asignacion,
         clase_id: clase.id,
         instructor_nombre: clase.instructor_nombre,
@@ -145,10 +147,43 @@ function clases_seleccionar(element, clase, disciplina, data) {
     `;
 }
 
+// function form_clases_submit(event) {
+//     event.preventDefault();
+
+//     if (selectedClassData) {
+//         fetch(`${actual_url}/registrar_checkin_en_reservacion_y_clase`, {
+//             method: 'POST',
+//             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+//             body: new URLSearchParams(selectedClassData)
+//         })
+//             .then(response => response.json())
+//             .then(result => {
+//                 if (result.success) {
+//                     console.log('Check-in registrado exitosamente');
+//                     $('#modal_registrar_checkin').modal('hide');
+//                     table.ajax.reload();
+//                 } else {
+//                     alert('Error al registrar el check-in');
+//                 }
+//             })
+//             .catch(error => {
+//                 console.error('Error al enviar el formulario:', error);
+//                 alert('Hubo un problema al registrar el check-in.');
+//             });
+//     } else {
+//         alert('Selecciona una clase antes de registrar el check-in.');
+//     }
+// }
+
 function form_clases_submit(event) {
     event.preventDefault();
+    console.log(selectedClassData)
 
     if (selectedClassData) {
+        // Obtiene el valor ingresado en el input de costo
+        const costo = document.getElementById("costo").value;
+        selectedClassData.costo = costo;  // Agrega el costo a los datos enviados
+
         fetch(`${actual_url}/registrar_checkin_en_reservacion_y_clase`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },

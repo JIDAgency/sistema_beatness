@@ -10,6 +10,7 @@ class Checkin extends MY_Controller
         $this->load->model('checkin_model');
         $this->load->model('clases_model');
         $this->load->model('reservaciones_model');
+        $this->load->model('ventas_model');
     }
 
     public function index()
@@ -109,12 +110,18 @@ class Checkin extends MY_Controller
         $disciplina = $this->input->post('disciplina');
         $id = $this->input->post('id');
         $usuario = $this->input->post('usuario');
-        $venta = $this->input->post('venta');
+        $ventaid = $this->input->post('ventaid');
         $asignacion = $this->input->post('asignacion');
         $clase_id = $this->input->post('clase_id');
         $instructor_nombre = $this->input->post('instructor_nombre');
         $fecha_hora = $this->input->post('fecha_hora');
         $cupos = $this->input->post('cupos');
+        // $costo = $this->input->post('costo');
+
+        // Convierte costo a decimal
+        if ($this->input->post('costo')) {
+            $costo = floatval($this->input->post('costo'));
+        }
 
         $cupo_lugares = json_decode($cupos);
         usort($cupo_lugares, function ($a, $b) {
@@ -185,6 +192,21 @@ class Checkin extends MY_Controller
         // Responder en JSON según el resultado
         if (!$reservacion_checkin) {
             echo json_encode(['success' => false, 'message' => 'Error al guardar en la base de datos']);
+        }
+
+        if ($this->input->post('costo')) {
+            $venta_checkin = $this->ventas_model->actualizar_venta_por_id(
+                $ventaid,
+                array(
+                    'costo' => $costo,
+                    'total' => $costo
+                )
+            );
+
+            // Responder en JSON según el resultado
+            if (!$venta_checkin) {
+                echo json_encode(['success' => false, 'message' => 'Error al guardar en la base de datos']);
+            }
         }
 
         echo json_encode(['success' => true]);
