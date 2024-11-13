@@ -96,7 +96,7 @@ function clases_list_renderizar(clases, disciplina, data) {
         <p><strong>Venta:</strong> ${data.venta}</p>
         <p><strong>Total:</strong> $${data.ventatotal}</p>
         <labe for="costo"><strong>Costo nuevo(Opcional): </strong></label>
-        <input type="number" class="form-control" name="costo" id="costo" placeholder="Costo nuevo" value="">
+        <input type="number" class="form-control" name="costo" id="costo" placeholder="Costo nuevo" value="220">
         <p class="mt-1"><strong>Fecha de venta:</strong> ${data.ventafecha}</p>
     `;
 
@@ -146,34 +146,6 @@ function clases_seleccionar(element, clase, disciplina, data) {
         <p><strong>Fecha y hora:</strong> ${clase.inicia}</p>
     `;
 }
-
-// function form_clases_submit(event) {
-//     event.preventDefault();
-
-//     if (selectedClassData) {
-//         fetch(`${actual_url}/registrar_checkin_en_reservacion_y_clase`, {
-//             method: 'POST',
-//             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-//             body: new URLSearchParams(selectedClassData)
-//         })
-//             .then(response => response.json())
-//             .then(result => {
-//                 if (result.success) {
-//                     console.log('Check-in registrado exitosamente');
-//                     $('#modal_registrar_checkin').modal('hide');
-//                     table.ajax.reload();
-//                 } else {
-//                     alert('Error al registrar el check-in');
-//                 }
-//             })
-//             .catch(error => {
-//                 console.error('Error al enviar el formulario:', error);
-//                 alert('Hubo un problema al registrar el check-in.');
-//             });
-//     } else {
-//         alert('Selecciona una clase antes de registrar el check-in.');
-//     }
-// }
 
 function form_clases_submit(event) {
     event.preventDefault();

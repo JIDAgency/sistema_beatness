@@ -59,4 +59,16 @@ class Checkin_model extends CI_Model
 
         return $query;
     }
+
+    public function obtener_clase($reservacion_id)
+    {
+        $query = $this->db
+            ->where('t1.id', $reservacion_id)
+            ->select('t1.clase_id, t2.dificultad, t3.nombre')
+            ->from('reservaciones t1')
+            ->join('clases t2', "t1.clase_id = t2.id")
+            ->join('disciplinas t3', "t2.disciplina_id = t3.id")
+            ->get();
+        return $query;
+    }
 }
