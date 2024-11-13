@@ -96,7 +96,7 @@ function clases_list_renderizar(clases, disciplina, data) {
         <p><strong>Venta:</strong> ${data.venta}</p>
         <p><strong>Total:</strong> $${data.ventatotal}</p>
         <labe for="costo"><strong>Costo nuevo(Opcional): </strong></label>
-        <input type="number" class="form-control" name="costo" id="costo" placeholder="Costo nuevo">
+        <input type="number" class="form-control" name="costo" id="costo" placeholder="Costo nuevo" value="">
         <p class="mt-1"><strong>Fecha de venta:</strong> ${data.ventafecha}</p>
     `;
 

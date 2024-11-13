@@ -118,10 +118,9 @@ class Checkin extends MY_Controller
         $cupos = $this->input->post('cupos');
         // $costo = $this->input->post('costo');
 
-        // Convierte costo a decimal
-        if ($this->input->post('costo')) {
-            $costo = floatval($this->input->post('costo'));
-        }
+        // Verificar si 'costo' está vacío y asignar un valor predeterminado
+        $costo = $this->input->post('costo');
+        $costo = !empty($costo) ? floatval($costo) : 0;  // Asigna 0 si está vacío
 
         $cupo_lugares = json_decode($cupos);
         usort($cupo_lugares, function ($a, $b) {
@@ -194,7 +193,7 @@ class Checkin extends MY_Controller
             echo json_encode(['success' => false, 'message' => 'Error al guardar en la base de datos']);
         }
 
-        if ($this->input->post('costo')) {
+        if ($costo != 0) {
             $venta_checkin = $this->ventas_model->actualizar_venta_por_id(
                 $ventaid,
                 array(
