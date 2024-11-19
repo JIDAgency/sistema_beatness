@@ -33,10 +33,12 @@
                             <ul name="disciplinas" id="disciplinas" class="list-group"></ul>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-12">
-                            <div name="detalles_contenedor" id="detalles_contenedor" class="text-justify">
-                                <p>Selecciona una clase para ver los detalles.</p>
-                            </div>
                             <div name="detalles_usuario" id="detalles_usuario" class="text-justify mt-5">
+                            </div>
+                            <div name="detalles_contenedor" id="detalles_contenedor" class="card bg-light text-justify mb-3">
+                                <div class="card-body">
+                                    <p class="text-muted mb-0">Selecciona una clase para ver los detalles.</p>
+                                </div>
                             </div>
                         </div>
                     </div>

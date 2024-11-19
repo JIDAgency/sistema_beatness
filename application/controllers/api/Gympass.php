@@ -993,9 +993,9 @@ class Gympass extends REST_Controller
                         'usuario_id' => $cliente_row->id,
                         'asignacion_id' => $asignacion_row->id,
                         'metodo_id' => 9,
-                        'costo' => 90,
+                        'costo' => 220,
                         'cantidad' => 1,
-                        'total' => 90,
+                        'total' => 220,
                         'vendedor' => '35 - GYMPASS ',
                     );
 

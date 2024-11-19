@@ -86,19 +86,47 @@ function clases_list_renderizar(clases, disciplina, data) {
 
     const detalles_usuario = document.getElementById("detalles_usuario");
     detalles_usuario.innerHTML = `
-        <h5>DATOS DEL USUARIO</h5>
-        <p><strong>Id:</strong> ${data.usuarioid}</p>
-        <p><strong>Nombre:</strong> ${data.usuario}</p>
-        <p><strong>Correo:</strong> ${data.usuariocorreo}</p>
-        <br>
-        <h5>DATOS DE VENTA</h5>
-        <p><strong>Id:</strong> ${data.ventaid}</p>
-        <p><strong>Venta:</strong> ${data.venta}</p>
-        <p><strong>Total:</strong> $${data.ventatotal}</p>
-        <labe for="costo"><strong>Costo nuevo(Opcional): </strong></label>
-        <input type="number" class="form-control" name="costo" id="costo" placeholder="Costo nuevo" value="220">
-        <p class="mt-1"><strong>Fecha de venta:</strong> ${data.ventafecha}</p>
+        <div class="card bg-light">
+            <div class="card-body">
+                <h5 class="card-title">Datos del Usuario</h5>
+                <dl class="row">
+                    <dt class="col-sm-4">Id</dt>
+                    <dd class="col-sm-8">${data.usuarioid}</dd>
+
+                    <dt class="col-sm-4">Nombre</dt>
+                    <dd class="col-sm-8">${data.usuario}</dd>
+
+                    <dt class="col-sm-4">Correo</dt>
+                    <dd class="col-sm-8">${data.usuariocorreo}</dd>
+                </dl>
+            </div>
+        </div>
+
+        <div class="card bg-light">
+            <div class="card-body">
+                <h5 class="card-title">Datos de la Venta</h5>
+                <dl class="row">
+                    <dt class="col-sm-4">Id</dt>
+                    <dd class="col-sm-8">${data.ventaid}</dd>
+
+                    <dt class="col-sm-4">Venta</dt>
+                    <dd class="col-sm-8">${data.venta}</dd>
+
+                    <dt class="col-sm-4">Total</dt>
+                    <dd class="col-sm-8">$${data.ventatotal}</dd>
+
+                    <dt class="col-sm-4">Costo nuevo (Opcional)</dt>
+                    <dd class="col-sm-8">
+                        <input type="number" class="form-control" name="costo" id="costo" placeholder="Costo nuevo" value="220">
+                    </dd>
+
+                    <dt class="col-sm-4">Fecha de venta</dt>
+                    <dd class="col-sm-8">${data.ventafecha}</dd>
+                </dl>
+            </div>
+        </div>
     `;
+
 
     clases.forEach(clase => {
         const lista_element = document.createElement("li");
@@ -140,10 +168,21 @@ function clases_seleccionar(element, clase, disciplina, data) {
     };
 
     document.getElementById("detalles_contenedor").innerHTML = `
-        <h5>${clase.disciplinas_nombre}</h5>
-        <p><strong>Producto:</strong> ${disciplina}</p>
-        <p><strong>Instructor:</strong> ${clase.instructor_nombre}</p>
-        <p><strong>Fecha y hora:</strong> ${clase.inicia}</p>
+        <div class="card bg-light mb-3">
+            <div class="card-body">
+                <h5 class="card-title font-weight-bold">${clase.disciplinas_nombre}</h5>
+                <dl class="row mb-0">
+                    <dt class="col-sm-4">Producto</dt>
+                    <dd class="col-sm-8">${disciplina}</dd>
+
+                    <dt class="col-sm-4">Instructor</dt>
+                    <dd class="col-sm-8">${clase.instructor_nombre}</dd>
+
+                    <dt class="col-sm-4">Fecha y Hora</dt>
+                    <dd class="col-sm-8">${clase.inicia}</dd>
+                </dl>
+            </div>
+        </div>
     `;
 }
 
