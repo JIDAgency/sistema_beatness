@@ -38,12 +38,12 @@
 
                                     <div class="row">
 
-                                        <div class="col-lg-6 col-md-6 col-sm-12">
+                                        <div class="col-lg-6 col-md-6 col-sm-12 mb-2">
                                             <label for="table"><b>Planes vigentes</b></label>
                                             <div class="form-group float-md-right mr-1">
                                                 <div id="buttons"></div>
                                             </div>
-                                            <table class="table display nowrap table-striped table-bordered scroll-horizontal table-hover" name="table" id="table">
+                                            <table name="table" id="table" class="table display nowrap table-striped table-bordered scroll-horizontal table-hover w-100" cellspacing="0">
                                                 <thead>
                                                     <tr>
                                                         <th>ID</th>
@@ -58,12 +58,12 @@
                                             </table>
                                         </div>
 
-                                        <div class="col-lg-6 col-md-6 col-sm-12">
+                                        <div class="col-lg-6 col-md-6 col-sm-12 mb-2">
                                             <label for="table2"><b>Planes por vencer</b></label>
                                             <div class="form-group float-md-right mr-1">
                                                 <div id="buttons2"></div>
                                             </div>
-                                            <table class="table display nowrap table-striped table-bordered scroll-horizontal table-hover" name="table2" id="table2">
+                                            <table name="table2" id="table2" class="table display nowrap table-striped table-bordered scroll-horizontal table-hover w-100" cellspacing="0">
                                                 <thead>
                                                     <tr>
                                                         <th>ID</th>
@@ -78,12 +78,12 @@
                                             </table>
                                         </div>
 
-                                        <div class="col-lg-6 col-md-6 col-sm-12">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 mb-2">
                                             <label for="table3"><b>Planes vencidos</b></label>
                                             <div class="form-group float-md-right mr-1">
                                                 <div id="buttons3"></div>
                                             </div>
-                                            <table class="table display nowrap table-striped table-bordered scroll-horizontal table-hover" name="table3" id="table3">
+                                            <table name="table3" id="table3" class="table display nowrap table-striped table-bordered scroll-horizontal table-hover w-100" cellspacing="0">
                                                 <thead>
                                                     <tr>
                                                         <th>ID</th>

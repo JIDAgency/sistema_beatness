@@ -18,7 +18,7 @@
                 <section>
                     <div class="row">
                         <div class="col-12">
-                            <div class="card">
+                            <div class="card no-border">
                                 <div class="card-header">
                                     <h4 class="card-title">Configuraciones de sistema</h4>
                                     <div class="heading-elements">

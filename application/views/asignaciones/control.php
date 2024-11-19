@@ -30,8 +30,7 @@
 								<div class="card-content p_dt">
 									<div class="card-body">
 										<?php $this->load->view('_comun/mensajes_alerta'); ?>
-
-										<table id="tabla" class="table display nowrap table-striped table-bordered scroll-horizontal table-hover" cellspacing="0">
+										<table name="tabla" id="tabla" class="table display nowrap table-striped table-bordered scroll-horizontal table-hover w-100" cellspacing="0">
 											<thead>
 												<tr>
 													<th>ID</th>

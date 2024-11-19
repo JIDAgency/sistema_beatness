@@ -16,7 +16,7 @@
 				<section>
 					<div class="row">
 						<div class="col-12">
-							<div class="card">
+							<div class="card no-border">
 								<div class="card-header">
 									<h4 class="card-title">Usuarios Corporativos</h4>
 									<div class="heading-elements">
@@ -25,7 +25,7 @@
 								<div class="card-content p_dt">
 									<div class="card-body">
 										<?php $this->load->view('_comun/mensajes_alerta'); ?>
-										<table id="tabla" class="table display nowrap table-striped table-bordered scroll-horizontal table-hover">
+										<table name="tabla" id="tabla" class="table display nowrap table-striped table-bordered scroll-horizontal table-hover w-100" cellspacing="0">
 											<thead>
 												<tr>
 													<th>ID</th>
@@ -35,9 +35,7 @@
 												</tr>
 											</thead>
 											<tbody>
-
 												<?php foreach ($corporativos_list as $corporativo_row) : ?>
-
 													<tr>
 														<td>
 															<?php echo $corporativo_row->id; ?>
@@ -52,9 +50,7 @@
 															<a href="<?php echo site_url("corporativos/ver/" . $corporativo_row->id); ?>"><i class="fa fa-eye"></i></a>
 														</td>
 													<tr>
-
 													<?php endforeach; ?>
-
 											</tbody>
 										</table>
 									</div>

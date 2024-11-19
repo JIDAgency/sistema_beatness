@@ -85,7 +85,7 @@
 								</div>
 								<div class="card-content p_dt">
 									<div class="card-body">
-										<table id="table" class="table display nowrap table-striped table-bordered scroll-horizontal table-hover">
+										<table id="table" class="table display nowrap table-striped table-bordered scroll-horizontal table-hover w-100" cellspacing="0">
 											<thead>
 												<tr>
 													<th>Opciones</th>

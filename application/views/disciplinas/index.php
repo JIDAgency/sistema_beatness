@@ -38,7 +38,7 @@
 				<section>
 					<div class="row">
 						<div class="col-12">
-							<div class="card">
+							<div class="card no-border">
 								<div class="card-header">
 									<h4 class="card-title">Registro de disciplinas</h4>
 
@@ -47,7 +47,7 @@
 									<div class="card-body">
 										<?php $this->load->view('_comun/mensajes_alerta'); ?>
 										<div class="table-responsive">
-											<table id="tabla-disciplinas" class="table display nowrap table-striped table-bordered scroll-horizontal table-hover" cellspacing="0">
+											<table id="tabla-disciplinas" class="table display nowrap table-striped table-bordered scroll-horizontal table-hover w-100" cellspacing="0">
 												<thead>
 													<tr>
 														<th>ID</th>

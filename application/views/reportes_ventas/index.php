@@ -18,7 +18,7 @@
 		<section id="show-hidden">
 			<div class="row">
 				<div class="col-12">
-					<div class="card">
+					<div class="card no-border">
 						<div class="card-header">
 							<h4 class="card-title">Ventas del sistema</h4>
 							<a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
@@ -67,7 +67,7 @@
 									</div>
 								</div>
 								<br>
-								<table id="tabla-ventas" class="table display nowrap table-striped table-bordered scroll-horizontal table-hover">
+								<table name="tabla-ventas" id="tabla-ventas" class="table display nowrap table-striped table-bordered scroll-horizontal table-hover w-100" cellspacing="0">
 									<thead>
 										<tr>
 											<th>ID</th>
@@ -201,7 +201,7 @@
 									</div>
 								</div>
 								<br>
-								<table id="tabla-ventas-polanco" class="table display nowrap table-striped table-bordered scroll-horizontal table-hover">
+								<table name="tabla-ventas-polanco" id="tabla-ventas-polanco" class="table display nowrap table-striped table-bordered scroll-horizontal table-hover w-100" cellspacing="0">
 									<thead>
 										<tr>
 											<th>ID</th>

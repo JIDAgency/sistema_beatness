@@ -1,7 +1,7 @@
 <div class="app-content content center-layout mt-2">
-    <div class="content-wrapper">
-        <div class="content-header row">
-            <div class="content-header-left col-md-6 col-12 mb-2">
+	<div class="content-wrapper">
+		<div class="content-header row">
+			<div class="content-header-left col-md-6 col-12 mb-2">
 				<div class="row breadcrumbs-top">
 					<div class="breadcrumb-wrapper col-12">
 						<ol class="breadcrumb">
@@ -40,14 +40,14 @@
 			<section>
 				<div class="row">
 					<div class="col-12">
-						<div class="card">
+						<div class="card no-border">
 							<div class="card-header">
 								<h4 class="card-title">Administradores registrados</h4>
 							</div>
 							<div class="card-content p_dt">
 								<div class="card-body">
 									<?php $this->load->view('_comun/mensajes_alerta'); ?>
-									<table id="tabla-clientes" class="table display nowrap table-striped table-bordered scroll-horizontal table-hover" cellspacing="0">
+									<table name="tabla-clientes" id="tabla-clientes" class="table display nowrap table-striped table-bordered scroll-horizontal table-hover w-100" cellspacing="0">
 										<thead>
 											<tr>
 												<th>ID</th>

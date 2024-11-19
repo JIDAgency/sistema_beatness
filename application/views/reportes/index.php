@@ -57,7 +57,7 @@
 
                                 <div class="card-body card-dashboard">
 
-                                    <?php print_r($obtener_usuarios_que_compraron_primera_clase); ?>
+                                    <!-- <?php print_r($obtener_usuarios_que_compraron_primera_clase); ?>
                                     <?php print_r($obtener_usuarios_que_compraron_primera_clase_y_compraron_otro_plan); ?>
 
                                     <br>
@@ -68,7 +68,7 @@
                                     <br>
 
                                     <?php print_r($obtener_usuarios_que_compraron_primera_clase_polanco); ?>
-                                    <?php print_r($obtener_usuarios_que_compraron_primera_clase_y_compraron_otro_plan_polanco); ?>
+                                    <?php print_r($obtener_usuarios_que_compraron_primera_clase_y_compraron_otro_plan_polanco); ?> -->
 
                                     <div class="row">
 

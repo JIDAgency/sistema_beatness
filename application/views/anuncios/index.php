@@ -1,1 +1,0 @@
-<?php echo $anuncio->mensaje_1; ?>

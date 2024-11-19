@@ -11,7 +11,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="content-header-right  col-md-6 col-12">
+			<div class="content-header-right col-md-6 col-12">
 				<div class="btn-group float-md-right" role="group" aria-label="Button group with nested dropdown">
 					<button class="btn btn-outline-secondary btn-min-width dropdown-toggle" id="btnGroupDrop1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="ft-settings icon-left"></i> Nuevo</button>
 					<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
@@ -39,7 +39,7 @@
 				<section>
 					<div class="row">
 						<div class="col-12">
-							<div class="card">
+							<div class="card no-border">
 								<div class="card-header">
 									<h4 class="card-title">Registro de sucursales</h4>
 									<!-- <div class="heading-elements">
@@ -52,7 +52,7 @@
 									<div class="card-body">
 										<?php $this->load->view('_comun/mensajes_alerta'); ?>
 										<div class="table-responsive">
-											<table id="tabla-sucursales" class="table display nowrap table-striped table-bordered scroll-horizontal table-hover" cellspacing="0">
+											<table name="tabla-sucursales" id="tabla-sucursales" class="table display nowrap table-striped table-bordered scroll-horizontal table-hover w-100" cellspacing="0">
 												<thead>
 													<tr>
 														<th>ID</th>
