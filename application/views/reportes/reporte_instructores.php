@@ -84,25 +84,45 @@
                             <div class="card-content collapse show">
                                 <div class="card-body card-dashboard">
                                     <div class="row">
-                                        <div class="col-4">
+                                        <div class="col-3">
                                             <div class="form-group">
                                                 <label for="fecha_inicio">Fecha de inicio:</label>
                                                 <input type="date" name="fecha_inicio" id="fecha_inicio" value="<?php echo date('Y-m-d', strtotime('first day of this month')); ?>" class="form-control">
                                             </div>
                                         </div>
-                                        <div class="col-4">
+                                        <div class="col-3">
                                             <div class="form-group">
                                                 <label for="fecha_fin">Fecha de fin:</label>
                                                 <input type="date" name="fecha_fin" id="fecha_fin" value="<?php echo date('Y-m-d'); ?>" class="form-control">
                                             </div>
                                         </div>
-                                        <div class="col-4">
+                                        <div class="col-3">
                                             <div class="form-group">
                                                 <label for="sucursal">Sucursal:</label>
                                                 <select name="sucursal" id="sucursal" class="form-control">
                                                     <option value="-1" selected>Todas</option>
                                                     <option value="2">Puebla</option>
                                                     <option value="3">Polanco</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-3">
+                                            <div class="form-group">
+                                                <label for="disciplina_id">Disciplina:</label>
+                                                <select name="disciplina_id" id="disciplina_id" class="form-control">
+                                                    <option value="-1" selected>Todas</option>
+                                                    <option value="2">INDOOR CYCLING PUEBLA</option>
+                                                    <option value="3">BOOTCAMP PUEBLA</option>
+                                                    <option value="4">BOX PUEBLA</option>
+                                                    <option value="5">JUMP PUEBLA</option>
+                                                    <option value="6">FUNCIONAL / CALISTENIA PUEBLA</option>
+                                                    <option value="21">FISIOTERAPIA PUEBLA</option>
+                                                    <option value="22">PILATES PUEBLA</option>
+                                                    <option value="23">YOGA PUEBLA</option>
+                                                    <option value="7">GYM PUEBLA</option>
+                                                    <option value="8">SPECIAL EVENT PUEBLA</option>
+                                                    <option value="10">BOOTCAMP POLANCO</option>
+                                                    <option value="19">INDOOR CYCLING POLANCO</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -126,96 +146,6 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <!-- <div class="card-content collapse show">
-                                <div class="card-body card-dashboard">
-
-                                    <div class="row match-height">
-                                        <div class="col-xl-3 col-md-3 col-sm-12 mt-2 mb-2">
-                                            <div class="form-group">
-                                                <div class="row">
-                                                    <label class="col-lg-12"><i class="ft-filter"></i> Periodo a consultar:</label>
-                                                    <div class="col-lg-12">
-                                                        <select id="mes_a_consultar" name="mes_a_consultar" class="select2 form-control">
-
-                                                            <?php foreach ($periodo as $periodo_mensual_row) : ?>
-                                                                <?php
-                                                                $date = DateTime::createFromFormat("Y-m", $periodo_mensual_row->format("Y-m"));
-                                                                ?>
-                                                                <option value="<?php echo $periodo_mensual_row->format("Y-m"); ?>" <?php echo set_select('mes_a_consultar', $periodo_mensual_row->format("Y-m"), set_value('mes_a_consultar') ? false : $periodo_mensual_row->format("Y-m") == date('Y-m')); ?>><?php echo ucfirst(strftime("%B de %Y", $date->getTimestamp())); ?></option>
-                                                            <?php endforeach; ?>
-
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group float-md-right mr-1">
-                                        <div id="buttons"></div>
-                                    </div>
-                                    <h4 class="form-section"><i class="ft-calendar"></i> Mensual</h4>
-
-                                    <hr>
-                                    <table class="table display nowrap table-striped table-bordered scroll-horizontal table-hover" name="table" id="table">
-                                        <thead>
-                                            <tr>
-                                                <th>#</th>
-                                                <th>Instructor</th>
-                                                <th>Clases impartidas</th>
-                                                <th>Cupos reservados</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                        </tbody>
-                                    </table>
-                                    <br><br>
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <div class="form-group float-md-right mr-1">
-                                                <div id="buttons2"></div>
-                                            </div>
-                                            <h4 class="form-section"><i class="ft-calendar"></i> Primera quincena</h4>
-                                            <hr>
-                                            <table class="table display nowrap table-striped table-bordered scroll-horizontal table-hover" name="table_primera_quincena" id="table_primera_quincena">
-                                                <thead>
-                                                    <tr>
-                                                        <th>#</th>
-                                                        <th>Instructor</th>
-                                                        <th>Clases impartidas</th>
-                                                        <th>Cupos reservados</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                </tbody>
-                                            </table>
-                                        </div>
-
-                                        <div class="col-6">
-                                            <div class="form-group float-md-right mr-1">
-                                                <div id="buttons3"></div>
-                                            </div>
-                                            <h4 class="form-section"><i class="ft-calendar"></i> Segunda quincena</h4>
-
-                                            <hr>
-                                            <table class="table display nowrap table-striped table-bordered scroll-horizontal table-hover" name="table_segunda_quincena" id="table_segunda_quincena">
-                                                <thead>
-                                                    <tr>
-                                                        <th>#</th>
-                                                        <th>Instructor</th>
-                                                        <th>Clases impartidas</th>
-                                                        <th>Cupos reservados</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                </tbody>
-                                            </table>
-                                        </div>
-
-                                    </div>
-
-                                </div>
-                            </div> -->
 
                         </div>
                     </div>

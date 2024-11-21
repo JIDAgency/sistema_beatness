@@ -96,6 +96,7 @@ class Disciplinas_model extends CI_Model
             ->where('estatus', 'activo')
             ->where('sucursal_id', intval($id))
             ->where('mostrar_en_app', 'si')
+            ->order_by('orden', 'asc')
             ->get();
         return $query;
     }

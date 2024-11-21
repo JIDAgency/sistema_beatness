@@ -370,9 +370,10 @@ class Reportes extends MY_Controller
 		$fecha_inicio = $this->input->get('fecha_inicio');
 		$fecha_fin = $this->input->get('fecha_fin');
 		$sucursal = $this->input->get('sucursal');
+		$disciplina_id = $this->input->get('disciplina_id');
 
 		try {
-			$clases = $this->reportes_model->obtener_clases_impartidas_agrupadas_por_instructor($fecha_inicio, $fecha_fin, $sucursal);
+			$clases = $this->reportes_model->obtener_clases_impartidas_agrupadas_por_instructor($fecha_inicio, $fecha_fin, $sucursal, $disciplina_id);
 			$this->output
 				->set_content_type('application/json')
 				->set_output(json_encode($clases));

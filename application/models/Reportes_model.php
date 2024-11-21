@@ -457,13 +457,21 @@ class Reportes_model extends CI_Model
         return $query->result();
     }
 
-    public function obtener_clases_impartidas_agrupadas_por_instructor($fecha_inicio, $fecha_fin, $sucursal_id)
+    public function obtener_clases_impartidas_agrupadas_por_instructor($fecha_inicio, $fecha_fin, $sucursal_id, $disciplina_id)
     {
         $this->db->select("
             t2.id as id,
             t2.correo as email,
             COUNT(t1.instructor_id) as total_clases,
             SUM(t1.reservado) as total_reservado,
+            SUM(t1.cupo) as total_cupo,
+            (SUM(t1.reservado) / SUM(t1.cupo)) * 100 as porcentaje_ocupacion,
+            (SUM(t1.reservado) / COUNT(t1.instructor_id)) as promedio_reservado_por_clase,
+            (SUM(t1.cupo) / COUNT(t1.instructor_id)) as promedio_cupo_por_clase,
+            SUM(CASE WHEN t1.reservado >= t1.cupo THEN 1 ELSE 0 END) as clases_llenadas,
+            (SUM(CASE WHEN t1.reservado >= t1.cupo THEN 1 ELSE 0 END) / COUNT(t1.instructor_id)) * 100 as porcentaje_clases_llenadas,
+            MAX(t1.reservado) as max_reservado,
+            MIN(NULLIF(t1.reservado, 0)) as min_reservado_no_cero
         ");
         $this->db->from("clases t1");
         $this->db->join("usuarios t2", "t2.id = t1.instructor_id");
@@ -472,6 +480,9 @@ class Reportes_model extends CI_Model
         $this->db->where("t1.inicia <=", $fecha_fin);
         if ($sucursal_id != -1) {
             $this->db->where("t4.sucursal_id", $sucursal_id);
+        }
+        if ($disciplina_id != -1) {
+            $this->db->where("t1.disciplina_id", $disciplina_id);
         }
         $this->db->group_by("t2.correo");
         $this->db->order_by("total_clases", "desc");
