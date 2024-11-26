@@ -8,6 +8,16 @@ class Planes_categorias_model extends CI_Model
     public function get_planes_categorias()
     {
         $query = $this->db
+            ->where('estatus', 'activo')
+            ->get('planes_categorias');
+
+        return $query;
+    }
+
+    public function get_planes_categorias_suspendidas()
+    {
+        $query = $this->db
+            ->where('estatus', 'suspendido')
             ->get('planes_categorias');
 
         return $query;

@@ -55,13 +55,14 @@ class Planes_categorias extends MY_Controller
             $opciones = '<a href="' . site_url("planes_categorias/editar/") . $plan_categoria->id . '">Editar</a>';
 
             $data[] = array(
+                'opciones' => $opciones,
+                'url_banner' => '<img src="' . base_url('almacenamiento/planes_categorias/' . $plan_categoria->url_banner) . '" class="img-fluid">',
                 'id' => $plan_categoria->id,
                 'identificador' => !empty($plan_categoria->identificador) ? $plan_categoria->identificador : '',
                 'nombre' => !empty($plan_categoria->nombre) ? ucfirst($plan_categoria->nombre) : '',
                 'orden' => !empty($plan_categoria->orden) ? $plan_categoria->orden : '',
                 'estatus' => !empty($plan_categoria->estatus) ? $plan_categoria->estatus : '',
                 'fecha_registro' => (!empty($plan_categoria->fecha_registro) ? date('Y/m/d H:i:s', strtotime($plan_categoria->fecha_registro)) : ''),
-                'opciones' => $opciones,
             );
         }
 
@@ -69,6 +70,43 @@ class Planes_categorias extends MY_Controller
             'draw' => $draw,
             'recordsTotal' => $planes_categorias_list->num_rows(),
             'recordsFiltered' => $planes_categorias_list->num_rows(),
+            'data' => $data
+        );
+
+        echo json_encode($result);
+        exit();
+    }
+
+    public function obtener_tabla_index_suspendidos()
+    {
+        $draw = intval($this->input->post('draw'));
+        $start = intval($this->input->post('start'));
+        $length = intval($this->input->post('length'));
+
+        $planes_categorias_suspendidas_list = $this->planes_categorias_model->get_planes_categorias_suspendidas();
+
+        $data = [];
+
+        foreach ($planes_categorias_suspendidas_list->result() as $plan_categoria) {
+
+            $opciones = '<a href="' . site_url("planes_categorias/editar/") . $plan_categoria->id . '">Editar</a>';
+
+            $data[] = array(
+                'opciones' => $opciones,
+                'url_banner' => '<img src="' . base_url('almacenamiento/planes_categorias/' . $plan_categoria->url_banner) . '" class="img-fluid">',
+                'id' => $plan_categoria->id,
+                'identificador' => !empty($plan_categoria->identificador) ? $plan_categoria->identificador : '',
+                'nombre' => !empty($plan_categoria->nombre) ? ucfirst($plan_categoria->nombre) : '',
+                'orden' => !empty($plan_categoria->orden) ? $plan_categoria->orden : '',
+                'estatus' => !empty($plan_categoria->estatus) ? $plan_categoria->estatus : '',
+                'fecha_registro' => (!empty($plan_categoria->fecha_registro) ? date('Y/m/d H:i:s', strtotime($plan_categoria->fecha_registro)) : ''),
+            );
+        }
+
+        $result = array(
+            'draw' => $draw,
+            'recordsTotal' => $planes_categorias_suspendidas_list->num_rows(),
+            'recordsFiltered' => $planes_categorias_suspendidas_list->num_rows(),
             'data' => $data
         );
 

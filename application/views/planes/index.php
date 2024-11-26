@@ -52,14 +52,30 @@
 									<div class="card-body">
 										<?php $this->load->view('_comun/mensajes_alerta');
 										$i = 1; ?>
+										<div class="row">
+											<div class="col-4">
+												<div class="form-group">
+													<label for="sucursal">Sucursal:</label>
+													<select name="sucursal" id="sucursal" class="form-control">
+														<option value="">Todas</option>
+														<?php foreach ($sucursales_list as $key => $sucursal) : ?>
+															<option value="<?php echo $sucursal->descripcion ?>"><?php echo $sucursal->descripcion ?></option>
+														<?php endforeach; ?>
+													</select>
+												</div>
+											</div>
+										</div>
 										<table id="tabla-planes" class="table display nowrap table-striped table-bordered scroll-horizontal table-hover w-100" cellspacing="0">
 											<thead>
 												<tr>
+													<th>Opciones</th>
+													<th>Imagenes</th>
 													<th>ID</th>
 													<th>Plan</th>
 													<th>Orden venta</th>
 													<th>Clases incluidas</th>
 													<th>Vigencia</th>
+													<th>Sucursal</th>
 													<th>Código</th>
 													<th>Costo</th>
 													<th>Reservaciones ilimitadas</th>
@@ -68,7 +84,45 @@
 													<th>Solo empresarial</th>
 													<th>Se pagara en</th>
 													<th>Activo</th>
+												</tr>
+											</thead>
+											<tbody>
+											</tbody>
+										</table>
+										<br><br>
+										<h4 class="card-title">Lista de planes suspendidos</h4>
+										<div class="row">
+											<div class="col-4">
+												<div class="form-group">
+													<label for="sucursal-suspendidos">Sucursal:</label>
+													<select name="sucursal-suspendidos" id="sucursal-suspendidos" class="form-control">
+														<option value="">Todas</option>
+														<?php foreach ($sucursales_list as $key => $sucursal) : ?>
+															<option value="<?php echo $sucursal->descripcion ?>"><?php echo $sucursal->descripcion ?></option>
+														<?php endforeach; ?>
+													</select>
+												</div>
+											</div>
+										</div>
+										<table id="tabla-planes-suspendidos" class="table display nowrap table-striped table-bordered scroll-horizontal table-hover w-100" cellspacing="0">
+											<thead>
+												<tr>
 													<th>Opciones</th>
+													<th>Imagenes</th>
+													<th>ID</th>
+													<th>Plan</th>
+													<th>Orden venta</th>
+													<th>Clases incluidas</th>
+													<th>Vigencia</th>
+													<th>Sucursal</th>
+													<th>Código</th>
+													<th>Costo</th>
+													<th>Reservaciones ilimitadas</th>
+													<th>Primera compra</th>
+													<th>Solo estudiantes</th>
+													<th>Solo empresarial</th>
+													<th>Se pagara en</th>
+													<th>Activo</th>
 												</tr>
 											</thead>
 											<tbody>

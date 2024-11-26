@@ -36,6 +36,39 @@ class Planes_model extends CI_Model
         $url = '<a href="' . site_url("inicio/index") . '"><i class="ft-eye"></i> Detalles</a>';
 
         $query = $this->db
+            ->where('activado', 1)
+            ->order_by('t1.id', 'desc')
+            ->select("
+                t1.id as listar_id,
+                CONCAT(COALESCE(t1.sku, 'N/D'), ' - ', COALESCE(t1.nombre, 'N/D')) AS listar_nombre_completo,
+                t1.orden_venta as listar_orden_venta,
+                t1.clases_incluidas as listar_clases_incluidas,
+                t1.vigencia_en_dias as listar_vigencia_en_dias,
+                t1.codigo as codigo,
+                t1.costo as listar_costo,
+                t1.es_ilimitado,
+                t1.sucursal_id,
+                t1.es_primera,
+                t1.es_estudiante,
+                t1.es_empresarial,
+                t1.pagar_en,
+                t1.activado as listar_activo,
+                t1.url_infoventa,
+                t2.descripcion as sucursal_nombre,
+            ")
+            ->from('planes t1')
+            ->join('sucursales t2', 't2.id = t1.sucursal_id')
+            ->get();
+
+        return $query;
+    }
+
+    public function get_lista_de_todos_los_planes_suspendidos_limitada()
+    {
+        $url = '<a href="' . site_url("inicio/index") . '"><i class="ft-eye"></i> Detalles</a>';
+
+        $query = $this->db
+            ->where('activado', 0)
             ->order_by('t1.id', 'desc')
             ->select("
                 t1.id as listar_id,
@@ -51,8 +84,11 @@ class Planes_model extends CI_Model
                 t1.es_empresarial,
                 t1.pagar_en,
                 t1.activado as listar_activo,
+                t1.url_infoventa,
+                t2.descripcion as sucursal_nombre,
             ")
             ->from('planes t1')
+            ->join('sucursales t2', 't2.id = t1.sucursal_id')
             ->get();
 
         return $query;

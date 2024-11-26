@@ -20,7 +20,7 @@
 						<div class="col-12">
 							<div class="card no-border">
 								<div class="card-header">
-									<h4 class="card-title">Categorias disponibles</h4>
+									<h4 class="card-title">Categorías disponibles</h4>
 									<div class="heading-elements">
 										<a href="<?php echo site_url('planes_categorias/crear') ?>" class="btn btn-outline-secondary btn-min-width">
 											<i class="ft-plus"></i> Agregar
@@ -35,13 +35,33 @@
 										<table id="table" class="table display nowrap table-striped table-bordered scroll-horizontal table-hover w-100" cellspacing="0">
 											<thead>
 												<tr>
+													<th>Opciones</th>
+													<th>Imagen</th>
 													<th>ID</th>
 													<th>Identificador</th>
 													<th>Nombre</th>
 													<th>Orden</th>
 													<th>Estatus</th>
 													<th>Fecha de registro</th>
+												</tr>
+											</thead>
+											<tbody>
+											</tbody>
+										</table>
+										<br><br>
+										<h4 class="card-title">Categorías suspendidas</h4>
+
+										<table id="table_suspendidos" class="table display nowrap table-striped table-bordered scroll-horizontal table-hover w-100" cellspacing="0">
+											<thead>
+												<tr>
 													<th>Opciones</th>
+													<th>Imagen</th>
+													<th>ID</th>
+													<th>Identificador</th>
+													<th>Nombre</th>
+													<th>Orden</th>
+													<th>Estatus</th>
+													<th>Fecha de registro</th>
 												</tr>
 											</thead>
 											<tbody>

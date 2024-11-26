@@ -12,6 +12,7 @@ class Planes extends MY_Controller
         $this->load->model('planes_model');
         $this->load->model('disciplinas_model');
         $this->load->model('planes_categorias_model');
+        $this->load->model('sucursales_model');
     }
 
     public function subir_imagen($id = null)
@@ -150,6 +151,10 @@ class Planes extends MY_Controller
         $data['mensaje_info'] = $this->session->flashdata('MENSAJE_INFO');
         $data['mensaje_error'] = $this->session->flashdata('MENSAJE_ERROR');
 
+        $sucursales_list = $this->sucursales_model->get_todas_las_sucursales()->result();
+
+        $data['sucursales_list'] = $sucursales_list;
+
         $this->construir_private_site_ui('planes/index', $data);
     }
 
@@ -182,11 +187,14 @@ class Planes extends MY_Controller
             }
 
             $result[] = array(
+                "listar_opciones" => $menu,
+                "listar_imagenes" => '<img src="' . $plan_row->url_infoventa . '" class="img-fluid">',
                 "listar_id" => $plan_row->listar_id,
                 "listar_nombre_completo" => mb_strtoupper($plan_row->listar_nombre_completo),
                 "listar_orden_venta" => $plan_row->listar_orden_venta,
                 "listar_clases_incluidas" => $plan_row->listar_clases_incluidas,
                 "listar_vigencia_en_dias" => $plan_row->listar_vigencia_en_dias,
+                'sucursal' => $plan_row->sucursal_nombre,
                 'codigo' => mb_strtoupper($plan_row->codigo),
                 "listar_costo" => $plan_row->listar_costo,
                 "es_ilimitado" => $plan_row->es_ilimitado,
@@ -195,7 +203,54 @@ class Planes extends MY_Controller
                 "es_empresarial" => $plan_row->es_empresarial,
                 "pagar_en" => $plan_row->pagar_en,
                 "listar_activo" => $plan_row->listar_activo == 1 ? 'Activo' : 'Suspendido',
+            );
+        }
+
+        echo json_encode(array("data" => $result));
+    }
+
+    public function load_lista_de_todos_los_planes_suspendidos_para_datatable()
+    {
+
+
+        $planes_list = $this->planes_model->get_lista_de_todos_los_planes_suspendidos_limitada()->result();
+
+
+        $result = array();
+
+        foreach ($planes_list as $plan_row) {
+
+
+
+            if ($plan_row->listar_activo == 1) {
+                $menu = '<a href="' . site_url("planes/editar/") . $plan_row->listar_id . '">Editar</a>
+                |
+                <a href="' . site_url("planes/desactivar/") . $plan_row->listar_id . '">Desactivar</a>
+                ';
+            } elseif ($plan_row->listar_activo == 0) {
+                $menu = '<a href="' . site_url("planes/editar/") . $plan_row->listar_id . '">Editar</a>
+                |
+                <a href="' . site_url("planes/activar/") . $plan_row->listar_id . '">Activar</a>
+                ';
+            }
+
+            $result[] = array(
                 "listar_opciones" => $menu,
+                "listar_imagenes" => '<img src="' . $plan_row->url_infoventa . '" class="img-fluid">',
+                "listar_id" => $plan_row->listar_id,
+                "listar_nombre_completo" => mb_strtoupper($plan_row->listar_nombre_completo),
+                "listar_orden_venta" => $plan_row->listar_orden_venta,
+                "listar_clases_incluidas" => $plan_row->listar_clases_incluidas,
+                "listar_vigencia_en_dias" => $plan_row->listar_vigencia_en_dias,
+                'sucursal' => $plan_row->sucursal_nombre,
+                'codigo' => mb_strtoupper($plan_row->codigo),
+                "listar_costo" => $plan_row->listar_costo,
+                "es_ilimitado" => $plan_row->es_ilimitado,
+                "es_primera" => $plan_row->es_primera,
+                "es_estudiante" => $plan_row->es_estudiante,
+                "es_empresarial" => $plan_row->es_empresarial,
+                "pagar_en" => $plan_row->pagar_en,
+                "listar_activo" => $plan_row->listar_activo == 1 ? 'Activo' : 'Suspendido',
             );
         }
 
