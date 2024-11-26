@@ -13,7 +13,7 @@
 				</div>
 			</div>
 
-			<div class="content-header-right  col-md-6 col-12">
+			<div class="content-header-right col-md-6 col-12">
 				<div class="btn-group float-md-right" role="group" aria-label="Button group with nested dropdown">
 					<button class="btn btn-outline-secondary btn-min-width dropdown-toggle" id="btnGroupDrop1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="ft-settings icon-left"></i> Nuevo</button>
 					<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
@@ -33,10 +33,22 @@
 				<div class="form-group float-md-right">
 					<div id="buttons"></div>
 				</div>
+
+				<div class=" heading-elements float-right mx-1">
+					<a href="#suspendidos" class="btn btn-outline-secondary btn-min-width smooth-scroll">
+						Planes suspendidos
+					</a>
+				</div>
+
+				<div class="heading-elements float-right">
+					<a href="#disponibles" class="btn btn-outline-secondary btn-min-width smooth-scroll">
+						Planes activos
+					</a>
+				</div>
 			</div>
 
 		</div>
-		<div class="content-wrapper">
+		<div class=" content-wrapper">
 			<div class="content-body">
 				<section>
 					<div class="row">
@@ -49,7 +61,7 @@
 								</div>
 
 								<div class="card-content p_dt">
-									<div class="card-body">
+									<div class="card-body" id="disponibles">
 										<?php $this->load->view('_comun/mensajes_alerta');
 										$i = 1; ?>
 										<div class="row">
@@ -89,7 +101,9 @@
 											<tbody>
 											</tbody>
 										</table>
-										<br><br>
+									</div>
+
+									<div class="card-body" id="suspendidos">
 										<h4 class="card-title">Lista de planes suspendidos</h4>
 										<div class="row">
 											<div class="col-4">

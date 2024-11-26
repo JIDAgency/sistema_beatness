@@ -120,3 +120,14 @@ $(document).ready(function () {
         ]
     }).container().appendTo($('#buttons'));
 });
+
+document.querySelectorAll('.smooth-scroll').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault(); // Evita el comportamiento predeterminado
+        const target = document.querySelector(this.getAttribute('href')); // Selecciona el ID del destino
+        target.scrollIntoView({
+            behavior: 'smooth', // Desplazamiento suave
+            block: 'start' // Ajusta al inicio del elemento destino
+        });
+    });
+});

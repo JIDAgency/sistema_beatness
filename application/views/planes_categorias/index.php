@@ -11,6 +11,29 @@
 					</div>
 				</div>
 			</div>
+
+			<div class="content-header-right  col-md-6 col-12">
+				<div class="heading-elements float-right mx-1">
+					<a href="<?php echo site_url('planes_categorias/crear') ?>" class="btn btn-outline-secondary btn-min-width">
+						<i class="ft-plus"></i> Agregar
+					</a>
+				</div>
+				<div class="form-group float-md-right">
+					<div id="buttons"></div>
+				</div>
+
+				<div class=" heading-elements float-right mx-1">
+					<a href="#suspendidos" class="btn btn-outline-secondary btn-min-width smooth-scroll">
+						Planes suspendidos
+					</a>
+				</div>
+
+				<div class="heading-elements float-right">
+					<a href="#disponibles" class="btn btn-outline-secondary btn-min-width smooth-scroll">
+						Planes activos
+					</a>
+				</div>
+			</div>
 		</div>
 		<?php $this->load->view('_templates/mensajes_alerta.tpl.php'); ?>
 		<div class="content-wrapper">
@@ -21,17 +44,9 @@
 							<div class="card no-border">
 								<div class="card-header">
 									<h4 class="card-title">Categorías disponibles</h4>
-									<div class="heading-elements">
-										<a href="<?php echo site_url('planes_categorias/crear') ?>" class="btn btn-outline-secondary btn-min-width">
-											<i class="ft-plus"></i> Agregar
-										</a>
-										<div class="form-group float-md-left mr-1">
-											<div id="buttons"></div>
-										</div>
-									</div>
 								</div>
 								<div class="card-content p_dt">
-									<div class="card-body">
+									<div class="card-body" id="disponibles">
 										<table id="table" class="table display nowrap table-striped table-bordered scroll-horizontal table-hover w-100" cellspacing="0">
 											<thead>
 												<tr>
@@ -48,7 +63,8 @@
 											<tbody>
 											</tbody>
 										</table>
-										<br><br>
+									</div>
+									<div class="card-body" id="suspendidos">
 										<h4 class="card-title">Categorías suspendidas</h4>
 
 										<table id="table_suspendidos" class="table display nowrap table-striped table-bordered scroll-horizontal table-hover w-100" cellspacing="0">
