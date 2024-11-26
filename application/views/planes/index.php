@@ -81,21 +81,21 @@
 											<thead>
 												<tr>
 													<th>Opciones</th>
-													<th>Imagenes</th>
 													<th>ID</th>
-													<th>Plan</th>
-													<th>Orden venta</th>
-													<th>Clases incluidas</th>
-													<th>Vigencia</th>
-													<th>Sucursal</th>
-													<th>Código</th>
-													<th>Costo</th>
+													<th>Imagenes</th>
+													<th>Orden</th>
+													<th>Nombre</th>
 													<th>Reservaciones ilimitadas</th>
 													<th>Primera compra</th>
-													<th>Solo estudiantes</th>
-													<th>Solo empresarial</th>
-													<th>Se pagara en</th>
-													<th>Activo</th>
+													<th>Es estudiantil</th>
+													<th>Es empresarial</th>
+													<th>Se paga en</th>
+													<th>Sucursal</th>
+													<th>Clases</th>
+													<th>Vigencia dia/s</th>
+													<th>Costo</th>
+													<th>Código</th>
+													<th>Estatus</th>
 												</tr>
 											</thead>
 											<tbody>
@@ -122,21 +122,21 @@
 											<thead>
 												<tr>
 													<th>Opciones</th>
-													<th>Imagenes</th>
 													<th>ID</th>
-													<th>Plan</th>
-													<th>Orden venta</th>
-													<th>Clases incluidas</th>
-													<th>Vigencia</th>
-													<th>Sucursal</th>
-													<th>Código</th>
-													<th>Costo</th>
+													<th>Imagenes</th>
+													<th>Orden</th>
+													<th>Nombre</th>
 													<th>Reservaciones ilimitadas</th>
 													<th>Primera compra</th>
-													<th>Solo estudiantes</th>
-													<th>Solo empresarial</th>
-													<th>Se pagara en</th>
-													<th>Activo</th>
+													<th>Es estudiantil</th>
+													<th>Es empresarial</th>
+													<th>Se paga en</th>
+													<th>Sucursal</th>
+													<th>Clases</th>
+													<th>Vigencia dia/s</th>
+													<th>Costo</th>
+													<th>Código</th>
+													<th>Estatus</th>
 												</tr>
 											</thead>
 											<tbody>

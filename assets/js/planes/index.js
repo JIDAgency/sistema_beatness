@@ -18,7 +18,7 @@ $(function () {
         "scrollX": true,
         "deferRender": true,
         'processing': true,
-        "order": [[0, "desc"]],
+        "order": [[1, "desc"]],
         "lengthMenu": [[25, 50, 100, 250, 500, -1], [25, 50, 100, 250, 500, "Todos"]],
         "ajax": {
             "url": method_call + "load_lista_de_todos_los_planes_para_datatable",
@@ -26,22 +26,78 @@ $(function () {
         },
         "columns": [
             { "data": "listar_opciones" },
-            { "data": "listar_imagenes" },
             { "data": "listar_id" },
-            { "data": "listar_nombre_completo" },
+            { "data": "listar_imagenes" },
             { "data": "listar_orden_venta" },
-            { "data": "listar_clases_incluidas" },
-            { "data": "listar_vigencia_en_dias" },
-            { "data": "sucursal" },
-            { "data": "codigo" },
-            { "data": "listar_costo" },
+            { "data": "listar_nombre_completo" },
             { "data": "es_ilimitado" },
             { "data": "es_primera" },
             { "data": "es_estudiante" },
             { "data": "es_empresarial" },
             { "data": "pagar_en" },
+            { "data": "sucursal" },
+            { "data": "listar_clases_incluidas" },
+            { "data": "listar_vigencia_en_dias" },
+            { "data": "listar_costo", "render": formato_moneda },
+            { "data": "codigo" },
             { "data": "listar_activo" },
         ],
+        rowCallback: function (row, data, index) {
+
+            if (data["es_ilimitado"] == "Si") {
+                $(row).find('td:eq(5)').css('background-color', '#37BC9B');
+                $(row).find('td:eq(5)').css('color', 'white');
+            } else if (data["es_ilimitado"] == "No") {
+                $(row).find('td:eq(5)').css('background-color', '#f08383');
+                $(row).find('td:eq(5)').css('color', 'white');
+            }
+
+            if (data["es_primera"] == "Si") {
+                $(row).find('td:eq(6)').css('background-color', '#37BC9B');
+                $(row).find('td:eq(6)').css('color', 'white');
+            } else if (data["es_primera"] == "No") {
+                $(row).find('td:eq(6)').css('background-color', '#f08383');
+                $(row).find('td:eq(6)').css('color', 'white');
+            }
+
+            if (data["es_estudiante"] == "Si") {
+                $(row).find('td:eq(7)').css('background-color', '#37BC9B');
+                $(row).find('td:eq(7)').css('color', 'white');
+            } else if (data["es_estudiante"] == "No") {
+                $(row).find('td:eq(7)').css('background-color', '#f08383');
+                $(row).find('td:eq(7)').css('color', 'white');
+            }
+
+            if (data["es_empresarial"] == "Si") {
+                $(row).find('td:eq(8)').css('background-color', '#37BC9B');
+                $(row).find('td:eq(8)').css('color', 'white');
+            } else if (data["es_empresarial"] == "No") {
+                $(row).find('td:eq(8)').css('background-color', '#f08383');
+                $(row).find('td:eq(8)').css('color', 'white');
+            }
+
+            if (data["pagar_en"] == "App") {
+                $(row).find('td:eq(9)').css('background-color', '#37BC9B');
+                $(row).find('td:eq(9)').css('color', 'white');
+            } else if (data["pagar_en"] == "Url") {
+                $(row).find('td:eq(9)').css('background-color', '#F6BB42');
+                $(row).find('td:eq(9)').css('color', 'white');
+            }
+
+            if (data["sucursal"] == "Clases en linea") {
+                $(row).find('td:eq(10)').css('background-color', '#F6BB42');
+                $(row).find('td:eq(10)').css('color', 'white');
+            } else if (data["sucursal"] == "Puebla") {
+                $(row).find('td:eq(10)').css('background-color', '#074359');
+                $(row).find('td:eq(10)').css('color', 'white');
+            } else if (data["sucursal"] == "Polanco") {
+                $(row).find('td:eq(10)').css('background-color', '#3BAFDA');
+                $(row).find('td:eq(10)').css('color', 'white');
+            } else if (data["sucursal"] == "Origami") {
+                $(row).find('td:eq(10)').css('background-color', '#B3B3B3');
+                $(row).find('td:eq(10)').css('color', 'white');
+            }
+        },
         'language': {
             "sProcessing": '<i class="fa fa-spinner spinner"></i> Cargando...',
             "sLengthMenu": "Mostrar _MENU_",
@@ -76,7 +132,7 @@ $(function () {
         "scrollX": true,
         "deferRender": true,
         'processing': true,
-        "order": [[0, "desc"]],
+        "order": [[1, "desc"]],
         "lengthMenu": [[25, 50, 100, 250, 500, -1], [25, 50, 100, 250, 500, "Todos"]],
         "ajax": {
             "url": method_call + "load_lista_de_todos_los_planes_suspendidos_para_datatable",
@@ -84,22 +140,78 @@ $(function () {
         },
         "columns": [
             { "data": "listar_opciones" },
-            { "data": "listar_imagenes" },
             { "data": "listar_id" },
-            { "data": "listar_nombre_completo" },
+            { "data": "listar_imagenes" },
             { "data": "listar_orden_venta" },
-            { "data": "listar_clases_incluidas" },
-            { "data": "listar_vigencia_en_dias" },
-            { "data": "sucursal" },
-            { "data": "codigo" },
-            { "data": "listar_costo" },
+            { "data": "listar_nombre_completo" },
             { "data": "es_ilimitado" },
             { "data": "es_primera" },
             { "data": "es_estudiante" },
             { "data": "es_empresarial" },
             { "data": "pagar_en" },
+            { "data": "sucursal" },
+            { "data": "listar_clases_incluidas" },
+            { "data": "listar_vigencia_en_dias" },
+            { "data": "listar_costo", "render": formato_moneda },
+            { "data": "codigo" },
             { "data": "listar_activo" },
         ],
+        rowCallback: function (row, data, index) {
+
+            if (data["es_ilimitado"] == "Si") {
+                $(row).find('td:eq(5)').css('background-color', '#37BC9B');
+                $(row).find('td:eq(5)').css('color', 'white');
+            } else if (data["es_ilimitado"] == "No") {
+                $(row).find('td:eq(5)').css('background-color', '#f08383');
+                $(row).find('td:eq(5)').css('color', 'white');
+            }
+
+            if (data["es_primera"] == "Si") {
+                $(row).find('td:eq(6)').css('background-color', '#37BC9B');
+                $(row).find('td:eq(6)').css('color', 'white');
+            } else if (data["es_primera"] == "No") {
+                $(row).find('td:eq(6)').css('background-color', '#f08383');
+                $(row).find('td:eq(6)').css('color', 'white');
+            }
+
+            if (data["es_estudiante"] == "Si") {
+                $(row).find('td:eq(7)').css('background-color', '#37BC9B');
+                $(row).find('td:eq(7)').css('color', 'white');
+            } else if (data["es_estudiante"] == "No") {
+                $(row).find('td:eq(7)').css('background-color', '#f08383');
+                $(row).find('td:eq(7)').css('color', 'white');
+            }
+
+            if (data["es_empresarial"] == "Si") {
+                $(row).find('td:eq(8)').css('background-color', '#37BC9B');
+                $(row).find('td:eq(8)').css('color', 'white');
+            } else if (data["es_empresarial"] == "No") {
+                $(row).find('td:eq(8)').css('background-color', '#f08383');
+                $(row).find('td:eq(8)').css('color', 'white');
+            }
+
+            if (data["pagar_en"] == "App") {
+                $(row).find('td:eq(9)').css('background-color', '#37BC9B');
+                $(row).find('td:eq(9)').css('color', 'white');
+            } else if (data["pagar_en"] == "Url") {
+                $(row).find('td:eq(9)').css('background-color', '#F6BB42');
+                $(row).find('td:eq(9)').css('color', 'white');
+            }
+
+            if (data["sucursal"] == "Clases en linea") {
+                $(row).find('td:eq(10)').css('background-color', '#F6BB42');
+                $(row).find('td:eq(10)').css('color', 'white');
+            } else if (data["sucursal"] == "Puebla") {
+                $(row).find('td:eq(10)').css('background-color', '#074359');
+                $(row).find('td:eq(10)').css('color', 'white');
+            } else if (data["sucursal"] == "Polanco") {
+                $(row).find('td:eq(10)').css('background-color', '#3BAFDA');
+                $(row).find('td:eq(10)').css('color', 'white');
+            } else if (data["sucursal"] == "Origami") {
+                $(row).find('td:eq(10)').css('background-color', '#B3B3B3');
+                $(row).find('td:eq(10)').css('color', 'white');
+            }
+        },
         'language': {
             "sProcessing": '<i class="fa fa-spinner spinner"></i> Cargando...',
             "sLengthMenu": "Mostrar _MENU_",
@@ -169,29 +281,3 @@ document.querySelectorAll('.smooth-scroll').forEach(anchor => {
         });
     });
 });
-
-
-/*$(function () {
-    $("#tabla-planes").DataTable({
-        "deferRender": true,
-        "responsive": true,
-        "order": [[0, "asc"]],
-        'processing': true,
-        "lengthMenu": [[25, 50, 100, 250, 500, -1],[25, 50, 100, 250, 500, "Todos"]],
-        "language": {
-            "search": "Buscar",
-            "scrollX": false,
-            "infoEmpty": "No hay registros que mostrar",
-            "infoFiltered": " - (filtrado de _MAX_)",
-            "zeroRecords": "No hay registros que mostrar",
-            "info": "Mostrando _START_ a _END_ de _TOTAL_",
-            "paginate": {
-                "first": "«",
-                "last": "»",
-                "next": ">",
-                "previous": "<"
-            },
-            "lengthMenu": "Mostrar _MENU_"
-        }
-    });
-});*/

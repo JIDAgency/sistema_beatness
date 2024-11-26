@@ -56,13 +56,13 @@ class Planes_categorias extends MY_Controller
 
             $data[] = array(
                 'opciones' => $opciones,
-                'url_banner' => '<img src="' . base_url('almacenamiento/planes_categorias/' . $plan_categoria->url_banner) . '" class="img-fluid">',
                 'id' => $plan_categoria->id,
-                'identificador' => !empty($plan_categoria->identificador) ? $plan_categoria->identificador : '',
-                'nombre' => !empty($plan_categoria->nombre) ? ucfirst($plan_categoria->nombre) : '',
+                'url_banner' => '<img src="' . base_url('almacenamiento/planes_categorias/' . $plan_categoria->url_banner) . '" class="img-fluid">',
                 'orden' => !empty($plan_categoria->orden) ? $plan_categoria->orden : '',
-                'estatus' => !empty($plan_categoria->estatus) ? $plan_categoria->estatus : '',
-                'fecha_registro' => (!empty($plan_categoria->fecha_registro) ? date('Y/m/d H:i:s', strtotime($plan_categoria->fecha_registro)) : ''),
+                'nombre' => !empty($plan_categoria->nombre) ? ucfirst($plan_categoria->nombre) : '',
+                'identificador' => !empty($plan_categoria->identificador) ? $plan_categoria->identificador : '',
+                'estatus' => !empty($plan_categoria->estatus) ? ucfirst($plan_categoria->estatus) : '',
+                'fecha_registro' => (!empty($plan_categoria->fecha_registro) ? date('d/m/Y', strtotime($plan_categoria->fecha_registro)) : ''),
             );
         }
 
@@ -93,13 +93,13 @@ class Planes_categorias extends MY_Controller
 
             $data[] = array(
                 'opciones' => $opciones,
-                'url_banner' => '<img src="' . base_url('almacenamiento/planes_categorias/' . $plan_categoria->url_banner) . '" class="img-fluid">',
                 'id' => $plan_categoria->id,
-                'identificador' => !empty($plan_categoria->identificador) ? $plan_categoria->identificador : '',
-                'nombre' => !empty($plan_categoria->nombre) ? ucfirst($plan_categoria->nombre) : '',
+                'url_banner' => '<img src="' . base_url('almacenamiento/planes_categorias/' . $plan_categoria->url_banner) . '" class="img-fluid">',
                 'orden' => !empty($plan_categoria->orden) ? $plan_categoria->orden : '',
-                'estatus' => !empty($plan_categoria->estatus) ? $plan_categoria->estatus : '',
-                'fecha_registro' => (!empty($plan_categoria->fecha_registro) ? date('Y/m/d H:i:s', strtotime($plan_categoria->fecha_registro)) : ''),
+                'nombre' => !empty($plan_categoria->nombre) ? ucfirst($plan_categoria->nombre) : '',
+                'identificador' => !empty($plan_categoria->identificador) ? $plan_categoria->identificador : '',
+                'estatus' => !empty($plan_categoria->estatus) ? ucfirst($plan_categoria->estatus) : '',
+                'fecha_registro' => (!empty($plan_categoria->fecha_registro) ? date('d/m/Y', strtotime($plan_categoria->fecha_registro)) : ''),
             );
         }
 

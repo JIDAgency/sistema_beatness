@@ -51,11 +51,11 @@
 											<thead>
 												<tr>
 													<th>Opciones</th>
-													<th>Imagen</th>
 													<th>ID</th>
-													<th>Identificador</th>
-													<th>Nombre</th>
+													<th>Imagen</th>
 													<th>Orden</th>
+													<th>Nombre</th>
+													<th>Identificador</th>
 													<th>Estatus</th>
 													<th>Fecha de registro</th>
 												</tr>
@@ -71,11 +71,11 @@
 											<thead>
 												<tr>
 													<th>Opciones</th>
-													<th>Imagen</th>
 													<th>ID</th>
-													<th>Identificador</th>
-													<th>Nombre</th>
+													<th>Imagen</th>
 													<th>Orden</th>
+													<th>Nombre</th>
+													<th>Identificador</th>
 													<th>Estatus</th>
 													<th>Fecha de registro</th>
 												</tr>
