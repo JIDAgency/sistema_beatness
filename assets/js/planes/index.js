@@ -88,7 +88,7 @@ $(function () {
                 $(row).find('td:eq(10)').css('background-color', '#F6BB42');
                 $(row).find('td:eq(10)').css('color', 'white');
             } else if (data["sucursal"] == "Puebla") {
-                $(row).find('td:eq(10)').css('background-color', '#074359');
+                $(row).find('td:eq(10)').css('background-color', '#B3B3B3');
                 $(row).find('td:eq(10)').css('color', 'white');
             } else if (data["sucursal"] == "Polanco") {
                 $(row).find('td:eq(10)').css('background-color', '#3BAFDA');
@@ -202,7 +202,7 @@ $(function () {
                 $(row).find('td:eq(10)').css('background-color', '#F6BB42');
                 $(row).find('td:eq(10)').css('color', 'white');
             } else if (data["sucursal"] == "Puebla") {
-                $(row).find('td:eq(10)').css('background-color', '#074359');
+                $(row).find('td:eq(10)').css('background-color', '#B3B3B3');
                 $(row).find('td:eq(10)').css('color', 'white');
             } else if (data["sucursal"] == "Polanco") {
                 $(row).find('td:eq(10)').css('background-color', '#3BAFDA');

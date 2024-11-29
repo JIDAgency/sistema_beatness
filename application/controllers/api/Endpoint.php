@@ -30,6 +30,7 @@ class Endpoint extends REST_Controller
         $this->load->model("tarjetas_model");
         $this->load->model("usuarios_model");
         $this->load->model("ventas_model");
+        $this->load->model("resenias_model");
     }
 
     public function cargo_con_stripe_post()
@@ -1528,6 +1529,55 @@ class Endpoint extends REST_Controller
     }
 
     /**
+     * Calificar coach
+     */
+    public function calificar_coach_por_id_post()
+    {
+        // Validar que el cliente que realiza la petición esté autenticado
+        $datos_post = $this->post();
+
+        if (!isset($datos_post['usuario_id'])) {
+            $this->response(array(
+                'error' => true,
+                'mensaje' => 'Se requiere el usuario de la reservación que que desea cancelar',
+            ), REST_Controller::HTTP_BAD_REQUEST);
+        }
+
+        $usuario_valido = $this->_autenticar_usuario($datos_post['token'], $datos_post['usuario_id']);
+
+        if (!isset($datos_post['instructor_id'])) {
+            $this->response(array(
+                'error' => true,
+                'mensaje' => 'Se requiere el id del coach que desea calificar.',
+            ), REST_Controller::HTTP_BAD_REQUEST);
+        }
+
+        $coach_a_calificar = $this->usuarios_model->obtener_instructor_por_id($datos_post['instructor_id'])->row();
+
+        if (!$coach_a_calificar) {
+            $this->response(array(
+                'error' => true,
+                'mensaje' => 'No se pudo encontrar la reservación que desea cancelar o ya ha sido cancelada, verifique de nuevo.',
+            ), REST_Controller::HTTP_BAD_REQUEST);
+        }
+        $fecha_registro = date("Y-m-d H:i:s");
+        // modificar reservación
+        $calificaion = $this->resenias_model->agregar(array(
+            'instructor_id' => $datos_post['instructor_id'],
+            'calificacion' => $datos_post['selectedRating'],
+            'nota' => $datos_post['reviewText'],
+            'fecha_registro' => $fecha_registro,
+        ));
+
+        if (!$calificaion) {
+            $this->response(array(
+                'error' => true,
+                'mensaje' => 'El coach no pudo ser calificado.',
+            ), REST_Controller::HTTP_BAD_REQUEST);
+        }
+    }
+
+    /**
      * Retorna las disciplinas disponibles en el sistema
      */
     public function sucursales_disponibles_get()
@@ -1706,6 +1756,22 @@ class Endpoint extends REST_Controller
         $reservaciones_por_usuario = $this->reservaciones_model->obtener_reservacion_por_cliente($usuario_valido->id)->result();
 
         $this->response($reservaciones_por_usuario);
+    }
+
+    /**
+     * Obtiene las reservaciones terminadas hechas por usuario
+     */
+    public function reservaciones_terminadas_por_usuario_get()
+    {
+        $datos_get = $this->get();
+
+        $usuario_valido = $this->_autenticar_usuario($datos_get['token'], $datos_get['usuario_id']);
+
+        // $reservaciones_terminadas_por_usuario = $this->reservaciones_model->obtener_reservacion_terminada_por_cliente($usuario_valido->id)->result();
+
+        $reservaciones_terminadas_por_usuario = $this->reservaciones_model->obtener_reservacion_terminada_por_cliente('2406')->result();
+
+        $this->response($reservaciones_terminadas_por_usuario);
     }
 
     /**

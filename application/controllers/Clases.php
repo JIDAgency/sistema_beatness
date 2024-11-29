@@ -645,9 +645,11 @@ class Clases extends MY_Controller
 
         $sucursales_list = $this->filtros_model->obtener_sucursales()->result();
         $disciplinas_list = $this->filtros_model->obtener_disciplinas()->result();
+        $reservaciones_terminadas_usuario = $this->reservaciones_model->obtener_reservacion_terminada_por_cliente('2406')->result();
 
         $data['sucursales_list'] = $sucursales_list;
         $data['disciplinas_list'] = $disciplinas_list;
+        $data['reservaciones_terminadas_usuario'] = $reservaciones_terminadas_usuario;
 
         $this->construir_private_site_ui('clases/index', $data);
     }
