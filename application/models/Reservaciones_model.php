@@ -199,6 +199,7 @@ class Reservaciones_model extends CI_Model
         $this->db->join("sucursales t6", "t4.sucursal_id = t6.id");
         $this->db->where("t1.usuario_id =", $id);
         $this->db->where("t1.estatus =", "Terminada");
+        $this->db->where("t1.calificada =", "no");
         $this->db->order_by("t3.inicia", "desc");
         $this->db->limit(5);
         $resultados = $this->db->get();

@@ -1562,7 +1562,22 @@ class Endpoint extends REST_Controller
         }
         $fecha_registro = date("Y-m-d H:i:s");
         // modificar reservación
+
+        $cambiarcalificada = $this->reservaciones_model->editar($datos_post['reservacionId'], array(
+            'calificada' => 'si'
+        ));
+
+        if (!$cambiarcalificada) {
+            $this->response(array(
+                'error' => true,
+                'mensaje' => 'El coach no pudo ser calificado.',
+            ), REST_Controller::HTTP_BAD_REQUEST);
+        }
+
         $calificaion = $this->resenias_model->agregar(array(
+            'reservacion_id' => $datos_post['reservacionId'],
+            'clase_id' => $datos_post['claseId'],
+            'usuario_id' => $datos_post['usuario_id'],
             'instructor_id' => $datos_post['instructor_id'],
             'calificacion' => $datos_post['selectedRating'],
             'nota' => $datos_post['reviewText'],
