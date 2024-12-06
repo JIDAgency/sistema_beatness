@@ -104,12 +104,12 @@ class Reservaciones_model extends CI_Model
 
     public function obtener_reservacion_por_id($id)
     {
-        return $this->db->where('id', intval($id))->where('estatus', 'Activa')->get('reservaciones');
+        return $this->db->where('id', $id)->where('estatus', 'Activa')->get('reservaciones');
     }
 
     public function obtener_reservacion_por_id_para_retirar($id)
     {
-        return $this->db->where('id', intval($id))->where('asistencia', 'asistencia')->get('reservaciones');
+        return $this->db->where('id', $id)->get('reservaciones');
     }
 
     public function obtener_por_id($id)

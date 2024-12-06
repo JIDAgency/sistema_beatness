@@ -1,0 +1,49 @@
+[
+    {
+        "event_type": "checkin",
+        "event_data": {
+            "user": {
+                "unique_token": "3405620866749",
+                "first_name": "ERNESTO",
+                "last_name": "ITZAHEL LOPEZ CRUZ",
+                "email": "elopez@bal.com.mx",
+                "phone_number": ""
+            },
+            "location": [],
+            "gym": {
+                "id": 495971,
+                "title": "Beatness Cycling - Polanco",
+                "product": {
+                    "id": 1,
+                    "description": "Nona Cycling Class"
+                }
+            },
+            "timestamp": 1733188037
+        }
+    },
+    {
+        "event_type": "checkin",
+        "event_data": {
+            "user": {
+                "unique_token": "2310355053258",
+                "first_name": "Evangelina",
+                "last_name": "Carmona Mendieta",
+                "email": "evs.carmona19@gmail.com",
+                "phone_number": ""
+            },
+            "location": {
+                "lat": 19.433193506069361689014840521849691867828369140625,
+                "lon": -99.1973204510645842901794821955263614654541015625
+            },
+            "gym": {
+                "id": 482157,
+                "title": "Beatness Bootcamp - Polanco",
+                "product": {
+                    "id": 1,
+                    "description": "Clases"
+                }
+            },
+            "timestamp": 1733184035
+        }
+    }
+]
