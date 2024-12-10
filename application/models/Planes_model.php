@@ -36,7 +36,7 @@ class Planes_model extends CI_Model
         $url = '<a href="' . site_url("inicio/index") . '"><i class="ft-eye"></i> Detalles</a>';
 
         $query = $this->db
-            ->where('activado', 1)
+            ->where('t1.activado', 1)
             ->order_by('t1.id', 'desc')
             ->select("
                 t1.id as listar_id,
@@ -68,7 +68,7 @@ class Planes_model extends CI_Model
         $url = '<a href="' . site_url("inicio/index") . '"><i class="ft-eye"></i> Detalles</a>';
 
         $query = $this->db
-            ->where('activado', 0)
+            ->where('t1.activado', 0)
             ->order_by('t1.id', 'desc')
             ->select("
                 t1.id as listar_id,

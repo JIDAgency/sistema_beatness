@@ -153,6 +153,16 @@
 														<?php endforeach; ?>
 													</select>
 												</div>
+
+												<div class="form-group">
+													<label for="sucursal">Sucursal <span class="red">*</span></label>
+													<select name="sucursal" id="sucursal" class="form-control">
+														<option value="" <?php echo set_select('sucursal', '', set_value('sucursal') ? false : '' == $this->session->flashdata('sucursal')); ?>>Seleccione una opcion…</option>
+														<?php foreach ($sucursales_list as $mostrar_key => $sucursal_row) : ?>
+															<option value="<?php echo $sucursal_row->id; ?>" <?php echo set_select('sucursal', $sucursal_row->id, set_value('sucursal') ? false : $sucursal_row->id == $this->session->flashdata('sucursal')); ?>><?php echo trim($sucursal_row->locacion); ?></option>
+														<?php endforeach; ?>
+													</select>
+												</div>
 												<div class="form-group">
 													<div class="row">
 														<label class="col-lg-12">Vincular a código</label>

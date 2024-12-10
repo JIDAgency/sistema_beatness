@@ -167,12 +167,7 @@ class Planes extends MY_Controller
 
         $planes_list = $this->planes_model->get_lista_de_todos_los_planes_limitada()->result();
 
-
-        $result = array();
-
         foreach ($planes_list as $plan_row) {
-
-
 
             if ($plan_row->listar_activo == 1) {
                 $menu = '<a href="' . site_url("planes/editar/") . $plan_row->listar_id . '">Editar</a>
@@ -282,6 +277,7 @@ class Planes extends MY_Controller
             $this->form_validation->set_rules('url_pago', 'url_pago', 'trim');
             $this->form_validation->set_rules('mostrar_en_app', 'mostrar_en_app', 'required');
             $this->form_validation->set_rules('activado', 'activado', 'required');
+            $this->form_validation->set_rules('sucursal', 'sucursal', 'required');
             $this->form_validation->set_rules('codigo', 'Código', 'trim');
             $this->form_validation->set_rules('url_infoventa', 'Imagen de información', 'trim');
 
@@ -308,6 +304,9 @@ class Planes extends MY_Controller
 
             $codigos_list = $this->codigos_model->get_codigos_activos();
             $data['codigos_list'] = $codigos_list;
+
+            $sucursales_list = $this->sucursales_model->get_todas_las_sucursales()->result();
+            $data['sucursales_list'] = $sucursales_list;
 
             if ($this->form_validation->run() == false) {
                 $this->construir_private_site_ui('planes/crear', $data);
@@ -361,6 +360,7 @@ class Planes extends MY_Controller
                     'nombre' => $this->input->post('nombre'),
                     'sku' => $this->input->post('sku'),
                     'dominio_id' => $dominio_id,
+                    'sucursal_id' => $this->input->post('sucursal'),
                     'clases_incluidas' => $this->input->post('clases_incluidas'),
                     'vigencia_en_dias' => $this->input->post('vigencia_en_dias'),
                     'es_ilimitado' => $this->input->post('ilimitado'),
@@ -457,6 +457,9 @@ class Planes extends MY_Controller
             $this->form_validation->set_rules('terminos_condiciones', 'términos y condiciones', 'trim');
             $this->form_validation->set_rules('descripcion', 'descripción', 'trim');
 
+            $sucursales_list = $this->sucursales_model->get_todas_las_sucursales()->result();
+            $data['sucursales_list'] = $sucursales_list;
+            
             $data['disciplinas'] = $this->disciplinas_model->obtener_todas()->result();
             $data['categorias'] = $this->planes_categorias_model->obtener_todas()->result();
 

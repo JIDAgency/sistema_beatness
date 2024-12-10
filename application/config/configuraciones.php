@@ -88,7 +88,7 @@ $select_mostrar = array(
     (object) array(
         'nombre'    => 'No',
         'valor'     => 'no',
-        'activo'    => false,
+        'activo'    => true,
     )
 );
 
@@ -100,7 +100,7 @@ $select_activo = array(
     (object) array(
         'nombre'    => 'Si',
         'valor'     => '1',
-        'activo'    => false,
+        'activo'    => true,
     ),
     (object) array(
         'nombre'    => 'No',
@@ -307,7 +307,7 @@ $select_activo = array(
     (object) array(
         'nombre'    => 'Si',
         'valor'     => '1',
-        'activo'    => false,
+        'activo'    => true,
     ),
     (object) array(
         'nombre'    => 'No',
@@ -322,7 +322,7 @@ $select_pagar_en = array(
     (object) array(
         'nombre'   => 'app',
         'valor'    => 'app',
-        'activo'   => false
+        'activo'   => true
     ),
     (object) array(
         'nombre'   => 'url',

@@ -167,6 +167,18 @@
 													</div>
 
 													<div class="form-group row col-lg-12 col-md-12 col-sm-12">
+														<label for="sucursal" class="col-md-12">Sucursal <span class="red">*</span></label>
+														<div class="col-md-12">
+															<select name="sucursal" id="sucursal" class="form-control">
+																<option value="" <?php echo set_select('sucursal_id', '', set_value('sucursal_id') ? false : '' == (!empty($this->session->flashdata('sucursal_id')) ? $this->session->flashdata('sucursal_id') : (!empty($plan_a_editar->sucursal_id) ? $plan_a_editar->sucursal_id : set_value('sucursal_id')))); ?>>Seleccione una opcion…</option>
+																<?php foreach ($sucursales_list as $key => $mostrar_row) : ?>
+																	<option value="<?php echo $mostrar_row->id; ?>" <?php echo set_select('sucursal_id', $mostrar_row->id, set_value('sucursal_id') ? false : $mostrar_row->id == (!empty($this->session->flashdata('sucursal_id')) ? $this->session->flashdata('sucursal_id') : (!empty($plan_a_editar->sucursal_id) ? $plan_a_editar->sucursal_id : set_value('sucursal_id')))); ?>><?php echo trim($mostrar_row->locacion); ?></option>
+																<?php endforeach; ?>
+															</select>
+														</div>
+													</div>
+
+													<div class="form-group row col-lg-12 col-md-12 col-sm-12">
 														<label class="col-lg-12">Vincular a código</label>
 														<div class="col-lg-12">
 															<select id="codigo" name="codigo" class="form-control select2 custom-select">
