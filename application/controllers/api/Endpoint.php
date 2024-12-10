@@ -1782,9 +1782,9 @@ class Endpoint extends REST_Controller
 
         $usuario_valido = $this->_autenticar_usuario($datos_get['token'], $datos_get['usuario_id']);
 
-        // $reservaciones_terminadas_por_usuario = $this->reservaciones_model->obtener_reservacion_terminada_por_cliente($usuario_valido->id)->result();
+        $reservaciones_terminadas_por_usuario = $this->reservaciones_model->obtener_reservacion_terminada_por_cliente($usuario_valido->id)->result();
 
-        $reservaciones_terminadas_por_usuario = $this->reservaciones_model->obtener_reservacion_terminada_por_cliente('2406')->result();
+        // $reservaciones_terminadas_por_usuario = $this->reservaciones_model->obtener_reservacion_terminada_por_cliente('2370')->result();
 
         $this->response($reservaciones_terminadas_por_usuario);
     }
