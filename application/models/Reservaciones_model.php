@@ -159,6 +159,7 @@ class Reservaciones_model extends CI_Model
             t6.url_ubicacion as sucursal_como_llegar,
             t6.url_logo as sucursal_url_logo,
             t6.url_animacion as sucursal_url_animacion,
+            t5.nombre_imagen_avatar as foto_instructor,
             t3.img_acceso as img_acceso,
             CONCAT(COALESCE(t5.nombre_completo, 'N/D'), ' | ', COALESCE(t1.asistencia, 'N/D')) as instructor,
         ");
