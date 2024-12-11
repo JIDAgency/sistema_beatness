@@ -6,7 +6,7 @@
 					<div class="breadcrumb-wrapper col-12">
 						<ol class="breadcrumb">
 							<li class="breadcrumb-item"><a href="<?php echo site_url('inicio/index') ?>">Inicio</a></li>
-							<li class="breadcrumb-item active">Disciplinas-Categorias</li>
+							<li class="breadcrumb-item active">Categorías de Planes</li>
 						</ol>
 					</div>
 				</div>
@@ -24,13 +24,13 @@
 
 				<div class=" heading-elements float-right mx-1">
 					<a href="#suspendidos" class="btn btn-outline-secondary btn-min-width smooth-scroll">
-						Planes suspendidos
+						Categorías Suspendidas
 					</a>
 				</div>
 
 				<div class="heading-elements float-right">
 					<a href="#disponibles" class="btn btn-outline-secondary btn-min-width smooth-scroll">
-						Planes activos
+						Categorías Activas
 					</a>
 				</div>
 			</div>

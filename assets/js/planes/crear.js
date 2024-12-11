@@ -1,8 +1,8 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
 	var pagarEnSelect = document.getElementById('pagar_en');
 	var urlPago = document.getElementById('urlPago');
 
-	pagarEnSelect.addEventListener('change', function() {
+	pagarEnSelect.addEventListener('change', function () {
 		console.log(this.value);
 		console.log(pagarEnSelect.value);
 		if (pagarEnSelect.value === 'url') { // Ajusta este valor según corresponda al valor de "si" en tu select
@@ -71,3 +71,12 @@ $(function () {
 		errorClass: "has-error"
 	});
 });
+
+var cargar_imagen = function (event) {
+	var reader = new FileReader();
+	reader.onload = function () {
+		var output = document.getElementById('preview_url_infoventa');
+		output.src = reader.result;
+	};
+	reader.readAsDataURL(event.target.files[0]);
+};

@@ -320,12 +320,12 @@ $config['select_activo'] = $select_activo;
 
 $select_pagar_en = array(
     (object) array(
-        'nombre'   => 'app',
+        'nombre'   => 'APP',
         'valor'    => 'app',
         'activo'   => true
     ),
     (object) array(
-        'nombre'   => 'url',
+        'nombre'   => 'URL',
         'valor'    => 'url',
         'activo'   => false
     )

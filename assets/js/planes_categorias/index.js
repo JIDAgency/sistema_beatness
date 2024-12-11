@@ -18,7 +18,7 @@ $(document).ready(function () {
         "scrollX": true,
         "deferRender": true,
         'processing': true,
-        "order": [[2, "desc"]],
+        "order": [[1, "desc"]],
         "lengthMenu": [[25, 50, 100, 250, 500, -1], [25, 50, 100, 250, 500, "Todos"]],
         "ajax": {
             "url": url,

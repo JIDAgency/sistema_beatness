@@ -1,8 +1,8 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
 	var pagarEnSelect = document.getElementById('pagar_en');
 	var urlPago = document.getElementById('urlPago');
 
-	pagarEnSelect.addEventListener('change', function() {
+	pagarEnSelect.addEventListener('change', function () {
 		console.log(this.value);
 		console.log(pagarEnSelect.value);
 		if (pagarEnSelect.value === 'url') { // Ajusta este valor según corresponda al valor de "si" en tu select
@@ -22,17 +22,17 @@ $(function () {
 
 	// Inicializar el plugin del select
 	$(".select2-disciplinas").select2(
-        {
-            placeholder: "Selecciona una o más disciplinas"
-        }
-    );
+		{
+			placeholder: "Selecciona una o más disciplinas"
+		}
+	);
 
 	// Inicializar el plugin del select
 	$(".select2-categorias").select2({
 		placeholder: "Selecciona las categorías de venta"
 	});
 
-    // Establecer validaciones
+	// Establecer validaciones
 	$("#forma-editar-plan").validate({
 		rules: {
 			"sku": {
@@ -48,8 +48,8 @@ $(function () {
 				required: true
 			},
 			"costo": {
-                required: true,
-                number: true
+				required: true,
+				number: true
 			}
 
 		},
@@ -67,8 +67,8 @@ $(function () {
 				required: "Por favor indique la vigencia"
 			},
 			"costo": {
-                required: "El costo es requerido",
-                number: "Debe ser un valor númerico"
+				required: "El costo es requerido",
+				number: "Debe ser un valor númerico"
 			}
 		},
 		errorClass: "has-error"
@@ -76,11 +76,11 @@ $(function () {
 
 });
 
-var cargar_imagen = function(event) {
+var cargar_imagen = function (event) {
 	var reader = new FileReader();
-	reader.onload = function(){
-	  var output = document.getElementById('preview_url_infoventa');
-	  output.src = reader.result;
+	reader.onload = function () {
+		var output = document.getElementById('preview_url_infoventa');
+		output.src = reader.result;
 	};
 	reader.readAsDataURL(event.target.files[0]);
 };

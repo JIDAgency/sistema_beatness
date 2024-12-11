@@ -135,7 +135,7 @@
 														<div class="col-md-12">
 															<select name="mostrar_en_app" id="mostrar_en_app" class="form-control">
 																<option value="" <?php echo set_select('mostrar_en_app', '', set_value('mostrar_en_app') ? false : '' == (!empty($this->session->flashdata('mostrar_en_app')) ? $this->session->flashdata('mostrar_en_app') : (!empty($plan_a_editar->mostrar_en_app) ? $plan_a_editar->mostrar_en_app : set_value('mostrar_en_app')))); ?>>Seleccione una opcion…</option>
-																<?php foreach (select_activo() as $key => $mostrar_row) : ?>
+																<?php foreach (select_mostrar() as $key => $mostrar_row) : ?>
 																	<option value="<?php echo $mostrar_row->valor; ?>" <?php echo set_select('mostrar_en_app', $mostrar_row->valor, set_value('mostrar_en_app') ? false : $mostrar_row->valor == (!empty($this->session->flashdata('mostrar_en_app')) ? $this->session->flashdata('mostrar_en_app') : (!empty($plan_a_editar->mostrar_en_app) ? $plan_a_editar->mostrar_en_app : set_value('mostrar_en_app')))); ?>><?php echo trim($mostrar_row->nombre); ?></option>
 																<?php endforeach; ?>
 															</select>

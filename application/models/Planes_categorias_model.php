@@ -129,4 +129,16 @@ class Planes_categorias_model extends CI_Model
         $this->db->where('id', $id);
         return $this->db->update('planes_categorias', $data);
     }
+
+    public function obtener_planes_de_la_categoria_list($id)
+    {
+        $this->db->select('
+            t1.*
+        ');
+        $this->db->from('planes t1');
+        $this->db->join('rel_planes_categorias t2', 't2.plan_id = t1.id');
+        $this->db->where('t2.categoria_id', $id);
+        $this->db->order_by('t1.id');
+        return $this->db->get();
+    }
 }

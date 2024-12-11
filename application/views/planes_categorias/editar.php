@@ -85,6 +85,13 @@
 													</div>
 												</div>
 											</div>
+
+											<div class="col-lg-12 col-md-12 col-sm-12">
+												<h4 class="form-section">Planes vinculados</h4>
+												<?php foreach ($planes_en_categoria_list as $plan_en_categoria_key => $plan_en_categoria_value) : ?>
+													<p><?php echo $plan_en_categoria_value->nombre . ' #' . $plan_en_categoria_value->id; ?></p>
+												<?php endforeach; ?>
+											</div>
 										</div>
 
 										<div class="form-actions right">
