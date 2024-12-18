@@ -1,37 +1,29 @@
-document.addEventListener('DOMContentLoaded', function() {
+// ============================================================
+// FUNCIÓN: Mostrar/ocultar vigencia estudiante según selección
+// ============================================================
+document.addEventListener('DOMContentLoaded', function () {
 	var estudianteSelect = document.getElementById('es_estudiante');
 	var vigenciaRow = document.getElementById('vigencia_estudiante_row');
 
-	estudianteSelect.addEventListener('change', function() {
-		console.log(this.value);
-		console.log(estudianteSelect.value);
-		if (estudianteSelect.value === 'si') { // Ajusta este valor según corresponda al valor de "si" en tu select
+	function toggleVigencia() {
+		if (estudianteSelect.value === 'si') {
 			vigenciaRow.style.display = 'block';
 		} else {
 			vigenciaRow.style.display = 'none';
 		}
-	});
-
-	// Verificar el valor inicial al cargar la página
-	if (estudianteSelect.value === 'si') { // Ajusta este valor según corresponda al valor de "si" en tu select
-		vigenciaRow.style.display = 'block';
 	}
+
+	estudianteSelect.addEventListener('change', toggleVigencia);
+	// Verificar el valor inicial al cargar la página
+	toggleVigencia();
 });
+
+// ============================================================
+// FUNCIÓN: Inicializaciones con jQuery al cargar la página
+// ============================================================
 $(function () {
-
-	// Inicializar máscaras
-	$('.tel-inputmask').inputmask("(999) 999-9999");
-
-	// Inicializar date dropper
-	$('.date-dropper').dateDropper({
-		dropWidth: 200,
-		animate: false,
-		format: "d/m/Y",
-		lang: 'es'
-	});
-
-	// Establecer validaciones
-	$("#forma-editar-clientes").validate({
+	// Validación del formulario
+	$("#forma-editar-cliente").validate({
 		rules: {
 			"rol_id": {
 				required: true
@@ -46,7 +38,6 @@ $(function () {
 			"apellido_paterno": {
 				required: true
 			}
-
 		},
 		messages: {
 			"rol_id": {
@@ -63,25 +54,28 @@ $(function () {
 				required: "Es requerido"
 			}
 		},
-		errorClass: "has-error",
+		errorClass: "has-error"
 	});
-
 });
 
-var cargar_imagen = function(event) {
-    var reader = new FileReader();
-    reader.onload = function(){
-      var output = document.getElementById('preview');
-      output.src = reader.result;
-    };
-    reader.readAsDataURL(event.target.files[0]);
+// ============================================================
+// FUNCIÓN: Previsualizar imagen al cargar desde archivo
+// ============================================================
+var cargar_imagen = function (event) {
+	var reader = new FileReader();
+	reader.onload = function () {
+		var output = document.getElementById('preview');
+		output.src = reader.result;
+	};
+	reader.readAsDataURL(event.target.files[0]);
 };
 
-var cargar_imagen_ine = function(event) {
-    var reader = new FileReader();
-    reader.onload = function(){
-      var output = document.getElementById('preview_ine');
-      output.src = reader.result;
-    };
-    reader.readAsDataURL(event.target.files[0]);
+// Si se necesita otra función para INE (no mostrada actualmente en el formulario editado, pero se deja):
+var cargar_imagen_ine = function (event) {
+	var reader = new FileReader();
+	reader.onload = function () {
+		var output = document.getElementById('preview_ine');
+		output.src = reader.result;
+	};
+	reader.readAsDataURL(event.target.files[0]);
 };

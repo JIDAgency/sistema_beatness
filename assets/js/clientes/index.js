@@ -1,35 +1,50 @@
-var table;
+// ============================================================
+// ================ CATEGORÍA: VARIABLES GLOBALES =============
+// ============================================================
 
+var table;
 var actual_url = document.URL;
 var method_call = "";
 var url;
 var flag_editando = false;
 var select_sucursal = [];
 
+// Determinar ruta a utilizar según el URL actual
 if (actual_url.indexOf("index") < 0) {
     method_call = "clientes/";
 }
 
 /**
- * Este línea desactiva los mensajes de error de DataTables();
+ * Desactivación de mensajes de error por defecto en DataTables.
+ * Esto evita que DataTables muestre mensajes emergentes de error.
  */
 $.fn.dataTable.ext.errMode = 'throw';
 
-$(function () {
-    url = method_call + "get_lista_de_clientes"
-    obtener_opciones_select_sucursal(); // Obtención de opciones para el select 'sucursal'
+// ============================================================
+// =========== CATEGORÍA: INICIALIZACIÓN DE LA TABLA ===========
+// ============================================================
 
+$(function () {
+    // MODIFICACIÓN: Se agrega comentario explicando el propósito de la URL.
+    // URL para cargar la lista de clientes.
+    url = method_call + "get_lista_de_clientes";
+
+    // Obtener las opciones para el select 'sucursal'
+    obtener_opciones_select_sucursal();
+
+    // Inicialización de la DataTable con sus configuraciones.
     table = $('#table').DataTable({
         "scrollX": true,
         "deferRender": true,
         'processing': true,
-        "order": [[0, "desc"]],
+        "order": [[1, "desc"]],
         "lengthMenu": [[25, 50, 100, 250, 500, -1], [25, 50, 100, 250, 500, "Todos"]],
         "ajax": {
             "url": url,
             "type": 'POST'
         },
         "columns": [
+            { "data": "opciones" },
             { "data": "id" },
             { "data": "nombre_completo" },
             { "data": "correo" },
@@ -41,8 +56,9 @@ $(function () {
             { "data": "es_empresarial" },
             { "data": "dominio" },
             { "data": "estatus" },
-            { "data": "opciones" },
         ],
+        // MODIFICACIÓN: Comentario explicando la función para celdas editables.
+        // Esta función crea la clase 'editable-cell' en las columnas configuradas.
         "createdRow": createEditableCells,
         'language': {
             "sProcessing": '<i class="fa fa-spinner spinner"></i> Cargando...',
@@ -74,44 +90,49 @@ $(function () {
         },
     });
 
+    // Botón para exportar a Excel
     var buttons = new $.fn.dataTable.Buttons(table, {
         buttons: [
             {
                 extend: 'excelHtml5',
                 className: 'custom-button'
-
             }
         ]
     }).container().appendTo($('#buttons'));
 
-    // Detectar doble clic en celda editable
+    // ============================================================
+    // =========== CATEGORÍA: EVENTOS SOBRE LA TABLA ==============
+    // ============================================================
+
+    // Evento: Doble clic en la celda editable para iniciar edición en línea.
     $('#table').on('dblclick', 'td.editable-cell', function () {
         if (!flag_editando) {
 
-            flag_editando = true; // Marcar como en edición
+            flag_editando = true; // Marcamos que estamos editando
 
-            var celda_seleccionada = $(this); // Obtener la celda seleccionada
-            var columna_indice = celda_seleccionada.index(); // Obtener el nombre de la columna según el índice
+            var celda_seleccionada = $(this);
+            var columna_indice = celda_seleccionada.index();
             var columna_nombres_list = table.settings().init().columns;
             var columna_nombre = columna_nombres_list[columna_indice].data;
             var valor_original_de_celda = celda_seleccionada.text();
 
+            // Si la columna es 'sucursal_id', generamos un select
             if (columna_nombre === "sucursal_id") {
                 var input = generar_campo_de_celda_a_editar('select_indice_instructor', valor_original_de_celda, select_sucursal);
             }
 
-            celda_seleccionada.data('valor_original_guardado', valor_original_de_celda); // Almacena el valor original en la celda
+            // Guardar el valor original antes de iniciar edición
+            celda_seleccionada.data('valor_original_guardado', valor_original_de_celda);
             celda_seleccionada.html(input);
 
             input.focus();
 
-            // Guardar los cambios al salir del campo de entrada
+            // Evento: Al perder el foco, guardar cambios
             input.blur(function () {
-                console.log(input.val());
                 guardar_valor_de_celda(celda_seleccionada, columna_nombre, input);
             });
 
-            // Escuchar el evento keydown para detectar "Enter"
+            // Evento: Si presionan Enter mientras editan, guardar cambios
             input.keydown(function (event) {
                 if (event.which === 13) {
                     guardar_valor_de_celda(celda_seleccionada, columna_nombre, input);
@@ -121,51 +142,27 @@ $(function () {
         }
     });
 
-    // Función para guardar el valor de la celda
-    function guardar_valor_de_celda(celda_seleccionada, columna_nombre, input) {
+    // ============================================================
+    // ================ CATEGORÍA: FUNCIONES AJAX =================
+    // ============================================================
 
+    // Función para guardar el valor editado de la celda en el servidor vía AJAX
+    function guardar_valor_de_celda(celda_seleccionada, columna_nombre, input) {
         var valor_nuevo_de_celda = input.val();
 
-        // Si no hay cambios, no realizar la solicitud AJAX
+        // Si no hay cambios, restaurar valor y salir
         if (celda_seleccionada.data('valor_original_guardado') === valor_nuevo_de_celda) {
-            celda_seleccionada.html(celda_seleccionada.data('valor_original_guardado')); // Restaurar el valor en la celda
-            flag_editando = false; // Marcar como fuera de edición
-            return; // Salir de la función sin hacer nada
+            celda_seleccionada.html(celda_seleccionada.data('valor_original_guardado'));
+            flag_editando = false;
+            return;
         }
 
         if (columna_nombre === "sucursal_id") {
             valor_nuevo_de_celda = generar_salida_de_celda_editada('select', valor_nuevo_de_celda, celda_seleccionada);
         }
 
-        // Obtener la fila y los datos correspondientes
         var fila_tabla = table.row(celda_seleccionada.closest('tr'));
         var datos_fila_tabla = fila_tabla.data();
-
-        // var identificador = datos_fila_tabla.identificador;
-
-        // var partesIdentificador = identificador.split(' ');
-
-        // Verificar si el identificador contiene la palabra 'CANCELADO'
-        // var contieneCancelado = partesIdentificador.includes('CANCELADO');
-
-        // if (contieneCancelado) {
-        //     celda_seleccionada.html(celda_seleccionada.data('valor_original_guardado')); // Restaurar el valor en la celda
-        //     flag_editando = false; // Marcar como fuera de edición
-        //     var alertHtml = `
-        //     <div class="alert bg-danger alert-icon-left alert-dismissible mb-2 font-small-3" role="alert">
-        //         <span class="alert-icon"><i class="fa fa-thumbs-o-down"></i></span>
-        //         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        //             <span aria-hidden="true">×</span>
-        //         </button>
-        //         La clase fue cancelada
-        //     </div>
-        //     `;
-        //     // Insertar la alerta en el contenedor
-        //     document.getElementById('alert-container').innerHTML = alertHtml;
-
-        //     console.log('La clase fue cancelada CANCELADO');
-        //     return;
-        // }
 
         function formatoNombrePropio(nombre) {
             return nombre.toLowerCase().replace(/\b\w/g, function (char) {
@@ -174,22 +171,17 @@ $(function () {
         }
 
         if (columna_nombre === 'sucursal_id') {
-            console.log('Entre al if 1');
             for (var i = 0; i < select_sucursal.length; i++) {
-                console.log(select_sucursal[i].nombre)
-                console.log(valor_nuevo_de_celda)
                 if (select_sucursal[i].nombre === formatoNombrePropio(valor_nuevo_de_celda)) {
-                    console.log('Entre al if 2');
                     valor_nuevo_de_celda = select_sucursal[i].valor;
-                    console.log(valor_nuevo_de_celda);
                     break;
                 }
             }
         }
 
-        // Realizar una solicitud AJAX para actualizar el dato en la base de datos
+        // Envío AJAX para actualizar el dato en la base de datos
         $.ajax({
-            url: method_call + "actualizar", // Actualiza con la ruta correcta
+            url: method_call + "actualizar",
             method: 'POST',
             data: {
                 identificador: datos_fila_tabla.id,
@@ -198,16 +190,12 @@ $(function () {
             },
             success: function (response) {
                 console.log('Dato actualizado en la base de datos');
-                console.log('valor nuevo: ' + valor_nuevo_de_celda);
-                console.log('valor id: ' + datos_fila_tabla.id);
-                console.log(response);
-
-                flag_editando = false; // Marcar como fuera de edición
+                flag_editando = false;
             },
             error: function (xhr, status, error) {
                 console.error('Error al actualizar el dato: ' + error);
 
-                // Crear una alerta de Bootstrap
+                // Alerta de error si no se puede actualizar
                 var alertHtml = `
                 <div class="alert bg-danger alert-icon-left alert-dismissible mb-2 font-small-3" role="alert">
                     <span class="alert-icon"><i class="fa fa-thumbs-o-down"></i></span>
@@ -216,29 +204,31 @@ $(function () {
                     </button>
                     Los datos editados ya existen en otra clase
                 </div>
-            `;
+                `;
 
-                // Insertar la alerta en el contenedor
                 document.getElementById('alert-container').innerHTML = alertHtml;
-
-                // Restaurar el valor original en caso de error
                 celda_seleccionada.html(celda_seleccionada.data('valor_original_guardado'));
-                flag_editando = false; // Marcar como fuera de edición
+                flag_editando = false;
             }
         });
     }
+
 });
 
+// ============================================================
+// ========= CATEGORÍA: FUNCIONES DE ESTATUS (SUSPENDER) ======
+// ============================================================
+
 function suspender(id) {
-    // ajax delete data to database
+    // Cambiar cursor mientras se realiza la operación
     document.body.style.cursor = 'wait';
+
     $.ajax({
         url: method_call + "suspender/" + id,
         type: "POST",
         dataType: "JSON",
         success: function (data) {
             table.ajax.reload();
-            //alert('True');
             var alert = '' +
                 '<div class="alert bg-success alert-icon-left alert-dismissible mb-2" role="alert">' +
                 '<span class="alert-icon"><i class="fa fa-thumbs-o-up"></i></span>' +
@@ -246,10 +236,8 @@ function suspender(id) {
                 '<span aria-hidden="true">×</span>' +
                 '</button>' +
                 'Cliente <a href="clientes/editar/' + id + '" class="white"><b><u>#' + id + '</u></b></a> suspendido correctamente.' +
-                '</div>' +
-                '';
+                '</div>';
             $('#mensaje-js').html(alert);
-
             document.body.style.cursor = 'default';
 
         }, error: function (jqXHR, textStatus, errorThrown) {
@@ -260,18 +248,19 @@ function suspender(id) {
                 '<span aria-hidden="true">×</span>' +
                 '</button>' +
                 'Ha ocurrido un error, por favor inténtalo más tarde. (J1)' +
-                '</div>' +
-                '';
+                '</div>';
             $('#mensaje-js').html(alert);
-
             document.body.style.cursor = 'default';
         }
     });
 }
 
-// Función para obtener opciones del select 'sucursal'
+// ============================================================
+// ======== CATEGORÍA: FUNCIONES PARA OBTENER DATOS AJAX ======
+// ============================================================
+
 async function obtener_opciones_select_sucursal() {
-    // Realizar una solicitud AJAX para obtener las opciones de select_sucursal
+    // Obtiene las opciones del select de sucursales por AJAX
     $.ajax({
         url: method_call + "obtener_opciones_select_sucursal",
         method: 'GET',
@@ -281,14 +270,27 @@ async function obtener_opciones_select_sucursal() {
             console.log('Opciones de sucursal cargadas:', select_sucursal);
         },
         error: function (xhr, status, error) {
-            console.error('Error al obtener opciones de disciplina: ' + error);
+            console.error('Error al obtener opciones de sucursal: ' + error);
         }
     });
 }
 
+// ============================================================
+// ============= CATEGORÍA: FUNCIONES UTILITARIAS =============
+// ============================================================
+
 function createEditableCells(row, data, dataIndex) {
-    var columnsToEdit = [4];
+    // Asignar la clase 'editable-cell' a las celdas que se puedan editar
+    var columnsToEdit = [5]; // Índice de la columna 'sucursal_id'
     $.each(columnsToEdit, function (index, columnIndex) {
         $('td:eq(' + columnIndex + ')', row).addClass('editable-cell');
     });
 }
+
+// Estas funciones (generar_campo_de_celda_a_editar, generar_salida_de_celda_editada)
+// se asumen definidas en otro archivo o parte del código. Si no existen, se deberían
+// definir antes de usar.
+
+// ============================================================
+// =========== FIN DEL ARCHIVO CON MEJORAS COMENTADAS =========
+// ============================================================

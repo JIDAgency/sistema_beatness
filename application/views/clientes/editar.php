@@ -1,482 +1,271 @@
 <div class="app-content content center-layout mt-2">
 	<div class="content-wrapper">
+		<!-- ============================================================
+             BARRA DE NAVEGACIÓN Y BREADCRUMB
+        ============================================================= -->
 		<div class="content-header row">
 			<div class="content-header-left col-md-6 col-12 mb-2">
 				<div class="row breadcrumbs-top">
 					<div class="breadcrumb-wrapper col-12">
 						<ol class="breadcrumb">
-							<li class="breadcrumb-item"><a href="<?php echo site_url('inicio/index') ?>">Inicio</a>
-							</li>
-							<li class="breadcrumb-item"><a href="<?php echo site_url('clientes/index') ?>">Clientes</a>
-							</li>
-							<li class="breadcrumb-item active">Editar cliente
-							</li>
+							<li class="breadcrumb-item"><a href="<?php echo site_url('inicio/index') ?>">Inicio</a></li>
+							<li class="breadcrumb-item"><a href="<?php echo site_url('clientes/index') ?>">Clientes</a></li>
+							<li class="breadcrumb-item active">Editar cliente</li>
 						</ol>
 					</div>
 				</div>
 			</div>
 		</div>
+
+		<!-- ============================================================
+             CONTENIDO PRINCIPAL
+        ============================================================= -->
 		<div class="content-body">
 			<section>
 				<div class="row">
 					<div class="col-12">
-						<div class="card">
+
+						<!-- Aplicar la clase no-border a la tarjeta -->
+						<div class="card no-border">
 							<div class="card-header">
 								<h4 class="card-title">Editar cliente</h4>
 							</div>
+
 							<div class="card-content">
 								<div class="card-body">
-									<?php echo form_open_multipart(site_url('clientes/editar'), array('class' => 'form form-horizontal', 'id' => 'forma-editar-cliente', 'method' => 'post')); ?>
+									<?php echo form_open_multipart(site_url('clientes/editar'), array('class' => 'needs-validation p-2', 'id' => 'forma-editar-cliente', 'method' => 'post')); ?>
 									<input type="hidden" name="id" value="<?php echo $cliente_a_editar->id; ?>">
-									<div class="form-body">
-										<?php $this->load->view('_templates/mensajes_alerta.tpl.php'); ?>
 
-										<div class="row">
-											<div class="col-lg-6 col-md-6 col-dm-12">
-												<h4 class="form-section">Datos de acceso</h4>
-												<div class="row">
-													<div class="col-lg-12 col-md-12 col-sm-12">
-														<div class="form-group row">
-															<label for="correo" class="col-md-3 label-control"><span class="red">*</span> Email</label>
-															<div class="col-md-9">
-																<input type="email" name="correo" id="correo" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toLowerCase()" class="form-control" placeholder="Correo Electrónico" value="<?php echo set_value('correo') == false ? $cliente_a_editar->correo : set_value('correo'); ?>">
-															</div>
-														</div>
-													</div>
-												</div>
+									<?php $this->load->view('_templates/mensajes_alerta.tpl.php'); ?>
 
-												<h4 class="form-section">Datos de contacto</h4>
-												<div class="row">
-													<div class="col-lg-12 col-md-12 col-sm-12">
-														<div class="form-group row">
-															<label for="nombre_completo" class="col-md-3 label-control"><span class="red">*</span> Nombre completo</label>
-															<div class="col-md-9">
-																<input type="text" name="nombre_completo" class="form-control" placeholder="Nombre Completo" value="<?php echo set_value('nombre_completo') == false ? $cliente_a_editar->nombre_completo : set_value('nombre_completo'); ?>">
-															</div>
-														</div>
-													</div>
-													<div class="col-lg-12 col-md-12 col-sm-12">
-														<div class="form-group row">
-															<label for="apellido_paterno" class="col-md-3 label-control"><span class="red">*</span> Apellido paterno</label>
-															<div class="col-md-9">
-																<input type="text" name="apellido_paterno" class="form-control" placeholder="Apellido Paterno" value="<?php echo set_value('apellido_paterno') == false ? $cliente_a_editar->apellido_paterno : set_value('apellido_paterno'); ?>">
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="row">
-													<div class="col-lg-12 col-md-12 col-sm-12">
-														<div class="form-group row">
-															<label for="apellido_materno" class="col-md-3 label-control">Apellido materno</label>
-															<div class="col-md-9">
-																<input type="text" name="apellido_materno" class="form-control" placeholder="Apellido Materno" value="<?php echo set_value('apellido_materno') == false ? $cliente_a_editar->apellido_materno : set_value('apellido_materno'); ?>">
-															</div>
-														</div>
-													</div>
-													<div class="col-lg-12 col-md-12 col-sm-12">
-														<div class="form-group row">
-															<label for="no_telefono" class="col-md-3 label-control">Télefono</label>
-															<div class="col-md-5">
-																<input autocomplete="off" type="text" class="form-control" name="no_telefono" placeholder="No. de Teléfono" value="<?php echo set_value('no_telefono') == false ? $cliente_a_editar->no_telefono : set_value('no_telefono'); ?>">
-															</div>
-														</div>
-													</div>
-												</div>
+									<div class="row">
+										<!-- ============================================================
+                                             COLUMNA IZQUIERDA: CAMPOS PRINCIPALES
+                                        ============================================================= -->
+										<div class="col-lg-8 col-md-12 col-sm-12">
 
-												<h4 class="form-section">Datos personales</h4>
-
-												<div class="row">
-													<div class="col-xl-12 col-md-12 col-sm-12">
-
-														<div class="form-group">
-															<div class="row">
-																<label class="col-md-3 label-control required-field" for="es_estudiante">¿Es estudiante? <span class="red">*</span></label>
-																<div class="col-md-9">
-																	<select id="es_estudiante" name="es_estudiante" class="form-control select2 custom-select" required>
-																		<option value="" <?php echo set_select('es_estudiante', '', set_value('es_estudiante') ? false : '' == (!empty($this->session->flashdata('es_estudiante')) ? $this->session->flashdata('es_estudiante') : (!empty($cliente_a_editar->es_estudiante) ? $cliente_a_editar->es_estudiante : set_value('es_estudiante')))); ?>>Seleccione si es estudiante…</option>
-																		<?php foreach (select_es_estudiante() as $es_estudiante_key => $es_estudiante_value) : ?>
-																			<option value="<?php echo $es_estudiante_value->valor; ?>" <?php echo set_select('es_estudiante', $es_estudiante_value->valor, set_value('es_estudiante') ? false : $es_estudiante_value->valor == (!empty($this->session->flashdata('es_estudiante')) ? $this->session->flashdata('es_estudiante') : (!empty($cliente_a_editar->es_estudiante) ? $cliente_a_editar->es_estudiante : set_value('es_estudiante')))); ?>><?php echo trim($es_estudiante_value->nombre); ?></option>
-																		<?php endforeach; ?>
-																	</select>
-																	<div class="invalid-feedback">
-																		Se requiere una opción válida.
-																	</div>
-																</div>
-															</div>
-														</div>
-
-													</div>
-												</div>
-
-												<div class="row" id="vigencia_estudiante_row" style="display: none;">
-													<div class="col-xl-12 col-md-12 col-sm-12">
-
-														<div class="form-group">
-															<div class="row">
-																<label class="col-md-3 label-control required-field" for="es_estudiante_vigencia">Vigencia de estudiante <span class="red">*</span></label>
-																<div class="col-md-9">
-																	<div class="col-md-5">
-																		<input type="date" id="es_estudiante_vigencia" name="es_estudiante_vigencia" class="form-control" placeholder="Indique la fecha" value="<?php echo set_value('es_estudiante_vigencia') == false ? date('Y-m-d', strtotime($cliente_a_editar->es_estudiante_vigencia)) : date('Y-m-d', strtotime(set_value('es_estudiante_vigencia'))); ?>">
-																	</div>
-																	<div class="invalid-feedback">
-																		Se requiere una opción válida.
-																	</div>
-																</div>
-															</div>
-														</div>
-
-													</div>
-												</div>
-
-												<div class="row">
-													<div class="col-xl-12 col-md-12 col-sm-12">
-
-														<div class="form-group">
-															<div class="row">
-																<label class="col-md-3 label-control required-field" for="es_empresarial">¿Pertenece a una empresa? <span class="red">*</span></label>
-																<div class="col-md-9">
-																	<select id="es_empresarial" name="es_empresarial" class="form-control select2 custom-select" required>
-																		<option value="" <?php echo set_select('es_empresarial', '', set_value('es_empresarial') ? false : '' == (!empty($this->session->flashdata('es_empresarial')) ? $this->session->flashdata('es_empresarial') : (!empty($cliente_a_editar->es_empresarial) ? $cliente_a_editar->es_empresarial : set_value('es_empresarial')))); ?>>Seleccione si pertenece a una empresa…</option>
-																		<?php foreach (select_es_empresarial() as $es_empresarial_key => $es_empresarial_value) : ?>
-																			<option value="<?php echo $es_empresarial_value->valor; ?>" <?php echo set_select('es_empresarial', $es_empresarial_value->valor, set_value('es_empresarial') ? false : $es_empresarial_value->valor == (!empty($this->session->flashdata('es_empresarial')) ? $this->session->flashdata('es_empresarial') : (!empty($cliente_a_editar->es_empresarial) ? $cliente_a_editar->es_empresarial : set_value('es_empresarial')))); ?>><?php echo trim($es_empresarial_value->nombre); ?></option>
-																		<?php endforeach; ?>
-																	</select>
-																	<div class="invalid-feedback">
-																		Se requiere una opción válida.
-																	</div>
-																</div>
-															</div>
-														</div>
-
-													</div>
-												</div>
-
-												<div class="row">
-													<div class="col-xl-12 col-md-12 col-sm-12">
-
-														<div class="form-group">
-															<div class="row">
-																<label class="col-md-3 label-control required-field" for="sucursal_id">Sucursal favorita <span class="red">*</span></label>
-																<div class="col-md-9">
-																	<select id="sucursal_id" name="sucursal_id" class="form-control select2 custom-select" required>
-																		<option value="" <?php echo set_select('sucursal_id', '', set_value('sucursal_id') ? false : '' == (!empty($this->session->flashdata('sucursal_id')) ? $this->session->flashdata('sucursal_id') : (!empty($cliente_a_editar->sucursal_id) ? $cliente_a_editar->sucursal_id : set_value('sucursal_id')))); ?>>Seleccione una sucursal…</option>
-																		<?php foreach ($sucursal_list as $key => $sucursal_row) : ?>
-																			<option value="<?php echo $sucursal_row->id; ?>" <?php echo set_select('sucursal_id', $sucursal_row->id, set_value('sucursal_id') ? false : $sucursal_row->id == (!empty($this->session->flashdata('sucursal_id')) ? $this->session->flashdata('sucursal_id') : (!empty($cliente_a_editar->sucursal_id) ? $cliente_a_editar->sucursal_id : set_value('sucursal_id')))); ?>><?php echo trim($sucursal_row->descripcion); ?></option>
-																		<?php endforeach; ?>
-																	</select>
-																	<div class="invalid-feedback">
-																		Se requiere una opción válida.
-																	</div>
-																</div>
-															</div>
-														</div>
-
-													</div>
-												</div>
-
-												<div class="row">
-													<div class="col-lg-12 col-md-12 col-sm-12">
-														<div class="form-group row">
-															<label for="fecha_nacimiento" class="col-md-3 label-control">Fecha
-																de nacimiento</label>
-															<div class="col-md-9">
-																<input type="text" name="fecha_nacimiento" class="date-dropper form-control" placeholder="Seleccione una fecha" value="<?php echo set_value('fecha_nacimiento') == false ? date('d/m/Y', strtotime($cliente_a_editar->fecha_nacimiento)) : date('d/m/Y', strtotime(set_value('fecha_nacimiento'))); ?>">
-															</div>
-														</div>
-													</div>
-													<div class="col-lg-12 col-md-12 col-sm-12">
-														<div class="form-group row">
-															<label for="rfc" class="col-md-3 label-control">RFC</label>
-															<div class="col-md-9">
-																<input type="text" name="rfc" class="form-control" placeholder="RFC" value="<?php echo set_value('rfc') == false ? $cliente_a_editar->rfc : set_value('rfc'); ?>">
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="row">
-													<div class="col-lg-12 col-md-12 col-sm-12">
-														<div class="form-group row">
-															<label for="genero" class="col-md-3 label-control">Género</label>
-															<div class="col-md-3">
-																<select name="genero" class="form-control">
-																	<option value="H" <?php echo set_select('genero', "H", set_value('genero') ? false : "H" == $cliente_a_editar->genero); ?>>Hombre</option>
-																	<option value="M" <?php echo set_select('genero', "M", set_value('genero') ? false : "M" == $cliente_a_editar->genero); ?>>Mujer</option>
-																</select>
-															</div>
-														</div>
-													</div>
-												</div>
-
-												<h4 class="form-section">Domicilio</h4>
-												<div class="row">
-													<div class="col-lg-12 col-md-12 col-sm-12">
-														<div class="form-group row">
-															<label for="pais" class="col-md-3 label-control">País</label>
-															<div class="col-md-9">
-																<input type="text" name="pais" class="form-control" placeholder="País" value="<?php echo set_value('pais') == false ? $cliente_a_editar->pais : set_value('pais'); ?>">
-															</div>
-														</div>
-													</div>
-													<div class="col-lg-12 col-md-12 col-sm-12">
-														<div class="form-group row">
-															<label for="estado" class="col-md-3 label-control">Estado</label>
-															<div class="col-md-8">
-																<input type="text" name="estado" class="form-control" placeholder="Estado" value="<?php echo set_value('estado') == false ? $cliente_a_editar->estado : set_value('estado'); ?>">
-															</div>
-														</div>
-													</div>
-												</div>
-
-												<div class="row">
-													<div class="col-lg-12 col-md-12 col-sm-12">
-														<div class="form-group row">
-															<label for="ciudad" class="col-md-3 label-control">Ciudad</label>
-															<div class="col-md-9">
-																<input type="text" name="ciudad" class="form-control" placeholder="Ciudad" value="<?php echo set_value('ciudad') == false ? $cliente_a_editar->ciudad : set_value('colonia'); ?>">
-															</div>
-														</div>
-													</div>
-													<div class="col-lg-12 col-md-12 col-sm-12">
-														<div class="form-group row">
-															<label for="colonia" class="col-md-3 label-control">Colonia</label>
-															<div class="col-md-9">
-																<input type="text" name="colonia" class="form-control" placeholder="Colonia" value="<?php echo set_value('colonia') == false ? $cliente_a_editar->colonia : set_value('colonia'); ?>">
-															</div>
-														</div>
-													</div>
-												</div>
-
-												<div class="row">
-													<div class="col-lg-12 col-md-12 col-sm-12">
-														<div class="form-group row">
-															<label for="calle" class="col-md-3 label-control">Calle</label>
-															<div class="col-md-9">
-																<input type="text" name="calle" class="form-control" placeholder="Calle" value="<?php echo set_value('calle') == false ? $cliente_a_editar->calle : set_value('calle'); ?>">
-															</div>
-														</div>
-													</div>
-													<div class="col-lg-12 col-md-12 col-sm-12">
-														<div class="form-group row">
-															<label for="numero" class="col-md-3 label-control">Número</label>
-															<div class="col-md-3">
-																<input type="text" name="numero" class="form-control" placeholder="Número" value="<?php echo set_value('numero') == false ? $cliente_a_editar->numero : set_value('numero'); ?>">
-															</div>
-														</div>
-													</div>
-												</div>
-
-												<div class="row">
-													<div class="col-lg-12 col-md-12 col-sm-12">
-														<div class="form-group row">
-															<label for="estatus" class="col-md-3 label-control">Estatus</label>
-															<div class="col-md-9">
-																<select id="estatus" name="estatus" class="form-control" required>
-																	<option value="">Seleccione un estatus...</option>
-																	<option value="activo" <?php echo set_select('estatus', 'activo', set_value('estatus') ? false : 'activo' == $cliente_a_editar->estatus); ?>>Activo
-																	</option>
-																	<option value="suspendido" <?php echo set_select('estatus', 'suspendido', set_value('estatus') ? false : 'suspendido' == $cliente_a_editar->estatus); ?>>Suspendido
-																	</option>
-																</select>
-															</div>
-														</div>
-													</div>
+											<!-- Datos de acceso -->
+											<h5 class="mb-2">Datos de acceso</h5>
+											<div class="form-group row">
+												<label for="correo" class="col-md-3 label-control">
+													<span class="red">*</span> Email
+												</label>
+												<div class="col-md-9">
+													<input type="email" name="correo" id="correo" class="form-control" placeholder="Correo electrónico" value="<?php echo set_value('correo', $cliente_a_editar->correo); ?>" onkeyup="this.value = this.value.toLowerCase()">
 												</div>
 											</div>
-											<div class="col-lg-6 col-md-6 col-dm-12">
-												<h4 class="form-section">Foto</h4>
-												<div class="row">
-													<div class="col-lg-6 col-md-6 col-sm-12">
-														<img src="<?php echo site_url("subidas/perfil/" . $cliente_a_editar->nombre_imagen_avatar); ?>" name="preview" id="preview" style="width: 200px; height: 200px;">
-													</div>
-													<div class="col-lg-6 col-md-6 col-sm-12">
-														<p><b>Formato: </b>JPG</p>
-														<p><b>Ancho: </b>1200</p>
-														<p><b>Altura: </b>1200</p>
-														<p><b>Tamaño máximo (Kb): </b>600</p>
-														<input type="file" name="nombre_imagen_avatar" id="nombre_imagen_avatar" placeholder="Miniatura" value="<?php echo set_value('nombre_imagen_avatar') == false ? $cliente_a_editar->nombre_imagen_avatar : set_value('nombre_imagen_avatar'); ?>" onchange="cargar_imagen(event)">
-													</div>
+
+											<!-- Datos personales básicos -->
+											<h5 class="mt-3 mb-2">Datos personales</h5>
+											<div class="form-group row">
+												<label for="nombre_completo" class="col-md-3 label-control">
+													<span class="red">*</span> Nombre(s)
+												</label>
+												<div class="col-md-9">
+													<input type="text" name="nombre_completo" class="form-control" placeholder="Nombre(s)" value="<?php echo set_value('nombre_completo', $cliente_a_editar->nombre_completo); ?>">
+												</div>
+											</div>
+											<div class="form-group row">
+												<label for="apellido_paterno" class="col-md-3 label-control">
+													<span class="red">*</span> Apellido paterno
+												</label>
+												<div class="col-md-9">
+													<input type="text" name="apellido_paterno" class="form-control" placeholder="Apellido paterno" value="<?php echo set_value('apellido_paterno', $cliente_a_editar->apellido_paterno); ?>">
+												</div>
+											</div>
+											<div class="form-group row">
+												<label for="apellido_materno" class="col-md-3 label-control">Apellido materno</label>
+												<div class="col-md-9">
+													<input type="text" name="apellido_materno" class="form-control" placeholder="Apellido materno" value="<?php echo set_value('apellido_materno', $cliente_a_editar->apellido_materno); ?>">
+												</div>
+											</div>
+											<div class="form-group row">
+												<label for="no_telefono" class="col-md-3 label-control">Teléfono</label>
+												<div class="col-md-9">
+													<input type="text" name="no_telefono" class="form-control" placeholder="Número de teléfono" maxlength="10" value="<?php echo set_value('no_telefono', $cliente_a_editar->no_telefono); ?>">
+												</div>
+											</div>
+
+											<!-- Datos académicos/empresariales y sucursal -->
+											<h5 class="mt-3 mb-2">Información adicional</h5>
+											<div class="form-group row">
+												<label class="col-md-3 label-control" for="es_estudiante">
+													¿Es estudiante? <span class="red">*</span>
+												</label>
+												<div class="col-md-9">
+													<select id="es_estudiante" name="es_estudiante" class="form-control select2" required>
+														<option value="">Seleccione…</option>
+														<?php
+														$valor_es_estudiante = set_value('es_estudiante', $cliente_a_editar->es_estudiante);
+														foreach (select_es_estudiante() as $est) : ?>
+															<option value="<?php echo $est->valor; ?>" <?php echo ($est->valor == $valor_es_estudiante) ? 'selected' : ''; ?>>
+																<?php echo trim($est->nombre); ?>
+															</option>
+														<?php endforeach; ?>
+													</select>
+													<div class="invalid-feedback">Seleccione una opción</div>
+												</div>
+											</div>
+											<div class="form-group row" id="vigencia_estudiante_row" style="display: none;">
+												<label class="col-md-3 label-control" for="es_estudiante_vigencia">
+													Vigencia estudiante <span class="red">*</span>
+												</label>
+												<div class="col-md-9">
+													<input type="date" id="es_estudiante_vigencia" name="es_estudiante_vigencia" class="form-control" value="<?php echo set_value('es_estudiante_vigencia', date('Y-m-d', strtotime($cliente_a_editar->es_estudiante_vigencia))); ?>">
+													<div class="invalid-feedback">Seleccione una fecha</div>
+												</div>
+											</div>
+
+											<div class="form-group row">
+												<label class="col-md-3 label-control" for="es_empresarial">
+													¿Pertenece a una empresa? <span class="red">*</span>
+												</label>
+												<div class="col-md-9">
+													<select id="es_empresarial" name="es_empresarial" class="form-control select2" required>
+														<option value="">Seleccione…</option>
+														<?php
+														$valor_es_empresarial = set_value('es_empresarial', $cliente_a_editar->es_empresarial);
+														foreach (select_es_empresarial() as $emp) : ?>
+															<option value="<?php echo $emp->valor; ?>" <?php echo ($emp->valor == $valor_es_empresarial) ? 'selected' : ''; ?>>
+																<?php echo trim($emp->nombre); ?>
+															</option>
+														<?php endforeach; ?>
+													</select>
+													<div class="invalid-feedback">Seleccione una opción</div>
+												</div>
+											</div>
+
+											<div class="form-group row">
+												<label class="col-md-3 label-control" for="sucursal_id">
+													Sucursal favorita <span class="red">*</span>
+												</label>
+												<div class="col-md-9">
+													<select id="sucursal_id" name="sucursal_id" class="form-control select2" required>
+														<option value="">Seleccione una sucursal…</option>
+														<?php
+														$valor_sucursal = set_value('sucursal_id', $cliente_a_editar->sucursal_id);
+														foreach ($sucursal_list as $s_row) : ?>
+															<option value="<?php echo $s_row->id; ?>" <?php echo ($s_row->id == $valor_sucursal) ? 'selected' : ''; ?>>
+																<?php echo trim($s_row->descripcion); ?>
+															</option>
+														<?php endforeach; ?>
+													</select>
+													<div class="invalid-feedback">Seleccione una opción</div>
+												</div>
+											</div>
+
+											<!-- Datos complementarios -->
+											<h5 class="mt-3 mb-2">Datos complementarios</h5>
+											<div class="form-group row">
+												<label for="fecha_nacimiento" class="col-md-3 label-control">
+													Fecha nacimiento
+												</label>
+												<div class="col-md-9">
+													<input type="date" name="fecha_nacimiento" class="form-control" placeholder="Seleccione una fecha" value="<?php echo set_value('fecha_nacimiento', date('Y-m-d', strtotime($cliente_a_editar->fecha_nacimiento))); ?>">
+												</div>
+											</div>
+											<div class="form-group row">
+												<label for="rfc" class="col-md-3 label-control">RFC</label>
+												<div class="col-md-9">
+													<input type="text" name="rfc" class="form-control" placeholder="RFC" value="<?php echo set_value('rfc', $cliente_a_editar->rfc); ?>">
+												</div>
+											</div>
+											<div class="form-group row">
+												<label for="genero" class="col-md-3 label-control">Género</label>
+												<div class="col-md-9">
+													<select name="genero" class="form-control">
+														<option value="">Seleccione…</option>
+														<option value="H" <?php echo set_select('genero', 'H', 'H' == $cliente_a_editar->genero); ?>>Hombre</option>
+														<option value="M" <?php echo set_select('genero', 'M', 'M' == $cliente_a_editar->genero); ?>>Mujer</option>
+													</select>
+												</div>
+											</div>
+
+											<!-- Domicilio -->
+											<h5 class="mt-3 mb-2">Domicilio</h5>
+											<div class="form-group row">
+												<label for="pais" class="col-md-3 label-control">País</label>
+												<div class="col-md-9">
+													<input type="text" name="pais" class="form-control" placeholder="País" value="<?php echo set_value('pais', $cliente_a_editar->pais); ?>">
+												</div>
+											</div>
+											<div class="form-group row">
+												<label for="estado" class="col-md-3 label-control">Estado</label>
+												<div class="col-md-9">
+													<input type="text" name="estado" class="form-control" placeholder="Estado" value="<?php echo set_value('estado', $cliente_a_editar->estado); ?>">
+												</div>
+											</div>
+											<div class="form-group row">
+												<label for="ciudad" class="col-md-3 label-control">Ciudad</label>
+												<div class="col-md-9">
+													<input type="text" name="ciudad" class="form-control" placeholder="Ciudad" value="<?php echo set_value('ciudad', $cliente_a_editar->ciudad); ?>">
+												</div>
+											</div>
+											<div class="form-group row">
+												<label for="colonia" class="col-md-3 label-control">Colonia</label>
+												<div class="col-md-9">
+													<input type="text" name="colonia" class="form-control" placeholder="Colonia" value="<?php echo set_value('colonia', $cliente_a_editar->colonia); ?>">
+												</div>
+											</div>
+											<div class="form-group row">
+												<label for="calle" class="col-md-3 label-control">Calle</label>
+												<div class="col-md-9">
+													<input type="text" name="calle" class="form-control" placeholder="Calle" value="<?php echo set_value('calle', $cliente_a_editar->calle); ?>">
+												</div>
+											</div>
+											<div class="form-group row">
+												<label for="numero" class="col-md-3 label-control">Número</label>
+												<div class="col-md-9">
+													<input type="text" name="numero" class="form-control" placeholder="Número" value="<?php echo set_value('numero', $cliente_a_editar->numero); ?>">
+												</div>
+											</div>
+
+											<h5 class="mt-3 mb-2">Estatus</h5>
+											<div class="form-group row">
+												<label for="estatus" class="col-md-3 label-control">Estatus</label>
+												<div class="col-md-9">
+													<select id="estatus" name="estatus" class="form-control" required>
+														<option value="">Seleccione un estatus...</option>
+														<option value="activo" <?php echo set_select('estatus', 'activo', 'activo' == $cliente_a_editar->estatus); ?>>Activo</option>
+														<option value="suspendido" <?php echo set_select('estatus', 'suspendido', 'suspendido' == $cliente_a_editar->estatus); ?>>Suspendido</option>
+													</select>
 												</div>
 											</div>
 										</div>
 
-										<!-- <h4 class="form-section">Foto de perfil</h4>
-										<div class="row">
-											<div class="col-sm-3">
-												<img id="foto-anterior"
-													src="<?php echo site_url("subidas/perfil/" . $cliente_a_editar->nombre_imagen_avatar); ?>"
-													name="preview_ine" id="preview_ine" height="200">
-												<input type="text" id="nombre-foto" placeholder="Nombre de la foto"
-													style="display: none;">
-												<br>
-												<br>
-												<canvas id="canvas" style="display: none;" width="300"
-													height="200"></canvas>
-												<img id="captured-photo" width="300" height="200"
-													style="display: none;">
-												<br>
-												<a id="cambio-btn" class="btn btn-secondary white"
-													style="font-size: 15px;"><i class="ft-camera"></i> Cambiar foto</a>
+										<!-- ============================================================
+                                             COLUMNA DERECHA: FOTO
+                                        ============================================================= -->
+										<div class="col-lg-4 col-md-12 col-sm-12">
+											<h5 class="mb-2">Foto del cliente</h5>
+											<div class="mb-2 text-center">
+												<img src="<?php echo site_url("subidas/perfil/" . $cliente_a_editar->nombre_imagen_avatar); ?>" name="preview" id="preview" style="width: 200px; height: 200px;">
 											</div>
-											<div id="webcam" style="display: none;" class="col-sm-9">
-												<video id="video" height="254"
-													style="clip-path: circle(120px at center);" autoplay></video>
-												<h2>Seleccionar webcam</h2>
-												<div class="row">
-													<select id="camera-select"></select>
-													<a id="capture-btn" class="btn btn-secondary white"
-														style="font-size: 20px;"><i class="ft-camera"></i> Tomar
-														foto</a>
-												</div>
-											</div>
-										</div> -->
+											<p><b>Formato:</b> JPG</p>
+											<p><b>Tamaño máximo (Kb):</b> 600</p>
+											<input type="file" name="nombre_imagen_avatar" id="nombre_imagen_avatar" onchange="cargar_imagen(event)" value="<?php echo set_value('nombre_imagen_avatar', $cliente_a_editar->nombre_imagen_avatar); ?>">
 
-
-
-										<div class="form-actions right">
-											<a href="<?php echo site_url('clientes/index'); ?>" class="btn btn-secondary btn-sm">Cancelar</a>
-											<button id="guardar-btn" type="submit" class="btn btn-secondary btn-sm">Guardar</button>
 										</div>
+									</div>
 
+									<!-- BOTONES DE ACCIÓN -->
+									<div class="form-actions right mt-2">
+										<a href="<?php echo site_url('clientes/index'); ?>" class="btn btn-outline-secondary">
+											<i class="ft-arrow-left icon-left"></i> Atrás
+										</a>
+										<button id="guardar-btn" type="submit" class="btn btn-outline-secondary">
+											<i class="ft-save icon-left"></i> Guardar
+										</button>
 									</div>
 
 									<?php echo form_close(); ?>
 
-									<!-- con estos scripts accedemos, capturamos, y obtenemos nombre de foto con la camara web,  -->
-									<!-- y enviamos los datos de la foto con ayuda del ajax al controlador clientes -->
-									<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-									<script>
-										const cameraSelect = document.getElementById('camera-select');
-										const video = document.getElementById('video');
-										const captureBtn = document.getElementById('capture-btn');
-										const guardarBtn = document.getElementById('guardar-btn');
-										const cambiarBtn = document.getElementById('cambio-btn');
-										const fotoAnterior = document.getElementById('foto-anterior');
-										const nombreFotoInput = document.getElementById('nombre-foto');
-										const webcam = document.getElementById('webcam');
-										const canvas = document.getElementById('canvas');
-										const ctx = canvas.getContext('2d');
-										const capturedPhoto = document.getElementById('captured-photo');
-										const localStorageKey = 'capturedPhoto';
-
-										// Obtener la lista de cámaras disponibles
-										async function getAvailableCameras() {
-											try {
-												const devices = await navigator.mediaDevices.enumerateDevices();
-												const videoDevices = devices.filter(device => device.kind === 'videoinput');
-
-												videoDevices.forEach((device, index) => {
-													const option = document.createElement('option');
-													option.value = index;
-													option.text = device.label || `Cámara ${index + 1}`;
-													cameraSelect.appendChild(option);
-												});
-
-												// Recuperar la foto capturada anterior, si existe
-												// const previousCapturedPhoto = localStorage.getItem(localStorageKey);
-												// if (previousCapturedPhoto) {
-												// capturedPhoto.src = previousCapturedPhoto;
-												// capturedPhoto.style.display = 'block';
-												// downloadBtn.style.display = 'inline-block';
-												// }
-
-												// Iniciar la webcam con la primera cámara disponible
-												await initCamera();
-											} catch (err) {
-												console.error('Error al obtener la lista de cámaras: ', err);
-											}
-										}
-
-										// Obtener la foto capturada previamente, si existe
-										function restoreCapturedPhoto() {
-											const photoDataURL = localStorage.getItem(localStorageKey);
-											if (photoDataURL) {
-												capturedPhoto.src = photoDataURL;
-												// capturedPhoto.style.display = 'block';
-												// downloadBtn.style.display = 'inline-block';
-											}
-										}
-
-										// Iniciar la webcam con la cámara seleccionada
-										async function initCamera() {
-											const selectedCameraIndex = cameraSelect.value;
-											const devices = await navigator.mediaDevices.enumerateDevices();
-											const videoDevices = devices.filter(device => device.kind === 'videoinput');
-											const selectedCamera = videoDevices[selectedCameraIndex];
-
-											try {
-												const stream = await navigator.mediaDevices.getUserMedia({
-													video: {
-														deviceId: selectedCamera.deviceId,
-													}
-												});
-												video.srcObject = stream;
-											} catch (err) {
-												console.error('Error al acceder a la webcam: ', err);
-											}
-										}
-
-										function cambiarFoto() {
-											cameraSelect.style.display = 'block'
-
-											webcam.style.display = 'block'
-										}
-
-										// Capturar foto y mostrarla en el canvas
-										function capturePhoto() {
-											ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-											capturedPhoto.src = canvas.toDataURL('image/png');
-
-											// canvas.style.display = 'block';
-											video.style.display = 'block';
-											captureBtn.style.display = 'block';
-											// guardarBtn.style.display = 'inline-block';
-											capturedPhoto.style.display = 'block';
-											fotoAnterior.style.display = 'none';
-
-											// Guardar la foto capturada en el localStorage
-											localStorage.setItem(localStorageKey, capturedPhoto.src);
-										}
-
-										// Guardar la foto con el nombre ingresado en el input
-										function guardarFoto() {
-											const nombreFoto = nombreFotoInput.value;
-											if (nombreFoto.trim() != '') {
-												return;
-											}
-
-											const imageDataURL = canvas.toDataURL('image/png');
-
-											$.ajax({
-												type: 'POST',
-												url: '<?php echo base_url('clientes/guardar_foto'); ?>',
-												data: {
-													nombre_foto: nombreFoto,
-													imagen_data: imageDataURL
-												},
-
-												// Lineas de código para mandar mensaje dependiendo de la situación al guardar foto
-												// success: function(response) {
-												// alert('Foto guardada con éxito.');
-												// },
-												// error: function(xhr, status, error) {
-												// console.error('Error al guardar la foto: ', error);
-												// }
-											});
-										}
-
-										// Event listeners
-										cameraSelect.addEventListener('change', initCamera);
-										captureBtn.addEventListener('click', capturePhoto);
-										guardarBtn.addEventListener('click', guardarFoto);
-										cambiarBtn.addEventListener('click', cambiarFoto);
-
-										// Obtener la lista de cámaras disponibles al cargar la página
-										getAvailableCameras();
-										restoreCapturedPhoto();
-									</script>
+									<!-- El script de la cámara y las validaciones se deben mover a un archivo JS externo, 
+                                         siguiendo el estándar aplicado en 'crear'.
+                                         Incluir aquí únicamente las variables globales o definiciones necesarias -->
 								</div>
 							</div>
-						</div>
+						</div> <!-- fin card no-border -->
 					</div>
 				</div>
 			</section>
