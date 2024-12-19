@@ -15,6 +15,7 @@ class Clases extends MY_Controller
         $this->load->model('clases_en_linea_model');
         $this->load->model('filtros_model');
         $this->load->model('clases_categorias_model');
+        $this->load->model('resenias_model');
     }
 
     public function crear()
@@ -1317,6 +1318,9 @@ class Clases extends MY_Controller
         if ($this->input->post()) {
             $id = $this->input->post('id');
         }
+
+        $resenias = $this->resenias_model->obtener_por_clase_id($id)->result();
+        $data['resenias'] = $resenias;
 
         if ($this->form_validation->run() == false) {
 

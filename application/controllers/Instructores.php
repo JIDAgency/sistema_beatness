@@ -8,6 +8,7 @@ class Instructores extends MY_Controller
     {
         parent::__construct();
         $this->load->model('usuarios_model');
+        $this->load->model('resenias_model');
     }
 
     public function index()
@@ -177,6 +178,9 @@ class Instructores extends MY_Controller
             $this->session->set_flashdata('MENSAJE_INFO', 'El instructor que intenta editar no existe.');
             redirect('/instructores/index');
         }
+
+        $resenias = $this->resenias_model->obtener_por_coach_id($id)->result();
+        $data['resenias'] = $resenias;
 
         $data['instructor_a_editar'] = $instructor_a_editar;
 

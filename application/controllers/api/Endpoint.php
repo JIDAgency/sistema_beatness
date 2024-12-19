@@ -1790,6 +1790,22 @@ class Endpoint extends REST_Controller
     }
 
     /**
+     * Obtiene las reservaciones terminadas del dia hechas por usuario
+     */
+    public function reservaciones_terminadas_de_semana_por_usuario_get()
+    {
+        $datos_get = $this->get();
+
+        $usuario_valido = $this->_autenticar_usuario($datos_get['token'], $datos_get['usuario_id']);
+
+        $reservaciones_terminadas_del_dia_por_usuario = $this->reservaciones_model->obtener_reservacion_terminada_de_semana_por_cliente($usuario_valido->id)->result();
+
+        // $reservaciones_terminadas_del_dia_por_usuario = $this->reservaciones_model->obtener_reservacion_terminada_de_semana_por_cliente('2370')->result();
+
+        $this->response($reservaciones_terminadas_del_dia_por_usuario);
+    }
+
+    /**
      * Actualiza las reservaciones del servidor
      */
     /*public function comprobar_reservaciones_activas_post()

@@ -201,8 +201,41 @@ class Reservaciones_model extends CI_Model
         $this->db->where("t1.usuario_id =", $id);
         $this->db->where("t1.estatus =", "Terminada");
         $this->db->where("t1.calificada =", "no");
-        $this->db->order_by("t3.inicia", "desc");
+        $this->db->order_by("t1.id", "desc");
         $this->db->limit(5);
+        $resultados = $this->db->get();
+        return $resultados;
+    }
+
+    public function obtener_reservacion_terminada_de_semana_por_cliente($id)
+    {
+        $this->db->select("
+            t1.*,
+            t3.identificador as clase,
+            t3.inicia as horario,
+            t3.inicia_ionic AS inicia_ionic,
+            t3.disciplina_id AS disciplina_id,
+            t3.subdisciplina_id AS subdisciplina_id,
+            t3.dificultad as dificultad,
+            t4.nombre as disciplina,
+            t6.nombre as sucursal_nombre,
+            t5.nombre_imagen_avatar as foto_instructor,
+            t5.nombre_completo as instructor,
+            t5.id as instructor_id,
+        ");
+        $this->db->from("reservaciones t1");
+        $this->db->join("usuarios t2", "t1.usuario_id = t2.id");
+        $this->db->join("clases t3", "t1.clase_id = t3.id");
+        $this->db->join("disciplinas t4", "t3.disciplina_id = t4.id");
+        $this->db->join("usuarios t5", "t3.instructor_id = t5.id");
+        $this->db->join("sucursales t6", "t4.sucursal_id = t6.id");
+        $this->db->where("t1.usuario_id =", $id);
+        $this->db->where("t1.estatus =", "Terminada");
+        $this->db->where("t1.calificada =", "no");
+        $this->db->where("YEAR(t3.inicia) =", date("Y"));
+        $this->db->where("WEEK(t3.inicia, 1) =", date("W")); 
+        $this->db->order_by("t1.id", "desc");
+        $this->db->limit(1);
         $resultados = $this->db->get();
         return $resultados;
     }

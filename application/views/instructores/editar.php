@@ -199,6 +199,37 @@
 														<input type="file" name="nombre_imagen_avatar" id="nombre_imagen_avatar" placeholder="Miniatura" value="<?php echo set_value('nombre_imagen_avatar') == false ? $instructor_a_editar->nombre_imagen_avatar : set_value('nombre_imagen_avatar'); ?>" onchange="cargar_imagen(event)">
 													</div>
 												</div>
+												<h4 class="form-section">Reseñas</h4>
+												<div class="row">
+													<div class="col-xl-12 col-md-12 col-sm-12 mb-1">
+
+														<div class="list-group">
+															<?php foreach ($resenias as $nota_key => $resenia) : ?>
+																<div class="list-group-item flex-column align-items-start <?php echo $nota_key == 0 ? 'active' : ''; ?>">
+																	<div class="row">
+																		<div class="col-3 align-self-center text-center">
+																			<img src="<?php echo base_url('subidas/perfil/' . $resenia->coach_foto); ?>" class="img-fluid" width="70%" alt="coach" style="border-radius: 50%;"> <br>
+																			<small><?php echo $resenia->coach . ' ' . $resenia->coach_correo; ?></small>
+																		</div>
+																		<div class="col-9 align-self-center">
+																			<div class="d-flex w-100 justify-content-between">
+																				<small><?php echo date('d M y H:i a', strtotime($resenia->fecha_registro)) ?></small>
+																			</div>
+																			<div class="row pl-1 mt-1">
+																				<?php for ($i = 1; $i <= $resenia->calificacion; $i++) : ?>
+																					<p style="font-size: large; margin: 0;">⭐️</p>
+																				<?php endfor; ?>
+																			</div>
+																			<p><b><?php echo $resenia->nota; ?></b></p>
+																			<small><?php echo $resenia->nombre . ' ' . $resenia->dificultad . ' - ' . date('d/m/Y H:i:s', strtotime($resenia->inicia)); ?></small>
+																		</div>
+																	</div>
+																</div>
+															<?php endforeach; ?>
+														</div>
+
+													</div>
+												</div>
 											</div>
 										</div>
 
