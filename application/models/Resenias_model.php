@@ -26,6 +26,7 @@ class Resenias_model extends CI_Model
             ->join('disciplinas t3', "t3.id = t2.disciplina_id")
             ->join('usuarios t4', "t4.id = t2.instructor_id")
             ->order_by('t1.id', 'desc')
+            ->limit(5)
             ->get();
         return $query;
     }
@@ -47,7 +48,8 @@ class Resenias_model extends CI_Model
             ->join('disciplinas t3', "t3.id = t2.disciplina_id")
             ->join('usuarios t4', "t4.id = t2.instructor_id")
             ->order_by('t1.id', 'desc')
-            ->get();
+            ->limit(5)
+            ->get(); 
         return $query;
     }
 }
