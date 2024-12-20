@@ -207,10 +207,10 @@
 															<?php foreach ($resenias as $nota_key => $resenia) : ?>
 																<div class="list-group-item flex-column align-items-start <?php echo $nota_key == 0 ? 'active' : ''; ?>">
 																	<div class="row">
-																		<div class="col-3 align-self-center text-center">
+																		<!-- <div class="col-3 align-self-center text-center">
 																			<img src="<?php echo base_url('subidas/perfil/' . $resenia->coach_foto); ?>" class="img-fluid" width="70%" alt="coach" style="border-radius: 50%;"> <br>
 																			<small><?php echo $resenia->coach . ' ' . $resenia->coach_correo; ?></small>
-																		</div>
+																		</div> -->
 																		<div class="col-9 align-self-center">
 																			<div class="d-flex w-100 justify-content-between">
 																				<small><?php echo date('d M y H:i a', strtotime($resenia->fecha_registro)) ?></small>
