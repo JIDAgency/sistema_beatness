@@ -95,7 +95,8 @@ class Wellhub_model extends CI_Model
     public function venta_insertar($data)
     {
         $query = $this->db
-            ->insert('ventas', $data);
+            //TEMP ->insert('ventas', $data);
+            ->insert('ventas_pendientes', $data);
 
         return $query;
     }
@@ -104,7 +105,8 @@ class Wellhub_model extends CI_Model
     {
         $query = $this->db
             ->where('id', $id)
-            ->get('ventas');
+            //TEMP ->get('ventas');
+            ->get('ventas_pendientes');
 
         return $query;
     }
@@ -114,7 +116,8 @@ class Wellhub_model extends CI_Model
         $query = $this->db
             ->where('usuario_id', $usuario_id)
             ->where('asignacion_id', $asignacion_id)
-            ->get('ventas');
+            //TEMP ->get('ventas');
+            ->get('ventas_pendientes');
 
         return $query;
     }
@@ -123,7 +126,8 @@ class Wellhub_model extends CI_Model
     {
         $query =  $this->db
             ->where('id', $id)
-            ->update('ventas', $data);
+            //TEMP ->update('ventas', $data);
+            ->update('ventas_pendientes', $data);
 
         return $query;
     }
