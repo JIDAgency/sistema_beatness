@@ -68,14 +68,11 @@
                                 <table name="table" id="table" class="table display nowrap table-striped table-bordered scroll-horizontal table-hover w-100" cellspacing="0">
                                     <thead>
                                         <th>ID</th>
-                                        <th>Reservacion</th>
-                                        <th>Clase</th>
-                                        <th>Usuario</th>
-                                        <th>Instructor</th>
                                         <th>Calificacion</th>
                                         <th>Nota</th>
+                                        <th>Instructor</th>
+                                        <th>Clase</th>
                                         <th>Fecha</th>
-                                        <!-- <th>Opciones</th> -->
                                     </thead>
 
                                     <tbody>

@@ -47,16 +47,16 @@ class Resenias extends MY_Controller
         $resenias_list = $this->resenias_model->obtener_tabla_resenias();
 
         $data = [];
+        $estrellas = [];
 
         foreach ($resenias_list->result() as $reporte_key => $resenia_value) {
+
             $data[] = array(
                 'id' => $reporte_key + 1,
-                'reservacion' => $resenia_value->reservacion_id,
-                'clase' => $resenia_value->clase_id,
-                'usuario' => $resenia_value->usuario_id,
-                'instructor' => $resenia_value->instructor_id,
-                'calificacion' => $resenia_value->calificacion,
+                'calificacion' => $resenia_value->calificacion . ' ⭐️',
                 'nota' => $resenia_value->nota,
+                'instructor' => $resenia_value->coach . ' #' . $resenia_value->instructor_id,
+                'clase' => $resenia_value->nombre . ' ' . $resenia_value->dificultad,
                 'fecha_registro' => $resenia_value->fecha_registro,
             );
         }

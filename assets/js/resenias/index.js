@@ -20,7 +20,7 @@ $(document).ready(function () {
         "scrollX": true,
         "deferRender": true,
         'processing': true,
-        "order": [[1, "desc"], [3, "asc"], [5, "asc"], [6, "asc"]],
+        "order": [[0, "desc"]],
         "lengthMenu": [[25, 50, 100, 250, 500, -1], [25, 50, 100, 250, 500, "Todos"]],
         "ajax": {
             "url": url,
@@ -28,12 +28,10 @@ $(document).ready(function () {
         },
         "columns": [
             { "data": "id" },
-            { "data": "reservacion" },
-            { "data": "clase" },
-            { "data": "usuario" },
-            { "data": "instructor" },
             { "data": "calificacion" },
             { "data": "nota" },
+            { "data": "instructor" },
+            { "data": "clase" },
             { "data": "fecha_registro" }
         ],
         'language': {
