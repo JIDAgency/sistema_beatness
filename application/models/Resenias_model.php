@@ -9,6 +9,11 @@ class Resenias_model extends CI_Model
         return $this->db->insert('resenias', $data);
     }
 
+    public function obtener_tabla_resenias() 
+    {
+        return $this->db->get('resenias');
+    }
+
     public function obtener_por_clase_id($id)
     {
         $query = $this->db

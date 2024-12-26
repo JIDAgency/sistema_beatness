@@ -143,6 +143,7 @@
                             <li data-menu=""><a class="dropdown-item" href="<?php echo site_url('historial_reservaciones'); ?>" data-toggle="dropdown">Registro de reservaciones</a></li>
                             <li class="dropdown-divider"></li>
                             <li data-menu=""><a class="dropdown-item" href="<?php echo site_url('reportes'); ?>" data-toggle="dropdown">Reportes</a></li>
+                            <li data-menu=""><a class="dropdown-item" href="<?php echo site_url('resenias'); ?>" data-toggle="dropdown">Reportes calificaciones</a></li>
                         </ul>
                     </li>
 
