@@ -42,7 +42,7 @@
                         <div class="card no-border">
 
                             <div class="card-header">
-                                <h4 class="card-title" style="color: #F46152;"><?php echo $pagina_subtitulo; ?></h4>
+                                <h4 class="card-title"><?php echo $pagina_subtitulo; ?></h4>
                             </div>
 
                             <div class="card-content collapse show">
@@ -50,17 +50,61 @@
 
                                     <div class="row match-height">
                                         <div class="col-xl-12 col-md-12 col-sm-12">
-                                            <ol>
-                                                <li>
-                                                    <a href="<?php echo site_url('gympass/disciplinas'); ?>">Disciplinas</a>
-                                                </li>
-                                                <li>
-                                                    <a href="<?php echo site_url('gympass/categorias'); ?>">Categorias</a>
-                                                </li>
-                                                <li>
-                                                    <a href="<?php echo site_url('gympass/clases'); ?>">Clases</a>
-                                                </li>
-                                            </ol>
+
+                                            <div class="row match-height row-contenedor">
+
+                                                <div class="col-lg-4 col-md-4 col-sm-12 mt-2">
+                                                    <a href="<?php echo site_url('gympass/disciplinas'); ?>">
+                                                        <div class="card black bg-reportes h-100">
+                                                            <div class="card-content">
+                                                                <div class="card-body">
+                                                                    <h3 class="black mt-3 mb-2 text-center">Disciplinas</h3>
+                                                                    <p class="card-text">Ver las <b>Disciplinas</b> vinculadas con <b><span style="color: #F46152;">WELLHUB</span></b></p>
+                                                                    <button class="btn btn-info btn-block">Ver</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </a>
+                                                </div>
+
+                                                <div class="col-lg-4 col-md-4 col-sm-12 mt-2">
+                                                    <a href="<?php echo site_url('gympass/categorias'); ?>">
+                                                        <div class="card black bg-reportes h-100">
+                                                            <div class="card-content">
+                                                                <div class="card-body">
+                                                                    <h3 class="black mt-3 mb-2 text-center">Categorias</h3>
+                                                                    <p class="card-text">Ver las <b>Categorias</b> vinculadas con <b><span style="color: #F46152;">WELLHUB</span></b></p>
+                                                                    <button class="btn btn-info btn-block">Ver</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </a>
+                                                </div>
+
+                                                <div class="col-lg-4 col-md-4 col-sm-12 mt-2">
+                                                    <a href="<?php echo site_url('gympass/clases'); ?>">
+                                                        <div class="card black bg-reportes h-100">
+                                                            <div class="card-content">
+                                                                <div class="card-body">
+                                                                    <h3 class="black mt-3 mb-2 text-center">Clases</h3>
+                                                                    <p class="card-text">Administrar las <b>Clases</b> registradas en <b><span style="color: #F46152;">WELLHUB</span></b></p>
+                                                                    <button class="btn btn-info btn-block">Ver</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </a>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-3">
+                                        <div class="col-12">
+                                            <div class="form-group float-md-right">
+                                                <a class="btn btn-outline-grey btn-outline-lighten-1 btn-min-width mr-1" href="<?php echo site_url($regresar_a); ?>"><i class="fa fa-arrow-circle-left"></i>&nbsp;Volver</a>
+                                            </div>
                                         </div>
                                     </div>
 
