@@ -7,6 +7,7 @@ class Inicio extends MY_Controller {
 	{
 		parent::__construct();
 		$this->load->model('asignaciones_model');
+		$this->load->model('resenias_model');
 	}
 
 	public function index()
@@ -27,6 +28,9 @@ class Inicio extends MY_Controller {
             array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/charts/chart.min.js'),
             array('es_rel' => true, 'src' => 'inicio/index.js'),
         );
+
+        $resenias = $this->resenias_model->obtener_tabla_resenias_para_inicio()->result();
+        $data['resenias'] = $resenias;
 
 		//$planes_godin_list = $this->asignaciones_model->get_todas_las_godin_activas()->result();
 
