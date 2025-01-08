@@ -78,6 +78,15 @@ class Clases extends MY_Controller
         $this->form_validation->set_rules('intervalo_horas', 'Intervalo en horas');
         $this->form_validation->set_rules('dificultad', 'Dificultad', 'required');
 
+        $this->form_validation->set_rules(
+            'publicar_totalpass',
+            'Publicar en Totalpass',
+            'in_list[0,1]',
+            array(
+                'in_list' => 'Valor inválido para publicar en Totalpass.'
+            )
+        );
+
         $sucursal = $this->session->userdata('filtro_clase_sucursal') ?: null;
         $disciplina = $this->session->userdata('filtro_clase_disciplina') ?: null;
         $semana = $this->session->userdata('filtro_clase_semana') ?: null;
@@ -327,8 +336,68 @@ class Clases extends MY_Controller
 
             if ($this->clases_model->crear($data)) {
                 $this->session->set_flashdata('MENSAJE_EXITO', 'La clase se ha creado correctamente.');
-                redirect('clases/crear');
             }
+
+            // ----------------------------
+            // 4. TRANSACCIÓN OPCIONAL TOTALPASS
+            // ----------------------------
+            if ($this->input->post('publicar_totalpass') == '1') {
+                // Iniciar otra transacción (opcional) para totalpass,
+                // pero SI falla, NO anular la clase local:
+                // 4.1 Llamar a tu librería o modelo. Ejemplo:
+                $this->load->library('totalpass_lib');
+
+                $clase_recien_creada = $this->clases_model->obtener_por_id($this->db->insert_id())->row();
+
+                if (!$clase_recien_creada) {
+                    // Si por alguna razón no se encuentra, notifica pero no rompas
+                    $this->session->set_flashdata(
+                        'MENSAJE_ERROR',
+                        'La clase local se creó, pero no se encontró al recargar para Totalpass.'
+                    );
+                    redirect('clases/crear');
+                    return;
+                }
+
+                $this->db->trans_begin();
+
+
+                // Armar data para totalpass (slots, eventDate, startTime, etc.)
+                // c) Construir data para la librería (semejante a "crear_ocurrencia_evento" en tu controlador Totalpass)
+                $data_evento = [
+                    'title'       => mb_strtoupper($clase_recien_creada->dificultad),
+                    'responsible' => $instructor->nombre_completo ?? $instructor->nombre,
+                    'duration'    => $clase_recien_creada->intervalo_horas * 60,
+                    'slots'       => intval($clase_recien_creada->cupo - $clase_recien_creada->reservado),
+                    'eventDate'   => date('Y-m-d', strtotime($clase_recien_creada->inicia)),
+                    'startTime'   => date('h:i A', strtotime($clase_recien_creada->inicia)),
+                    'timezone'    => 'es-MX',
+                    'description' => $disciplina->nombre
+                ];
+
+                // d) Invocar la librería
+                // Usa la firma: public function crear_ocurrencia_evento($disciplina_id, $data)
+                $response_totalpass = $this->totalpass_lib->crear_ocurrencia_evento($clase_recien_creada->disciplina_id, $data_evento);
+
+                // e) Evaluar respuesta
+                if (isset($response_totalpass['error']) && $response_totalpass['error'] === true) {
+                    // Falló en la API
+                    $this->session->set_flashdata(
+                        'MENSAJE_ERROR',
+                        'La clase se creó localmente, pero falló la publicación en Totalpass: ' . $response_totalpass['message']
+                    );
+                } else {
+                    $this->session->set_flashdata(
+                        'MENSAJE_EXITO',
+                        'La clase se creó y se publicó en Totalpass correctamente.'
+                    );
+                }
+
+                // Completar
+                $this->db->trans_commit();
+            }
+
+            redirect('clases/crear');
 
             // Si algo falla regresar a la vista de crear
             $this->construir_private_site_ui('clases/crear', $data);
@@ -379,7 +448,7 @@ class Clases extends MY_Controller
     public function obtener_horarios_clases()
     {
         $draw = intval($this->input->post('draw'));
-        
+
         $sucursal_id = $this->input->get('filtro_clase_sucursal');
         $disciplina_id = $this->input->get('filtro_clase_disciplina');
 

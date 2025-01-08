@@ -219,6 +219,29 @@
 
 													</div>
 
+													<div class="col-xl-6 col-md-6 col-sm-6">
+													</div>
+
+
+													<div class="col-xl-6 col-md-6 col-sm-6">
+														<div class="form-group">
+															<label>¿Registrar también en Totalpass?</label>
+															<div>
+																<label>
+																	<input type="radio" name="publicar_totalpass" value="1" <?php echo set_radio('publicar_totalpass', 'si', true); ?> />
+																	Sí
+																</label>
+															</div>
+															<div>
+																<label>
+																	<input type="radio" name="publicar_totalpass" value="0" <?php echo set_radio('publicar_totalpass', 'no'); ?> />
+																	No
+																</label>
+															</div>
+														</div>
+													</div>
+
+
 												</div>
 
 											</div>
