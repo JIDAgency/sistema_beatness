@@ -151,6 +151,7 @@
                         <ul class="dropdown-menu">
                             <li data-menu=""><a class="dropdown-item" href="<?php echo site_url('ventas'); ?>" data-toggle="dropdown">Ventas</a></li>
                             <li data-menu=""><a class="dropdown-item" href="<?php echo site_url('ventas/frontdesk'); ?>" data-toggle="dropdown">Ventas del día</a></li>
+                            <li data-menu=""><a class="dropdown-item" href="<?php echo site_url('ventas_pendientes'); ?>" data-toggle="dropdown">Ventas pendientes</a></li>
                             <li data-menu=""><a class="dropdown-item" href="<?php echo site_url('ventas/suscripciones'); ?>" data-toggle="dropdown">Suscripciones</a></li>
                             <li data-menu=""><a class="dropdown-item" href="<?php echo site_url('reportes_ventas'); ?>" data-toggle="dropdown">Registros de ventas</a></li>
                             <hr>
@@ -219,6 +220,7 @@
                         <ul class="dropdown-menu">
                             <li data-menu=""><a class="dropdown-item" href="<?php echo site_url('ventas'); ?>" data-toggle="dropdown">Ventas</a></li>
                             <li data-menu=""><a class="dropdown-item" href="<?php echo site_url('ventas/frontdesk'); ?>" data-toggle="dropdown">Ventas del día</a></li>
+                            <li data-menu=""><a class="dropdown-item" href="<?php echo site_url('ventas_pendientes'); ?>" data-toggle="dropdown">Ventas pendientes</a></li>
                             <li data-menu=""><a class="dropdown-item" href="<?php echo site_url('ventas/suscripciones'); ?>" data-toggle="dropdown">Suscripciones</a></li>
                             <li data-menu=""><a class="dropdown-item" href="<?php echo site_url('reportes_ventas'); ?>" data-toggle="dropdown">Registros de ventas</a></li>
                             <hr>

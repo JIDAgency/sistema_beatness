@@ -83,7 +83,7 @@
                         <li>Introducir armas, explosivos o materiales inflamables a las instalaciones.</li>
                     </ul>
                     <hr>
-                    <h2>5. POLÍTICAS DE SUSCRIPCIÓN</h2>
+                    <h2>5. POLÍTICAS DE SUSCRIPCIÓN / DOMICILIACIÓN</h2>
                     <ul class="text-justify">
                         <li>La suscripción no podrá ser cancelada ni reembolsada antes de finalizar el plazo contratado.</li>
                         <li>Las suscripciones tienen una duración establecida y se renuevan automáticamente, salvo notificación con 15 días de anticipación.</li>

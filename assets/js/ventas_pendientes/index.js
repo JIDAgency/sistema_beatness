@@ -87,7 +87,7 @@ document.addEventListener("DOMContentLoaded", function () {
 						});
 				});
 			this.api()
-				.columns([5])
+				.columns([6])
 				.every(function () {
 					var column = this;
 					var select = $("#cliente");
@@ -100,7 +100,7 @@ document.addEventListener("DOMContentLoaded", function () {
 						});
 				});
 			this.api()
-				.columns([19])
+				.columns([20])
 				.every(function () {
 					var column = this;
 					var select = $("#sucursal");
@@ -134,7 +134,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		});
 
 		search = search.join("|");
-		table.column(5).search(search, true, false).draw();
+		table.column(6).search(search, true, false).draw();
 	});
 
 	$("#sucursal").on("change", function () {
@@ -145,7 +145,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		});
 
 		search = search.join("|");
-		table.column(19).search(search, true, false).draw();
+		table.column(20).search(search, true, false).draw();
 	});
 
 	$("#filter_button").on("click", function () {
