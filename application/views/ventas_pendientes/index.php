@@ -77,7 +77,9 @@
                                         </div>
                                     </div>
 
-                                    <p name="mensaje_en_pantalla" id="mensaje_en_pantalla"></p>
+                                    <div>
+                                        <p name="mensaje_en_pantalla" id="mensaje_en_pantalla" class="mb-3"></p>
+                                    </div>
 
                                     <div class="table-responsive">
 
@@ -88,6 +90,7 @@
                                                     <th>ID</th>
                                                     <th>Estatus de validación</th>
                                                     <th>Concepto</th>
+                                                    <th>VentaID</th>
                                                     <th>Método de Pago</th>
                                                     <th>Comprador</th>
                                                     <th>Categoría</th>
@@ -124,4 +127,80 @@
 
     </div>
 
+</div>
+
+<div class="modal fade text-left" id="validarModal" tabindex="-1" role="dialog" aria-labelledby="validarModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="validarModalLabel">Validar venta pendiente</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="validarForm">
+                    <input type="hidden" id="venta_id" name="venta_id">
+                    <div class="form-group">
+                        <div class="row match-height">
+                            <div class="col-xl-6 col-md-6 col-sm-12">
+                                <p><b>Venta ID:</b></p>
+                            </div>
+                            <div class="col-xl-6 col-md-6 col-sm-12 text-right">
+                                <p id="texto_id"></p>
+                            </div>
+
+                            <div class="col-xl-6 col-md-6 col-sm-12">
+                                <p><b>Concepto:</b></p>
+                            </div>
+                            <div class="col-xl-6 col-md-6 col-sm-12 text-right">
+                                <p id="texto_concepto"></p>
+                            </div>
+
+                            <div class="col-xl-6 col-md-6 col-sm-12">
+                                <p><b>Comprador:</b></p>
+                            </div>
+                            <div class="col-xl-6 col-md-6 col-sm-12 text-right">
+                                <p id="texto_comprador"></p>
+                            </div>
+
+                            <div class="col-xl-6 col-md-6 col-sm-12">
+                                <p><b>Sucursal:</b></p>
+                            </div>
+                            <div class="col-xl-6 col-md-6 col-sm-12 text-right">
+                                <p id="texto_sucursal"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="precio_original">Precio original</label>
+                        <input type="text" class="form-control" id="precio_original" name="precio_original" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="precio_modificado">Precio modificado</label>
+                        <input type="text" class="form-control" id="precio_modificado" name="precio_modificado">
+                    </div>
+                    <div class="form-group">
+                        <label>Modificar precio</label>
+                        <br>
+                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                            <label class="btn btn-outline-secondary">
+                                <input type="radio" name="precio_opcion" id="precio_opcion2" autocomplete="off"> Bootcamp y Cycling Puebla $220.28
+                            </label>
+                            <label class="btn btn-outline-secondary">
+                                <input type="radio" name="precio_opcion" id="precio_opcion1" autocomplete="off"> Cycling Polanco $200
+                            </label>
+                            <label class="btn btn-outline-secondary">
+                                <input type="radio" name="precio_opcion" id="precio_opcion3" autocomplete="off"> Bootcamp Polanco $218.54
+                            </label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-dismiss="modal">Atrás</button>
+                <button type="button" class="btn btn-secondary" id="guardarCambios">Guardar</button>
+            </div>
+        </div>
+    </div>
 </div>

@@ -36,9 +36,9 @@ class Ventas_pendientes extends MY_Controller
     public function obtener_tabla_index()
     {
         // Obtener parámetros de DataTables
-        $draw = intval($this->input->post("draw"));
-        $start = intval($this->input->post("start"));
-        $length = intval($this->input->post("length"));
+        $draw = intval($this->input->post('draw'));
+        $start = intval($this->input->post('start'));
+        $length = intval($this->input->post('length'));
         $start_date = $this->input->post('start_date');
         $end_date = $this->input->post('end_date');
 
@@ -54,7 +54,10 @@ class Ventas_pendientes extends MY_Controller
             $row = array();
             switch ($venta->estatus_validacion) {
                 case 'pendiente':
-                    $row['opciones'] = '<a href="javascript:void(0);" id="validar-btn-' . $venta->id . '" onclick="validar(' . $venta->id . ', this);">Validar</a>';
+                    $row['opciones'] = '';
+                    $row['opciones'] .= '<a href="javascript:void(0);" id="validar-btn-' . $venta->id . '" onclick="validar(' . $venta->id . ', this);">Validar</a>';
+                    $row['opciones'] .= ' | ';
+                    $row['opciones'] .= '<a href="javascript:void(0);" id="rechazar-btn-' . $venta->id . '" onclick="rechazar(' . $venta->id . ', this);">Rechazar</a>';
                     break;
                 case 'rechazado':
                     $row['opciones'] = '<span class="text-danger">Rechazado</span>';
@@ -69,6 +72,7 @@ class Ventas_pendientes extends MY_Controller
             $row['id'] = $venta->id;
             $row['estatus_validacion'] = mb_strtoupper($venta->estatus_validacion);
             $row['concepto'] = $venta->concepto;
+            $row['venta_id'] = isset($venta->venta_id) && $venta->venta_id ? '<a href="' . site_url('ventas') . '" target="_blank" rel="noopener noreferrer">#' . $venta->venta_id . '</a>' : 'No asignado';
             $row['metodo_de_pago'] = $venta->metodo_de_pago;
             $row['comprador'] = $venta->comprador . " #" . $venta->usuario_id;
             $row['categoria'] = ucwords($venta->categoria);
@@ -101,6 +105,44 @@ class Ventas_pendientes extends MY_Controller
         exit();
     }
 
+    public function obtener_datos_venta($id)
+    {
+        $venta = $this->ventas_pendientes_model->obtener_por_id_con_detalles($id)->row();
+        if ($venta) {
+            $precios = [
+                'Bootcamp y Cycling Puebla' => 220.28,
+                'Cycling Polanco' => 200.00,
+                'Bootcamp Polanco' => 218.54
+            ];
+
+            $precio_asignado = $venta->total; // Valor por defecto
+
+            if ($venta->sucursal_id == 2) {
+                $precio_asignado = $precios['Bootcamp y Cycling Puebla'];
+            } elseif ($venta->sucursal_id == 3) {
+                if (strpos($venta->concepto, 'Cycling - Polanco') !== false) {
+                    $precio_asignado = $precios['Cycling Polanco'];
+                } elseif (strpos($venta->concepto, 'Bootcamp - Polanco') !== false) {
+                    $precio_asignado = $precios['Bootcamp Polanco'];
+                }
+            }
+
+            $response = [
+                'status' => 'success',
+                'data' => $venta,
+                'precios' => $precios,
+                'precio_asignado' => $precio_asignado
+            ];
+        } else {
+            $response = [
+                'status' => 'error',
+                'message' => 'Venta no encontrada #' . $id
+            ];
+        }
+
+        echo json_encode($response);
+    }
+
     public function validar()
     {
         $this->db->trans_begin(); // Iniciar transacción
@@ -114,15 +156,22 @@ class Ventas_pendientes extends MY_Controller
                 throw new Exception('Error al decodificar JSON: ' . json_last_error_msg());
             }
 
-            // Tomar el ID desde el JSON decodificado
+            // Tomar el ID y el precio modificado desde el JSON decodificado
             $id = $input_data['id'] ?? null;
+            $precio_modificado = $input_data['precio_modificado'] ?? null;
 
-            if (!$id) {
-                throw new Exception('ID no proporcionado');
+            if (!$id || !$precio_modificado) {
+                throw new Exception('ID o precio modificado no proporcionado');
             }
 
-            // Lógica para actualizar el estatus a "APROBADO"
-            $actualizado = $this->ventas_pendientes_model->actualizar($id, ['estatus_validacion' => 'aprobado', 'revisor_id' => $this->session->userdata('id'), 'revisor_correo' => $this->session->userdata('correo')]);
+            // Lógica para actualizar el estatus a "APROBADO" y el precio modificado
+            $actualizado = $this->ventas_pendientes_model->actualizar($id, [
+                'estatus_validacion' => 'aprobado',
+                'costo' => $precio_modificado,
+                'total' => $precio_modificado,
+                'revisor_id' => $this->session->userdata('id'),
+                'revisor_correo' => $this->session->userdata('correo')
+            ]);
             if (!$actualizado) {
                 throw new Exception('Error al actualizar el estatus');
             }
@@ -180,6 +229,59 @@ class Ventas_pendientes extends MY_Controller
 
             // Registrar el error para depuración
             log_message('error', 'Error en la validación: ' . $e->getMessage());
+
+            // Responder con el mensaje de error
+            $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode([
+                    'status' => 'error',
+                    'message' => $e->getMessage()
+                ]));
+        }
+    }
+
+    public function rechazar()
+    {
+        $this->db->trans_begin(); // Iniciar transacción
+
+        try {
+            // Leer la entrada cruda (JSON)
+            $input_data = json_decode($this->input->raw_input_stream, true);
+
+            // Validar que el JSON se haya decodificado correctamente
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                throw new Exception('Error al decodificar JSON: ' . json_last_error_msg());
+            }
+
+            // Tomar el ID desde el JSON decodificado
+            $id = $input_data['id'] ?? null;
+
+            if (!$id) {
+                throw new Exception('ID no proporcionado');
+            }
+
+            // Lógica para actualizar el estatus a "RECHAZADO"
+            $actualizado = $this->ventas_pendientes_model->actualizar($id, ['estatus_validacion' => 'rechazado']);
+            if (!$actualizado) {
+                throw new Exception('Error al actualizar el estatus');
+            }
+
+            // Confirmar transacción
+            $this->db->trans_commit();
+
+            // Responder con el registro actualizado
+            $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode([
+                    'status' => 'success',
+                    'message' => 'Rechazo exitoso'
+                ]));
+        } catch (Exception $e) {
+            // Revertir transacción en caso de error
+            $this->db->trans_rollback();
+
+            // Registrar el error para depuración
+            log_message('error', 'Error en el rechazo: ' . $e->getMessage());
 
             // Responder con el mensaje de error
             $this->output

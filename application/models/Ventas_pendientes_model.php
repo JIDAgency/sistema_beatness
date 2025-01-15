@@ -23,6 +23,39 @@ class Ventas_pendientes_model extends CI_Model
         return $query->row();
     }
 
+    // Función para obtener un registro por ID con Detalles
+    public function obtener_por_id_con_detalles($id)
+    {
+        $this->db
+            ->select("
+            t1.*,
+            t2.nombre as metodo_de_pago,
+            t3.nombre_completo as comprador,
+            t3.correo as comprador_correo,
+            CONCAT(COALESCE(t3.nombre_completo, 'N/D'), ' ', COALESCE(t3.apellido_paterno, 'N/D'), ' ', COALESCE(t3.apellido_materno, 'N/D')) as comprador_nombre_completo,
+            t4.nombre as sucursal_nombre,
+            t4.locacion as sucursal_locacion,
+            t5.plan_id as asignacion_plan_id,
+            t5.nombre as asignacion_nombre,
+            t5.vigencia_en_dias as asignacion_vigencia_en_dias,
+            t5.clases_incluidas as asignacion_clases_incluidas,
+            t5.clases_usadas as asignacion_clases_usadas,
+            t6.dominio_id as plan_dominio_id
+        ")
+            ->from("ventas_pendientes t1")
+            ->join("metodos_pago t2", "t1.metodo_id = t2.id", "left")
+            ->join("usuarios t3", "t1.usuario_id = t3.id", "left")
+            ->join("sucursales t4", "t1.sucursal_id = t4.id", "left")
+            ->join("asignaciones t5", "t1.asignacion_id = t5.id", "left")
+            ->join("planes t6", "t5.plan_id = t6.id", "left");
+
+        $this->db->where('t1.id', $id);
+
+        $query = $this->db->get();
+
+        return $query;
+    }
+
     // Método para insertar una nueva venta pendiente
     public function insertar($data)
     {
