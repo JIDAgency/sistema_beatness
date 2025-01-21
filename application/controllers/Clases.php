@@ -393,6 +393,22 @@ class Clases extends MY_Controller
                     );
                 }
 
+                $data_2 = array(
+                    'totalpass_event_id' => isset($response_totalpass['id']) ? $response_totalpass['id'] : null,
+                    'totalpass_eventOccurrenceUuid' => isset($response_totalpass['eventOccurrenceUuid']) ? $response_totalpass['eventOccurrenceUuid'] : null,
+                    'totalpass_json' => json_encode($response_totalpass)
+                );
+
+                if (!$this->totalpass_model->clases_actualizar_por_id($clase_recien_creada->id, $data_2)) {
+                    throw new Exception('No se pudo actualizar la información de la clase.');
+                }
+
+                $clase_actualizada_row = $this->totalpass_model->clases_obtener_por_id($clase_recien_creada->id)->row();
+
+                if (!$clase_actualizada_row) {
+                    throw new Exception('No se pudo obtener la información actualizada de la clase.');
+                }
+
                 // Completar
                 $this->db->trans_commit();
             }
