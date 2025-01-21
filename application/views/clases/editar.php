@@ -249,71 +249,71 @@
 										<div class="col-xl-6 col-md-6 col-sm-12">
 											<form class="form">
 												<div class="form-body">
-													<?php if ($clase_a_editar->estatus != 'Terminada') : ?>
-														<h4 class="form-section">Cupos</h4>
+													<?php if ($clase_a_editar->estatus != 'Activa') : ?>
+														<h4 class="form-section">Reseñas</h4>
 														<div class="form-group">
 															<div class="col-xl-12 col-md-12 col-sm-12">
-																<a href="<?php echo site_url('clases/agregar_cupo/' . $clase_a_editar->id); ?>" class="btn btn-secondary float-right btn-sm">Agregar un cupo</a>
-																<?php
-																$cupo_lugares = json_decode($clase_a_editar->cupo_lugares);
-																$i = 0;
-																foreach ($cupo_lugares as $lugar) {
-																	$i++;
-																	if ($lugar->nombre_usuario) {
+																<div class="row">
+																	<div class="col-xl-12 col-md-12 col-sm-12 mb-1">
 
-																		foreach ($usuarios->result() as $usuario) {
-																			if ($lugar->nombre_usuario == $usuario->id) {
-																				echo $i . ' - Lugar: ' . $lugar->no_lugar . ' |  Cliente: ' . $lugar->nombre_usuario . ' - ' . $usuario->nombre_completo . ' ' . $usuario->apellido_paterno . ' ' . $usuario->apellido_materno;
-																				echo '<br>';
-																			}
-																		}
-																		if (!is_numeric($lugar->nombre_usuario)) {
-																			echo $i . ' - Lugar: ' . $lugar->no_lugar . ' |  Cliente: ' . $lugar->nombre_usuario;
-																			echo '<br>';
-																		}
-																	} else {
-																		echo $i . ' - Lugar: ' . $lugar->no_lugar . ' |  Cliente: ';
-																		echo '<br>';
-																	}
-																}
-																?>
+																		<div class="list-group">
+																			<?php foreach ($resenias as $nota_key => $resenia) : ?>
+																				<div class="list-group-item flex-column align-items-start <?php echo $nota_key == 0 ? 'active' : ''; ?>">
+																					<div class="row">
+																						<div class="col-3 align-self-center text-center">
+																							<img src="<?php echo base_url('subidas/perfil/' . $resenia->coach_foto); ?>" class="img-fluid" width="70%" alt="coach" style="border-radius: 50%;"> <br>
+																							<small><?php echo $resenia->coach . ' ' . $resenia->coach_correo; ?></small>
+																						</div>
+																						<div class="col-9 align-self-center">
+																							<div class="d-flex w-100 justify-content-between">
+																								<small><?php echo date('d M y H:i a', strtotime($resenia->fecha_registro)) ?></small>
+																							</div>
+																							<div class="row pl-1 mt-1">
+																								<?php for ($i = 1; $i <= $resenia->calificacion; $i++) : ?>
+																									<p style="font-size: large; margin: 0;">⭐️</p>
+																								<?php endfor; ?>
+																							</div>
+																							<p><b><?php echo $resenia->nota; ?></b></p>
+
+																							<small><?php echo $resenia->nombre . ' ' . $resenia->dificultad . ' - ' . date('d/m/Y H:i:s', strtotime($resenia->inicia)); ?></small>
+																						</div>
+																					</div>
+																				</div>
+																			<?php endforeach; ?>
+																		</div>
+
+																	</div>
+																</div>
 															</div>
 														</div>
 													<?php endif; ?>
-													<h4 class="form-section">Reseñas</h4>
+													<h4 class="form-section">Cupos</h4>
 													<div class="form-group">
 														<div class="col-xl-12 col-md-12 col-sm-12">
-															<div class="row">
-																<div class="col-xl-12 col-md-12 col-sm-12 mb-1">
+															<a href="<?php echo site_url('clases/agregar_cupo/' . $clase_a_editar->id); ?>" class="btn btn-secondary float-right btn-sm">Agregar un cupo</a>
+															<?php
+															$cupo_lugares = json_decode($clase_a_editar->cupo_lugares);
+															$i = 0;
+															foreach ($cupo_lugares as $lugar) {
+																$i++;
+																if ($lugar->nombre_usuario) {
 
-																	<div class="list-group">
-																		<?php foreach ($resenias as $nota_key => $resenia) : ?>
-																			<div class="list-group-item flex-column align-items-start <?php echo $nota_key == 0 ? 'active' : ''; ?>">
-																				<div class="row">
-																					<div class="col-3 align-self-center text-center">
-																						<img src="<?php echo base_url('subidas/perfil/' . $resenia->coach_foto); ?>" class="img-fluid" width="70%" alt="coach" style="border-radius: 50%;"> <br>
-																						<small><?php echo $resenia->coach . ' ' . $resenia->coach_correo; ?></small>
-																					</div>
-																					<div class="col-9 align-self-center">
-																						<div class="d-flex w-100 justify-content-between">
-																							<small><?php echo date('d M y H:i a', strtotime($resenia->fecha_registro)) ?></small>
-																						</div>
-																						<div class="row pl-1 mt-1">
-																							<?php for ($i = 1; $i <= $resenia->calificacion; $i++) : ?>
-																								<p style="font-size: large; margin: 0;">⭐️</p>
-																							<?php endfor; ?>
-																						</div>
-																						<p><b><?php echo $resenia->nota; ?></b></p>
-
-																						<small><?php echo $resenia->nombre . ' ' . $resenia->dificultad . ' - ' . date('d/m/Y H:i:s', strtotime($resenia->inicia)); ?></small>
-																					</div>
-																				</div>
-																			</div>
-																		<?php endforeach; ?>
-																	</div>
-
-																</div>
-															</div>
+																	foreach ($usuarios->result() as $usuario) {
+																		if ($lugar->nombre_usuario == $usuario->id) {
+																			echo $i . ' - Lugar: ' . $lugar->no_lugar . ' |  Cliente: ' . $lugar->nombre_usuario . ' - ' . $usuario->nombre_completo . ' ' . $usuario->apellido_paterno . ' ' . $usuario->apellido_materno;
+																			echo '<br>';
+																		}
+																	}
+																	if (!is_numeric($lugar->nombre_usuario)) {
+																		echo $i . ' - Lugar: ' . $lugar->no_lugar . ' |  Cliente: ' . $lugar->nombre_usuario;
+																		echo '<br>';
+																	}
+																} else {
+																	echo $i . ' - Lugar: ' . $lugar->no_lugar . ' |  Cliente: ';
+																	echo '<br>';
+																}
+															}
+															?>
 														</div>
 													</div>
 												</div>
