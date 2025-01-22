@@ -314,6 +314,7 @@
                                 <li data-menu=""><a class="dropdown-item" href="<?php echo site_url('ventas/frontdesk'); ?>" data-toggle="dropdown"><i class="icon-wallet"></i> Ventas FD</a></li>
                             <?php endif; ?>
                             <li data-menu=""><a class="dropdown-item" href="<?php echo site_url('ventas'); ?>" data-toggle="dropdown"><i class="fa fa-history"></i> Ventas del mes</a></li>
+                            <li data-menu=""><a class="dropdown-item" href="<?php echo site_url('ventas_pendientes'); ?>" data-toggle="dropdown">Ventas pendientes</a></li>
                         </ul>
                     </li>
                 <?php endif; ?>
