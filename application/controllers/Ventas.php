@@ -2580,10 +2580,13 @@ class Ventas extends MY_Controller
         redirect($regresar_a);
         }*/
 
-        if ($asignacion_a_cancelar->clases_usadas > 0) {
-            $this->session->set_flashdata('MENSAJE_ERROR', 'El usuario ya ha realizado reservaciones con este plan, por favor primero cancele las reservaciones si es que estas no han caducado.');
-            redirect($regresar_a);
+        if (!es_superadministrador() && !es_administrador()) {
+            if ($asignacion_a_cancelar->clases_usadas > 0) {
+                $this->session->set_flashdata('MENSAJE_ERROR', 'El usuario ya ha reservado con este plan, primero cancele las reservaciones. Para saltar esta validación solicite a un administrador.');
+                redirect($regresar_a);
+            }
         }
+
         /*if ($asignacion_a_cancelar->clases_usadas == 0) {
         $this->session->set_flashdata('MENSAJE_INFO', 'No hay reservaciones con este plan');
         redirect($regresar_a);
