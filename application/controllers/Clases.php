@@ -305,9 +305,9 @@ class Clases extends MY_Controller
             $cupo_lugares_json = json_encode($cupo_lugares);
 
             if (strtotime($this->input->post('inicia_time')) <= strtotime('12:00')) {
-                $img_acceso = base_url() . 'almacenamiento/img_app/img_acceso/acceso-matutino.png';
+                $img_acceso = base_url() . 'almacenamiento/img_app/img_acceso/acceso-matutino.gif';
             } elseif (strtotime($this->input->post('inicia_time')) >= strtotime('12:01')) {
-                $img_acceso = base_url() . 'almacenamiento/img_app/img_acceso/acceso-vespertino.png';
+                $img_acceso = base_url() . 'almacenamiento/img_app/img_acceso/acceso-vespertino.gif';
             }
 
             $dificultad_id = $this->input->post('dificultad');
@@ -1216,14 +1216,14 @@ class Clases extends MY_Controller
                         'identificador' => $identificador_nuevo,
                         $columna => $nuevoValor,
                         'inicia_ionic' => $nuevoValor,
-                        'img_acceso' => 'https://beatness.com.mx/almacenamiento/img_app/img_acceso/acceso-matutino.png'
+                        'img_acceso' => 'https://beatness.com.mx/almacenamiento/img_app/img_acceso/acceso-matutino.gif'
                     );
                 } else {
                     $data_1 = array(
                         'identificador' => $identificador_nuevo,
                         $columna => $nuevoValor,
                         'inicia_ionic' => $nuevoValor,
-                        'img_acceso' => 'https://beatness.com.mx/almacenamiento/img_app/img_acceso/acceso-vespertino.png'
+                        'img_acceso' => 'https://beatness.com.mx/almacenamiento/img_app/img_acceso/acceso-vespertino.gif'
                     );
                 }
             } else {
@@ -1494,9 +1494,9 @@ class Clases extends MY_Controller
             $clase_existente = $this->clases_model->obtener_clase_por_identificador_para_sku($identificador)->row();
 
             if (strtotime($this->input->post('inicia_time')) <= strtotime('12:00')) {
-                $img_acceso = base_url() . 'almacenamiento/img_app/img_acceso/acceso-matutino.png';
+                $img_acceso = base_url() . 'almacenamiento/img_app/img_acceso/acceso-matutino.gif';
             } elseif (strtotime($this->input->post('inicia_time')) >= strtotime('12:01')) {
-                $img_acceso = base_url() . 'almacenamiento/img_app/img_acceso/acceso-vespertino.png';
+                $img_acceso = base_url() . 'almacenamiento/img_app/img_acceso/acceso-vespertino.gif';
             }
 
             // $dificultad = $this->input->post('dificultad');
