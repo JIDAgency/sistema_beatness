@@ -304,11 +304,9 @@ class Clases extends MY_Controller
 
             $cupo_lugares_json = json_encode($cupo_lugares);
 
-            if (strtotime($this->input->post('inicia_time')) <= strtotime('12:00')) {
-                $img_acceso = base_url() . 'almacenamiento/img_app/img_acceso/acceso-matutino.gif';
-            } elseif (strtotime($this->input->post('inicia_time')) >= strtotime('12:01')) {
-                $img_acceso = base_url() . 'almacenamiento/img_app/img_acceso/acceso-vespertino.gif';
-            }
+            $fecha_qr = $this->input->post('inicia_date');
+            $hora_qr  = $this->input->post('inicia_time');
+            $img_acceso = $this->obtener_img_qr($fecha_qr, $hora_qr);
 
             $dificultad_id = $this->input->post('dificultad');
             // list($dificultad_id, $dificultad_nombre) = explode('|', $dificultad);
@@ -1205,27 +1203,21 @@ class Clases extends MY_Controller
         } else {
 
             if ($columna == 'inicia') {
-                // Extraer la hora de la cadena de fecha
-                $hora = substr($nuevoValor, 11, 5); // Obtiene "07:30"
-                $horaNumerica = intval(substr($hora, 0, 2)); // Obtiene "07" y lo convierte a entero
+                // Supongamos que $nuevoValor viene en formato "YYYY-MM-DDTHH:MM" (por ejemplo, "2025-02-15T07:30")
+                // Separamos la fecha y la hora:
+                $partes = explode('T', $nuevoValor);
+                $fecha = $partes[0];
+                $hora = isset($partes[1]) ? substr($partes[1], 0, 5) : '00:00';
 
-                // Determinar si es AM o PM
-                if ($horaNumerica < 12) {
+                // Usamos la función del helper para obtener la imagen QR:
+                $img_acceso = $this->obtener_img_qr($fecha, $hora);
 
-                    $data_1 = array(
-                        'identificador' => $identificador_nuevo,
-                        $columna => $nuevoValor,
-                        'inicia_ionic' => $nuevoValor,
-                        'img_acceso' => 'https://beatness.com.mx/almacenamiento/img_app/img_acceso/acceso-matutino.gif'
-                    );
-                } else {
-                    $data_1 = array(
-                        'identificador' => $identificador_nuevo,
-                        $columna => $nuevoValor,
-                        'inicia_ionic' => $nuevoValor,
-                        'img_acceso' => 'https://beatness.com.mx/almacenamiento/img_app/img_acceso/acceso-vespertino.gif'
-                    );
-                }
+                $data_1 = array(
+                    'identificador' => $identificador_nuevo,
+                    $columna => $nuevoValor,
+                    'inicia_ionic' => $nuevoValor,
+                    'img_acceso' => $img_acceso
+                );
             } else {
                 $data_1 = array(
                     'identificador' => $identificador_nuevo,
@@ -1493,11 +1485,9 @@ class Clases extends MY_Controller
 
             $clase_existente = $this->clases_model->obtener_clase_por_identificador_para_sku($identificador)->row();
 
-            if (strtotime($this->input->post('inicia_time')) <= strtotime('12:00')) {
-                $img_acceso = base_url() . 'almacenamiento/img_app/img_acceso/acceso-matutino.gif';
-            } elseif (strtotime($this->input->post('inicia_time')) >= strtotime('12:01')) {
-                $img_acceso = base_url() . 'almacenamiento/img_app/img_acceso/acceso-vespertino.gif';
-            }
+            $fecha_qr = $this->input->post('inicia_date');
+            $hora_qr  = $this->input->post('inicia_time');
+            $img_acceso = $this->obtener_img_qr($fecha_qr, $hora_qr);
 
             // $dificultad = $this->input->post('dificultad');
             // list($dificultad_id, $dificultad_nombre) = explode('|', $dificultad);
@@ -2140,5 +2130,71 @@ class Clases extends MY_Controller
 
         $this->session->set_flashdata('MENSAJE_ERROR', '¡Oops! Al parecer ha ocurrido un error, por favor intentelo más tarde. (4)');
         redirect('clases/editar/' . $clase_id);
+    }
+
+
+    /**
+     * Retorna la URL de la imagen QR preexistente según la fecha y la hora.
+     *
+     * @param string $fecha    La fecha de inicio (por ejemplo, "15/02/2025" o "2025-02-15").
+     * @param string $hora     La hora de inicio (por ejemplo, "07:30" o "14:00").
+     * @return string          URL completa de la imagen QR.
+     */
+    function obtener_img_qr($fecha, $hora)
+    {
+        // Convertir la fecha a formato Y-m-d (ajusta según el formato de entrada)
+        $fecha_formateada = date('Y-m-d', strtotime(str_replace('/', '-', $fecha)));
+
+        // Obtener el nombre del día de la semana en inglés
+        $dia_ingles = date('l', strtotime($fecha_formateada));
+
+        // Mapear los días de la semana de inglés a español en minúsculas
+        $dias = [
+            'Monday'    => 'lunes',
+            'Tuesday'   => 'martes',
+            'Wednesday' => 'miercoles',
+            'Thursday'  => 'jueves',
+            'Friday'    => 'viernes',
+            'Saturday'  => 'sabado',
+            'Sunday'    => 'domingo'
+        ];
+
+        $dia_semana = isset($dias[$dia_ingles]) ? $dias[$dia_ingles] : strtolower($dia_ingles);
+
+        // Determinar el tipo de horario
+        if (strtotime($hora) <= strtotime('12:00')) {
+            $tipo = 'matutino';
+        } else {
+            $tipo = 'vespertino';
+        }
+
+        // Construir la llave para el mapeo (por ejemplo: "lunes_matutino")
+        $clave = $dia_semana . '_' . $tipo;
+
+        // Arreglo asociativo que mapea cada combinación a un nombre de archivo QR
+        $qr_codes = [
+            'lunes_matutino'      => 'lunes_matutino_5129414402.png',
+            'lunes_vespertino'     => 'lunes_vespertino_7833001950.png',
+            'martes_matutino'      => 'martes_matutino_7188529035.png',
+            'martes_vespertino'    => 'martes_vespertino_1720216147.png',
+            'miercoles_matutino'   => 'miercoles_matutino_1615163147.png',
+            'miercoles_vespertino' => 'miercoles_vespertino_0206423692.png',
+            'jueves_matutino'      => 'jueves_matutino_3861209353.png',
+            'jueves_vespertino'    => 'jueves_vespertino_3080628143.png',
+            'viernes_matutino'     => 'viernes_matutino_1673548731.png',
+            'viernes_vespertino'   => 'viernes_vespertino_5225843334.png',
+            'sabado_matutino'      => 'sabado_matutino_8859176081.png',
+            'sabado_vespertino'    => 'sabado_vespertino_9502893126.png',
+            'domingo_matutino'     => 'domingo_matutino_5236542690.png',
+            'domingo_vespertino'   => 'domingo_vespertino_8209264776.png'
+        ];
+
+        // Retornar la URL completa de la imagen QR, usando base_url() y el nombre de archivo asignado
+        if (isset($qr_codes[$clave])) {
+            return base_url() . 'almacenamiento/img_app/img_acceso/' . $qr_codes[$clave];
+        } else {
+            // Imagen por defecto en caso de que no se encuentre la clave
+            return base_url() . 'almacenamiento/img_app/img_acceso/default.png';
+        }
     }
 }
