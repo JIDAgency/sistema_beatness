@@ -99,6 +99,10 @@ class Cuenta extends REST_Controller
             // Confirmar la transacción
             $this->db->trans_commit();
 
+            $this->load->helper('planes');
+            // Intentar registrar la promoción; si falla, no se interrumpe el proceso principal.
+            registrar_promocion_primera_clase($usuario_id, $data_1['sucursal_id'], $datos_post['correo']);
+
             // Responder con éxito y devolver el token y el ID del usuario
             $this->response(
                 array(
