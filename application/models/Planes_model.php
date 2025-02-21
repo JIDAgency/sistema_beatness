@@ -341,14 +341,13 @@ class Planes_model extends CI_Model
         return $query;
     }
 
-    public function get_planes_activos_por_sucursal($sucursal_id)
+    public function get_disciplinas_activas_por_sucursal($sucursal_id)
     {
-        // Suponiendo que en la tabla "planes" tienes un campo "estatus" o similar para determinar si está activo,
-        // y que la columna "sucursal_id" identifica la sucursal.
-        $this->db->where_in('id', array(2, 3, 4, 5, 6, 7, 10, 19, 20, 21, 22, 23));  // Aquí los IDs de los planes que quieres obtener
+
+        $this->db->where_in('id', array(2, 3, 4, 5, 6, 7, 10, 19, 22, 23, 26));
         $this->db->where('sucursal_id', $sucursal_id);
-        $this->db->where('activado', 1);  // O el valor que uses para indicar que el plan está activo
-        $query = $this->db->get('planes');
+        $this->db->where('estatus', 'activo');
+        $query = $this->db->get('disciplinas');
         return $query;
     }
 }
