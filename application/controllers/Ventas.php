@@ -58,6 +58,7 @@ class Ventas extends MY_Controller
         $resultados_mes_actual = $this->get_numeros_de_ventas_del_mes_para_fd_con_permisos_vista();
 
         $data['resultados_mes_actual'] = $resultados_mes_actual;
+        // $data['dias_transcurridos'] = $dias_transcurridos;
 
         $this->construir_private_site_ui('ventas/index', $data);
     }
@@ -2124,8 +2125,8 @@ class Ventas extends MY_Controller
 
         /*foreach ($ventas->result() as $venta) {
         $total = $total + $venta->total;
-    }
-    $data['total'] = $total;*/
+        }
+        $data['total'] = $total;*/
 
         $data['ventas'] = $ventas;
         $data['asignaciones'] = $this->asignaciones_model->obtener_todos()->result();
@@ -2216,6 +2217,13 @@ class Ventas extends MY_Controller
             $disciplinas = $this->planes_model->obtener_disciplinas_por_plan_id($plan_a_comprar->id)->result();
             $disciplinasIds = array();
 
+            if ($plan_a_comprar->vigencia_en_dias == 365) {
+                $dias_transcurridos = date('z') + 1;
+                $dias_restantes = 365 - $dias_transcurridos;
+            } else {
+                $dias_restantes = $plan_a_comprar->vigencia_en_dias;
+            }
+
             foreach ($disciplinas as $key => $value) {
                 array_push($disciplinasIds, $value->disciplina_id);
             }
@@ -2228,7 +2236,7 @@ class Ventas extends MY_Controller
                     'nombre' => $plan_a_comprar->nombre,
                     'clases_incluidas' => $plan_a_comprar->clases_incluidas,
                     'disciplinas' => implode('|', $disciplinasIds),
-                    'vigencia_en_dias' => $plan_a_comprar->vigencia_en_dias,
+                    'vigencia_en_dias' => $dias_restantes,
                     'es_ilimitado' => !empty($plan_a_comprar->es_ilimitado) ? $plan_a_comprar->es_ilimitado : 'no',
                     'suscripcion_estatus_del_pago' => 'pagado',
                     'suscripcion_fecha_de_actualizacion' => date('Y-m-d H:i:s'),
@@ -2243,7 +2251,7 @@ class Ventas extends MY_Controller
                     'nombre' => $plan_a_comprar->nombre,
                     'clases_incluidas' => $plan_a_comprar->clases_incluidas,
                     'disciplinas' => implode('|', $disciplinasIds),
-                    'vigencia_en_dias' => $plan_a_comprar->vigencia_en_dias,
+                    'vigencia_en_dias' => $dias_restantes,
                     'es_ilimitado' => !empty($plan_a_comprar->es_ilimitado) ? $plan_a_comprar->es_ilimitado : 'no',
                     'esta_activo' => '1',
                     'fecha_activacion' => date('Y-m-d', strtotime(str_replace('/', '-', $this->input->post('inicia_date')))) . 'T' . $this->input->post('inicia_time'),
