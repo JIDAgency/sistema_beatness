@@ -8,6 +8,7 @@ class Server extends CI_Controller
         $this->load->model('asignaciones_model');
         $this->load->model('clases_model');
         $this->load->model('usuarios_model');
+        $this->load->model('planes_model');
     }
 
     public function index()
@@ -62,7 +63,7 @@ class Server extends CI_Controller
                     $usuarios_list = array('16', '14', '7');
 
                     if (!$usuarios_list) {
-                        echo "No hay usuarios con reservaciones" ;
+                        echo "No hay usuarios con reservaciones";
                     } else {
                         // foreach ($usuarios_list as $key => $usuarios_row) {
                         //     $id_usuarios[] = $usuarios_row->usuario_id;
@@ -199,5 +200,25 @@ class Server extends CI_Controller
 
         echo '<br>';
         echo $cont;
+    }
+
+    public function dias_restantes()
+    {
+        $dias_transcurridos = date('z') + 1;
+        $dias_restantes = 365 - $dias_transcurridos;
+
+        $data = array(
+            'vigencia_en_dias' => $dias_restantes,
+        );
+
+        if (!$this->planes_model->editar('138', $data)) {
+            return;
+        } elseif (!$this->planes_model->editar('139', $data)) {
+            return;
+        }
+
+        echo 'Dias restantes del año: ' . $dias_restantes;
+
+        return;
     }
 }

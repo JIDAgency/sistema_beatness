@@ -2217,12 +2217,12 @@ class Ventas extends MY_Controller
             $disciplinas = $this->planes_model->obtener_disciplinas_por_plan_id($plan_a_comprar->id)->result();
             $disciplinasIds = array();
 
-            if ($plan_a_comprar->vigencia_en_dias == 365) {
-                $dias_transcurridos = date('z') + 1;
-                $dias_restantes = 365 - $dias_transcurridos;
-            } else {
-                $dias_restantes = $plan_a_comprar->vigencia_en_dias;
-            }
+            // if ($plan_a_comprar->vigencia_en_dias == 365) {
+            //     $dias_transcurridos = date('z') + 1;
+            //     $dias_restantes = 365 - $dias_transcurridos;
+            // } else {
+            //     $dias_restantes = $plan_a_comprar->vigencia_en_dias;
+            // }
 
             foreach ($disciplinas as $key => $value) {
                 array_push($disciplinasIds, $value->disciplina_id);
@@ -2236,7 +2236,7 @@ class Ventas extends MY_Controller
                     'nombre' => $plan_a_comprar->nombre,
                     'clases_incluidas' => $plan_a_comprar->clases_incluidas,
                     'disciplinas' => implode('|', $disciplinasIds),
-                    'vigencia_en_dias' => $dias_restantes,
+                    'vigencia_en_dias' => $plan_a_comprar->vigencia_en_dias,
                     'es_ilimitado' => !empty($plan_a_comprar->es_ilimitado) ? $plan_a_comprar->es_ilimitado : 'no',
                     'suscripcion_estatus_del_pago' => 'pagado',
                     'suscripcion_fecha_de_actualizacion' => date('Y-m-d H:i:s'),
@@ -2251,7 +2251,7 @@ class Ventas extends MY_Controller
                     'nombre' => $plan_a_comprar->nombre,
                     'clases_incluidas' => $plan_a_comprar->clases_incluidas,
                     'disciplinas' => implode('|', $disciplinasIds),
-                    'vigencia_en_dias' => $dias_restantes,
+                    'vigencia_en_dias' => $plan_a_comprar->vigencia_en_dias,
                     'es_ilimitado' => !empty($plan_a_comprar->es_ilimitado) ? $plan_a_comprar->es_ilimitado : 'no',
                     'esta_activo' => '1',
                     'fecha_activacion' => date('Y-m-d', strtotime(str_replace('/', '-', $this->input->post('inicia_date')))) . 'T' . $this->input->post('inicia_time'),
