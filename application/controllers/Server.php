@@ -293,7 +293,7 @@ class Server extends CI_Controller
         try {
             $dias_transcurridos = date('z') + 1;
             $dias_restantes = 365 - $dias_transcurridos;
-            $data = ['vigencia_en_dias' => $dias_restantes];
+            $data = ['clases_incluidas' => $dias_restantes, 'vigencia_en_dias' => $dias_restantes];
 
             // Agrupamos ambas actualizaciones en una transacción.
             $this->db->trans_start();
