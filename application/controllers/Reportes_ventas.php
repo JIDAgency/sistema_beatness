@@ -17,74 +17,81 @@ class Reportes_ventas extends MY_Controller
     public function index()
     {
         $data['menu_reportes_ventas_activo'] = true;
-        $data['pagina_titulo'] = 'Reportes de ventas ';
-        $data['mensaje_exito'] = $this->session->flashdata('MENSAJE_EXITO');
-        $data['mensaje_info'] = $this->session->flashdata('MENSAJE_INFO');
-        $data['mensaje_error'] = $this->session->flashdata('MENSAJE_ERROR');
+        $data['pagina_titulo'] = 'Reporte de ventas';
+        $data['pagina_subtitulo'] = 'Reporte de ventas';
 
-        // Cargar estilos y scripts
+        $data['controlador'] = 'reportes_ventas';
+        $data['regresar_a'] = 'ventas';
+        $controlador_js = "reportes_ventas/index";
+
         $data['styles'] = array(
             array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/tables/datatable/datatables.min.css'),
-            array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/tables/extensions/responsive.dataTables.min.css'),
         );
+
         $data['scripts'] = array(
             array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/tables/datatable/datatables.min.js'),
-            array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js'),
-            array('es_rel' => true, 'src' => 'reportes_ventas/index.js'),
+            array('es_rel' => true, 'src' => '' . $controlador_js . '.js'),
         );
-
-        //Variables
-        $total_de_ventas = 0;
-        $total_de_ventas_puebla = 0;
-        $total_de_ventas_polanco = 0;
-        $meses_b3 = array();
-        $total_meses_b3 = array();
-
-        //Obtener los meses del inicio 2019-01-14 en adelante
-        $fecha_inicio = (new DateTime('2019-1-14'))->modify('first day of this month');
-        $fecha_actual = (new DateTime(date('Y-m-d')))->modify('first day of next month');
-        $intervalo = DateInterval::createFromDateString('1 month');
-        $periodo = new DatePeriod($fecha_inicio, $intervalo, $fecha_actual);
-
-        foreach ($periodo as $meses_del_periodo) {
-            array_push($meses_b3, $meses_del_periodo->format("Y-m"));
-        }
-
-        $todas_las_ventas_registradas = $this->ventas_model->obtener_todas();
-        $todas_las_ventas_registradas_puebla = $this->ventas_model->obtener_ventas_puebla();
-        $todas_las_ventas_registradas_polanco = $this->ventas_model->obtener_ventas_polanco();
-        $metodos_pago = $this->metodos_model->obtener_para_filtro()->result();
-
-        $data['metodos_pago'] = $metodos_pago;
-        $data['todas_las_ventas_registradas'] = $todas_las_ventas_registradas;
-        $data['todas_las_ventas_registradas_puebla'] = $todas_las_ventas_registradas_puebla;
-        $data['todas_las_ventas_registradas_polanco'] = $todas_las_ventas_registradas_polanco;
-
-        //Recorrido de todas las ventas PUEBLA
-        foreach ($todas_las_ventas_registradas->result() as $ventas_row) {
-            //El total de historico de todas las ventas PUEBLA
-            $total_de_ventas = $total_de_ventas + $ventas_row->total;
-        }
-
-        //Recorrido de todas las ventas PUEBLA
-        foreach ($todas_las_ventas_registradas_puebla->result() as $ventas_row) {
-            //El total de historico de todas las ventas PUEBLA
-            $total_de_ventas_puebla = $total_de_ventas_puebla + $ventas_row->total;
-        }
-
-        //Recorrido de todas las ventas POLANCO
-        foreach ($todas_las_ventas_registradas_polanco->result() as $ventas_row) {
-            //El total de historico de todas las ventas POLANCO
-            $total_de_ventas_polanco = $total_de_ventas_polanco + $ventas_row->total;
-        }
-
-        $data['total_de_ventas'] = $total_de_ventas;
-        $data['total_de_ventas_2'] = $total_de_ventas_puebla + $total_de_ventas_polanco;
-        $data['total_de_ventas_puebla'] = $total_de_ventas_puebla;
-        $data['total_de_ventas_polanco'] = $total_de_ventas_polanco;
 
         $this->construir_private_site_ui('reportes_ventas/index', $data);
     }
+
+    public function obtener_tabla_index()
+    {
+        $this->load->model('reportes_ventas_model');
+
+        // Validación y conversión de parámetros de entrada
+        $draw   = (int)$this->input->post("draw");
+        $start  = (int)$this->input->post("start");
+        $length = (int)$this->input->post("length");
+
+        // Se asume que el modelo Ventas_model tiene el método obtener_todas()
+        $ventas_list = $this->reportes_ventas_model->obtener_todas();
+        $data = [];
+
+        if ($ventas_list && $ventas_list->num_rows() > 0) {
+            foreach ($ventas_list->result() as $key => $venta) {
+                // Formatear las fechas usando setlocale (ajusta la configuración regional según tu entorno)
+                setlocale(LC_ALL, "es_ES");
+                $fechaVentaFormateada = strftime("%d de %B del %Y<br>%T", strtotime($venta->fecha_venta));
+                $fechaActivacionFormateada = strftime("%d de %B del %Y<br>%T", strtotime($venta->fecha_activacion));
+
+                // Preparar la fila de datos para DataTables
+                // Dentro del foreach, al preparar la fila:
+                $clases_comb = $venta->clases_usadas . "/" . $venta->clases_incluidas;
+                $data[] = [
+                    "id"                  => $venta->id,
+                    "producto"            => mb_strtoupper($venta->concepto) . " #" . $venta->asignacion_id,
+                    "producto"            => mb_strtoupper($venta->concepto) . " #" . $venta->asignacion_id,
+                    "metodo"              => mb_strtoupper($venta->metodo),
+                    "sucursales_locacion" => $venta->sucursales_locacion,
+                    "fecha_venta"         => $fechaVentaFormateada,
+                    "costo"               => '$' . number_format($venta->costo, 2),
+                    "total"               => '$' . number_format($venta->total, 2),
+                    "cliente"             => $venta->usuario . " #" . $venta->usuario_id,
+                    "cantidad"            => $venta->cantidad,
+                    "vendedor"            => $venta->vendedor,
+                    "estatus"             => $venta->estatus,
+                    "clases"              => $clases_comb, // Nueva columna combinada
+                    "vigencia_en_dias"    => $venta->vigencia_en_dias,
+                    "fecha_activacion"    => $fechaActivacionFormateada
+                ];
+            }
+        }
+
+        // Preparar respuesta para DataTables
+        $result = [
+            "draw"            => $draw,
+            "recordsTotal"    => ($ventas_list) ? $ventas_list->num_rows() : 0,
+            "recordsFiltered" => ($ventas_list) ? $ventas_list->num_rows() : 0,
+            "data"            => $data
+        ];
+
+        header('Content-Type: application/json');
+        echo json_encode($result);
+        exit();
+    }
+
 
     public function ventas_puebla()
     {

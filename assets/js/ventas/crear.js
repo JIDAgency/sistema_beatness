@@ -1,56 +1,66 @@
 $(document).ready(function () {
+	// Función auxiliar para actualizar elementos de la ficha
+	const actualizarFicha = (id, valor) => {
+		$("#" + id).html(valor);
+	};
 
-    var seleccionar_sucursal = document.getElementById("seleccionar_sucursal");
+	// Actualizar Sucursal
+	$("#seleccionar_sucursal").on("change", function () {
+		const sucursal = $(this).find("option:selected").data("sucursal");
+		actualizarFicha("ficha_sucursal", sucursal);
+	});
 
-    seleccionar_sucursal.onchange = function (event) {
+	// Actualizar Comprador
+	$("#seleccionar_cliente").on("change", function () {
+		const nombreCompleto = $(this)
+			.find("option:selected")
+			.data("nombre_completo");
+		actualizarFicha("ficha_nombre_compador", nombreCompleto);
+	});
 
-        var sucursal = event.target.options[event.target.selectedIndex].dataset.sucursal;
-        console.log("sucursal: " + sucursal);
-
-        var ficha_nombre_compador = document.getElementById("ficha_sucursal");
-        ficha_nombre_compador.innerHTML = sucursal;
-    };
-
-    var seleccionar_comprador = document.getElementById("seleccionar_cliente");
-
-    seleccionar_comprador.onchange = function (event) {
-
-        var nombre_completo = event.target.options[event.target.selectedIndex].dataset.nombre_completo;
-        console.log("nombre_completo: " + nombre_completo);
-
-        var ficha_nombre_compador = document.getElementById("ficha_nombre_compador");
-        ficha_nombre_compador.innerHTML = nombre_completo;
-    };
-
-    var selection = document.getElementById("seleccionar_plan");
-
-    selection.onchange = function (event) {
-
-        var costo = event.target.options[event.target.selectedIndex].dataset.costo;
-        var nombre = event.target.options[event.target.selectedIndex].dataset.nombre;
-        console.log("costo: " + costo);
-
-        var ficha_nombre_producto = document.getElementById("ficha_nombre_producto");
-        ficha_nombre_producto.innerHTML = nombre;
-
-        var ficha_costo_unitario = document.getElementById("ficha_costo_unitario");
-        ficha_costo_unitario.innerHTML = costo;
-
-        var ficha_cantidad_a_vender = document.getElementById("ficha_cantidad_a_vender");
-        ficha_cantidad_a_vender.innerHTML = 1;
-
-        var ficha_precio_total = document.getElementById("ficha_precio_total");
-        ficha_precio_total.innerHTML = costo;
-    };
-
-
+	// Actualizar datos del Plan
+	$("#seleccionar_plan").on("change", function () {
+		const $opcion = $(this).find("option:selected");
+		const nombre = $opcion.data("nombre");
+		const costo = $opcion.data("costo");
+		actualizarFicha("ficha_nombre_producto", nombre);
+		actualizarFicha("ficha_costo_unitario", costo);
+		actualizarFicha("ficha_cantidad_a_vender", 1);
+		actualizarFicha("ficha_precio_total", costo);
+	});
 });
 
+// Actualiza el resumen del Método de Pago
 function getRating(el) {
-    var ficha_metodo_pago = document.getElementById("ficha_metodo_pago");
-    if (el.dataset.metodos_pago == "Cortesía") {
-        ficha_metodo_pago.innerHTML = el.dataset.metodos_pago + '<br><small class="red">(El total será de $0.°°)</small>';
-    } else {
-        ficha_metodo_pago.innerHTML = el.dataset.metodos_pago;
-    }
+	const metodoPago = $(el).data("metodos_pago");
+	let mensaje = metodoPago;
+	if (metodoPago === "Cortesía") {
+		mensaje +=
+			'<br><small class="text-danger">(El total será de $0.00)</small>';
+	}
+	$("#ficha_metodo_pago").html(mensaje);
 }
+
+(function () {
+	"use strict";
+	window.addEventListener(
+		"load",
+		function () {
+			const forms = document.getElementsByClassName("needs-validation");
+			Array.prototype.filter.call(forms, function (form) {
+				form.addEventListener(
+					"submit",
+					function (event) {
+						if (form.checkValidity() === false) {
+							event.preventDefault();
+							event.stopPropagation();
+						}
+						form.classList.add("was-validated");
+					},
+					false
+				);
+			});
+		},
+		false
+	);
+})();
