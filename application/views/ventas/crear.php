@@ -158,6 +158,34 @@
 							</div>
 						</div>
 
+						<?php if (es_administrador() or es_superadministrador()) : ?>
+							<!-- Campos editables para administradores -->
+							<div class="row">
+								<div class="col-md-6 form-group">
+									<label for="fecha_venta_date">Fecha de venta</label>
+									<input type="date" class="form-control" name="fecha_venta_date" id="fecha_venta_date" value="<?php echo date('Y-m-d'); ?>" required>
+									<div class="invalid-feedback">Seleccione una fecha válida.</div>
+								</div>
+								<div class="col-md-6 form-group">
+									<label for="fecha_venta_time">Hora de venta</label>
+									<input type="time" class="form-control" name="fecha_venta_time" id="fecha_venta_time" value="<?php echo date('H:i'); ?>" required>
+									<div class="invalid-feedback">Seleccione una hora válida.</div>
+								</div>
+							</div>
+						<?php else : ?>
+							<!-- Campos de solo lectura para usuarios no administradores -->
+							<div class="row">
+								<div class="col-md-6 form-group">
+									<label for="fecha_venta_date">Fecha de venta</label>
+									<input type="date" class="form-control" name="fecha_venta_date" id="fecha_venta_date" value="<?php echo date('Y-m-d'); ?>" readonly>
+								</div>
+								<div class="col-md-6 form-group">
+									<label for="fecha_venta_time">Hora de venta</label>
+									<input type="time" class="form-control" name="fecha_venta_time" id="fecha_venta_time" value="<?php echo date('H:i'); ?>" readonly>
+								</div>
+							</div>
+						<?php endif; ?>
+
 						<!-- Acciones -->
 						<div class="text-right">
 							<a href="<?php echo site_url('ventas/index'); ?>" class="btn btn-secondary btn-sm">Regresar</a>

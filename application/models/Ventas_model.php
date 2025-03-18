@@ -815,8 +815,9 @@ class Ventas_model extends CI_Model
 
     public function crear($data)
     {
-        $data['fecha_venta'] = date('Y-m-d H:i:s');
-
+        if (!isset($data['fecha_venta']) || empty($data['fecha_venta'])) {
+            $data['fecha_venta'] = date('Y-m-d H:i:s');
+        }
         return $this->db->insert('ventas', $data);
     }
 

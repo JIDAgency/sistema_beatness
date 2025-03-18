@@ -2135,7 +2135,6 @@ class Ventas extends MY_Controller
 
     public function crear()
     {
-
         if (es_frontdesk()) {
             $regresar_a = "ventas/frontdesk";
         } elseif (es_superadministrador() or es_administrador()) {
@@ -2162,7 +2161,6 @@ class Ventas extends MY_Controller
         $data['planes'] = $planes;
 
         // Validar que existan usuarios disponibles
-        //$usuarios = $this->usuarios_model->obtener_todos();
         $usuarios = $this->usuarios_model->obtener_todos_ventas_frontdesk();
 
         if ($usuarios->num_rows() == 0) {
@@ -2205,31 +2203,22 @@ class Ventas extends MY_Controller
             array('es_rel' => true, 'src' => 'ventas/crear.js'),
         );
 
-
         if ($this->form_validation->run() == false) {
             $this->construir_private_site_ui('ventas/crear', $data);
         } else {
 
-            // Preparar datos para hacer el insert en la bd
+            // Preparar datos para hacer el insert en la BD
             $plan_a_comprar = $this->planes_model->obtener_por_id($this->input->post('seleccionar_plan'))->row();
-            // Obtener las disciplinas que el plan a comprar tiene para as�� saber de cu��les disciplinas tiene derecho
-            // el comprador de reservar clases
+            // Obtener las disciplinas que el plan a comprar tiene para saber de cuáles disciplinas tiene derecho el comprador de reservar clases
             $disciplinas = $this->planes_model->obtener_disciplinas_por_plan_id($plan_a_comprar->id)->result();
             $disciplinasIds = array();
-
-            // if ($plan_a_comprar->vigencia_en_dias == 365) {
-            //     $dias_transcurridos = date('z') + 1;
-            //     $dias_restantes = 365 - $dias_transcurridos;
-            // } else {
-            //     $dias_restantes = $plan_a_comprar->vigencia_en_dias;
-            // }
 
             foreach ($disciplinas as $key => $value) {
                 array_push($disciplinasIds, $value->disciplina_id);
             }
 
             if ($plan_a_comprar->categoria == 'online') {
-                // Agregar plan al usuario
+                // Agregar plan al usuario para plan online
                 $asignacion_creada = $this->asignaciones_model->crear(array(
                     'usuario_id' => $this->input->post('seleccionar_cliente'),
                     'plan_id' => $plan_a_comprar->id,
@@ -2244,7 +2233,7 @@ class Ventas extends MY_Controller
                     'fecha_activacion' => date('Y-m-d', strtotime(str_replace('/', '-', $this->input->post('inicia_date')))) . 'T' . $this->input->post('inicia_time'),
                 ));
             } else {
-                // Agregar plan al usuario
+                // Agregar plan al usuario para plan físico
                 $asignacion_creada = $this->asignaciones_model->crear(array(
                     'usuario_id' => $this->input->post('seleccionar_cliente'),
                     'plan_id' => $plan_a_comprar->id,
@@ -2257,7 +2246,6 @@ class Ventas extends MY_Controller
                     'fecha_activacion' => date('Y-m-d', strtotime(str_replace('/', '-', $this->input->post('inicia_date')))) . 'T' . $this->input->post('inicia_time'),
                 ));
             }
-
 
             if (!$asignacion_creada) {
                 $this->session->set_flashdata('MENSAJE_ERROR', 'No se pudo realizar la asignación del plan al usuario que realizó la compra');
@@ -2273,16 +2261,30 @@ class Ventas extends MY_Controller
                 $total_venta = 0.00;
             }
 
+            // Condicional para la fecha de venta: si es administrador se toman los datos del formulario, si no se fuerza la fecha actual
+            if (es_administrador() or es_superadministrador()) {
+                $fecha_venta_date = $this->input->post('fecha_venta_date');
+                $fecha_venta_time = $this->input->post('fecha_venta_time');
+                if (!empty($fecha_venta_date) && !empty($fecha_venta_time)) {
+                    $fecha_venta = date('Y-m-d', strtotime($fecha_venta_date)) . 'T' . $fecha_venta_time;
+                } else {
+                    $fecha_venta = date('Y-m-d H:i:s');
+                }
+            } else {
+                $fecha_venta = date('Y-m-d H:i:s');
+            }
+
             $data = array(
-                'concepto' => $plan_a_comprar->nombre,
-                'sucursal_id' => $this->input->post('seleccionar_sucursal'),
-                'usuario_id' => $this->input->post('seleccionar_cliente'),
+                'concepto'      => $plan_a_comprar->nombre,
+                'sucursal_id'   => $this->input->post('seleccionar_sucursal'),
+                'usuario_id'    => $this->input->post('seleccionar_cliente'),
                 'asignacion_id' => $obetener_id_asignacion->id,
-                'metodo_id' => $this->input->post('metodo_pago'),
-                'costo' => $plan_a_comprar->costo,
-                'cantidad' => 1,
-                'total' => $total_venta,
-                'vendedor' => $this->session->userdata('id') . ' ' . $vendedor->nombre_completo . ' ' . $vendedor->apellido_paterno . ' ' . $vendedor->apellido_materno,
+                'metodo_id'     => $this->input->post('metodo_pago'),
+                'costo'         => $plan_a_comprar->costo,
+                'cantidad'      => 1,
+                'total'         => $total_venta,
+                'vendedor'      => $this->session->userdata('id') . ' ' . $vendedor->nombre_completo . ' ' . $vendedor->apellido_paterno . ' ' . $vendedor->apellido_materno,
+                'fecha_venta'   => $fecha_venta,
             );
 
             if ($this->ventas_model->crear($data)) {
@@ -2304,59 +2306,50 @@ class Ventas extends MY_Controller
         }
 
         $sucursales_list = $this->sucursales_model->get_sucursales_para_select_de_ventas()->result();
-
         if (!$sucursales_list) {
             $this->session->set_flashdata('MENSAJE_INFO', 'Es necesario que existan sucursales disponibles para hacer una venta.');
             redirect($regresar_a);
         }
-
         $data['sucursales_list'] = $sucursales_list;
 
         // Validar que existan planes disponibles
         $planes = $this->planes_model->get_planes_disponibles_para_venta_en_frontdesk();
-
         if ($planes->num_rows() == 0) {
             $this->session->set_flashdata('MENSAJE_INFO', 'Es necesario que exista por lo menos alguna disciplina disponible para poder crear la clase.');
             redirect($regresar_a);
         }
-
         $data['planes'] = $planes;
 
         // Validar que existan usuarios disponibles
-        //$usuarios = $this->usuarios_model->obtener_todos();
         $usuarios = $this->usuarios_model->obtener_todos_ventas_frontdesk();
-
         if ($usuarios->num_rows() == 0) {
             $this->session->set_flashdata('MENSAJE_INFO', 'Es necesario que exista por lo menos alguna disciplina disponible para poder crear la clase.');
             redirect($regresar_a);
         }
-
         $data['usuarios'] = $usuarios;
 
-        // Validar que existan metodos de pago disponibles
+        // Validar que existan métodos de pago disponibles
         $metodos_pago = $this->metodos_model->obtener_todos();
-
         if ($metodos_pago->num_rows() == 0) {
             $this->session->set_flashdata('MENSAJE_INFO', 'Es necesario que exista por lo menos alguna disciplina disponible para poder crear la clase.');
             redirect($regresar_a);
         }
-
         $data['metodos_pago'] = $metodos_pago;
+
         // Establecer validaciones
         $this->form_validation->set_rules('seleccionar_sucursal', 'Sucursal', 'required');
         $this->form_validation->set_rules('plan_personalizado_nombre', 'Nombre del plan', 'required');
-        $this->form_validation->set_rules('plan_personalizado_clases_incluidas', 'Numero de clases a incluir', 'required');
-        $this->form_validation->set_rules('plan_personalizado_vigencia_en_dias', 'Vigencia en dias', 'required');
+        $this->form_validation->set_rules('plan_personalizado_clases_incluidas', 'Número de clases a incluir', 'required');
+        $this->form_validation->set_rules('plan_personalizado_vigencia_en_dias', 'Vigencia en días', 'required');
         $this->form_validation->set_rules('plan_personalizado_costo_plan', 'Asignar costo', 'required');
         $this->form_validation->set_rules('inicia_date', 'Fecha de inicio', 'required');
         $this->form_validation->set_rules('inicia_time', 'Hora de inicio', 'required');
         $this->form_validation->set_rules('seleccionar_cliente', 'Nombre', 'required');
-        $this->form_validation->set_rules('metodo_pago', 'Metodo de Pago', 'required');
+        $this->form_validation->set_rules('metodo_pago', 'Método de pago', 'required');
 
         // Inicializar vista y scripts
         $data['menu_ventas_activo'] = true;
         $data['pagina_titulo'] = 'Nueva venta';
-
         $data['styles'] = array(
             array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/forms/selects/select2.min.css'),
         );
@@ -2364,7 +2357,6 @@ class Ventas extends MY_Controller
             array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/forms/select/select2.full.min.js'),
             array('es_rel' => false, 'src' => base_url() . 'app-assets/js/scripts/forms/select/form-select2.js'),
             array('es_rel' => true, 'src' => 'ventas/crear_personalizada.js'),
-
         );
         $data['disciplinas'] = $this->disciplinas_model->get_disciplinas_para_venta_personalizada();
 
@@ -2372,14 +2364,11 @@ class Ventas extends MY_Controller
             $this->construir_private_site_ui('ventas/crear_personalizada', $data);
         } else {
 
-            // Preparar datos para hacer el insert en la bd
-
+            // Preparar datos para hacer el insert en la BD
             $disciplinasIds = array();
-
             foreach ($this->input->post('disciplinas') as $k => $v) {
                 array_push($disciplinasIds, $v);
             }
-
             if (empty($disciplinasIds)) {
                 $this->session->set_flashdata('MENSAJE_ERROR', 'Debe seleccionar al menos una disciplina para poder vender un plan personalizado, por favor inténtelo de nuevo.');
                 redirect($regresar_a);
@@ -2387,23 +2376,20 @@ class Ventas extends MY_Controller
 
             // Agregar plan al usuario
             $asignacion_creada = $this->asignaciones_model->crear(array(
-                'usuario_id' => $this->input->post('seleccionar_cliente'),
-                'plan_id' => '1',
-                'nombre' => $this->input->post('plan_personalizado_nombre'),
-                'clases_incluidas' => $this->input->post('plan_personalizado_clases_incluidas'),
-                'disciplinas' => implode('|', $disciplinasIds),
-                'vigencia_en_dias' => $this->input->post('plan_personalizado_vigencia_en_dias'),
-                'esta_activo' => '1',
-                'fecha_activacion' => date('Y-m-d', strtotime(str_replace('/', '-', $this->input->post('inicia_date')))) . 'T' . $this->input->post('inicia_time'),
+                'usuario_id'         => $this->input->post('seleccionar_cliente'),
+                'plan_id'            => '1', // Se puede asignar un ID fijo o un valor especial para planes personalizados
+                'nombre'             => $this->input->post('plan_personalizado_nombre'),
+                'clases_incluidas'   => $this->input->post('plan_personalizado_clases_incluidas'),
+                'disciplinas'        => implode('|', $disciplinasIds),
+                'vigencia_en_dias'   => $this->input->post('plan_personalizado_vigencia_en_dias'),
+                'esta_activo'        => '1',
+                'fecha_activacion'   => date('Y-m-d', strtotime(str_replace('/', '-', $this->input->post('inicia_date')))) . 'T' . $this->input->post('inicia_time'),
             ));
-
-
             if (!$asignacion_creada) {
                 $this->session->set_flashdata('MENSAJE_ERROR', 'No se pudo realizar la asignación del plan al usuario que realizó la compra');
                 redirect($regresar_a);
             }
             $obetener_id_asignacion = $this->asignaciones_model->obtener_por_id($this->db->insert_id())->row();
-
             $vendedor = $this->usuarios_model->obtener_usuario_por_id($this->session->userdata('id'))->row();
 
             $total_venta = $this->input->post('plan_personalizado_costo_plan');
@@ -2411,16 +2397,32 @@ class Ventas extends MY_Controller
                 $total_venta = 0.00;
             }
 
+            // Control de la fecha de venta:
+            // Si el usuario es administrador se permite enviar un valor personalizado (si se agregan los inputs correspondientes en la vista),
+            // de lo contrario (o si no se envía valor) se asigna la fecha actual.
+            if (es_administrador() or es_superadministrador()) {
+                $fecha_venta_date = $this->input->post('fecha_venta_date');
+                $fecha_venta_time = $this->input->post('fecha_venta_time');
+                if (!empty($fecha_venta_date) && !empty($fecha_venta_time)) {
+                    $fecha_venta = date('Y-m-d', strtotime($fecha_venta_date)) . 'T' . $fecha_venta_time;
+                } else {
+                    $fecha_venta = date('Y-m-d H:i:s');
+                }
+            } else {
+                $fecha_venta = date('Y-m-d H:i:s');
+            }
+
             $data = array(
-                'concepto' => $this->input->post('plan_personalizado_nombre'),
-                'sucursal_id' => $this->input->post('seleccionar_sucursal'),
-                'usuario_id' => $this->input->post('seleccionar_cliente'),
+                'concepto'      => $this->input->post('plan_personalizado_nombre'),
+                'sucursal_id'   => $this->input->post('seleccionar_sucursal'),
+                'usuario_id'    => $this->input->post('seleccionar_cliente'),
                 'asignacion_id' => $obetener_id_asignacion->id,
-                'metodo_id' => $this->input->post('metodo_pago'),
-                'costo' => $this->input->post('plan_personalizado_costo_plan'),
-                'cantidad' => 1,
-                'total' => $total_venta,
-                'vendedor' => $this->session->userdata('id') . ' ' . $vendedor->nombre_completo . ' ' . $vendedor->apellido_paterno . ' ' . $vendedor->apellido_materno,
+                'metodo_id'     => $this->input->post('metodo_pago'),
+                'costo'         => $this->input->post('plan_personalizado_costo_plan'),
+                'cantidad'      => 1,
+                'total'         => $total_venta,
+                'vendedor'      => $this->session->userdata('id') . ' ' . $vendedor->nombre_completo . ' ' . $vendedor->apellido_paterno . ' ' . $vendedor->apellido_materno,
+                'fecha_venta'   => $fecha_venta,
             );
 
             if ($this->ventas_model->crear($data)) {
@@ -2432,6 +2434,7 @@ class Ventas extends MY_Controller
             $this->construir_private_site_ui('ventas/crear_personalizada', $data);
         }
     }
+
 
     public function ticket($id = null)
     {
