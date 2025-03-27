@@ -45,57 +45,20 @@
 								<div class="card-body">
 									<?php $this->load->view('_comun/mensajes_alerta');
 									$i = 1; ?>
-									<table name="tabla-instructores" id="tabla-instructores" class="table display nowrap table-striped table-bordered scroll-horizontal table-hover w-100" cellspacing="0">
+									<table name="tabla" id="tabla" class="table display nowrap table-striped table-bordered scroll-horizontal table-hover w-100" cellspacing="0">
 										<thead>
 											<tr>
+												<th>Opciones</th>
 												<th>ID</th>
 												<th>Nombre</th>
 												<th>Correo</th>
 												<th>Teléfono</th>
 												<th>RFC</th>
 												<th>Genero</th>
-												<th>Opciones</th>
 												<th>Dirección</th>
-
 											</tr>
 										</thead>
 										<tbody>
-											<?php foreach ($instructores->result() as $instructor) : ?>
-												<tr>
-													<th>
-														<?php echo $instructor->id; ?>
-													</th>
-													<td>
-														<?php echo $instructor->nombre_completo; ?>
-														<?php echo $instructor->apellido_paterno; ?>
-														<?php echo $instructor->apellido_materno; ?>
-													</td>
-													<td>
-														<?php echo $instructor->correo; ?>
-													</td>
-													<td>
-														<?php echo $instructor->no_telefono; ?>
-													</td>
-													<td>
-														<?php echo $instructor->rfc; ?>
-													</td>
-													<td>
-														<?php echo $instructor->genero; ?>
-													</td>
-													<td>
-														<?php echo anchor('instructores/editar/' . $instructor->id, 'Editar'); ?>
-													</td>
-
-													<td>
-														<?php echo $instructor->calle; ?>
-														<?php echo $instructor->numero; ?>
-														<?php echo $instructor->colonia; ?>
-														<?php echo $instructor->ciudad; ?>
-														<?php echo $instructor->estado; ?>
-														<?php echo $instructor->pais; ?>
-													</td>
-												</tr>
-											<?php endforeach; ?>
 										</tbody>
 									</table>
 								</div>
@@ -104,6 +67,26 @@
 					</div>
 				</div>
 			</section>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="deleteModalLabel">Confirmar eliminación</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				¿Está seguro de que desea eliminar esta cuenta de usuario?
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+				<button type="button" class="btn btn-danger" id="confirmDelete">Eliminar</button>
+			</div>
 		</div>
 	</div>
 </div>

@@ -61,7 +61,7 @@ class Reportes_ventas extends MY_Controller
                 $clases_comb = $venta->clases_usadas . "/" . $venta->clases_incluidas;
                 $data[] = [
                     "id"                  => $venta->id,
-                    "producto"            => mb_strtoupper($venta->concepto) . " #" . $venta->asignacion_id,
+                    "concepto"            => mb_strtoupper($venta->concepto) . " #" . $venta->asignacion_id,
                     "producto"            => mb_strtoupper($venta->concepto) . " #" . $venta->asignacion_id,
                     "metodo"              => mb_strtoupper($venta->metodo),
                     "sucursales_locacion" => $venta->sucursales_locacion,

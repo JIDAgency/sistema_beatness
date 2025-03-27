@@ -17,14 +17,13 @@ class Instructores extends MY_Controller
         $data['mensaje_exito'] = $this->session->flashdata('MENSAJE_EXITO');
         $data['mensaje_info'] = $this->session->flashdata('MENSAJE_INFO');
         $data['mensaje_error'] = $this->session->flashdata('MENSAJE_ERROR');
-        
-        $data['instructores'] = $this->usuarios_model->obtener_todos_instructores();
 
         // Cargar estilos y scripts
         $data['styles'] = array(
             array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/tables/datatable/datatables.min.css'),
             array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/tables/extensions/responsive.dataTables.min.css'),
         );
+
         $data['scripts'] = array(
             array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/tables/datatable/datatables.min.js'),
             array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js'),
@@ -38,7 +37,76 @@ class Instructores extends MY_Controller
         $data['mensaje_error'] = $this->session->flashdata('MENSAJE_ERROR');
 
         $this->construir_private_site_ui('instructores/index', $data);
+    }
 
+    // Método para retornar la lista de instructores en JSON
+    public function ajax_list()
+    {
+        $instructores = $this->usuarios_model->obtener_todos_instructores();
+        $data = array();
+        foreach ($instructores->result() as $instructor) {
+            $row = array();
+            // Opciones: botón para editar y para eliminar
+            $row[] = '<a href="' . site_url('instructores/editar/' . $instructor->id) . '" class="btn btn-sm btn-primary">Editar</a>
+                  <button class="btn btn-sm btn-danger btn-delete" data-id="' . $instructor->id . '">Eliminar</button>';
+            $row[] = $instructor->id;
+            $row[] = $instructor->nombre_completo . ' ' . $instructor->apellido_paterno . ' ' . $instructor->apellido_materno;
+            $row[] = $instructor->correo;
+            $row[] = $instructor->no_telefono;
+            $row[] = $instructor->rfc;
+            $row[] = $instructor->genero;
+            $row[] = $instructor->calle . ' ' . $instructor->numero . ' ' . $instructor->colonia . ' ' . $instructor->ciudad . ' ' . $instructor->estado . ' ' . $instructor->pais;
+            $data[] = $row;
+        }
+        $output = array("data" => $data);
+        echo json_encode($output);
+    }
+
+    // Método para eliminar (soft delete) la cuenta del instructor vía AJAX
+    public function eliminar()
+    {
+        // Recibir el ID enviado por POST
+        $id = $this->input->post('id');
+        if (!$id) {
+            echo json_encode(array('error' => true, 'mensaje' => 'No se recibió el ID del instructor.'));
+            return;
+        }
+
+        // Obtener los datos del instructor
+        $instructor = $this->usuarios_model->obtener_usuario_por_id($id)->row();
+        if (!$instructor) {
+            echo json_encode(array('error' => true, 'mensaje' => 'Instructor no encontrado.'));
+            return;
+        }
+
+        // Actualizar la cuenta para "eliminarla" (soft delete)
+        $data_update = array(
+            'correo'                => $instructor->id . '@user.deleted',
+            'contrasena_hash'       => null,
+            'rol_id'                => 1, // Asigna un rol por defecto o de "usuario eliminado"
+            'nombre_completo'       => null,
+            'apellido_paterno'      => null,
+            'apellido_materno'      => null,
+            'no_telefono'           => null,
+            'rfc'                   => null,
+            'genero'                => "H",
+            'calle'                 => null,
+            'numero'                => null,
+            'colonia'               => null,
+            'ciudad'                => null,
+            'estado'                => null,
+            'pais'                  => null,
+            'token'                 => null,
+            'token_web'             => null,
+            'codigo_recuperar_contrasena' => null,
+            'estatus'               => "suspendido"
+        );
+
+        if ($this->usuarios_model->editar($id, $data_update)) {
+            echo json_encode(array('error' => false, 'mensaje' => 'Cuenta eliminada con éxito.'));
+        } else {
+            echo json_encode(array('error' => true, 'mensaje' => 'Error al eliminar la cuenta, intente de nuevo.'));
+        }
     }
 
     public function crear()
@@ -76,35 +144,32 @@ class Instructores extends MY_Controller
 
             if (isset($_FILES) && $_FILES['nombre_imagen_avatar']['error'] == '0') {
 
-				$config['upload_path']   = './subidas/perfil/';
-				$config['allowed_types'] = 'jpg';
+                $config['upload_path']   = './subidas/perfil/';
+                $config['allowed_types'] = 'jpg';
                 $config['max_width'] = 1200;
                 $config['max_height'] = 1200;
-				$config['max_size'] = '600';
-				$config['overwrite']     = true;
-				$config['encrypt_name']  = true;
-				$config['remove_spaces'] = true;
+                $config['max_size'] = '600';
+                $config['overwrite']     = true;
+                $config['encrypt_name']  = true;
+                $config['remove_spaces'] = true;
 
-				if (!is_dir($config['upload_path'])) {
-					$this->mensaje_del_sistema("MENSAJE_ERROR", "La carpeta de carga no existe", site_url($data['controlador']));
-				}
+                if (!is_dir($config['upload_path'])) {
+                    $this->mensaje_del_sistema("MENSAJE_ERROR", "La carpeta de carga no existe", site_url($data['controlador']));
+                }
 
-				$this->load->library('upload', $config);
+                $this->load->library('upload', $config);
 
-				if (!$this->upload->do_upload('nombre_imagen_avatar')) {
+                if (!$this->upload->do_upload('nombre_imagen_avatar')) {
 
-					$this->mensaje_del_sistema("MENSAJE_ERROR", $this->upload->display_errors(), site_url($data['controlador']));
+                    $this->mensaje_del_sistema("MENSAJE_ERROR", $this->upload->display_errors(), site_url($data['controlador']));
+                } else {
+                    $data_imagen = $this->upload->data();
+                    $nombre_img_perfil = $data_imagen['file_name'];
+                }
+            } else {
 
-				} else {
-					$data_imagen = $this->upload->data();
-					$nombre_img_perfil = $data_imagen['file_name'];
-				}
-
-			} else {
-
-				$nombre_img_perfil = 'default.jpg';
-
-			}
+                $nombre_img_perfil = 'default.jpg';
+            }
 
             // Preparar datos para hacer el insert en la bd
             $data = array(
@@ -134,10 +199,10 @@ class Instructores extends MY_Controller
 
             $this->construir_private_site_ui('instructores/crear', $data);
         }
-
     }
 
-    public function editar($id = null) {
+    public function editar($id = null)
+    {
         if ($this->input->post()) {
             $id = $this->input->post('id');
         }
@@ -156,9 +221,9 @@ class Instructores extends MY_Controller
         $data['menu_instructores_activo_activo'] = true;
         $data['pagina_titulo'] = 'Editar instructor';
 
-        $data['controlador'] = 'instructores/editar/'.$id;
-		$data['regresar_a'] = 'instructores';
-		$controlador_js = "instructores/editar";
+        $data['controlador'] = 'instructores/editar/' . $id;
+        $data['regresar_a'] = 'instructores';
+        $controlador_js = "instructores/editar";
 
         $data['styles'] = array(
             array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/extensions/datedropper.min.css'),
@@ -173,7 +238,7 @@ class Instructores extends MY_Controller
 
         // Verificar que el usuario a editar exista, obtener sus datos y pasarlos a la vista
         $instructor_a_editar = $this->usuarios_model->obtener_usuario_por_id($id)->row();
-        
+
         if (!$instructor_a_editar) {
             $this->session->set_flashdata('MENSAJE_INFO', 'El instructor que intenta editar no existe.');
             redirect('/instructores/index');
@@ -187,48 +252,43 @@ class Instructores extends MY_Controller
         if ($this->form_validation->run() == false) {
 
             $this->construir_private_site_ui('instructores/editar', $data);
-
         } else {
 
             if (isset($_FILES) && $_FILES['nombre_imagen_avatar']['error'] == '0') {
 
-				$config['upload_path']   = './subidas/perfil/';
-				$config['allowed_types'] = 'jpg';
+                $config['upload_path']   = './subidas/perfil/';
+                $config['allowed_types'] = 'jpg';
                 $config['max_width'] = 1200;
                 $config['max_height'] = 1200;
-				$config['max_size'] = '600';
-				$config['overwrite']     = true;
-				$config['encrypt_name']  = true;
-				$config['remove_spaces'] = true;
+                $config['max_size'] = '600';
+                $config['overwrite']     = true;
+                $config['encrypt_name']  = true;
+                $config['remove_spaces'] = true;
 
-				if (!is_dir($config['upload_path'])) {
-					$this->mensaje_del_sistema("MENSAJE_ERROR", "La carpeta de carga no existe", site_url($data['controlador']));
-				}
+                if (!is_dir($config['upload_path'])) {
+                    $this->mensaje_del_sistema("MENSAJE_ERROR", "La carpeta de carga no existe", site_url($data['controlador']));
+                }
 
-				$this->load->library('upload', $config);
+                $this->load->library('upload', $config);
 
-				if (!$this->upload->do_upload('nombre_imagen_avatar')) {
+                if (!$this->upload->do_upload('nombre_imagen_avatar')) {
 
-					$this->mensaje_del_sistema("MENSAJE_ERROR", $this->upload->display_errors(), site_url($data['controlador']));
+                    $this->mensaje_del_sistema("MENSAJE_ERROR", $this->upload->display_errors(), site_url($data['controlador']));
+                } else {
 
-				} else {
+                    if ($instructor_a_editar->nombre_imagen_avatar and $instructor_a_editar->nombre_imagen_avatar != "b3-default.jpg") {
+                        $url_imagen_a_borrar = "subidas/perfil" . $instructor_a_editar->nombre_imagen_avatar;
+                        $imagen_a_borrar = str_replace(base_url(), '', $url_imagen_a_borrar);
+                        unlink($imagen_a_borrar);
+                    }
 
-					if ($instructor_a_editar->nombre_imagen_avatar AND $instructor_a_editar->nombre_imagen_avatar != "b3-default.jpg") {
-						$url_imagen_a_borrar = "subidas/perfil".$instructor_a_editar->nombre_imagen_avatar;
-						$imagen_a_borrar = str_replace(base_url(), '', $url_imagen_a_borrar);
-						unlink($imagen_a_borrar);
-					}
+                    $data_imagen = $this->upload->data();
+                    $nombre_img_perfil = $data_imagen['file_name'];
+                }
+            } else {
 
-					$data_imagen = $this->upload->data();
-					$nombre_img_perfil = $data_imagen['file_name'];
-
-				}
-
-			} else {
-
-				$nombre_img_perfil = $instructor_a_editar->nombre_imagen_avatar;
-
-			}
+                $nombre_img_perfil = $instructor_a_editar->nombre_imagen_avatar;
+            }
 
             $data = array(
                 'correo' => $this->input->post('correo'),
@@ -255,9 +315,6 @@ class Instructores extends MY_Controller
             }
 
             $this->construir_private_site_ui('instructores/editar', $data);
-
         }
-
     }
-
 }
