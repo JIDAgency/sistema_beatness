@@ -1,20 +1,20 @@
 <!DOCTYPE html>
-    <html class="loading" lang="en" data-textdirection="ltr">
+<html class="loading" lang="en" data-textdirection="ltr">
+
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
-    <meta name="description" content="<?php echo description();?>">
-    <meta name="keywords" content="<?php echo keywords();?>">
-    <meta name="author" content="<?php echo author();?>">
+    <meta name="description" content="<?php echo description(); ?>">
+    <meta name="keywords" content="<?php echo keywords(); ?>">
+    <meta name="author" content="<?php echo author(); ?>">
 
     <title><?php echo isset($pagina_titulo) ? $pagina_titulo : ''; ?> | <?php echo titulo(); ?></title>
 
     <link rel="apple-touch-icon" href="<?php echo base_url(); ?>almacenamiento/logos/open-graph.jpg">
-	<link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url(); ?>almacenamiento/logos/logo.jpg">
+    <link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url(); ?>almacenamiento/logos/logo.jpg">
     <!-- <link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url(); ?>app-assets/images/ico/favicon.ico"> -->
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Muli:300,400,500,700"
-    rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Muli:300,400,500,700" rel="stylesheet">
     <!-- BEGIN VENDOR CSS-->
     <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>app-assets/css/vendors.css">
     <!-- END VENDOR CSS-->
@@ -29,24 +29,23 @@
     <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/style.css">
     <!-- END Custom CSS-->
 
-    <?php if (isset($styles) && is_array($styles)): ?>
-        <?php foreach ($styles as $style): ?>
+    <?php if (isset($styles) && is_array($styles)) : ?>
+        <?php foreach ($styles as $style) : ?>
             <link rel="stylesheet" type="text/css" href="<?php echo !$style['es_rel'] ? $style['href'] : base_url() . 'assets/css/' . $style['href']; ?>">
-        <?php endforeach;?>
-    <?php endif;?>
+        <?php endforeach; ?>
+    <?php endif; ?>
 </head>
 
 <body class="horizontal-layout horizontal-menu horizontal-menu-padding 2-columns menu-expanded" data-open="hover" data-menu="horizontal-menu" data-col="2-columns">
     <!-- fixed-top-->
-    <nav class="header-navbar navbar-expand-md navbar navbar-with-menu navbar-static-top navbar-dark navbar-border navbar-brand-center">
+    <nav class="header-navbar navbar-expand-md navbar navbar-with-menu navbar-static-top navbar-light navbar-border navbar-brand-center">
         <div class="navbar-wrapper">
             <div class="navbar-header">
                 <ul class="nav navbar-nav flex-row">
                     <li class="nav-item mobile-menu d-md-none mr-auto"><a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#"><i class="ft-menu font-large-1"></i></a></li>
                     <li class="nav-item">
                         <a class="navbar-brand" href="<?php site_url("instructor/inicio"); ?>">
-                            <img class="img-responsive" alt="Logo" src="<?php echo base_url(); ?>almacenamiento/logos/logo-light.png">
-                        </a>
+                            <img class="img-responsive" width="50" alt="Logo" src="http://localhost:8888/sistema_beatness/almacenamiento/logos/logo.png"> </a>
                     </li>
                     <li class="nav-item d-md-none">
                         <a class="nav-link open-navbar-container" data-toggle="collapse" data-target="#navbar-mobile"><i class="fa fa-ellipsis-v"></i></a>
@@ -64,14 +63,14 @@
                     </ul>
 
                     <ul class="nav navbar-nav float-right">
-                    
+
                         <li class="dropdown dropdown-user nav-item">
                             <a class="nav-link" href="#" data-toggle="dropdown">
-                                <span><?php 
-                                    date_default_timezone_set('America/Mexico_City');
-                                    setlocale(LC_TIME,"es_ES.UTF-8");
-                                    echo strftime("%a-%d-%b-%Y");
-                                ?></span>
+                                <span><?php
+                                        date_default_timezone_set('America/Mexico_City');
+                                        setlocale(LC_TIME, "es_ES.UTF-8");
+                                        echo strftime("%a-%d-%b-%Y");
+                                        ?></span>
                             </a>
                         </li>
 
@@ -81,7 +80,8 @@
                                 <span class="user-name"><?php echo isset($nombre_completo) ? $nombre_completo : ''; ?> <?php echo $this->session->userdata("nombre") ?></span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right">
-                                <!--a class="dropdown-item" href="<?php //echo site_url('usuarios/perfil'); ?>"><i class="ft-user"></i> Mi perfil</a-->
+                                <!--a class="dropdown-item" href="<?php //echo site_url('usuarios/perfil'); 
+                                                                    ?>"><i class="ft-user"></i> Mi perfil</a-->
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="<?php echo site_url('cuenta/cerrar_sesion'); ?>"><i class="ft-power"></i> Cerrar sesión</a>
                             </div>

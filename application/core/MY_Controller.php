@@ -45,7 +45,7 @@ class MY_Controller extends CI_Controller
             redirect('usuario/inicio');
         }
         if (es_instructor()) {
-            redirect('usuario/inicio');
+            redirect('instructor/inicio');
         }
         if ($this->session->userdata("id") == "5409") {
             redirect('instructor/inicio');
