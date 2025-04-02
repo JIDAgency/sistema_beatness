@@ -490,4 +490,84 @@ class Reportes_model extends CI_Model
         $query = $this->db->get();
         return $query->result();
     }
+
+    public function obtener_reporte_mensual_origen_disciplinas($anio, $mes)
+    {
+        // Formateamos el año-mes en formato YYYY-MM para comparar
+        $yearMonth = $anio . '-' . str_pad($mes, 2, '0', STR_PAD_LEFT);
+
+        $sql = "
+        SELECT 
+            d.nombre AS disciplina,
+            CASE
+                WHEN u.gympass_user_id IS NOT NULL THEN 'Gympass'
+                WHEN asig.nombre LIKE '%FITPASS%' THEN 'Fitpass'
+                ELSE 'Beatness'
+            END AS origen,
+            
+            COUNT(r.id) AS total_reservaciones,
+            SUM(c.cupo) AS capacidad_instalada,
+            
+            /* Ejemplo de porcentaje de ocupación */
+            CASE WHEN SUM(c.cupo) > 0 
+                 THEN (COUNT(r.id) / SUM(c.cupo)) * 100
+                 ELSE 0
+            END AS porcentaje_ocupacion
+            
+        FROM reservaciones r
+        JOIN clases c ON c.id = r.clase_id
+        JOIN disciplinas d ON d.id = c.disciplina_id
+        JOIN usuarios u ON u.id = r.usuario_id
+        
+        /* Si quieres detectar origen por plan, se unen ventas y asignaciones */
+        LEFT JOIN ventas v ON v.usuario_id = u.id 
+                           AND v.estatus NOT IN('Cancelada','Reembolso') 
+        LEFT JOIN asignaciones asig ON asig.id = v.asignacion_id
+        
+        WHERE r.estatus IN ('Activa','Terminada')
+          AND DATE_FORMAT(c.inicia, '%Y-%m') = ?
+        
+        GROUP BY d.nombre, origen
+        ORDER BY d.nombre, origen
+    ";
+
+        $query = $this->db->query($sql, array($yearMonth));
+        return $query->result();
+    }
+
+    public function obtener_reservaciones_por_disciplina_y_origen($fechaInicio, $fechaFin)
+    {
+        $sql = "
+            SELECT 
+                d.nombre AS disciplina, 
+                COALESCE(a.origen, 'beatness') AS origen, 
+                COUNT(DISTINCT r.id) AS total_reservaciones
+            FROM reservaciones r
+            INNER JOIN clases c ON c.id = r.clase_id
+            INNER JOIN disciplinas d ON d.id = c.disciplina_id
+            INNER JOIN usuarios u ON u.id = r.usuario_id
+            LEFT JOIN (
+                SELECT 
+                    usuario_id,
+                    MAX(
+                        CASE 
+                            WHEN nombre LIKE '%TOTALPASS%' OR nombre LIKE '%TOTAL PASS%' THEN 'totalpass'
+                            WHEN nombre LIKE '%FITPASS PRO%' OR nombre LIKE '%FITPASSPRO%' THEN 'fitpass pro'
+                            WHEN nombre LIKE '%FITPASS%' OR nombre LIKE '%FIT PASS%' THEN 'fitpass'
+                            WHEN nombre LIKE '%GYMPASS%' OR nombre LIKE '%GYM PASS%' THEN 'gympass'
+                            ELSE NULL
+                        END
+                    ) AS origen
+                FROM asignaciones
+                GROUP BY usuario_id
+            ) a ON a.usuario_id = u.id
+            WHERE r.estatus IN ('Activa','Terminada')
+              AND c.inicia BETWEEN ? AND ?
+            GROUP BY d.nombre, origen
+            ORDER BY d.nombre, origen
+        ";
+
+        $query = $this->db->query($sql, array($fechaInicio, $fechaFin));
+        return $query->result();
+    }
 }

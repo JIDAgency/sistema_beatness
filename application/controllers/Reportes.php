@@ -443,4 +443,40 @@ class Reportes extends MY_Controller
 		echo json_encode($result);
 		exit();
 	}
+
+	public function reporte_origen_disciplinas()
+	{
+		$data['pagina_titulo'] = 'Reporte Mensual Disciplina / Origen';
+		$data['pagina_subtitulo'] = 'Reporte Mensual Disciplina / Origen';
+		$data['pagina_menu_reportes'] = true;
+		$data['controlador'] = 'reportes/reporte_origen_disciplinas';
+
+		// Supongamos que recibes año y mes por GET o POST
+		$anio = $this->input->get('anio') ? $this->input->get('anio') : date('Y');
+		$mes  = $this->input->get('mes')  ? $this->input->get('mes')  : date('m');
+
+		// Llamamos a nuestro modelo
+		$reporte = $this->reportes_model->obtener_reporte_mensual_origen_disciplinas($anio, $mes);
+
+		// Pasamos los resultados a la vista
+		$data['reporte'] = $reporte;
+		$data['anio']    = $anio;
+		$data['mes']     = $mes;
+
+		// Cargamos la vista
+		$this->construir_private_site_ui('reportes/reporte_origen_disciplinas', $data);
+	}
+
+	public function obtener_reservaciones_disciplina_origen_live()
+	{
+		// Se reciben las fechas vía GET; si no se envían se usan valores por defecto (inicio y fin del mes actual)
+		$fecha_inicio = $this->input->get('fecha_inicio') ?: date('Y-m-01');
+		$fecha_fin    = $this->input->get('fecha_fin') ?: date('Y-m-t');
+
+		$reporte = $this->reportes_model->obtener_reservaciones_por_disciplina_y_origen($fecha_inicio, $fecha_fin);
+
+		$this->output
+			->set_content_type('application/json')
+			->set_output(json_encode($reporte));
+	}
 }
