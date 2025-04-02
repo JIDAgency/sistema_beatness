@@ -132,6 +132,8 @@ class Planes extends MY_Controller
 
     public function index()
     {
+        $data['menu_wrokflow_activo'] = true;
+        $data['pagina_titulo'] = 'Planes';
 
         // Cargar estilos y scripts
         $data['styles'] = array(
@@ -143,13 +145,6 @@ class Planes extends MY_Controller
             array('es_rel' => false, 'src' => base_url() . 'app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js'),
             array('es_rel' => true, 'src' => 'planes/index.js'),
         );
-
-        $data['menu_wrokflow_activo'] = true;
-        $data['pagina_titulo'] = 'Planes';
-
-        $data['mensaje_exito'] = $this->session->flashdata('MENSAJE_EXITO');
-        $data['mensaje_info'] = $this->session->flashdata('MENSAJE_INFO');
-        $data['mensaje_error'] = $this->session->flashdata('MENSAJE_ERROR');
 
         $sucursales_list = $this->sucursales_model->get_todas_las_sucursales()->result();
 
@@ -459,7 +454,7 @@ class Planes extends MY_Controller
 
             $sucursales_list = $this->sucursales_model->get_todas_las_sucursales()->result();
             $data['sucursales_list'] = $sucursales_list;
-            
+
             $data['disciplinas'] = $this->disciplinas_model->obtener_todas()->result();
             $data['categorias'] = $this->planes_categorias_model->obtener_todas()->result();
 

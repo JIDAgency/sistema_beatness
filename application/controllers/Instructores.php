@@ -13,12 +13,9 @@ class Instructores extends MY_Controller
 
     public function index()
     {
-        /** Carga los mensajes de validaciones para ser usados por los controladores */
-        $data['mensaje_exito'] = $this->session->flashdata('MENSAJE_EXITO');
-        $data['mensaje_info'] = $this->session->flashdata('MENSAJE_INFO');
-        $data['mensaje_error'] = $this->session->flashdata('MENSAJE_ERROR');
+        $data['menu_instructores_activo'] = true;
+        $data['pagina_titulo'] = 'Instructores';
 
-        // Cargar estilos y scripts
         $data['styles'] = array(
             array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/tables/datatable/datatables.min.css'),
             array('es_rel' => false, 'href' => base_url() . 'app-assets/vendors/css/tables/extensions/responsive.dataTables.min.css'),
@@ -30,36 +27,73 @@ class Instructores extends MY_Controller
             array('es_rel' => true, 'src' => 'instructores/index.js'),
         );
 
-        $data['menu_instructores_activo'] = true;
-        $data['pagina_titulo'] = 'Instructores';
-        $data['mensaje_exito'] = $this->session->flashdata('MENSAJE_EXITO');
-        $data['mensaje_info'] = $this->session->flashdata('MENSAJE_INFO');
-        $data['mensaje_error'] = $this->session->flashdata('MENSAJE_ERROR');
-
         $this->construir_private_site_ui('instructores/index', $data);
     }
 
-    // Método para retornar la lista de instructores en JSON
-    public function ajax_list()
+    public function obtener_tabla_index()
     {
         $instructores = $this->usuarios_model->obtener_todos_instructores();
         $data = array();
+
         foreach ($instructores->result() as $instructor) {
-            $row = array();
-            // Opciones: botón para editar y para eliminar
-            $row[] = '<a href="' . site_url('instructores/editar/' . $instructor->id) . '" class="btn btn-sm btn-primary">Editar</a>
-                  <button class="btn btn-sm btn-danger btn-delete" data-id="' . $instructor->id . '">Eliminar</button>';
-            $row[] = $instructor->id;
-            $row[] = $instructor->nombre_completo . ' ' . $instructor->apellido_paterno . ' ' . $instructor->apellido_materno;
-            $row[] = $instructor->correo;
-            $row[] = $instructor->no_telefono;
-            $row[] = $instructor->rfc;
-            $row[] = $instructor->genero;
-            $row[] = $instructor->calle . ' ' . $instructor->numero . ' ' . $instructor->colonia . ' ' . $instructor->ciudad . ' ' . $instructor->estado . ' ' . $instructor->pais;
-            $data[] = $row;
+            $opciones = '<a href="' . site_url('instructores/editar/' . $instructor->id) . '">Editar</a>';
+            $opciones .= ' | ';
+            $opciones .= '<a href="' . site_url("sistema/change_password/") . $instructor->id . '">Cambiar contraseña</a>';
+            $opciones .= ' | ';
+            $opciones .= '<a href="#" data-id="' . $instructor->id . '" class="red">Eliminar</a>';
+
+            $data[] = array(
+                'opciones'  => $opciones,
+                'id'        => $instructor->id,
+                'nombre'    => trim($instructor->nombre_completo . ' ' . $instructor->apellido_paterno . ' ' . $instructor->apellido_materno),
+                'correo'    => $instructor->correo,
+                'telefono'  => $instructor->no_telefono,
+                'rfc'       => $instructor->rfc,
+                'genero'    => $instructor->genero,
+                'direccion' => $instructor->calle . ' ' . $instructor->numero . ' ' . $instructor->colonia . ' ' . $instructor->ciudad . ' ' . $instructor->estado . ' ' . $instructor->pais,
+            );
         }
-        $output = array("data" => $data);
-        echo json_encode($output);
+
+        echo json_encode(array("data" => $data));
+    }
+
+    public function cambiar_contrasena()
+    {
+        $data['menu_instructores_activo'] = true;
+        $data['pagina_titulo'] = 'Cambiar contraseña';
+
+        $data['styles'] = array();
+
+        $data['scripts'] = array(
+            array('es_rel' => true, 'src' => 'instructores/contrasena.js'),
+        );
+
+        $this->form_validation->set_rules('contrasena_actual', 'Contraseña actual', 'required');
+        $this->form_validation->set_rules('contrasena_nueva', 'Contraseña nueva', 'required|matches[confirmar_contrasena]');
+        $this->form_validation->set_rules('confirmar_contrasena', 'Confirmar contraseña', 'required');
+
+        $this->session->set_flashdata('PILL_SELECCIONADO', 3);
+
+        if ($this->form_validation->run() == false) {
+            $this->session->set_flashdata('VALIDATION_ERRORS', validation_errors());
+            redirect('instructores');
+        } else {
+            $this->load->model('usuarios_model');
+            // Obtener contrasena de usuario en sesión
+            $usuario_en_sesion = $this->usuarios_model->obtener_usuario_por_id($this->session->userdata['id'])->row();
+
+            // Validar que la contraseña anterior sea la correcta
+            if (password_verify($this->input->post('contrasena_actual'), $usuario_en_sesion->contrasena_hash)) {
+                // Actualizar contrasena
+                if ($this->usuarios_model->editar($usuario_en_sesion->id, array('contrasena_hash' => password_hash($this->input->post('contrasena_nueva'), PASSWORD_DEFAULT)))) {
+                    $this->session->set_flashdata('MENSAJE_EXITO', 'La contrasena ha sido actualizada correctamente');
+                }
+            } else {
+                $this->session->set_flashdata('MENSAJE_ERROR', 'La contrasena actual ingresada no es correcta');
+            }
+
+            redirect('instructores');
+        }
     }
 
     // Método para eliminar (soft delete) la cuenta del instructor vía AJAX
